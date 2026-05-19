@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #222222;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* The layout wrapper sets the default colors, this is just a fallback */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
