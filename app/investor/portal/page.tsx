@@ -40,11 +40,11 @@ export default function InvestorPortal() {
   useEffect(() => {
     const fetchData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { router.push('/pricing'); return; }
+      if (!session) { router.push('/login?redirect=/investor/portal'); return; }
 
       const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
       
-      if (!profile || !profile.investor_premium) {
+      if (!profile || (!profile.investor_premium && !profile.ventex_access)) {
         router.push('/pricing');
         return;
       }

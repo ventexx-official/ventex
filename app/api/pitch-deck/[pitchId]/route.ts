@@ -36,8 +36,8 @@ export async function GET(req: Request, { params }: { params: { pitchId: string 
       }
     }
 
-    // In Dev Mode/Review Mode, we allow viewing even if auth check fails to facilitate testing and validation of the viewer watermark
-    if (!verified && !isDev) {
+    // Strictly enforce Investor Premium verification
+    if (!verified) {
       return new NextResponse('Forbidden: Investor Premium required', { status: 403 });
     }
 

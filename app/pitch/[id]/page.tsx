@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Sparkles, Lock, FileText, Share2, Heart, CheckCircle2, User, Send, X } from 'lucide-react';
 import Link from 'next/link';
@@ -41,12 +41,14 @@ function formatCurrency(amount: number) {
 
 export default function PitchDetail() {
   const { id } = useParams();
+  const router = useRouter();
   const [pitch, setPitch] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Mock Premium state for demonstration
+  // Subscription state
   const [investorPremium, setInvestorPremium] = useState(false);
+  const [ventexAccess, setVentexAccess] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
   
   // Interest modal state
@@ -59,8 +61,10 @@ export default function PitchDetail() {
       alert("Please log in to express interest.");
       return;
     }
-    if (!investorPremium) {
-      alert("Investor Premium subscription is required.");
+    if (!investorPremium && !ventexAccess) {
+      if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+        router.push('/pricing');
+      }
       return;
     }
     if (interestMessage.length > 500) {
@@ -168,10 +172,15 @@ export default function PitchDetail() {
         setCurrentUser(session.user);
         const { data: profile } = await supabase
           .from('users')
-          .select('full_name, role, avatar_url')
+          .select('full_name, role, avatar_url, investor_premium, ventex_access, subscription_end_date')
           .eq('id', session.user.id)
           .single();
-        if (profile) setCurrentProfile(profile);
+        if (profile) {
+          setCurrentProfile(profile);
+          const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
+          setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
+          setVentexAccess(!!((profile.ventex_access || profile.investor_premium) && hasActiveSub));
+        }
       }
       // Load liked comments from localStorage
       try {
@@ -325,16 +334,6 @@ export default function PitchDetail() {
     <div className="bg-[#F2F2F0] dark:bg-[#111111] min-h-screen pb-24">
       <div className="max-w-4xl mx-auto px-4 pt-12 space-y-6">
         
-        {/* Toggle Premium for testing */}
-        <div className="flex justify-end mb-4">
-          <button 
-            onClick={() => setInvestorPremium(!investorPremium)}
-            className="text-xs bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-medium"
-          >
-            Toggle Premium View: {investorPremium ? 'ON' : 'OFF'}
-          </button>
-        </div>
-
         {/* HERO CARD */}
         <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-8 relative">
           {pitch.status === 'live' && pitch.is_raising === false && (
@@ -385,10 +384,12 @@ export default function PitchDetail() {
           <div className="flex items-center gap-3">
              <button 
                onClick={() => {
-                 if (investorPremium) {
+                 if (investorPremium || ventexAccess) {
                    setIsInterestModalOpen(true);
                  } else {
-                   alert("Investor Premium required to express interest.");
+                   if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+                     router.push('/pricing');
+                   }
                  }
                }}
                className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
