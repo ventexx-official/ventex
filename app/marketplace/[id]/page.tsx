@@ -35,6 +35,9 @@ export default function ProductDetailPage() {
   const [newQuestion, setNewQuestion] = useState('');
   const [submittingQuestion, setSubmittingQuestion] = useState(false);
 
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+
   // Load product data
   useEffect(() => {
     const fetchData = async () => {
@@ -183,6 +186,35 @@ export default function ProductDetailPage() {
     }
   };
 
+  const handleAddToCart = async () => {
+    if (!currentUser) {
+      router.push('/login');
+      return;
+    }
+    
+    setIsAddingToCart(true);
+    
+    try {
+      const { error } = await supabase.from('cart_items').insert({
+        user_id: currentUser.id,
+        product_id: product.id,
+        quantity: 1
+      });
+
+      if (error) throw error;
+      
+      setAddedToCart(true);
+      window.dispatchEvent(new Event('cart_updated'));
+      
+      // Reset the success state after 3 seconds
+      setTimeout(() => setAddedToCart(false), 3000);
+    } catch (err: any) {
+      alert("Error adding to cart: " + err.message);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   if (loading || !product) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
@@ -301,8 +333,12 @@ export default function ProductDetailPage() {
                 </>
               ) : (
                 <div className="flex gap-3">
-                  <button className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
-                    Add to Cart
+                  <button 
+                    onClick={handleAddToCart}
+                    disabled={isAddingToCart || addedToCart}
+                    className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors disabled:opacity-50"
+                  >
+                    {addedToCart ? 'Added ✓' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </button>
                   <button className="flex-1 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
                     Buy Now

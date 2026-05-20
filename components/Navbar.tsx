@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, X, LayoutDashboard, LogOut, ChevronDown } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut, ChevronDown, ShoppingBag } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter, usePathname } from 'next/navigation';
@@ -11,8 +11,25 @@ export default function Navbar() {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
+
+  const fetchCartCount = async (userId: string) => {
+    const { count } = await supabase
+      .from('cart_items')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
+    setCartCount(count || 0);
+  };
+
+  useEffect(() => {
+    const handleCartUpdated = () => {
+      if (user) fetchCartCount(user.id);
+    };
+    window.addEventListener('cart_updated', handleCartUpdated);
+    return () => window.removeEventListener('cart_updated', handleCartUpdated);
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -31,6 +48,7 @@ export default function Navbar() {
           .eq('id', session.user.id)
           .single();
         if (profile) setRole(profile.role);
+        fetchCartCount(session.user.id);
       }
     };
     checkUser();
@@ -40,6 +58,7 @@ export default function Navbar() {
       if (session?.user) {
         supabase.from('users').select('role').eq('id', session.user.id).single()
           .then(({ data }) => { if (data) setRole(data.role); });
+        fetchCartCount(session.user.id);
       } else {
         setRole(null);
       }
@@ -97,6 +116,17 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3 ml-auto">
             {user ? (
               <>
+                <Link
+                  href="/cart"
+                  className="relative p-2 text-gray-300 hover:text-white transition-colors"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  {cartCount > 0 && (
+                    <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
                 <Link
                   href={getDashboardLink()}
                   className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
@@ -165,6 +195,21 @@ export default function Navbar() {
             <div className="pt-4 border-t border-white/10 mt-4 space-y-2">
               {user ? (
                 <>
+                  <Link
+                    href="/cart"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <ShoppingBag className="w-5 h-5" />
+                      Cart
+                    </div>
+                    {cartCount > 0 && (
+                      <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
                   <Link
                     href={getDashboardLink()}
                     onClick={() => setIsOpen(false)}
