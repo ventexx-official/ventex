@@ -75,8 +75,7 @@ export default function Navbar() {
   };
 
   const getDashboardLink = () => {
-    if (role === 'founder') return '/founder/dashboard';
-    return '/discover';
+    return '/founder/dashboard';
   };
 
   const navLinks = [
