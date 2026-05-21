@@ -353,7 +353,7 @@ export default function FounderDashboard() {
           <NavItem icon={LayoutDashboard} label="Dashboard" active collapsed={sidebarCollapsed} href="/founder/dashboard" />
           <NavItem icon={FileText} label="My Pitches" collapsed={sidebarCollapsed} href="/founder/pitches" />
           <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
-          <NavItem icon={Store} label="My Store" collapsed={sidebarCollapsed} />
+          <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
           <NavItem icon={Zap} label="Booster Packs" collapsed={sidebarCollapsed} />
           <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
         </nav>
@@ -362,7 +362,7 @@ export default function FounderDashboard() {
           <NavItemMobile icon={LayoutDashboard} label="Dashboard" active href="/founder/dashboard" />
           <NavItemMobile icon={FileText} label="Pitches" href="/founder/pitches" />
           <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
-          <NavItemMobile icon={Store} label="Store" />
+          <NavItemMobile icon={Store} label="Store" href="/founder/store" />
           <NavItemMobile icon={Zap} label="Boost" />
           <NavItemMobile icon={Settings} label="Settings" />
         </nav>

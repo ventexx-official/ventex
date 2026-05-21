@@ -163,7 +163,7 @@ export default function MyPitchesPage() {
           <NavItem icon={LayoutDashboard} label="Dashboard" href="/founder/dashboard" collapsed={sidebarCollapsed} />
           <NavItem icon={FileText} label="My Pitches" href="/founder/pitches" active collapsed={sidebarCollapsed} />
           <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
-          <NavItem icon={Store} label="My Store" collapsed={sidebarCollapsed} />
+          <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
           <NavItem icon={Zap} label="Booster Packs" collapsed={sidebarCollapsed} />
           <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
         </nav>
@@ -172,7 +172,7 @@ export default function MyPitchesPage() {
           <NavItemMobile icon={LayoutDashboard} label="Dashboard" href="/founder/dashboard" />
           <NavItemMobile icon={FileText} label="Pitches" href="/founder/pitches" active />
           <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
-          <NavItemMobile icon={Store} label="Store" />
+          <NavItemMobile icon={Store} label="Store" href="/founder/store" />
           <NavItemMobile icon={Zap} label="Boost" />
           <NavItemMobile icon={Settings} label="Settings" />
         </nav>
