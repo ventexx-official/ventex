@@ -21,6 +21,7 @@ export default function CartPage() {
   const [promoCode, setPromoCode] = useState('');
   const [applyingPromo, setApplyingPromo] = useState(false);
   const [discountPct, setDiscountPct] = useState(0);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -110,6 +111,52 @@ export default function CartPage() {
       }
       setApplyingPromo(false);
     }, 1000);
+  };
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+    setCheckingOut(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/login?redirect=/cart');
+        return;
+      }
+
+      // Convert our UI state cartItems to what endpoint expects
+      const itemsPayload = cartItems.map(item => ({
+        id: item.id,
+        product_id: item.product.id,
+        quantity: item.quantity
+      }));
+
+      const res = await fetch('/api/marketplace/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartItems: itemsPayload,
+          buyerId: session.user.id,
+          discountPct,
+        }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || 'Failed to create checkout session');
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned from Stripe');
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      alert(error.message || 'Checkout failed. Please try again.');
+    } finally {
+      setCheckingOut(false);
+    }
   };
 
   if (loading) {
@@ -275,8 +322,12 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <button className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
-                  Proceed to Checkout <ArrowRight className="w-4 h-4" />
+                <button 
+                  onClick={handleCheckout}
+                  disabled={checkingOut || cartItems.length === 0}
+                  className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                >
+                  {checkingOut ? 'Creating Session...' : 'Proceed to Checkout'} <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-[#888888] font-medium">
