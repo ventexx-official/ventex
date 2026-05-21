@@ -7,7 +7,7 @@ import {
   Plus, LayoutDashboard, FileText, Store, Zap, Settings,
   Eye, Clock, MoreVertical, Edit2, ExternalLink, Copy, Trash2,
   AlertTriangle, X, PanelLeftClose, PanelLeftOpen, ArrowRight,
-  User, Search, Filter
+  User, Search, Filter, Tag
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -164,6 +164,7 @@ export default function MyPitchesPage() {
           <NavItem icon={FileText} label="My Pitches" href="/founder/pitches" active collapsed={sidebarCollapsed} />
           <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
           <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
+          <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
           <NavItem icon={Zap} label="Booster Packs" collapsed={sidebarCollapsed} />
           <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
         </nav>
@@ -173,6 +174,7 @@ export default function MyPitchesPage() {
           <NavItemMobile icon={FileText} label="Pitches" href="/founder/pitches" active />
           <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
           <NavItemMobile icon={Store} label="Store" href="/founder/store" />
+          <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
           <NavItemMobile icon={Zap} label="Boost" />
           <NavItemMobile icon={Settings} label="Settings" />
         </nav>

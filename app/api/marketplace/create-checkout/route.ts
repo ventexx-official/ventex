@@ -9,7 +9,7 @@ const supabaseAdmin = createClient(
 
 export async function POST(req: Request) {
   try {
-    const { cartItems, buyerId, discountPct = 0 } = await req.json();
+    const { cartItems, buyerId, discountPct = 0, promoCodeId = null } = await req.json();
 
     if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0 || !buyerId) {
       return new NextResponse('Missing required fields', { status: 400 });
@@ -168,6 +168,7 @@ export async function POST(req: Request) {
         sellerId: targetSellerId,
         cartItemIds: JSON.stringify(targetSellerItems.map((item: any) => item.id).filter(Boolean)),
         productDetails: JSON.stringify(purchaseDetails),
+        promoCodeId: promoCodeId || '',
       },
     });
 

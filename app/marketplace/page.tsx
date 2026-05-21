@@ -5,7 +5,6 @@ import { supabase } from '@/lib/supabase';
 import { 
   Search, 
   Filter, 
-  ChevronDown, 
   Star, 
   Clock, 
   Tag,
@@ -15,11 +14,94 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+/* ─────────────────── Live Countdown Timer ─────────────────── */
+function DealCountdown({ endDate }: { endDate: string }) {
+  const [timeLeft, setTimeLeft] = useState('');
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    const calc = () => {
+      const diff = new Date(endDate).getTime() - Date.now();
+      if (diff <= 0) {
+        setExpired(true);
+        setTimeLeft('');
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      if (d > 0) {
+        setTimeLeft(`${d}d ${h}h ${m}m`);
+      } else {
+        setTimeLeft(`${h}h ${m}m ${s}s`);
+      }
+    };
+    calc();
+    const interval = setInterval(calc, 1000);
+    return () => clearInterval(interval);
+  }, [endDate]);
+
+  if (expired) return null;
+
+  const isUrgent = (() => {
+    const diff = new Date(endDate).getTime() - Date.now();
+    return diff < 3600000; // under 1 hour
+  })();
+
+  return (
+    <div className={`flex items-center gap-1.5 mt-2 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full w-fit ${
+      isUrgent
+        ? 'bg-red-100 text-red-600 animate-pulse'
+        : 'bg-amber-100 text-amber-700'
+    }`}>
+      <Clock className="w-2.5 h-2.5 flex-shrink-0" />
+      Deal ends in {timeLeft}
+    </div>
+  );
+}
+
+/* ─────────────── Deal Banner Countdown ─────────────── */
+function BannerCountdown({ endDate }: { endDate: string }) {
+  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    const calc = () => {
+      const diff = new Date(endDate).getTime() - Date.now();
+      if (diff <= 0) { setExpired(true); return; }
+      setTimeLeft({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    calc();
+    const t = setInterval(calc, 1000);
+    return () => clearInterval(t);
+  }, [endDate]);
+
+  if (expired) return null;
+
+  const pads = (n: number) => String(n).padStart(2, '0');
+
+  return (
+    <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+      <Clock className="w-3.5 h-3.5" />
+      {timeLeft.d > 0 && <span>{timeLeft.d}d </span>}
+      <span>{pads(timeLeft.h)}:{pads(timeLeft.m)}:{pads(timeLeft.s)}</span>
+    </div>
+  );
+}
+
+/* ─────────────────── Main Page ─────────────────── */
 export default function MarketplacePage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [tick, setTick] = useState(0); // forces re-evaluation of expired deals
+
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedSector, setSelectedSector] = useState<string>('All');
@@ -29,10 +111,14 @@ export default function MarketplacePage() {
   const [dealsOnly, setDealsOnly] = useState<boolean>(false);
   const [minRating, setMinRating] = useState<number>(0);
 
-  // Constants for filters
   const CATEGORIES = ['All', 'Software', 'Templates', 'Services', 'Hardware', 'Courses'];
-  const SECTORS = ['All', 'SaaS', 'Fintech', 'Healthtech', 'Edtech', 'E-commerce', 'Enterprise', 'Consumer Tech', 'Marketing', 'Other'];
   const TYPES = ['All', 'fixed_price', 'custom_work'];
+
+  // Global 1-minute tick to remove expired deals from view automatically
+  useEffect(() => {
+    const t = setInterval(() => setTick(v => v + 1), 60000);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,20 +141,22 @@ export default function MarketplacePage() {
     fetchProducts();
   }, []);
 
-  // Active deals calculation
+  // Active deals — re-evaluated each tick to auto-remove expired ones
   const activeDeals = useMemo(() => {
     const now = new Date();
     return products.filter(p => p.discount_price && p.deal_end_date && new Date(p.deal_end_date) > now);
-  }, [products]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [products, tick]);
 
-  // Filtered products calculation
+  // Filtered products
   const filteredProducts = useMemo(() => {
+    const now = new Date();
     return products.filter(p => {
       if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
       if (selectedSector !== 'All' && p.sector !== selectedSector) return false;
       if (selectedType !== 'All' && p.type !== selectedType) return false;
-      if (dealsOnly && (!p.discount_price || !p.deal_end_date || new Date(p.deal_end_date) <= new Date())) return false;
+      if (dealsOnly && (!p.discount_price || !p.deal_end_date || new Date(p.deal_end_date) <= now)) return false;
       if (minRating > 0 && (p.average_rating || 0) < minRating) return false;
       
       const priceToCompare = p.discount_price || p.price;
@@ -77,7 +165,8 @@ export default function MarketplacePage() {
 
       return true;
     });
-  }, [products, searchQuery, selectedCategory, selectedSector, selectedType, dealsOnly, minRating, priceMin, priceMax]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [products, searchQuery, selectedCategory, selectedSector, selectedType, dealsOnly, minRating, priceMin, priceMax, tick]);
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
@@ -105,17 +194,17 @@ export default function MarketplacePage() {
         </div>
       </div>
 
-      {/* DEALS BANNER */}
+      {/* DEALS BANNER with countdown */}
       {activeDeals.length > 0 && !dealsOnly && (
         <div className="bg-[#222222] text-white py-8 px-6 overflow-hidden relative">
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="max-w-7xl mx-auto relative z-10">
             <h2 className="text-lg font-black uppercase tracking-tight flex items-center gap-2 mb-6 text-emerald-400">
-              <Sparkles className="w-5 h-5" /> Live Deals
+              <Sparkles className="w-5 h-5" /> Live Deals — Ends Soon
             </h2>
-            <div className="flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
+            <div className="flex gap-4 overflow-x-auto pb-4 snap-x" style={{ scrollbarWidth: 'none' }}>
               {activeDeals.map(deal => (
-                <div key={deal.id} className="min-w-[300px] max-w-[300px] bg-[#333333] rounded-2xl p-4 snap-start border-[0.5px] border-[#444444] shadow-xl relative group">
+                <div key={deal.id} className="min-w-[300px] max-w-[300px] bg-[#333333] rounded-2xl p-4 snap-start border-[0.5px] border-[#444444] shadow-xl relative group flex-shrink-0">
                   <span className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-black uppercase px-2 py-1 rounded-full z-10 shadow-lg">
                     {Math.round((1 - deal.discount_price / deal.price) * 100)}% OFF
                   </span>
@@ -129,13 +218,13 @@ export default function MarketplacePage() {
                     )}
                   </div>
                   <h3 className="font-bold text-white text-sm truncate">{deal.name}</h3>
-                  <div className="flex items-center gap-2 mt-3">
+                  <div className="flex items-center gap-2 mt-2">
                     <span className="text-xl font-black text-emerald-400">₹{deal.discount_price?.toLocaleString()}</span>
                     <span className="text-xs text-[#888888] line-through font-medium">₹{deal.price?.toLocaleString()}</span>
                   </div>
-                  <div className="mt-4 pt-3 border-t-[0.5px] border-[#444444] flex items-center justify-between text-xs font-bold text-amber-400">
-                    <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> Ends Soon</span>
-                    <Link href={`/marketplace/${deal.id}`} className="text-white hover:text-emerald-400 flex items-center gap-1 transition-colors">
+                  <div className="mt-3 pt-3 border-t-[0.5px] border-[#444444] flex items-center justify-between">
+                    {deal.deal_end_date && <BannerCountdown endDate={deal.deal_end_date} />}
+                    <Link href={`/marketplace/${deal.id}`} className="text-white hover:text-emerald-400 flex items-center gap-1 text-xs font-bold transition-colors ml-auto">
                       View <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
@@ -168,7 +257,6 @@ export default function MarketplacePage() {
           </div>
 
           <div className="space-y-6">
-            
             {/* Category */}
             <div>
               <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Category</label>
@@ -194,18 +282,16 @@ export default function MarketplacePage() {
             <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
               <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Type</label>
               <div className="space-y-2">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <input type="radio" checked={selectedType === 'All'} onChange={() => setSelectedType('All')} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
-                  <span className={`text-sm font-medium ${selectedType === 'All' ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>All</span>
-                </label>
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <input type="radio" checked={selectedType === 'fixed_price'} onChange={() => setSelectedType('fixed_price')} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
-                  <span className={`text-sm font-medium ${selectedType === 'fixed_price' ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>Fixed Price</span>
-                </label>
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <input type="radio" checked={selectedType === 'custom_work'} onChange={() => setSelectedType('custom_work')} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
-                  <span className={`text-sm font-medium ${selectedType === 'custom_work' ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>Custom Work</span>
-                </label>
+                {[
+                  { value: 'All', label: 'All' },
+                  { value: 'fixed_price', label: 'Fixed Price' },
+                  { value: 'custom_work', label: 'Custom Work' },
+                ].map(({ value, label }) => (
+                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                    <input type="radio" checked={selectedType === value} onChange={() => setSelectedType(value)} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
+                    <span className={`text-sm font-medium ${selectedType === value ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>{label}</span>
+                  </label>
+                ))}
               </div>
             </div>
 
@@ -227,17 +313,13 @@ export default function MarketplacePage() {
               <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (₹)</label>
               <div className="flex items-center gap-3">
                 <input 
-                  type="number" 
-                  placeholder="Min" 
-                  value={priceMin}
+                  type="number" placeholder="Min" value={priceMin}
                   onChange={(e) => setPriceMin(e.target.value)}
                   className="w-full px-3 py-2 bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
                 />
                 <span className="text-[#888888]">-</span>
                 <input 
-                  type="number" 
-                  placeholder="Max" 
-                  value={priceMax}
+                  type="number" placeholder="Max" value={priceMax}
                   onChange={(e) => setPriceMax(e.target.value)}
                   className="w-full px-3 py-2 bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
                 />
@@ -336,12 +418,12 @@ export default function MarketplacePage() {
                         </div>
 
                         {product.pitch && (
-                          <Link href={`/pitch/${product.pitch.id}`} className="text-xs text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors mb-4 line-clamp-1">
+                          <Link href={`/pitch/${product.pitch.id}`} className="text-xs text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors mb-2 line-clamp-1">
                             By {product.seller?.full_name || 'Anonymous'} ({product.pitch.title})
                           </Link>
                         )}
 
-                        <div className="flex items-center gap-2 mb-4">
+                        <div className="flex items-center gap-2 mb-3">
                           <div className="flex items-center gap-1">
                             <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-[#444444]'}`} />
                             <span className="text-xs font-bold text-[#222222] dark:text-white">{product.average_rating > 0 ? product.average_rating.toFixed(1) : 'New'}</span>
@@ -350,6 +432,11 @@ export default function MarketplacePage() {
                             <span className="text-[10px] text-[#888888]">({product.review_count})</span>
                           )}
                         </div>
+
+                        {/* ── Live countdown timer on card ── */}
+                        {isDeal && product.deal_end_date && (
+                          <DealCountdown endDate={product.deal_end_date} />
+                        )}
 
                         <div className="mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-end justify-between">
                           <div>

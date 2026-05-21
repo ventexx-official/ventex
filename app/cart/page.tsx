@@ -10,7 +10,11 @@ import {
   Plus,
   ArrowRight,
   ShieldCheck,
-  Tag
+  Tag,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -20,7 +24,13 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
   const [promoCode, setPromoCode] = useState('');
   const [applyingPromo, setApplyingPromo] = useState(false);
-  const [discountPct, setDiscountPct] = useState(0);
+  const [promoResult, setPromoResult] = useState<{
+    success: boolean;
+    discountPct: number;
+    codeId: string;
+    message: string;
+  } | null>(null);
+  const [promoError, setPromoError] = useState('');
   const [checkingOut, setCheckingOut] = useState(false);
 
   useEffect(() => {
@@ -57,19 +67,12 @@ export default function CartPage() {
 
   const updateQuantity = async (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-    
-    // Optimistic UI update
     setCartItems(prev => prev.map(item => item.id === id ? { ...item, quantity: newQuantity } : item));
-    
     const { error } = await supabase
       .from('cart_items')
       .update({ quantity: newQuantity })
       .eq('id', id);
-      
-    if (error) {
-      // Revert if error
-      alert("Could not update quantity.");
-    }
+    if (error) alert("Could not update quantity.");
   };
 
   const removeItem = async (id: string) => {
@@ -92,27 +95,52 @@ export default function CartPage() {
     }, 0);
   }, [cartItems, getActivePrice]);
 
-  const discountAmount = useMemo(() => {
-    return (subtotal * discountPct) / 100;
-  }, [subtotal, discountPct]);
-
+  const discountPct = promoResult?.discountPct || 0;
+  const discountAmount = useMemo(() => Math.round((subtotal * discountPct) / 100), [subtotal, discountPct]);
   const total = subtotal - discountAmount;
 
-  const handleApplyPromo = () => {
+  /* ── Real promo validation ── */
+  const handleApplyPromo = async () => {
     if (!promoCode.trim()) return;
     setApplyingPromo(true);
-    // Mocking promo logic for now
-    setTimeout(() => {
-      if (promoCode.toUpperCase() === 'VENTEX20') {
-        setDiscountPct(20);
-        alert('Promo code applied!');
+    setPromoError('');
+    setPromoResult(null);
+
+    const productIds = cartItems.map((item) => item.product?.id).filter(Boolean);
+
+    try {
+      const res = await fetch('/api/promo/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: promoCode.trim(), productIds }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        setPromoError(data.error || 'Invalid promo code.');
       } else {
-        alert('Invalid promo code.');
+        setPromoResult({
+          success: true,
+          discountPct: data.discountPct,
+          codeId: data.codeId,
+          message: data.message,
+        });
       }
+    } catch {
+      setPromoError('Could not validate promo code. Please try again.');
+    } finally {
       setApplyingPromo(false);
-    }, 1000);
+    }
   };
 
+  const handleRemovePromo = () => {
+    setPromoResult(null);
+    setPromoError('');
+    setPromoCode('');
+  };
+
+  /* ── Checkout ── */
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     setCheckingOut(true);
@@ -123,11 +151,10 @@ export default function CartPage() {
         return;
       }
 
-      // Convert our UI state cartItems to what endpoint expects
       const itemsPayload = cartItems.map(item => ({
         id: item.id,
         product_id: item.product.id,
-        quantity: item.quantity
+        quantity: item.quantity,
       }));
 
       const res = await fetch('/api/marketplace/create-checkout', {
@@ -137,6 +164,7 @@ export default function CartPage() {
           cartItems: itemsPayload,
           buyerId: session.user.id,
           discountPct,
+          promoCodeId: promoResult?.codeId || null,
         }),
       });
 
@@ -202,7 +230,7 @@ export default function CartPage() {
               {cartItems.map((item) => {
                 const now = new Date();
                 const product = item.product;
-                const isHardware = product.category === 'Hardware'; // only hardware allows quantity change
+                const isHardware = product.category === 'Hardware';
                 const itemPrice = getActivePrice(product);
                 const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
 
@@ -216,6 +244,11 @@ export default function CartPage() {
                         <div className="w-full h-full flex items-center justify-center text-[#cccccc]">
                           <ShoppingBag className="w-6 h-6" />
                         </div>
+                      )}
+                      {isDeal && (
+                        <span className="absolute top-2 left-2 bg-red-500 text-white text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full">
+                          {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
+                        </span>
                       )}
                     </div>
                     
@@ -288,7 +321,9 @@ export default function CartPage() {
                   </div>
                   {discountPct > 0 && (
                     <div className="flex justify-between text-sm text-emerald-500">
-                      <span className="font-medium">Discount ({discountPct}%)</span>
+                      <span className="font-medium flex items-center gap-1.5">
+                        <Tag className="w-3.5 h-3.5" /> Promo ({discountPct}% off)
+                      </span>
                       <span className="font-bold">-₹{discountAmount.toLocaleString()}</span>
                     </div>
                   )}
@@ -300,26 +335,66 @@ export default function CartPage() {
 
                 <div className="flex justify-between items-end mb-8">
                   <span className="text-sm font-bold text-[#222222] dark:text-white uppercase tracking-widest">Total</span>
-                  <span className="text-3xl font-black text-[#222222] dark:text-white tracking-tight">₹{total.toLocaleString()}</span>
+                  <div className="text-right">
+                    {discountPct > 0 && (
+                      <div className="text-xs text-[#888888] line-through font-medium">₹{subtotal.toLocaleString()}</div>
+                    )}
+                    <span className="text-3xl font-black text-[#222222] dark:text-white tracking-tight">₹{total.toLocaleString()}</span>
+                  </div>
                 </div>
 
+                {/* Promo Code Input */}
                 <div className="mb-6">
-                  <div className="flex gap-2">
-                    <input 
-                      type="text" 
-                      placeholder="Promo Code" 
-                      value={promoCode}
-                      onChange={e => setPromoCode(e.target.value)}
-                      className="flex-grow px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white uppercase font-bold"
-                    />
-                    <button 
-                      onClick={handleApplyPromo}
-                      disabled={applyingPromo || !promoCode}
-                      className="px-4 py-3 bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white rounded-xl text-sm font-bold hover:bg-[#cccccc] dark:hover:bg-[#444444] transition-colors disabled:opacity-50"
-                    >
-                      {applyingPromo ? '...' : 'Apply'}
-                    </button>
-                  </div>
+                  {promoResult ? (
+                    /* Applied state */
+                    <div className="bg-emerald-50 border-[0.5px] border-emerald-200 rounded-2xl px-4 py-3 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-black text-emerald-700">{promoResult.discountPct}% off applied!</p>
+                          <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">{promoResult.codeId ? promoCode.toUpperCase() : ''}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleRemovePromo}
+                        className="text-emerald-600 hover:text-red-500 transition-colors p-1 rounded"
+                        title="Remove promo"
+                      >
+                        <XCircle className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    /* Input state */
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <div className="relative flex-grow">
+                          <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#888888]" />
+                          <input 
+                            type="text" 
+                            placeholder="Promo code" 
+                            value={promoCode}
+                            onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); }}
+                            onKeyDown={e => e.key === 'Enter' && handleApplyPromo()}
+                            className="w-full pl-10 pr-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white uppercase font-bold tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal"
+                          />
+                        </div>
+                        <button 
+                          onClick={handleApplyPromo}
+                          disabled={applyingPromo || !promoCode.trim()}
+                          className="px-4 py-3 bg-[#222222] dark:bg-white text-white dark:text-[#222222] rounded-xl text-sm font-bold hover:bg-black dark:hover:bg-gray-100 transition-colors disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
+                        >
+                          {applyingPromo ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                          {applyingPromo ? '' : 'Apply'}
+                        </button>
+                      </div>
+                      {promoError && (
+                        <div className="flex items-center gap-2 text-red-500 text-xs font-medium bg-red-50 dark:bg-red-900/20 border-[0.5px] border-red-200 px-3 py-2 rounded-xl">
+                          <XCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                          {promoError}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <button 
@@ -327,7 +402,11 @@ export default function CartPage() {
                   disabled={checkingOut || cartItems.length === 0}
                   className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
                 >
-                  {checkingOut ? 'Creating Session...' : 'Proceed to Checkout'} <ArrowRight className="w-4 h-4" />
+                  {checkingOut ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Creating Session...</>
+                  ) : (
+                    <>Proceed to Checkout <ArrowRight className="w-4 h-4" /></>
+                  )}
                 </button>
 
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-[#888888] font-medium">

@@ -49,6 +49,7 @@ export async function POST(req: Request) {
       
       const buyerId = session.metadata?.buyerId;
       const sellerId = session.metadata?.sellerId;
+      const promoCodeId = session.metadata?.promoCodeId;
       const cartItemIds = session.metadata?.cartItemIds ? JSON.parse(session.metadata.cartItemIds) : [];
       const productDetails = session.metadata?.productDetails ? JSON.parse(session.metadata.productDetails) : [];
 
@@ -134,6 +135,30 @@ export async function POST(req: Request) {
 
         if (deleteCartError) {
           console.error('[Webhook] Error deleting purchased cart items:', deleteCartError);
+        }
+      }
+
+      // 3. Increment promo code usage
+      if (promoCodeId) {
+        try {
+          const { data: promo } = await supabaseAdmin
+            .from('promo_codes')
+            .select('used_count')
+            .eq('id', promoCodeId)
+            .single();
+          
+          if (promo) {
+            const { error: promoUpdateError } = await supabaseAdmin
+              .from('promo_codes')
+              .update({ used_count: (promo.used_count || 0) + 1 })
+              .eq('id', promoCodeId);
+            
+            if (promoUpdateError) {
+              console.error('[Webhook] Error updating promo code usage count:', promoUpdateError);
+            }
+          }
+        } catch (promoErr) {
+          console.error('[Webhook] Error incrementing promo usage count:', promoErr);
         }
       }
 
