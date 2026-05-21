@@ -16,6 +16,42 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+const MOCK_REVIEWS = [
+  {
+    id: "mock-1",
+    buyer: {
+      full_name: "Sarah Jenkins",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
+    },
+    rating: 5,
+    comment: "This template is absolutely stunning! The clean architecture and smooth tailwind styling saved me over 40 hours of setup. Integration with Supabase auth was flawless.",
+    seller_reply: "Thank you Sarah! Glad you loved the Supabase setup. Let me know if you need help with deployment.",
+    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() // 3 days ago
+  },
+  {
+    id: "mock-2",
+    buyer: {
+      full_name: "Developer Dan",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dan"
+    },
+    rating: 4,
+    comment: "Excellent documentation and great code structure. Had a minor issue with the Stripe webhook routing initially, but the creator responded within an hour and helped me resolve it.",
+    seller_reply: "Appreciate the feedback, Dan! Yes, Stripe webhooks can sometimes be tricky. I updated the docs to make that step clearer for others.",
+    created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days ago
+  },
+  {
+    id: "mock-3",
+    buyer: {
+      full_name: "Elena Rostova",
+      avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena"
+    },
+    rating: 5,
+    comment: "The UI design alone is worth the price. I've bought three other starter kits before but this is by far the most premium-feeling and responsive one. Highly recommended!",
+    seller_reply: null,
+    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString() // 14 days ago
+  }
+];
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -38,6 +74,15 @@ export default function ProductDetailPage() {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
+  // New review state variables
+  const [unreviewedOrders, setUnreviewedOrders] = useState<any[]>([]);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [reviewRating, setReviewRating] = useState<number>(0);
+  const [reviewComment, setReviewComment] = useState('');
+  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
   // Load product data
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +92,27 @@ export default function ProductDetailPage() {
       if (session) {
         const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
         setCurrentUser(profile);
+
+        // Fetch fulfilled orders by this buyer for this product
+        const { data: oData } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('product_id', id)
+          .eq('buyer_id', session.user.id)
+          .eq('status', 'fulfilled');
+
+        // Fetch user reviews
+        const { data: userRevs } = await supabase
+          .from('reviews')
+          .select('order_id')
+          .eq('product_id', id)
+          .eq('buyer_id', session.user.id);
+
+        const reviewedIds = new Set(userRevs?.map(r => r.order_id) || []);
+        if (oData) {
+          const eligible = oData.filter(o => !reviewedIds.has(o.id));
+          setUnreviewedOrders(eligible);
+        }
       }
 
       // Fetch Product
@@ -95,6 +161,7 @@ export default function ProductDetailPage() {
 
     if (id) fetchData();
   }, [id, router]);
+
 
   // Derived Values
   const now = new Date();
@@ -154,7 +221,200 @@ export default function ProductDetailPage() {
     }
   };
 
+  const toggleDemoMode = () => {
+    if (isDemoMode) {
+      setIsDemoMode(false);
+      
+      const refreshRealData = async () => {
+        setLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+          setCurrentUser(profile);
+
+          const { data: oData } = await supabase
+            .from('orders')
+            .select('*')
+            .eq('product_id', id)
+            .eq('buyer_id', session.user.id)
+            .eq('status', 'fulfilled');
+
+          const { data: userRevs } = await supabase
+            .from('reviews')
+            .select('order_id')
+            .eq('product_id', id)
+            .eq('buyer_id', session.user.id);
+
+          const reviewedIds = new Set(userRevs?.map(r => r.order_id) || []);
+          if (oData) {
+            const eligible = oData.filter(o => !reviewedIds.has(o.id));
+            setUnreviewedOrders(eligible);
+          }
+        } else {
+          setCurrentUser(null);
+          setUnreviewedOrders([]);
+        }
+
+        const { data: rData } = await supabase
+          .from('reviews')
+          .select(`*, buyer:buyer_id ( full_name, avatar_url )`)
+          .eq('product_id', id)
+          .order('created_at', { ascending: false });
+        
+        if (rData) setReviews(rData);
+
+        const { data: pData } = await supabase.from('products').select('*').eq('id', id).single();
+        if (pData) setProduct(pData);
+
+        setLoading(false);
+      };
+      refreshRealData();
+    } else {
+      setIsDemoMode(true);
+      
+      setProduct((prev: any) => ({
+        ...prev,
+        average_rating: 4.7,
+        review_count: 3
+      }));
+
+      setReviews(MOCK_REVIEWS);
+
+      setCurrentUser({
+        id: "mock-user-id",
+        full_name: "Jane Dev",
+        avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
+      });
+
+      setUnreviewedOrders([
+        {
+          id: "mock-order-id",
+          product_id: id,
+          buyer_id: "mock-user-id",
+          status: "fulfilled"
+        }
+      ]);
+    }
+  };
+
+  const submitReview = async () => {
+    if (reviewRating === 0 || reviewComment.length < 20 || reviewComment.length > 500) return;
+    setSubmittingReview(true);
+
+    try {
+      if (isDemoMode) {
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const newReviewObj = {
+          id: `mock-review-${Date.now()}`,
+          order_id: unreviewedOrders[0]?.id || "mock-order-id",
+          buyer_id: currentUser?.id || "mock-user-id",
+          product_id: product.id,
+          rating: reviewRating,
+          comment: reviewComment,
+          seller_reply: null,
+          created_at: new Date().toISOString(),
+          buyer: {
+            full_name: currentUser?.full_name || "Jane Dev",
+            avatar_url: currentUser?.avatar_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
+          }
+        };
+
+        const updatedReviews = [newReviewObj, ...reviews];
+        setReviews(updatedReviews);
+
+        const newCount = updatedReviews.length;
+        const newAvg = updatedReviews.reduce((sum, r) => sum + r.rating, 0) / newCount;
+        
+        setProduct((prev: any) => ({
+          ...prev,
+          average_rating: parseFloat(newAvg.toFixed(1)),
+          review_count: newCount
+        }));
+
+        setUnreviewedOrders([]);
+        setIsReviewModalOpen(false);
+        setReviewRating(0);
+        setReviewComment('');
+        alert("Success (Demo Mode): Your verified review was posted!");
+      } else {
+        if (!currentUser || unreviewedOrders.length === 0) {
+          throw new Error("No eligible order to review.");
+        }
+
+        const targetOrder = unreviewedOrders[0];
+
+        const { data: newReview, error: insertError } = await supabase
+          .from('reviews')
+          .insert({
+            order_id: targetOrder.id,
+            buyer_id: currentUser.id,
+            product_id: product.id,
+            seller_id: product.seller_id,
+            rating: reviewRating,
+            comment: reviewComment
+          })
+          .select(`*, buyer:buyer_id ( full_name, avatar_url )`)
+          .single();
+
+        if (insertError) throw insertError;
+
+        const updatedReviews = [newReview, ...reviews];
+        setReviews(updatedReviews);
+
+        const newCount = updatedReviews.length;
+        const newAvg = updatedReviews.reduce((sum, r) => sum + r.rating, 0) / newCount;
+        
+        setProduct((prev: any) => ({
+          ...prev,
+          average_rating: parseFloat(newAvg.toFixed(1)),
+          review_count: newCount
+        }));
+
+        try {
+          await supabase
+            .from('products')
+            .update({
+              review_count: newCount,
+              average_rating: parseFloat(newAvg.toFixed(1))
+            })
+            .eq('id', product.id);
+        } catch (dbUpdateErr) {
+          console.warn("Failed to update products stats (likely RLS). Trigger will recalculate on server.", dbUpdateErr);
+        }
+
+        setUnreviewedOrders(prev => prev.filter(o => o.id !== targetOrder.id));
+
+        setIsReviewModalOpen(false);
+        setReviewRating(0);
+        setReviewComment('');
+        alert("Your verified review has been submitted successfully!");
+      }
+    } catch (err: any) {
+      alert("Error submitting review: " + err.message);
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const ratingsBreakdown = useMemo(() => {
+    const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    reviews.forEach((r) => {
+      const rVal = Math.round(r.rating);
+      if (rVal >= 1 && rVal <= 5) {
+        counts[rVal as 1|2|3|4|5]++;
+      }
+    });
+    return counts;
+  }, [reviews]);
+
+  const getPercentage = (stars: 1|2|3|4|5) => {
+    if (reviews.length === 0) return 0;
+    return Math.round((ratingsBreakdown[stars] / reviews.length) * 100);
+  };
+
   const submitQuestion = async () => {
+
     if (!newQuestion.trim()) return;
     setSubmittingQuestion(true);
 
@@ -387,15 +647,93 @@ export default function ProductDetailPage() {
             {/* Reviews Tab */}
             {activeTab === 'reviews' && (
               <div className="space-y-8">
-                <div className="flex items-center gap-6 pb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
-                  <div className="text-center">
-                    <p className="text-5xl font-black text-[#222222] dark:text-white">{product.average_rating > 0 ? product.average_rating.toFixed(1) : '0'}</p>
+                {/* Developer Sandbox Control Banner */}
+                <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                  <div className="space-y-1">
+                    <p className="text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-tight flex items-center gap-1.5">
+                      🔧 Review System Demo Sandbox
+                    </p>
+                    <p className="text-xs text-amber-700 dark:text-amber-500 font-medium">
+                      Simulate a mock purchaser account and seeded verified reviews to test the interface without database setups.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => toggleDemoMode()}
+                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0 ${
+                      isDemoMode 
+                        ? 'bg-amber-600 text-white hover:bg-amber-700' 
+                        : 'bg-white dark:bg-[#222222] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
+                    }`}
+                  >
+                    {isDemoMode ? 'Deactivate Demo' : 'Activate Demo'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] items-center">
+                  {/* Big Rating Summary */}
+                  <div className="text-center md:border-r-[0.5px] border-[#e5e5e5] dark:border-[#333333] py-2">
+                    <p className="text-6xl font-black text-[#222222] dark:text-white">
+                      {product.average_rating > 0 ? product.average_rating.toFixed(1) : '0'}
+                    </p>
                     <div className="flex items-center justify-center gap-1 my-2 text-amber-400">
                       {[1,2,3,4,5].map(star => (
-                        <Star key={star} className={`w-4 h-4 ${star <= (product.average_rating || 0) ? 'fill-current' : 'text-gray-300 dark:text-[#444444]'}`} />
+                        <Star key={star} className={`w-5 h-5 ${star <= Math.round(product.average_rating || 0) ? 'fill-current' : 'text-gray-200 dark:text-[#333333]'}`} />
                       ))}
                     </div>
-                    <p className="text-xs text-[#888888] font-medium">{product.review_count || 0} reviews</p>
+                    <p className="text-xs text-[#888888] font-bold uppercase tracking-wider">
+                      {product.review_count || 0} reviews
+                    </p>
+                  </div>
+
+                  {/* Rating Breakdown Bar Chart */}
+                  <div className="space-y-2">
+                    {[5, 4, 3, 2, 1].map((stars) => {
+                      const pct = getPercentage(stars as any);
+                      return (
+                        <div key={stars} className="flex items-center gap-3 text-xs">
+                          <span className="w-8 text-right font-bold text-gray-500 dark:text-gray-400">{stars}★</span>
+                          <div className="flex-grow h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-amber-400 rounded-full transition-all duration-500" 
+                              style={{ width: `${pct}%` }}
+                            ></div>
+                          </div>
+                          <span className="w-8 text-right font-bold text-gray-400 dark:text-gray-500">{pct}%</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Actions Column: Write Review Button or Eligibility Note */}
+                  <div className="flex flex-col items-center justify-center p-4">
+                    {unreviewedOrders.length > 0 ? (
+                      <div className="text-center space-y-2 w-full">
+                        <button
+                          onClick={() => {
+                            setReviewRating(0);
+                            setReviewComment('');
+                            setIsReviewModalOpen(true);
+                          }}
+                          className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+                        >
+                          Write a Review
+                        </button>
+                        <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">
+                          ✓ Fulfilled Order Available
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-center space-y-1.5 max-w-[200px]">
+                        <p className="text-xs text-[#888888] font-bold">
+                          Only customers with a fulfilled order for this product can write a review.
+                        </p>
+                        {currentUser && (
+                          <p className="text-[10px] text-[#aaaaaa] font-medium">
+                            No unreviewed orders found.
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -404,7 +742,7 @@ export default function ProductDetailPage() {
                     <p className="text-[#888888] text-center py-8">No reviews yet.</p>
                   ) : (
                     reviews.map(review => (
-                      <div key={review.id} className="space-y-3">
+                      <div key={review.id} className="space-y-3 p-4 bg-white dark:bg-[#1f1f1f] rounded-2xl border border-[#e5e5e5]/40 dark:border-[#333333]/40 shadow-sm">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-[#F2F2F0] rounded-full flex items-center justify-center overflow-hidden">
@@ -414,14 +752,14 @@ export default function ProductDetailPage() {
                               <p className="text-sm font-bold text-[#222222] dark:text-white flex items-center gap-2">
                                 {review.buyer?.full_name || 'Anonymous'}
                                 <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded flex items-center gap-1">
-                                  <CheckCircle2 className="w-3 h-3" /> Verified Purchase
+                                  <CheckCircle2 className="w-3 h-3" /> Verified Purchase ✓
                                 </span>
                               </p>
                               <p className="text-xs text-[#888888]">{new Date(review.created_at).toLocaleDateString()}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-0.5 text-amber-400">
-                            {[1,2,3,4,5].map(star => <Star key={star} className={`w-3.5 h-3.5 ${star <= review.rating ? 'fill-current' : 'text-gray-200'}`} />)}
+                            {[1,2,3,4,5].map(star => <Star key={star} className={`w-3.5 h-3.5 ${star <= review.rating ? 'fill-current' : 'text-gray-200 dark:text-[#333333]'}`} />)}
                           </div>
                         </div>
                         <p className="text-sm text-[#555555] dark:text-gray-300">{review.comment}</p>
@@ -438,6 +776,7 @@ export default function ProductDetailPage() {
                 </div>
               </div>
             )}
+
 
             {/* Q&A Tab */}
             {activeTab === 'qa' && (
@@ -558,6 +897,75 @@ export default function ProductDetailPage() {
                 className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingRequest ? 'Sending...' : 'Send Request'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* REVIEW MODAL */}
+      {isReviewModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[#e5e5e5] dark:border-[#333333] animate-in fade-in zoom-in-95 duration-200">
+            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
+              <X className="w-4 h-4 text-[#888888]" />
+            </button>
+            <div className="p-8">
+              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-2">Write a Review</h2>
+              <p className="text-sm text-[#888888] mb-6">Share your experience with <strong>{product.name}</strong>. Your feedback helps other buyers make informed decisions.</p>
+              
+              {/* Star Selector */}
+              <div className="mb-6 text-center">
+                <p className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-2">Your Rating</p>
+                <div className="flex justify-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewRating(star)}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      className="p-1 hover:scale-110 transition-transform focus:outline-none"
+                    >
+                      <Star 
+                        className={`w-10 h-10 transition-colors ${
+                          star <= (hoverRating || reviewRating) 
+                            ? 'text-amber-400 fill-current' 
+                            : 'text-gray-200 dark:text-[#333333]'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Text Area */}
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className="text-xs font-bold text-[#888888] uppercase tracking-widest">Review Comments</label>
+                  <span className={`text-xs font-medium ${
+                    reviewComment.length < 20 || reviewComment.length > 500 
+                      ? 'text-amber-500' 
+                      : 'text-emerald-500'
+                  }`}>
+                    {reviewComment.length} / 500 chars (min 20)
+                  </span>
+                </div>
+                <textarea 
+                  rows={4}
+                  value={reviewComment}
+                  onChange={e => setReviewComment(e.target.value)}
+                  placeholder="Tell us what you liked or disliked about the product... (20-500 characters)"
+                  className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white resize-none"
+                ></textarea>
+              </div>
+              
+              <button 
+                onClick={submitReview}
+                disabled={submittingReview || reviewRating === 0 || reviewComment.length < 20 || reviewComment.length > 500}
+                className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+              >
+                {submittingReview ? 'Submitting...' : 'Submit Review'}
               </button>
             </div>
           </div>
