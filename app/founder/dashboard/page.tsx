@@ -47,6 +47,10 @@ import Link from 'next/link';
 export default function FounderDashboard() {
   const [pitches, setPitches] = useState<any[]>([]);
   const [interests, setInterests] = useState<any[]>([]);
+  const [disputes, setDisputes] = useState<any[]>([]);
+  const [expandedDisputeId, setExpandedDisputeId] = useState<string | null>(null);
+  const [rebuttalText, setRebuttalText] = useState('');
+  const [submittingDisputeId, setSubmittingDisputeId] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -100,6 +104,37 @@ export default function FounderDashboard() {
           if (interestsData) setInterests(interestsData);
         }
       }
+
+      // Fetch disputes
+      try {
+        const { data: disputesData } = await supabase
+          .from('disputes')
+          .select(`
+            *,
+            order:order_id (
+              id,
+              amount_paid,
+              status,
+              product:product_id (
+                id,
+                name,
+                images_urls
+              )
+            ),
+            buyer:buyer_id (
+              id,
+              full_name,
+              email
+            )
+          `)
+          .eq('seller_id', session.user.id)
+          .order('created_at', { ascending: false });
+
+        if (disputesData) setDisputes(disputesData);
+      } catch (err) {
+        console.error("Error fetching disputes:", err);
+      }
+
       setLoading(false);
     };
     fetchData();
@@ -191,6 +226,52 @@ export default function FounderDashboard() {
     } catch (err: any) {
       console.error(err);
       alert("Failed to decline interest: " + err.message);
+    }
+  };
+
+  const handleSubmitRebuttal = async (disputeId: string) => {
+    if (rebuttalText.trim().length < 20) {
+      alert("Your response must be at least 20 characters.");
+      return;
+    }
+    setSubmittingDisputeId(disputeId);
+    try {
+      // Update the dispute row
+      const { error: disputeError } = await supabase
+        .from('disputes')
+        .update({
+          seller_response: rebuttalText.trim(),
+          status: 'under_review'
+        })
+        .eq('id', disputeId);
+
+      if (disputeError) throw disputeError;
+
+      // Update local state
+      setDisputes(prev => prev.map(d => 
+        d.id === disputeId 
+          ? { ...d, seller_response: rebuttalText.trim(), status: 'under_review' } 
+          : d
+      ));
+
+      // Notify the buyer
+      const dispute = disputes.find(d => d.id === disputeId);
+      if (dispute) {
+        await supabase.from('notifications').insert({
+          user_id: dispute.buyer_id,
+          type: 'dispute_responded',
+          message: `Seller responded to your dispute for product "${dispute.order?.product?.name || 'purchased item'}". Case is now under review.`,
+          link: `/marketplace`
+        });
+      }
+
+      setRebuttalText('');
+      setExpandedDisputeId(null);
+      alert("Response submitted successfully! The dispute is now under admin review.");
+    } catch (err: any) {
+      alert("Failed to submit response: " + err.message);
+    } finally {
+      setSubmittingDisputeId(null);
     }
   };
 
@@ -416,6 +497,142 @@ export default function FounderDashboard() {
               </div>
             ))}
           </div>
+
+          {/* ACTIVE DISPUTES */}
+          {disputes.length > 0 && (
+            <div className="mb-10 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
+              <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-500 animate-pulse" />
+                Active Disputes ({disputes.filter(d => d.status === 'open' || d.status === 'under_review').length})
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {disputes.map((dispute) => {
+                  const isPendingResponse = dispute.status === 'open' && !dispute.seller_response;
+                  const isExpanded = expandedDisputeId === dispute.id;
+                  
+                  return (
+                    <div 
+                      key={dispute.id} 
+                      className={`bg-white rounded-3xl border shadow-sm overflow-hidden transition-all duration-200 ${
+                        isPendingResponse 
+                          ? 'border-red-200 hover:border-red-300' 
+                          : 'border-[#e5e5e5]'
+                      }`}
+                    >
+                      {/* Top status bar */}
+                      <div className={`px-5 py-2.5 flex items-center justify-between border-b ${
+                        isPendingResponse 
+                          ? 'bg-red-50/50 border-red-100' 
+                          : 'bg-gray-50/50 border-[#e5e5e5]'
+                      }`}>
+                        <span className={`text-[10px] font-black uppercase tracking-wider ${
+                          isPendingResponse ? 'text-red-600' : 'text-amber-600'
+                        }`}>
+                          {isPendingResponse ? '⚠️ Payout Frozen - Action Required' : '⏳ Response Under Admin Review'}
+                        </span>
+                        <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
+                          isPendingResponse ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                        }`}>
+                          {dispute.status === 'open' ? 'Open' : 'Under Review'}
+                        </span>
+                      </div>
+
+                      <div className="p-5 space-y-4">
+                        {/* Order & Product Info */}
+                        <div className="flex gap-3.5 items-start">
+                          <div className="w-10 h-10 bg-[#F2F2F0] rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden border-[0.5px] border-[#e5e5e5]">
+                            {dispute.order?.product?.images_urls?.[0] ? (
+                              <img src={dispute.order.product.images_urls[0]} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <ShoppingBag className="w-5 h-5 text-[#888888]" />
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-[#222222] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
+                            <p className="text-[10px] text-[#888888] font-semibold mt-0.5">
+                              Order ID: <span className="font-mono">{dispute.order_id}</span> • Net Sale: ₹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Dispute Detail */}
+                        <div className="bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] space-y-2">
+                          <div className="flex justify-between items-center text-[10px] font-black text-[#888888] uppercase tracking-wider">
+                            <span>Reason: {dispute.reason}</span>
+                            <span>Buyer: {dispute.buyer?.full_name || 'Anon'}</span>
+                          </div>
+                          <p className="text-xs text-[#555555] italic leading-relaxed">
+                            "{dispute.description}"
+                          </p>
+                        </div>
+
+                        {/* Seller response if exists */}
+                        {dispute.seller_response && (
+                          <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-1">
+                            <p className="text-[10px] font-black text-emerald-800 uppercase tracking-wider">Your Rebuttal:</p>
+                            <p className="text-xs text-emerald-700 italic leading-relaxed">
+                              "{dispute.seller_response}"
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Response Form Controls */}
+                        {isPendingResponse && (
+                          <div>
+                            {!isExpanded ? (
+                              <button 
+                                onClick={() => {
+                                  setExpandedDisputeId(dispute.id);
+                                  setRebuttalText('');
+                                }}
+                                className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-colors animate-pulse"
+                              >
+                                Respond to Dispute
+                              </button>
+                            ) : (
+                              <div className="space-y-3 pt-2">
+                                <div className="flex justify-between items-center">
+                                  <label className="text-[10px] font-black uppercase tracking-wider text-[#888888]">Rebuttal / Resolution Response</label>
+                                  <span className={`text-[10px] font-semibold ${
+                                    rebuttalText.trim().length < 20 ? 'text-amber-500' : 'text-emerald-500'
+                                  }`}>
+                                    {rebuttalText.trim().length} chars (min 20)
+                                  </span>
+                                </div>
+                                <textarea
+                                  rows={4}
+                                  value={rebuttalText}
+                                  onChange={(e) => setRebuttalText(e.target.value)}
+                                  placeholder="Provide evidence of delivery, template details, links, or communication log showing resolution..."
+                                  className="w-full px-3 py-2 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#222222] text-[#222222] resize-none leading-relaxed"
+                                />
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() => setExpandedDisputeId(null)}
+                                    className="flex-1 py-2 bg-[#F2F2F0] hover:bg-[#e5e5e5] text-[#222222] rounded-xl text-[10px] font-bold uppercase transition-colors"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    onClick={() => handleSubmitRebuttal(dispute.id)}
+                                    disabled={submittingDisputeId === dispute.id || rebuttalText.trim().length < 20}
+                                    className="flex-1 py-2 bg-[#222222] hover:bg-black disabled:opacity-50 text-white rounded-xl text-[10px] font-bold uppercase transition-colors"
+                                  >
+                                    {submittingDisputeId === dispute.id ? 'Submitting...' : 'Submit Rebuttal'}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 

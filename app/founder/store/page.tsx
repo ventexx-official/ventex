@@ -207,8 +207,64 @@ export default function FounderStorePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+        {/* Sidebar skeleton */}
+        <aside className="hidden md:flex md:flex-col md:fixed md:h-screen md:w-[240px] bg-white border-r-[0.5px] border-[#e5e5e5] p-4 gap-3 z-10">
+          <div className="h-8 w-24 bg-[#e5e5e5] rounded-xl animate-pulse mb-4" />
+          <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl mb-4">
+            <div className="w-9 h-9 rounded-full bg-[#e5e5e5] animate-pulse flex-shrink-0" />
+            <div className="space-y-1.5 flex-1">
+              <div className="h-3 bg-[#e5e5e5] rounded-full animate-pulse" />
+              <div className="h-2 w-12 bg-[#e5e5e5] rounded-full animate-pulse" />
+            </div>
+          </div>
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-10 bg-[#F2F2F0] rounded-xl animate-pulse" style={{ animationDelay: `${i * 60}ms` }} />
+          ))}
+        </aside>
+        {/* Main skeleton */}
+        <main className="flex-grow p-4 md:p-8 md:ml-[240px]">
+          <div className="max-w-6xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <div className="h-8 w-40 bg-[#e5e5e5] rounded-xl animate-pulse" />
+                <div className="h-4 w-56 bg-[#e5e5e5] rounded-full animate-pulse" />
+              </div>
+              <div className="h-11 w-40 bg-[#e5e5e5] rounded-2xl animate-pulse" />
+            </div>
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white rounded-3xl p-5 border-[0.5px] border-[#e5e5e5] space-y-3" style={{ animationDelay: `${i * 80}ms` }}>
+                  <div className="w-10 h-10 bg-[#e5e5e5] rounded-2xl animate-pulse" />
+                  <div className="h-3 w-20 bg-[#e5e5e5] rounded-full animate-pulse" />
+                  <div className="h-7 w-16 bg-[#e5e5e5] rounded-xl animate-pulse" />
+                </div>
+              ))}
+            </div>
+            {/* Product rows */}
+            <div className="bg-white rounded-[32px] border-[0.5px] border-[#e5e5e5] overflow-hidden">
+              <div className="p-6 border-b border-[#e5e5e5] flex justify-between items-center">
+                <div className="h-5 w-28 bg-[#e5e5e5] rounded-xl animate-pulse" />
+                <div className="h-9 w-32 bg-[#e5e5e5] rounded-xl animate-pulse" />
+              </div>
+              <div className="divide-y divide-[#f5f5f5]">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 p-5">
+                    <div className="w-12 h-12 bg-[#e5e5e5] rounded-2xl flex-shrink-0 animate-pulse" style={{ animationDelay: `${i * 80}ms` }} />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-48 bg-[#e5e5e5] rounded-full animate-pulse" />
+                      <div className="h-3 w-32 bg-[#e5e5e5] rounded-full animate-pulse" />
+                    </div>
+                    <div className="h-4 w-16 bg-[#e5e5e5] rounded-full animate-pulse" />
+                    <div className="w-8 h-8 bg-[#e5e5e5] rounded-xl animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }

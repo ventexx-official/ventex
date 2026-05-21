@@ -188,8 +188,56 @@ export default function ProductDetailPage() {
     setIsRequestModalOpen(true);
   };
 
+  const scanOffPlatformAttempt = async (text: string, contentType: string): Promise<string[] | null> => {
+    const detected: string[] = [];
+    
+    // 1. Phone number pattern (10 digits)
+    const phoneRegex = /\b\d{10}\b/;
+    const formatPhoneRegex = /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/;
+    if (phoneRegex.test(text) || formatPhoneRegex.test(text)) {
+      detected.push('Phone Number');
+    }
+
+    // 2. UPI handles
+    const upiRegex = /[a-zA-Z0-9.-]+@(oksbi|paytm|ybl|upi|apl|axl|sbi|icici|ybp|postbank)/i;
+    if (upiRegex.test(text)) {
+      detected.push('UPI Handle');
+    }
+
+    // 3. WhatsApp & external payment links
+    const externalLinksRegex = /(wa\.me|whatsapp\.com|paypal\.me|razorpay|paytm\.me)/i;
+    if (externalLinksRegex.test(text)) {
+      detected.push('External Contact/Payment URL');
+    }
+
+    if (detected.length > 0) {
+      // Log to public.flagged_attempts
+      try {
+        await supabase.from('flagged_attempts').insert({
+          user_id: currentUser?.id,
+          content_type: contentType,
+          raw_content: text,
+          detected_patterns: detected
+        });
+      } catch (err) {
+        console.warn("Failed to log flagged attempt to DB (schema might not exist yet):", err);
+      }
+      return detected;
+    }
+
+    return null;
+  };
+
   const submitRequest = async () => {
     if (!requirements.trim()) return;
+
+    // Scan for off-platform contact/payment patterns
+    const flagged = await scanOffPlatformAttempt(requirements, 'project_requirements');
+    if (flagged) {
+      alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+      return;
+    }
+
     setSubmittingRequest(true);
 
     try {
@@ -414,8 +462,15 @@ export default function ProductDetailPage() {
   };
 
   const submitQuestion = async () => {
-
     if (!newQuestion.trim()) return;
+
+    // Scan for off-platform contact/payment patterns
+    const flagged = await scanOffPlatformAttempt(newQuestion, 'qa_question');
+    if (flagged) {
+      alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+      return;
+    }
+
     setSubmittingQuestion(true);
 
     try {
@@ -477,8 +532,68 @@ export default function ProductDetailPage() {
 
   if (loading || !product) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Breadcrumb skeleton */}
+          <div className="h-4 w-48 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full mb-8 animate-pulse" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left: Images + tabs skeleton */}
+            <div className="lg:col-span-2 space-y-5">
+              {/* Main image */}
+              <div className="w-full aspect-video bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-[28px] animate-pulse" />
+              {/* Thumbnail strip */}
+              <div className="flex gap-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="w-16 h-16 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-xl flex-shrink-0 animate-pulse" style={{ animationDelay: `${i * 60}ms` }} />
+                ))}
+              </div>
+              {/* Tab bar skeleton */}
+              <div className="flex gap-3 border-b border-[#e5e5e5] dark:border-[#2a2a2a] pb-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="h-8 w-24 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-xl animate-pulse" style={{ animationDelay: `${i * 80}ms` }} />
+                ))}
+              </div>
+              {/* Description lines */}
+              <div className="space-y-3 pt-2">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-3.5 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" style={{ width: `${85 - i * 7}%`, animationDelay: `${i * 50}ms` }} />
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Purchase card skeleton */}
+            <div className="space-y-5">
+              {/* Seller chip */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" />
+                <div className="space-y-1.5">
+                  <div className="h-3 w-28 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" />
+                  <div className="h-2.5 w-16 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" />
+                </div>
+              </div>
+              {/* Title */}
+              <div className="h-7 w-full bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-xl animate-pulse" />
+              <div className="h-5 w-3/4 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-xl animate-pulse" />
+              {/* Price */}
+              <div className="h-10 w-32 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-2xl animate-pulse" />
+              {/* CTA buttons */}
+              <div className="space-y-3 pt-2">
+                <div className="h-14 w-full bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-2xl animate-pulse" />
+                <div className="h-12 w-full bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-2xl animate-pulse" />
+              </div>
+              {/* Trust badges */}
+              <div className="space-y-2 pt-2">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" />
+                    <div className="h-3 w-40 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full animate-pulse" style={{ animationDelay: `${i * 60}ms` }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
