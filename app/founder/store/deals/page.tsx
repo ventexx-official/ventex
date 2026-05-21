@@ -119,8 +119,7 @@ export default function FounderDealsPage() {
       const { data: profile } = await supabase
         .from("users").select("*").eq("id", session.user.id).single();
 
-      if (!profile || profile.role !== "founder") { router.push("/"); return; }
-      setUserProfile(profile);
+      setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
 
       // Fetch products
       const { data: prods } = await supabase

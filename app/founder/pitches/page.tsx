@@ -38,8 +38,7 @@ export default function MyPitchesPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push('/login'); return; }
       const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
-      if (!profile || profile.role !== 'founder') { router.push('/'); return; }
-      setUserProfile(profile);
+      setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
       const { data: pitchesData } = await supabase
         .from('pitches').select('*')
         .eq('founder_id', session.user.id)

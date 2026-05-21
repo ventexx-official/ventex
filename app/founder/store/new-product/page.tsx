@@ -62,17 +62,7 @@ export default function NewProductPage() {
         return;
       }
       setSession(s);
-
-      const { data: profile } = await supabase
-        .from("users")
-        .select("role")
-        .eq("id", s.user.id)
-        .single();
-
-      if (!profile || profile.role !== "founder") {
-        router.push("/");
-        return;
-      }
+      // Allow any authenticated user
       setLoading(false);
     };
     checkAuth();

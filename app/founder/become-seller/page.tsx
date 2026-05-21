@@ -59,22 +59,18 @@ function BecomeSellerInner() {
         .eq("id", s.user.id)
         .single();
 
-      if (!profile || profile.role !== "founder") {
-        router.push("/");
-        return;
-      }
-
-      setUserProfile(profile);
+      const userProf = profile || { id: s.user.id, full_name: s.user.email, role: 'founder', is_seller: false, phone_verified: false };
+      setUserProfile(userProf);
 
       // If already a seller, go to step 3
-      if (profile.is_seller) {
+      if (userProf.is_seller) {
         setStep(3);
         setLoading(false);
         return;
       }
 
       // If phone already verified, skip to step 2
-      if (profile.phone_verified) {
+      if (userProf.phone_verified) {
         setStep(2);
       }
 
