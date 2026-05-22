@@ -74,7 +74,8 @@ type EmailType =
   | 'interest_accepted'
   | 'product_sold'
   | 'order_confirmation'
-  | 'ai_summary_ready';
+  | 'ai_summary_ready'
+  | 'pitch_rejected';
 
 function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
@@ -171,6 +172,20 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <p>Investors browsing Ventex can see your pitch with the AI summary, increasing your discoverability. Make sure your details are complete to get the best quality briefing.</p>`,
           ctaText: 'View Your Pitch',
           ctaUrl: `${VENTEX_URL}/pitch/${data.pitchId}`,
+        }),
+      };
+
+    case 'pitch_rejected':
+      return {
+        subject: `❌ Update on your pitch "${data.pitchName}"`,
+        html: buildEmail({
+          heading: `Pitch Review Result: Action Required`,
+          body: `<p>Your pitch <strong>"${data.pitchName}"</strong> was reviewed by the admin and could not be approved at this time.</p>
+                 <p><strong>Reason for rejection:</strong></p>
+                 <blockquote style="border-left:3px solid #ef4444;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;background:#fef2f2;border-radius:4px;">"${data.reason || 'No specific reason provided.'}"</blockquote>
+                 <p>Please update your pitch details according to the feedback and resubmit for review.</p>`,
+          ctaText: 'Edit Pitch',
+          ctaUrl: `${VENTEX_URL}/founder/dashboard`,
         }),
       };
 
