@@ -436,8 +436,8 @@ export default function FounderDashboard() {
           <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
           <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
           <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
-          <NavItem icon={Zap} label="Booster Packs" collapsed={sidebarCollapsed} />
-          <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
+          <NavItem icon={Zap} label="Booster Packs" href="/founder/boost" collapsed={sidebarCollapsed} />
+          <NavItem icon={Settings} label="Settings" href="/founder/settings" collapsed={sidebarCollapsed} />
         </nav>
 
         <nav className="flex md:hidden flex-1 items-center gap-1 px-3 overflow-x-auto py-2">
@@ -446,8 +446,8 @@ export default function FounderDashboard() {
           <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
           <NavItemMobile icon={Store} label="Store" href="/founder/store" />
           <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
-          <NavItemMobile icon={Zap} label="Boost" />
-          <NavItemMobile icon={Settings} label="Settings" />
+          <NavItemMobile icon={Zap} label="Boost" href="/founder/boost" />
+          <NavItemMobile icon={Settings} label="Settings" href="/founder/settings" />
         </nav>
 
         {!sidebarCollapsed && (
@@ -729,9 +729,9 @@ export default function FounderDashboard() {
                 <div className="relative z-10">
                   <h3 className="text-xl font-black mb-2 uppercase tracking-tighter">Boost your pitch</h3>
                   <p className="text-white/60 text-sm mb-6 leading-relaxed">Get 10x more eyes on your startup with premium booster packs.</p>
-                  <button className="w-full py-3 bg-white text-[#222222] rounded-2xl font-bold text-sm hover:bg-gray-100 active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <Link href="/founder/boost" className="w-full py-3 bg-white text-[#222222] rounded-2xl font-bold text-sm hover:bg-gray-100 active:scale-95 transition-all flex items-center justify-center gap-2">
                     Buy booster pack <Zap className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
                 <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all duration-500"></div>
               </div>

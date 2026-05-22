@@ -376,6 +376,7 @@ export default function NewProductPage() {
                     <option value="SaaS">SaaS License</option>
                     <option value="Templates">No-Code Templates</option>
                     <option value="Design">UI/UX Design</option>
+                    <option value="Hardware">Hardware</option>
                     <option value="Marketing">Marketing Systems</option>
                     <option value="Consulting">Technical Consulting</option>
                   </select>
@@ -388,13 +389,17 @@ export default function NewProductPage() {
                     onChange={e => setSector(e.target.value)}
                     className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
                   >
-                    <option value="Technology">Technology</option>
-                    <option value="Finance">Finance / Fintech</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Education">Education</option>
-                    <option value="E-commerce">E-commerce</option>
-                    <option value="AI/ML">AI / Machine Learning</option>
-                    <option value="Web3">Web3 / Blockchain</option>
+                    {[
+                      "3D Printing", "Advanced Materials", "Aerospace", "AI", "Agriculture", "Alt Protein", 
+                      "Art & Design", "Automotive", "Big Data", "Biotechnology", "Blockchain", "Chemistry", 
+                      "CivicTech", "Cleantech", "Climate", "Construction", "CRM", "Data & Analytics", 
+                      "DeepTech", "DevOps", "Drones", "E-commerce", "Education", "Energy", 
+                      "Enterprise Software", "Fashion", "Fintech", "FMCG", "Food & Beverage", "Gaming", 
+                      "Generative AI", "Hardware", "Healthtech", "ICT", "Insurtech", "Legal", 
+                      "Logistics", "Marketplace", "Media", "PropTech", "Retail", "SaaS", "Travel", "Cybersecurity"
+                    ].map(sec => (
+                      <option key={sec} value={sec}>{sec}</option>
+                    ))}
                   </select>
                 </div>
               </div>

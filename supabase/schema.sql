@@ -206,6 +206,7 @@ CREATE TABLE IF NOT EXISTS public.promo_codes (
   max_uses integer,
   used_count integer DEFAULT 0,
   expires_at timestamptz,
+  is_active boolean DEFAULT true,
   created_at timestamptz DEFAULT now()
 );
 

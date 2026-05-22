@@ -314,8 +314,8 @@ export default function FounderStorePage() {
           <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
           <NavItem icon={Store} label="My Store" active href="/founder/store" collapsed={sidebarCollapsed} />
           <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
-          <NavItem icon={Zap} label="Booster Packs" collapsed={sidebarCollapsed} />
-          <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
+          <NavItem icon={Zap} label="Booster Packs" href="/founder/boost" collapsed={sidebarCollapsed} />
+          <NavItem icon={Settings} label="Settings" href="/founder/settings" collapsed={sidebarCollapsed} />
         </nav>
 
         <nav className="flex md:hidden flex-grow items-center gap-1 px-3 overflow-x-auto py-2">
@@ -324,8 +324,8 @@ export default function FounderStorePage() {
           <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
           <NavItemMobile icon={Store} label="Store" active href="/founder/store" />
           <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
-          <NavItemMobile icon={Zap} label="Boost" />
-          <NavItemMobile icon={Settings} label="Settings" />
+          <NavItemMobile icon={Zap} label="Boost" href="/founder/boost" />
+          <NavItemMobile icon={Settings} label="Settings" href="/founder/settings" />
         </nav>
       </aside>
 
