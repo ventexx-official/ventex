@@ -12,13 +12,13 @@ export default function Footer() {
             <span className="text-[#888888] text-sm mt-1">Where startups pitch, fund and sell.</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-row gap-x-8 gap-y-3 text-sm">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-3 text-sm">
+            <Link href="/about" className="text-[#888888] hover:text-white transition-colors">About</Link>
             <Link href="/discover" className="text-[#888888] hover:text-white transition-colors">Discover</Link>
             <Link href="/marketplace" className="text-[#888888] hover:text-white transition-colors">Marketplace</Link>
-            <Link href="/login" className="text-[#888888] hover:text-white transition-colors">Login</Link>
-            <Link href="/signup" className="text-[#888888] hover:text-white transition-colors">Sign up</Link>
             <Link href="/terms" className="text-[#888888] hover:text-white transition-colors">Terms</Link>
             <Link href="/privacy" className="text-[#888888] hover:text-white transition-colors">Privacy</Link>
+            <Link href="/seller-agreement" className="text-[#888888] hover:text-white transition-colors">Seller Agreement</Link>
           </div>
         </div>
         <div className="border-t border-[#333333] pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
