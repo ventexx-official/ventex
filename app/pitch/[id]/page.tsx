@@ -55,6 +55,7 @@ export default function PitchDetail() {
   const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
   const [interestMessage, setInterestMessage] = useState('');
   const [sendingInterest, setSendingInterest] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const handleSendInterest = async () => {
     if (!currentUser) {
@@ -85,7 +86,7 @@ export default function PitchDetail() {
         .single();
       
       if (error) throw error;
-
+ 
       // Create notification for founder
       if (pitch.founder_id) {
         await supabase
@@ -121,6 +122,45 @@ export default function PitchDetail() {
       alert("Failed to express interest: " + err.message);
     } finally {
       setSendingInterest(false);
+    }
+  };
+
+  const handleBuyProduct = async (prod: any) => {
+    if (!currentUser) {
+      router.push('/login');
+      return;
+    }
+
+    setIsCheckingOut(true);
+
+    try {
+      const res = await fetch('/api/marketplace/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartItems: [{ product_id: prod.id, quantity: 1 }],
+          buyerId: currentUser.id,
+          discountPct: 0,
+          promoCodeId: null,
+        }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || 'Failed to create checkout session');
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned from Stripe');
+      }
+    } catch (err: any) {
+      console.error('[Buy Product] Error:', err);
+      alert(err.message || 'Checkout failed. Please try again.');
+    } finally {
+      setIsCheckingOut(false);
     }
   };
 
@@ -585,7 +625,13 @@ export default function PitchDetail() {
                       <h4 className="font-bold text-[#222222] dark:text-white text-sm mb-1 truncate">{p.name}</h4>
                       <div className="flex justify-between items-center mt-3">
                         <span className="font-bold text-[#222222] dark:text-white text-sm">{formatCurrency(p.price)}</span>
-                        <button className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200">Buy now</button>
+                        <button 
+                          onClick={() => handleBuyProduct(p)}
+                          disabled={isCheckingOut}
+                          className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+                        >
+                          {isCheckingOut ? '...' : 'Buy now'}
+                        </button>
                       </div>
                     </div>
                   </div>

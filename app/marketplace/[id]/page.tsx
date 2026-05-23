@@ -73,6 +73,7 @@ export default function ProductDetailPage() {
 
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   // New review state variables
   const [unreviewedOrders, setUnreviewedOrders] = useState<any[]>([]);
@@ -530,6 +531,45 @@ export default function ProductDetailPage() {
     }
   };
 
+  const handleBuyNow = async () => {
+    if (!currentUser) {
+      router.push('/login');
+      return;
+    }
+
+    setIsCheckingOut(true);
+
+    try {
+      const res = await fetch('/api/marketplace/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartItems: [{ product_id: product.id, quantity: 1 }],
+          buyerId: currentUser.id,
+          discountPct: 0,
+          promoCodeId: null,
+        }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || 'Failed to create checkout session');
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned from Stripe');
+      }
+    } catch (err: any) {
+      console.error('[Buy Now] Error:', err);
+      alert(err.message || 'Checkout failed. Please try again.');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
   if (loading || !product) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] py-8 px-4">
@@ -715,8 +755,12 @@ export default function ProductDetailPage() {
                   >
                     {addedToCart ? 'Added ✓' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </button>
-                  <button className="flex-1 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
-                    Buy Now
+                  <button 
+                    onClick={handleBuyNow}
+                    disabled={isAddingToCart || addedToCart || isCheckingOut}
+                    className="flex-1 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                  >
+                    {isCheckingOut ? 'Checking out...' : 'Buy Now'}
                   </button>
                 </div>
               )}

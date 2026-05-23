@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, X, LayoutDashboard, LogOut, ChevronDown, ShoppingBag } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut, ChevronDown, ShoppingBag, Package } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter, usePathname } from 'next/navigation';
@@ -133,6 +133,13 @@ export default function Navbar() {
                   <LayoutDashboard className="w-4 h-4" />
                   Dashboard
                 </Link>
+                <Link
+                  href="/orders"
+                  className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
+                >
+                  <Package className="w-4 h-4" />
+                  My Purchases
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
@@ -216,6 +223,14 @@ export default function Navbar() {
                   >
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
+                  </Link>
+                  <Link
+                    href="/orders"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <Package className="w-5 h-5" />
+                    My Purchases
                   </Link>
                   <button
                     onClick={handleLogout}
