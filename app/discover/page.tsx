@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Search, Filter, X, Sparkles, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
+import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
 
 const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'PropTech', 'AgriTech', 'FoodTech', 'Gaming', 'Media', 'Cybersecurity', 'Other'];
 const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
@@ -400,18 +401,27 @@ export default function Discover() {
                   const valuation = pitch.amount_seeking && pitch.equity_pct 
                     ? pitch.amount_seeking / (pitch.equity_pct / 100)
                     : 0;
+                  const runwayDays = getRunwayDays(pitch.round_closes_at);
+                  const showRunway = shouldShowRunway(pitch.is_raising, pitch.round_closes_at);
 
                   return (
                     <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[12px] p-6 bg-white dark:bg-[#222222] flex flex-col transition-all hover:shadow-lg hover:border-[#cccccc] dark:hover:border-[#555555] hover:-translate-y-0.5">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="w-10 h-10 bg-[#222222] dark:bg-[#111111] rounded-md overflow-hidden flex items-center justify-center">
+                      <div className="flex justify-between items-start mb-4 gap-2">
+                        <div className="w-10 h-10 bg-[#222222] dark:bg-[#111111] rounded-md overflow-hidden flex items-center justify-center flex-shrink-0">
                           {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <span className="text-white text-xs font-bold">{pitch.title?.[0]}</span>}
                         </div>
-                        {pitch.is_raising ? (
-                          <span className="bg-[#222222] dark:bg-[#111111] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Raising</span>
-                        ) : (
-                          <span className="bg-[#e5e5e5] dark:bg-[#444444] text-[#222222] dark:text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Verified</span>
-                        )}
+                        <div className="flex flex-col items-end gap-1">
+                          {showRunway && runwayDays !== null && (
+                            <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap">
+                              ⏰ Closes in {runwayDays} {runwayDays === 1 ? 'day' : 'days'}
+                            </span>
+                          )}
+                          {pitch.is_raising ? (
+                            <span className="bg-[#222222] dark:bg-[#111111] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Raising</span>
+                          ) : (
+                            <span className="bg-[#e5e5e5] dark:bg-[#444444] text-[#222222] dark:text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Verified</span>
+                          )}
+                        </div>
                       </div>
                       
                       <h3 className="font-bold text-[#222222] dark:text-white text-[14px] mb-3">{pitch.title}</h3>

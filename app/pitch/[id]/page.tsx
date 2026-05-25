@@ -3,9 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Sparkles, Lock, FileText, Share2, Heart, CheckCircle2, User, Send, X } from 'lucide-react';
+import { Sparkles, Lock, FileText, Heart, CheckCircle2, User, Send, X } from 'lucide-react';
 import Link from 'next/link';
 import PitchDeckViewer from '@/components/PitchDeckViewer';
+import { awardXp } from '@/lib/award-xp';
+import { levelEmoji } from '@/lib/xp';
+import {
+  getRunwayCountdown,
+  getRunwayProgress,
+  shouldShowRunway,
+} from '@/lib/runway';
 
 // Fire-and-forget email helper
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
@@ -39,6 +46,11 @@ function formatCurrency(amount: number) {
   return `₹${amount.toLocaleString()}`;
 }
 
+function formatAmount(amount: number) {
+  if (!amount) return 'N/A';
+  return amount.toLocaleString('en-IN');
+}
+
 export default function PitchDetail() {
   const { id } = useParams();
   const router = useRouter();
@@ -56,6 +68,12 @@ export default function PitchDetail() {
   const [interestMessage, setInterestMessage] = useState('');
   const [sendingInterest, setSendingInterest] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [founderProfile, setFounderProfile] = useState<{
+    full_name: string | null;
+    level: string | null;
+  } | null>(null);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [savingPitch, setSavingPitch] = useState(false);
 
   const handleSendInterest = async () => {
     if (!currentUser) {
@@ -74,6 +92,13 @@ export default function PitchDetail() {
     }
     setSendingInterest(true);
     try {
+      const { count: priorInterests } = await supabase
+        .from('investor_interests')
+        .select('*', { count: 'exact', head: true })
+        .eq('pitch_id', pitch.id);
+
+      const isFirstInterest = (priorInterests ?? 0) === 0;
+
       const { data, error } = await supabase
         .from('investor_interests')
         .insert({
@@ -86,6 +111,10 @@ export default function PitchDetail() {
         .single();
       
       if (error) throw error;
+
+      if (isFirstInterest && pitch.founder_id) {
+        await awardXp('first_interest', pitch.founder_id);
+      }
  
       // Create notification for founder
       if (pitch.founder_id) {
@@ -122,6 +151,75 @@ export default function PitchDetail() {
       alert("Failed to express interest: " + err.message);
     } finally {
       setSendingInterest(false);
+    }
+  };
+
+  const handleSavePitch = async () => {
+    if (!currentUser) {
+      alert('Please log in to save pitches.');
+      return;
+    }
+    if (!pitch) return;
+    setSavingPitch(true);
+    try {
+      const { data: existingSave } = await supabase
+        .from('saved_pitches')
+        .select('id')
+        .eq('user_id', currentUser.id)
+        .eq('pitch_id', pitch.id)
+        .maybeSingle();
+
+      if (existingSave) {
+        alert('Pitch already in your watchlist.');
+        return;
+      }
+
+      const { count: priorSaves } = await supabase
+        .from('saved_pitches')
+        .select('*', { count: 'exact', head: true })
+        .eq('pitch_id', pitch.id);
+
+      const isFirstSave = (priorSaves ?? 0) === 0;
+
+      const { error } = await supabase.from('saved_pitches').insert({
+        user_id: currentUser.id,
+        pitch_id: pitch.id,
+      });
+
+      if (error) {
+        throw error;
+      } else {
+        if (isFirstSave && pitch.founder_id) {
+          await awardXp('first_save', pitch.founder_id);
+        }
+        alert('Pitch saved to your watchlist!');
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to save pitch';
+      alert(message);
+    } finally {
+      setSavingPitch(false);
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    if (!pitch || typeof window === 'undefined') return;
+    const text = `🚀 *${pitch.title}* — ${pitch.tagline || pitch.short_description || ''}
+💰 Seeking ₹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
+📍 ${pitch.industry || 'Startup'} · ${pitch.company_stage || ''} · ${pitch.country || ''}
+👀 ${window.location.href}
+via Ventex — ventex-eight.vercel.app`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const handleCopyLink = async () => {
+    if (typeof window === 'undefined') return;
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      alert('Could not copy link');
     }
   };
 
@@ -186,6 +284,15 @@ export default function PitchDetail() {
           
         if (pitchError) throw pitchError;
         setPitch(pitchData);
+
+        if (pitchData?.founder_id) {
+          const { data: founderData } = await supabase
+            .from('users')
+            .select('full_name, level')
+            .eq('id', pitchData.founder_id)
+            .single();
+          if (founderData) setFounderProfile(founderData);
+        }
 
         const { data: productsData, error: productsError } = await supabase
           .from('products')
@@ -360,6 +467,12 @@ export default function PitchDetail() {
     );
   }
 
+  const showRunway = pitch ? shouldShowRunway(pitch.is_raising, pitch.round_closes_at) : false;
+  const runwayCountdown = pitch ? getRunwayCountdown(pitch.round_closes_at) : null;
+  const runwayProgress = pitch
+    ? getRunwayProgress(pitch.created_at, pitch.round_closes_at)
+    : 0;
+
   if (!pitch) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center flex-col text-center px-4">
@@ -394,7 +507,19 @@ export default function PitchDetail() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-[#222222] dark:text-white mb-2">{pitch.title}</h1>
-              <p className="text-lg text-[#888888] mb-4">{pitch.tagline || pitch.short_description}</p>
+              <p className="text-lg text-[#888888] mb-2">{pitch.tagline || pitch.short_description}</p>
+              {founderProfile && (
+                <p className="text-sm text-[#888888] mb-4 flex flex-wrap items-center gap-2">
+                  <span className="font-medium text-[#222222] dark:text-white">
+                    {founderProfile.full_name || 'Founder'}
+                  </span>
+                  {founderProfile.level && (
+                    <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-2.5 py-1 rounded-full font-bold">
+                      {founderProfile.level} {levelEmoji(founderProfile.level)}
+                    </span>
+                  )}
+                </p>
+              )}
               <div className="flex gap-2 flex-wrap">
                 {pitch.industry && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
                 {pitch.company_stage && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
@@ -421,6 +546,20 @@ export default function PitchDetail() {
             </div>
           </div>
 
+          {showRunway && runwayCountdown && (
+            <div className="mb-8">
+              <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
+                ⏰ Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
+              </p>
+              <div className="w-full h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-red-500 rounded-full transition-all"
+                  style={{ width: `${runwayProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center gap-3">
              <button 
                onClick={() => {
@@ -436,13 +575,31 @@ export default function PitchDetail() {
              >
                Express interest
              </button>
-            <button className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white p-3 rounded-full hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors">
+            <button
+              onClick={handleSavePitch}
+              disabled={savingPitch}
+              className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white p-3 rounded-full hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors disabled:opacity-50"
+            >
               <Heart className="w-5 h-5" />
             </button>
-            <button className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white p-3 rounded-full hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors">
-              <Share2 className="w-5 h-5" />
-            </button>
           </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            onClick={handleWhatsAppShare}
+            className="flex-1 bg-[#25D366] text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
+          >
+            Share on WhatsApp 💬
+          </button>
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="flex-1 bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
+          >
+            {linkCopied ? 'Copied! ✓' : 'Copy link 🔗'}
+          </button>
         </div>
 
         {/* AI SUMMARY BAR */}

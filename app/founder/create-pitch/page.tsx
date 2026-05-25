@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { awardXp } from '@/lib/award-xp';
+import { isPitchProfileComplete } from '@/lib/pitch-completion';
 import { 
   Plus, 
   X, 
@@ -85,6 +87,8 @@ export default function CreatePitch() {
     committed_investors: '',
     use_of_funds: '',
     founding_year: '',
+    is_raising: true,
+    round_closes_at: '',
     pitch_deck_url: '',
     video_url: '',
     demo_video_url: '',
@@ -96,6 +100,9 @@ export default function CreatePitch() {
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const profileXpAwardedRef = useRef(false);
+  const deckXpAwardedRef = useRef(false);
+  const [founderId, setFounderId] = useState<string | null>(null);
 
   // Load existing draft or create new one
   useEffect(() => {
@@ -105,6 +112,7 @@ export default function CreatePitch() {
         router.push('/login');
         return;
       }
+      setFounderId(user.id);
 
       // Check for draft
       const { data: existingPitch } = await supabase
@@ -146,6 +154,10 @@ export default function CreatePitch() {
           committed_investors: existingPitch.committed_investors || '',
           use_of_funds: existingPitch.use_of_funds || '',
           founding_year: existingPitch.founding_year?.toString() || '',
+          is_raising: existingPitch.is_raising ?? true,
+          round_closes_at: existingPitch.round_closes_at
+            ? new Date(existingPitch.round_closes_at).toISOString().slice(0, 10)
+            : '',
           pitch_deck_url: existingPitch.pitch_deck_url || '',
           video_url: existingPitch.video_url || '',
           demo_video_url: existingPitch.demo_video_url || '',
@@ -155,6 +167,22 @@ export default function CreatePitch() {
           custom_qa: existingPitch.custom_qa || []
         });
         if (existingPitch.logo_url) setLogoPreview(existingPitch.logo_url);
+        if (existingPitch.pitch_deck_url) deckXpAwardedRef.current = true;
+        if (isPitchProfileComplete({
+          title: existingPitch.title || '',
+          logo_url: existingPitch.logo_url || '',
+          website_url: existingPitch.website_url || '',
+          short_description: existingPitch.short_description || '',
+          country: existingPitch.country || '',
+          city: existingPitch.city || '',
+          business_type: existingPitch.business_type || '',
+          product_type: existingPitch.product_type || '',
+          company_stage: existingPitch.company_stage || '',
+          founding_year: existingPitch.founding_year?.toString() || '',
+          tags: existingPitch.tags || [],
+        })) {
+          profileXpAwardedRef.current = true;
+        }
       } else {
         // Create new draft
         const { data: newPitch, error } = await supabase
@@ -183,6 +211,14 @@ export default function CreatePitch() {
     const total = fields.length + 1;
     setCompletion(Math.round(((filled + sectorFilled) / total) * 100));
   }, [formData]);
+
+  useEffect(() => {
+    if (!founderId || profileXpAwardedRef.current) return;
+    if (isPitchProfileComplete(formData)) {
+      profileXpAwardedRef.current = true;
+      awardXp('profile_complete', founderId);
+    }
+  }, [formData, founderId]);
 
   // Auto-save logic
   const saveToSupabase = useCallback(async (data: typeof formData) => {
@@ -218,6 +254,10 @@ export default function CreatePitch() {
         committed_investors: data.committed_investors,
         use_of_funds: data.use_of_funds,
         founding_year: data.founding_year ? parseInt(data.founding_year) : null,
+        is_raising: data.is_raising,
+        round_closes_at: data.round_closes_at
+          ? new Date(data.round_closes_at).toISOString()
+          : null,
         pitch_deck_url: data.pitch_deck_url,
         demo_video_url: data.demo_video_url,
         // Omitted missing columns: video_url, additional_docs, team_data, qa_data, custom_qa
@@ -316,6 +356,10 @@ export default function CreatePitch() {
         committed_investors: formData.committed_investors,
         use_of_funds: formData.use_of_funds,
         founding_year: formData.founding_year ? parseInt(formData.founding_year) : null,
+        is_raising: formData.is_raising,
+        round_closes_at: formData.round_closes_at
+          ? new Date(formData.round_closes_at).toISOString()
+          : null,
         pitch_deck_url: formData.pitch_deck_url,
         demo_video_url: formData.demo_video_url,
         status: 'pending', 
@@ -744,6 +788,28 @@ export default function CreatePitch() {
                     onChange={(e) => handleChange('use_of_funds', e.target.value)}
                   />
                 </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-bold text-[#222222] mb-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.is_raising}
+                      onChange={(e) => handleChange('is_raising', e.target.checked)}
+                      className="rounded border-[#e5e5e5]"
+                    />
+                    Actively raising
+                  </label>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-[#222222] mb-2">Round closing date (optional)</label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    value={formData.round_closes_at}
+                    onChange={(e) => handleChange('round_closes_at', e.target.value)}
+                  />
+                </div>
               </div>
             </section>
 
@@ -791,6 +857,10 @@ export default function CreatePitch() {
                       if (!error) {
                         const { data: { publicUrl } } = supabase.storage.from('ventex-assets').getPublicUrl(path);
                         handleChange('pitch_deck_url', publicUrl);
+                        if (founderId && !deckXpAwardedRef.current) {
+                          deckXpAwardedRef.current = true;
+                          awardXp('deck_upload', founderId);
+                        }
                       }
                     });
                   }

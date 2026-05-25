@@ -43,6 +43,7 @@ import {
   X
 } from 'lucide-react';
 import Link from 'next/link';
+import { levelEmoji, nextLevelThreshold, parseBadges } from '@/lib/xp';
 
 export default function FounderDashboard() {
   const [pitches, setPitches] = useState<any[]>([]);
@@ -473,8 +474,17 @@ export default function FounderDashboard() {
 
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase">Founder Dashboard</h1>
-              <p className="text-[#888888] font-medium mt-1 text-sm">Everything you need to scale your startup.</p>
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase">Founder Dashboard</h1>
+                {userProfile?.level && (
+                  <span className="bg-[#222222] text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                    {userProfile.level} {levelEmoji(userProfile.level)}
+                  </span>
+                )}
+              </div>
+              <p className="text-[#888888] font-medium mt-1 text-sm">
+                {userProfile?.full_name ? `Welcome, ${userProfile.full_name}` : 'Everything you need to scale your startup.'}
+              </p>
             </div>
             <button
               onClick={() => router.push('/founder/create-pitch')}
@@ -483,6 +493,51 @@ export default function FounderDashboard() {
               <Plus className="w-5 h-5" /> Create New Pitch
             </button>
           </header>
+
+          {/* XP PROGRESS */}
+          {userProfile && (
+            <div className="bg-white p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <div>
+                  <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">Founder XP</p>
+                  <p className="text-2xl font-black text-[#222222]">
+                    {(userProfile.xp ?? 0).toLocaleString()} XP
+                  </p>
+                </div>
+                <p className="text-sm text-[#888888] font-medium">
+                  {(userProfile.xp ?? 0) >= 1000
+                    ? 'Max level reached'
+                    : `${(userProfile.xp ?? 0).toLocaleString()} / ${nextLevelThreshold(userProfile.xp ?? 0).toLocaleString()} to next level`}
+                </p>
+              </div>
+              <div className="w-full h-3 bg-[#F2F2F0] rounded-full overflow-hidden mb-4">
+                <div
+                  className="h-full bg-[#222222] rounded-full transition-all"
+                  style={{
+                    width: `${(() => {
+                      const xp = userProfile.xp ?? 0;
+                      if (xp >= 1000) return 100;
+                      const next = nextLevelThreshold(xp);
+                      const prev = xp >= 500 ? 500 : xp >= 200 ? 200 : 0;
+                      return Math.min(100, ((xp - prev) / (next - prev)) * 100);
+                    })()}%`,
+                  }}
+                />
+              </div>
+              {parseBadges(userProfile.badges).length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {parseBadges(userProfile.badges).map((badge) => (
+                    <span
+                      key={badge}
+                      className="bg-[#F2F2F0] text-[#222222] text-xs font-bold px-3 py-1.5 rounded-full"
+                    >
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* STATS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
