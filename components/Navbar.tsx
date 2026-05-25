@@ -1,19 +1,21 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, X, LayoutDashboard, LogOut, ChevronDown, ShoppingBag, Package } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Menu, X, LayoutDashboard, LogOut, Settings, User, ShoppingBag, Package } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<{ full_name?: string | null; avatar_url?: string | null } | null>(null);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
+  const avatarMenuRef = useRef<HTMLDivElement | null>(null);
 
   const fetchCartCount = async (userId: string) => {
     const { count } = await supabase
@@ -44,11 +46,15 @@ export default function Navbar() {
       if (session?.user) {
         const { data: profile } = await supabase
           .from('users')
-          .select('role')
+          .select('role, full_name, avatar_url')
           .eq('id', session.user.id)
           .single();
-        if (profile) setRole(profile.role);
+        if (profile) {
+          setUserProfile({ full_name: profile.full_name, avatar_url: profile.avatar_url });
+        }
         fetchCartCount(session.user.id);
+      } else {
+        setUserProfile(null);
       }
     };
     checkUser();
@@ -56,11 +62,15 @@ export default function Navbar() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
       if (session?.user) {
-        supabase.from('users').select('role').eq('id', session.user.id).single()
-          .then(({ data }) => { if (data) setRole(data.role); });
+        supabase.from('users').select('role, full_name, avatar_url').eq('id', session.user.id).single()
+          .then(({ data }) => {
+            if (data) {
+              setUserProfile({ full_name: data.full_name, avatar_url: data.avatar_url });
+            }
+          });
         fetchCartCount(session.user.id);
       } else {
-        setRole(null);
+        setUserProfile(null);
       }
     });
 
@@ -70,12 +80,9 @@ export default function Navbar() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setIsOpen(false);
+    setAvatarMenuOpen(false);
     router.push('/');
     router.refresh();
-  };
-
-  const getDashboardLink = () => {
-    return '/founder/dashboard';
   };
 
   const navLinks = [
@@ -84,6 +91,26 @@ export default function Navbar() {
   ];
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+
+  useEffect(() => {
+    if (!avatarMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!avatarMenuRef.current) return;
+      if (e.target instanceof Node && !avatarMenuRef.current.contains(e.target)) setAvatarMenuOpen(false);
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setAvatarMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [avatarMenuOpen]);
+
+  const displayName = userProfile?.full_name || user?.email?.split('@')[0] || 'User';
+  const initial = (displayName?.trim()?.[0] || 'U').toUpperCase();
 
   return (
     <nav className={`bg-[#222222] text-white sticky top-0 z-50 transition-shadow ${scrolled ? 'shadow-xl shadow-black/30' : ''}`}>
@@ -126,27 +153,74 @@ export default function Navbar() {
                     </span>
                   )}
                 </Link>
-                <Link
-                  href={getDashboardLink()}
-                  className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="/orders"
-                  className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
-                >
-                  <Package className="w-4 h-4" />
-                  My Purchases
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-2 rounded-md hover:bg-white/5"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </button>
+                <div className="relative" ref={avatarMenuRef}>
+                  <button
+                    type="button"
+                    onClick={() => setAvatarMenuOpen((v) => !v)}
+                    className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#111111] text-white hover:opacity-90 transition-opacity"
+                    aria-label="Open profile menu"
+                  >
+                    {userProfile?.avatar_url ? (
+                      <img src={userProfile.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-xs font-bold">{initial}</span>
+                    )}
+                  </button>
+
+                  {avatarMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#111111] border border-white/10 shadow-xl overflow-hidden">
+                      <div className="px-4 py-3 border-b border-white/10">
+                        <div className="text-sm font-semibold text-white truncate">{displayName}</div>
+                        <div className="text-[11px] text-gray-400 truncate">{user?.email}</div>
+                      </div>
+
+                      <div className="py-1">
+                        <Link
+                          href={`/profile/${user.id}`}
+                          onClick={() => setAvatarMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-200 hover:bg-white/5 transition-colors"
+                        >
+                          <User className="w-4 h-4 text-gray-400" />
+                          My Profile
+                        </Link>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setAvatarMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-200 hover:bg-white/5 transition-colors"
+                        >
+                          <LayoutDashboard className="w-4 h-4 text-gray-400" />
+                          My Dashboard
+                        </Link>
+                        <Link
+                          href="/my-purchases"
+                          onClick={() => setAvatarMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-200 hover:bg-white/5 transition-colors"
+                        >
+                          <Package className="w-4 h-4 text-gray-400" />
+                          My Purchases
+                        </Link>
+                        <Link
+                          href="/settings"
+                          onClick={() => setAvatarMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-200 hover:bg-white/5 transition-colors"
+                        >
+                          <Settings className="w-4 h-4 text-gray-400" />
+                          Settings
+                        </Link>
+                      </div>
+
+                      <div className="border-t border-white/10" />
+
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-200 hover:bg-white/5 transition-colors"
+                      >
+                        <LogOut className="w-4 h-4 text-gray-400" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <>
@@ -217,20 +291,36 @@ export default function Navbar() {
                     )}
                   </Link>
                   <Link
-                    href={getDashboardLink()}
+                    href={`/profile/${user.id}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <User className="w-5 h-5" />
+                    My Profile
+                  </Link>
+                  <Link
+                    href="/dashboard"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     <LayoutDashboard className="w-5 h-5" />
-                    Dashboard
+                    My Dashboard
                   </Link>
                   <Link
-                    href="/orders"
+                    href="/my-purchases"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     <Package className="w-5 h-5" />
                     My Purchases
+                  </Link>
+                  <Link
+                    href="/settings"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <Settings className="w-5 h-5" />
+                    Settings
                   </Link>
                   <button
                     onClick={handleLogout}
