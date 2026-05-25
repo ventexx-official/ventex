@@ -9,6 +9,11 @@ function formatCurrency(amount: number) {
 }
 
 export default async function Home() {
+  const { data: statsRows } = await supabase.rpc('get_homepage_stats');
+  const livePitches = Number(statsRows?.[0]?.live_pitches ?? 0);
+  const investors = Number(statsRows?.[0]?.investors ?? 0);
+  const showFoundingBanner = livePitches < 10 || investors < 10;
+
   const { data: pitches } = await supabase
     .from('pitches')
     .select('*')
@@ -42,11 +47,15 @@ export default async function Home() {
             </Link>
           </div>
           <div className="pt-8 text-sm text-[#888888] font-medium flex flex-wrap items-center justify-center gap-2">
-            <span>500+ Startups</span>
-            <span>&middot;</span>
-            <span>200+ Investors</span>
-            <span>&middot;</span>
-            <span>₹10Cr+ Raised</span>
+            {showFoundingBanner ? (
+              <span>🚀 Early Access — Be a Founding Member · Limited spots</span>
+            ) : (
+              <>
+                <span>{livePitches} Startups</span>
+                <span>&middot;</span>
+                <span>{investors} Investors</span>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -94,23 +103,23 @@ export default async function Home() {
 
       {/* SECTION 3 — Stats bar */}
       <section className="bg-[#222222] dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#444444]">
-          <div className="flex flex-col items-center flex-1 px-4 text-center pb-6 md:pb-0">
-            <span className="text-white text-3xl font-bold">500+</span>
-            <span className="text-[#888888] text-sm mt-1">Startups Listed</span>
-          </div>
-          <div className="flex flex-col items-center flex-1 px-4 text-center py-6 md:py-0">
-            <span className="text-white text-3xl font-bold">200+</span>
-            <span className="text-[#888888] text-sm mt-1">Active Investors</span>
-          </div>
-          <div className="flex flex-col items-center flex-1 px-4 text-center py-6 md:py-0">
-            <span className="text-white text-3xl font-bold">50+</span>
-            <span className="text-[#888888] text-sm mt-1">Industries</span>
-          </div>
-          <div className="flex flex-col items-center flex-1 px-4 text-center pt-6 md:pt-0">
-            <span className="text-white text-3xl font-bold">₹10Cr+</span>
-            <span className="text-[#888888] text-sm mt-1">in Deals</span>
-          </div>
+        <div className="max-w-6xl mx-auto">
+          {showFoundingBanner ? (
+            <p className="text-center text-white text-xl md:text-2xl font-bold">
+              🚀 Early Access — Be a Founding Member · Limited spots
+            </p>
+          ) : (
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#444444]">
+              <div className="flex flex-col items-center flex-1 px-4 text-center pb-6 md:pb-0">
+                <span className="text-white text-3xl font-bold">{livePitches}</span>
+                <span className="text-[#888888] text-sm mt-1">Startups Listed</span>
+              </div>
+              <div className="flex flex-col items-center flex-1 px-4 text-center pt-6 md:pt-0">
+                <span className="text-white text-3xl font-bold">{investors}</span>
+                <span className="text-[#888888] text-sm mt-1">Active Investors</span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -196,17 +205,17 @@ export default async function Home() {
                 <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2">Startup India Seed Fund Scheme</h4>
                   <p className="text-[#888888] text-sm mb-4">Financial assistance to startups for proof of concept, prototype development, product trials, market entry, and commercialization.</p>
-                  <Link href="#" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
+                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
                 </div>
                 <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2">DPIIT Recognition</h4>
                   <p className="text-[#888888] text-sm mb-4">Unlock tax exemptions, easier compliance, fast-tracking of patent applications, and access to the Fund of Funds.</p>
-                  <Link href="#" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
+                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
                 </div>
                 <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2">MeitY TIDE 2.0 Grants</h4>
                   <p className="text-[#888888] text-sm mb-4">Promoting tech entrepreneurship through financial and technical support to incubators engaged in supporting ICT startups.</p>
-                  <Link href="#" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
+                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
                 </div>
               </div>
             </div>
@@ -219,21 +228,21 @@ export default async function Home() {
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">How to prepare your data room for Series A investors in 2024</h4>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="text-[#888888]">Ventex Insights</span>
-                    <Link href="#" className="text-[#222222] dark:text-white font-medium">Read &rarr;</Link>
+                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
                   </div>
                 </li>
                 <li className="border-b-[0.5px] border-[#e5e5e5] dark:border-[#444444] pb-6">
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">The shift towards profitability: What seed stage VCs are looking for</h4>
                   <div className="flex items-center gap-4 text-sm">
-                    <span className="text-[#888888]">Founder's Weekly</span>
-                    <Link href="#" className="text-[#222222] dark:text-white font-medium">Read &rarr;</Link>
+                    <span className="text-[#888888]">Founder&apos;s Weekly</span>
+                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
                   </div>
                 </li>
                 <li>
                   <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">Valuation benchmarks for SaaS startups in the Indian market</h4>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="text-[#888888]">Market Report</span>
-                    <Link href="#" className="text-[#222222] dark:text-white font-medium">Read &rarr;</Link>
+                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
                   </div>
                 </li>
               </ul>
