@@ -4,6 +4,7 @@ export function isPitchProfileComplete(formData: {
   website_url: string;
   short_description: string;
   country: string;
+  state?: string;
   city: string;
   business_type: string;
   product_type: string;

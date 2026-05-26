@@ -8,6 +8,7 @@ import Link from 'next/link';
 import PitchDeckViewer from '@/components/PitchDeckViewer';
 import { awardXp } from '@/lib/award-xp';
 import { levelEmoji } from '@/lib/xp';
+import { getVideoEmbedUrl } from '@/lib/video';
 import {
   getRunwayCountdown,
   getRunwayProgress,
@@ -74,6 +75,7 @@ export default function PitchDetail() {
   } | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [savingPitch, setSavingPitch] = useState(false);
+  const [matchedInvestors, setMatchedInvestors] = useState<any[]>([]);
 
   const handleSendInterest = async () => {
     if (!currentUser) {
@@ -356,6 +358,35 @@ via Ventex — ventex-eight.vercel.app`;
 
   useEffect(() => { fetchComments(); }, [fetchComments]);
 
+  useEffect(() => {
+    const fetchMatches = async () => {
+      if (!pitch || !currentUser || currentUser.id !== pitch.founder_id) {
+        setMatchedInvestors([]);
+        return;
+      }
+
+      const { data } = await supabase
+        .from('users')
+        .select('id, full_name, avatar_url, investment_thesis, preferred_sectors, preferred_stages, response_rate')
+        .eq('role', 'investor')
+        .limit(12);
+
+      const matches = ((data || []) as any[])
+        .filter((investor) => {
+          const sectors = investor.preferred_sectors || [];
+          const stages = investor.preferred_stages || [];
+          const sectorMatch = sectors.length === 0 || sectors.includes(pitch.industry) || sectors.some((s: string) => pitch.tags?.includes(s));
+          const stageMatch = stages.length === 0 || stages.includes(pitch.company_stage);
+          return sectorMatch && stageMatch;
+        })
+        .slice(0, 3);
+
+      setMatchedInvestors(matches);
+    };
+
+    fetchMatches();
+  }, [pitch, currentUser]);
+
   // Real-time subscription
   useEffect(() => {
     if (!id) return;
@@ -472,6 +503,8 @@ via Ventex — ventex-eight.vercel.app`;
   const runwayProgress = pitch
     ? getRunwayProgress(pitch.created_at, pitch.round_closes_at)
     : 0;
+  const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
+  const isPitchOwner = currentUser?.id === pitch?.founder_id;
 
   if (!pitch) {
     return (
@@ -523,7 +556,7 @@ via Ventex — ventex-eight.vercel.app`;
               <div className="flex gap-2 flex-wrap">
                 {pitch.industry && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
                 {pitch.company_stage && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
-                {pitch.country && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.country}</span>}
+                {(pitch.state || pitch.country) && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
                 {pitch.business_type && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.business_type}</span>}
               </div>
             </div>
@@ -603,6 +636,46 @@ via Ventex — ventex-eight.vercel.app`;
         </div>
 
         {/* AI SUMMARY BAR */}
+        {videoEmbedUrl ? (
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+            <div className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider mb-3">60-second founder pitch 🎬</div>
+            {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
+              <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
+            ) : (
+              <iframe
+                src={videoEmbedUrl}
+                title={`${pitch.title} founder pitch`}
+                className="w-full aspect-video rounded-xl bg-black"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            )}
+          </div>
+        ) : isPitchOwner ? (
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center">
+            <div className="text-sm font-bold text-[#222222] dark:text-white mb-2">Add your 60-second founder pitch</div>
+            <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[#222222] dark:text-white underline underline-offset-4">
+              Edit pitch →
+            </Link>
+          </div>
+        ) : null}
+
+        {matchedInvestors.length > 0 && (
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-4">Best matched investors</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {matchedInvestors.map((investor) => (
+                <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[#e5e5e5] dark:border-[#333333] p-4 hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
+                  <div className="font-bold text-sm text-[#222222] dark:text-white">{investor.full_name || 'Investor'}</div>
+                  <p className="mt-1 text-xs text-[#888888] line-clamp-2">
+                    Invests in {pitch.industry || 'your sector'} · {pitch.company_stage || 'this stage'}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {pitch.ai_summary && (
           <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
             <div className="flex items-center gap-2 mb-3">

@@ -44,6 +44,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { levelEmoji, nextLevelThreshold, parseBadges } from '@/lib/xp';
+import PitchScorePanel from '@/components/PitchScorePanel';
 
 export default function FounderDashboard() {
   const [pitches, setPitches] = useState<any[]>([]);
@@ -729,6 +730,7 @@ export default function FounderDashboard() {
                             <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {pitch.views || 0}</span>
                             <span className="hidden sm:flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(pitch.updated_at).toLocaleDateString()}</span>
                           </div>
+                          <PitchScorePanel pitchId={pitch.id} />
                         </div>
                       </div>
 

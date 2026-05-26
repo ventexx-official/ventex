@@ -66,6 +66,7 @@ export default function CreatePitch() {
     website_url: '',
     short_description: '',
     country: '',
+    state: '',
     city: '',
     tags: [] as string[],
     custom_industry: '',
@@ -133,6 +134,7 @@ export default function CreatePitch() {
           website_url: existingPitch.website_url || '',
           short_description: existingPitch.short_description || '',
           country: existingPitch.country || '',
+          state: existingPitch.state || '',
           city: existingPitch.city || '',
           tags: existingPitch.tags || [],
           custom_industry: existingPitch.custom_industry || '',
@@ -174,6 +176,7 @@ export default function CreatePitch() {
           website_url: existingPitch.website_url || '',
           short_description: existingPitch.short_description || '',
           country: existingPitch.country || '',
+          state: existingPitch.state || '',
           city: existingPitch.city || '',
           business_type: existingPitch.business_type || '',
           product_type: existingPitch.product_type || '',
@@ -203,7 +206,7 @@ export default function CreatePitch() {
   useEffect(() => {
     const fields = [
       'title', 'logo_url', 'website_url', 'short_description', 
-      'country', 'city', 'business_type', 'product_type', 
+      'country', 'state', 'city', 'business_type', 'product_type', 
       'company_stage', 'founding_year'
     ];
     const filled = fields.filter(f => !!formData[f as keyof typeof formData]).length;
@@ -233,6 +236,7 @@ export default function CreatePitch() {
         website_url: data.website_url,
         short_description: data.short_description, // Corrected from description
         country: data.country,
+        state: data.state,
         city: data.city,
         tags: data.tags,
         custom_industry: data.custom_industry,
@@ -259,8 +263,12 @@ export default function CreatePitch() {
           ? new Date(data.round_closes_at).toISOString()
           : null,
         pitch_deck_url: data.pitch_deck_url,
+        video_url: data.video_url,
         demo_video_url: data.demo_video_url,
-        // Omitted missing columns: video_url, additional_docs, team_data, qa_data, custom_qa
+        additional_docs: data.additional_docs,
+        team_data: data.team_data,
+        qa_data: data.qa_data,
+        custom_qa: data.custom_qa,
         updated_at: new Date().toISOString()
       })
       .eq('id', pitchId);
@@ -335,6 +343,7 @@ export default function CreatePitch() {
         website_url: formData.website_url,
         short_description: formData.short_description, // Corrected from description
         country: formData.country,
+        state: formData.state,
         city: formData.city,
         tags: formData.tags,
         custom_industry: formData.custom_industry,
@@ -361,7 +370,12 @@ export default function CreatePitch() {
           ? new Date(formData.round_closes_at).toISOString()
           : null,
         pitch_deck_url: formData.pitch_deck_url,
+        video_url: formData.video_url,
         demo_video_url: formData.demo_video_url,
+        additional_docs: formData.additional_docs,
+        team_data: formData.team_data,
+        qa_data: formData.qa_data,
+        custom_qa: formData.custom_qa,
         status: 'pending', 
         updated_at: new Date().toISOString() 
       })
@@ -518,7 +532,7 @@ export default function CreatePitch() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-bold text-[#222222] mb-2">Country</label>
                       <select 
@@ -532,6 +546,16 @@ export default function CreatePitch() {
                         <option value="Germany">Germany</option>
                         <option value="India">India</option>
                       </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-[#222222] mb-2">State</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Kerala"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                        value={formData.state}
+                        onChange={(e) => handleChange('state', e.target.value)}
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-[#222222] mb-2">City</label>

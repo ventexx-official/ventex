@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { LayoutDashboard, Settings } from 'lucide-react';
+import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
 type UserProfile = {
   id: string;
@@ -13,6 +14,10 @@ type UserProfile = {
   avatar_url?: string | null;
   bio?: string | null;
   created_at?: string | null;
+  response_rate?: number | null;
+  investment_thesis?: string | null;
+  preferred_sectors?: string[] | null;
+  preferred_stages?: string[] | null;
 };
 
 type PitchCardData = {
@@ -160,6 +165,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
                 <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${roleBadgeClass(role)}`}>
                   {role.toUpperCase()}
                 </span>
+                {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
               </div>
               <div className="text-sm text-[#888888] mt-1">
                 {joined ? `Joined ${joined}` : null}
@@ -310,8 +316,28 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
             )}
           </section>
         )}
+
+        {role === 'investor' && (
+          <section className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6">
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-sm font-black uppercase tracking-widest text-[#888888]">Investment Thesis</h2>
+              {isOwnProfile ? (
+                <Link href="/investor/settings" className="text-sm font-bold text-[#222222] hover:underline">Edit</Link>
+              ) : null}
+            </div>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-[#444444]">
+              {profile.investment_thesis || 'No thesis added yet.'}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {[...(profile.preferred_sectors || []), ...(profile.preferred_stages || [])].map((item) => (
+                <span key={item} className="text-[11px] font-bold text-[#222222] bg-[#F2F2F0] px-2 py-1 rounded-full border border-[#e5e5e5]">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
 }
-

@@ -11,7 +11,17 @@ CREATE TABLE IF NOT EXISTS public.users (
   is_seller boolean DEFAULT false,
   stripe_connect_id text,
   avatar_url text,
+  bio text,
   banned boolean DEFAULT false,
+  response_rate integer DEFAULT 100,
+  total_interests integer DEFAULT 0,
+  responded_interests integer DEFAULT 0,
+  xp integer DEFAULT 0,
+  level text DEFAULT 'Idea Stage',
+  badges jsonb DEFAULT '[]'::jsonb,
+  investment_thesis text,
+  preferred_sectors text[],
+  preferred_stages text[],
   created_at timestamptz DEFAULT now()
 );
 
@@ -72,6 +82,7 @@ CREATE TABLE IF NOT EXISTS public.pitches (
   instagram_url text,
   founding_year integer,
   country text,
+  state text,
   city text,
   status text DEFAULT 'draft'::text,
   is_raising boolean DEFAULT false,
@@ -81,6 +92,7 @@ CREATE TABLE IF NOT EXISTS public.pitches (
   team_data jsonb DEFAULT '[]'::jsonb,
   additional_docs jsonb DEFAULT '[]'::jsonb,
   video_url text,
+  round_closes_at timestamptz,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
@@ -196,7 +208,46 @@ CREATE TABLE IF NOT EXISTS public.saved_pitches (
   created_at timestamptz DEFAULT now()
 );
 
--- 12. promo_codes
+-- 12. pitch_scores
+CREATE TABLE IF NOT EXISTS public.pitch_scores (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  pitch_id uuid REFERENCES public.pitches(id) ON DELETE CASCADE,
+  overall integer,
+  problem_clarity integer,
+  market_size integer,
+  team_strength integer,
+  traction integer,
+  business_model integer,
+  feedback text,
+  created_at timestamptz DEFAULT now()
+);
+
+-- 13. catalysts
+CREATE TABLE IF NOT EXISTS public.catalysts (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES auth.users ON DELETE SET NULL,
+  name text,
+  bio text,
+  expertise text[],
+  sectors text[],
+  offers_investment boolean DEFAULT false,
+  offers_mentorship boolean DEFAULT true,
+  verified boolean DEFAULT false,
+  photo_url text,
+  created_at timestamptz DEFAULT now()
+);
+
+-- 14. pitch_battles
+CREATE TABLE IF NOT EXISTS public.pitch_battles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  week_start date,
+  pitch_id uuid REFERENCES public.pitches(id) ON DELETE CASCADE,
+  votes integer DEFAULT 0,
+  created_at timestamptz DEFAULT now(),
+  UNIQUE (week_start, pitch_id)
+);
+
+-- 15. promo_codes
 CREATE TABLE IF NOT EXISTS public.promo_codes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   seller_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
@@ -210,7 +261,7 @@ CREATE TABLE IF NOT EXISTS public.promo_codes (
   created_at timestamptz DEFAULT now()
 );
 
--- 13. disputes
+-- 16. disputes
 CREATE TABLE IF NOT EXISTS public.disputes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id uuid REFERENCES public.orders(id) ON DELETE CASCADE,
@@ -223,7 +274,7 @@ CREATE TABLE IF NOT EXISTS public.disputes (
   created_at timestamptz DEFAULT now()
 );
 
--- 14. project_requests
+-- 17. project_requests
 CREATE TABLE IF NOT EXISTS public.project_requests (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   buyer_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
@@ -235,7 +286,7 @@ CREATE TABLE IF NOT EXISTS public.project_requests (
   created_at timestamptz DEFAULT now()
 );
 
--- 15. Auth trigger for public.users
+-- 18. Auth trigger for public.users
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -257,7 +308,7 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
--- 16. RLS Policies
+-- 19. RLS Policies
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view their own profile" 
@@ -272,7 +323,7 @@ CREATE POLICY "Users can insert their own profile"
   ON public.users FOR INSERT 
   WITH CHECK (auth.uid() = id);
 
--- 17. Pitches RLS Policies
+-- 20. Pitches RLS Policies
 ALTER TABLE public.pitches ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Founders can view their own pitches"
@@ -291,7 +342,7 @@ CREATE POLICY "Founders can delete their own pitches"
   ON public.pitches FOR DELETE
   USING (auth.uid() = founder_id);
 
--- 18. Auto-calculate average_rating and review_count on products table
+-- 21. Auto-calculate average_rating and review_count on products table
 CREATE OR REPLACE FUNCTION public.handle_review_changes()
 RETURNS trigger AS $$
 DECLARE

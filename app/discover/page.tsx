@@ -438,7 +438,7 @@ export default function Discover() {
                       <div className="flex gap-2 mb-6 flex-wrap">
                         {pitch.industry && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.industry}</span>}
                         {pitch.company_stage && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.company_stage}</span>}
-                        {pitch.country && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.country}</span>}
+                        {(pitch.state || pitch.country) && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
                       </div>
                       
                       <hr className="border-[#e5e5e5] dark:border-[#444444] mb-4" />
