@@ -20,6 +20,13 @@ export function useReveal() {
     );
 
     nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+    const fallback = window.setTimeout(() => {
+      nodes.forEach((node) => node.classList.add('revealed'));
+    }, 1200);
+
+    return () => {
+      window.clearTimeout(fallback);
+      observer.disconnect();
+    };
   }, []);
 }

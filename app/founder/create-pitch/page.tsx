@@ -223,59 +223,76 @@ export default function CreatePitch() {
     }
   }, [formData, founderId]);
 
+  const buildPitchPayload = useCallback((data: typeof formData, extras: Record<string, any> = {}) => ({
+    title: data.title,
+    tagline: data.tagline,
+    website_url: data.website_url,
+    short_description: data.short_description,
+    country: data.country,
+    state: data.state,
+    city: data.city,
+    tags: data.tags,
+    custom_industry: data.custom_industry,
+    business_type: data.business_type,
+    product_type: data.product_type,
+    company_stage: data.company_stage,
+    annual_revenue: data.annual_revenue ? parseInt(data.annual_revenue) : null,
+    mrr: data.mrr ? parseInt(data.mrr) : null,
+    employees_count: data.employees_count ? parseInt(data.employees_count) : null,
+    linkedin_url: data.linkedin_url,
+    facebook_url: data.facebook_url,
+    x_url: data.x_url,
+    instagram_url: data.instagram_url,
+    round_type: data.round_type,
+    amount_seeking: data.amount_seeking ? parseInt(data.amount_seeking) : null,
+    equity_pct: data.equity_pct ? parseFloat(data.equity_pct) : null,
+    already_committed: data.already_committed ? parseInt(data.already_committed) : null,
+    security_type: data.security_type,
+    committed_investors: data.committed_investors,
+    use_of_funds: data.use_of_funds,
+    founding_year: data.founding_year ? parseInt(data.founding_year) : null,
+    is_raising: data.is_raising,
+    round_closes_at: data.round_closes_at
+      ? new Date(data.round_closes_at).toISOString()
+      : null,
+    pitch_deck_url: data.pitch_deck_url,
+    video_url: data.video_url,
+    demo_video_url: data.demo_video_url,
+    additional_docs: data.additional_docs,
+    team_data: data.team_data,
+    qa_data: data.qa_data,
+    custom_qa: data.custom_qa,
+    updated_at: new Date().toISOString(),
+    ...extras
+  }), []);
+
+  const updatePitch = useCallback(async (payload: Record<string, any>) => {
+    const { error } = await supabase
+      .from('pitches')
+      .update(payload)
+      .eq('id', pitchId);
+
+    if (error && error.message?.includes('custom_qa')) {
+      const { custom_qa, ...payloadWithoutCustomQa } = payload;
+      return supabase
+        .from('pitches')
+        .update(payloadWithoutCustomQa)
+        .eq('id', pitchId);
+    }
+
+    return { error };
+  }, [pitchId]);
+
   // Auto-save logic
   const saveToSupabase = useCallback(async (data: typeof formData) => {
     if (!pitchId) return;
     setSaving(true);
     
-    const { error } = await supabase
-      .from('pitches')
-      .update({
-        title: data.title,
-        tagline: data.tagline,
-        website_url: data.website_url,
-        short_description: data.short_description, // Corrected from description
-        country: data.country,
-        state: data.state,
-        city: data.city,
-        tags: data.tags,
-        custom_industry: data.custom_industry,
-        business_type: data.business_type,
-        product_type: data.product_type,
-        company_stage: data.company_stage,
-        annual_revenue: data.annual_revenue ? parseInt(data.annual_revenue) : null,
-        mrr: data.mrr ? parseInt(data.mrr) : null,
-        employees_count: data.employees_count ? parseInt(data.employees_count) : null,
-        linkedin_url: data.linkedin_url,
-        facebook_url: data.facebook_url,
-        x_url: data.x_url,
-        instagram_url: data.instagram_url,
-        round_type: data.round_type,
-        amount_seeking: data.amount_seeking ? parseInt(data.amount_seeking) : null,
-        equity_pct: data.equity_pct ? parseFloat(data.equity_pct) : null,
-        already_committed: data.already_committed ? parseInt(data.already_committed) : null,
-        security_type: data.security_type,
-        committed_investors: data.committed_investors,
-        use_of_funds: data.use_of_funds,
-        founding_year: data.founding_year ? parseInt(data.founding_year) : null,
-        is_raising: data.is_raising,
-        round_closes_at: data.round_closes_at
-          ? new Date(data.round_closes_at).toISOString()
-          : null,
-        pitch_deck_url: data.pitch_deck_url,
-        video_url: data.video_url,
-        demo_video_url: data.demo_video_url,
-        additional_docs: data.additional_docs,
-        team_data: data.team_data,
-        qa_data: data.qa_data,
-        custom_qa: data.custom_qa,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', pitchId);
+    const { error } = await updatePitch(buildPitchPayload(data));
 
     if (error) console.error('Error auto-saving:', error);
     setSaving(false);
-  }, [pitchId]);
+  }, [pitchId, buildPitchPayload, updatePitch]);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => {
@@ -335,51 +352,7 @@ export default function CreatePitch() {
     
     setSubmitting(true);
     
-    const { error } = await supabase
-      .from('pitches')
-      .update({ 
-        title: formData.title,
-        tagline: formData.tagline,
-        website_url: formData.website_url,
-        short_description: formData.short_description, // Corrected from description
-        country: formData.country,
-        state: formData.state,
-        city: formData.city,
-        tags: formData.tags,
-        custom_industry: formData.custom_industry,
-        business_type: formData.business_type,
-        product_type: formData.product_type,
-        company_stage: formData.company_stage,
-        annual_revenue: formData.annual_revenue ? parseInt(formData.annual_revenue) : null,
-        mrr: formData.mrr ? parseInt(formData.mrr) : null,
-        employees_count: formData.employees_count ? parseInt(formData.employees_count) : null,
-        linkedin_url: formData.linkedin_url,
-        facebook_url: formData.facebook_url,
-        x_url: formData.x_url,
-        instagram_url: formData.instagram_url,
-        round_type: formData.round_type,
-        amount_seeking: formData.amount_seeking ? parseInt(formData.amount_seeking) : null,
-        equity_pct: formData.equity_pct ? parseFloat(formData.equity_pct) : null,
-        already_committed: formData.already_committed ? parseInt(formData.already_committed) : null,
-        security_type: formData.security_type,
-        committed_investors: formData.committed_investors,
-        use_of_funds: formData.use_of_funds,
-        founding_year: formData.founding_year ? parseInt(formData.founding_year) : null,
-        is_raising: formData.is_raising,
-        round_closes_at: formData.round_closes_at
-          ? new Date(formData.round_closes_at).toISOString()
-          : null,
-        pitch_deck_url: formData.pitch_deck_url,
-        video_url: formData.video_url,
-        demo_video_url: formData.demo_video_url,
-        additional_docs: formData.additional_docs,
-        team_data: formData.team_data,
-        qa_data: formData.qa_data,
-        custom_qa: formData.custom_qa,
-        status: 'pending', 
-        updated_at: new Date().toISOString() 
-      })
-      .eq('id', pitchId);
+    const { error } = await updatePitch(buildPitchPayload(formData, { status: 'pending' }));
 
     if (!error) {
       console.log("Pitch submitted successfully");

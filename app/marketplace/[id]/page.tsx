@@ -347,7 +347,7 @@ export default function ProductDetailPage() {
   };
 
   const submitReview = async () => {
-    if (reviewRating === 0 || reviewComment.length < 20 || reviewComment.length > 500) return;
+    if (reviewRating === 0 || reviewComment.trim().length < 10 || reviewComment.length > 500) return;
     setSubmittingReview(true);
 
     try {
@@ -483,20 +483,22 @@ export default function ProductDetailPage() {
         date: new Date().toISOString()
       };
 
-      const currentQa = product.qa_data || [];
-      const updatedQa = [...currentQa, qObj];
+      const currentQa = Array.isArray(product.qa_data) ? product.qa_data : [];
+      const fallbackQa = [...currentQa, qObj];
 
-      const { error } = await supabase
-        .from('products')
-        .update({ qa_data: updatedQa })
-        .eq('id', product.id);
+      const { data: savedQa, error } = await supabase.rpc('append_product_question', {
+        target_product_id: product.id,
+        question: qObj
+      });
 
       if (error) throw error;
 
+      const updatedQa = Array.isArray(savedQa) ? savedQa : fallbackQa;
       setProduct({ ...product, qa_data: updatedQa });
       setNewQuestion('');
     } catch (err: any) {
-      alert("Error submitting question. (Ensure the qa_data column exists in the products table).");
+      const message = err?.message || "Please try again after the database update is applied.";
+      alert("Error submitting question: " + message);
     } finally {
       setSubmittingQuestion(false);
     }
@@ -637,6 +639,8 @@ export default function ProductDetailPage() {
       </div>
     );
   }
+
+  const productQa = Array.isArray(product.qa_data) ? product.qa_data : [];
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
@@ -970,10 +974,10 @@ export default function ProductDetailPage() {
                 )}
 
                 <div className="space-y-6">
-                  {(!product.qa_data || product.qa_data.length === 0) ? (
+                  {productQa.length === 0 ? (
                     <p className="text-[#888888] text-center py-8">No questions asked yet. Be the first!</p>
                   ) : (
-                    product.qa_data.map((qa: any, idx: number) => (
+                    productQa.map((qa: any, idx: number) => (
                       <div key={idx} className="border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-6 last:border-0 last:pb-0">
                         <div className="flex gap-3 mb-3">
                           <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">Q</div>
@@ -1103,25 +1107,25 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between items-center mb-1.5">
                   <label className="text-xs font-bold text-[#888888] uppercase tracking-widest">Review Comments</label>
                   <span className={`text-xs font-medium ${
-                    reviewComment.length < 20 || reviewComment.length > 500 
+                    reviewComment.trim().length < 10 || reviewComment.length > 500
                       ? 'text-amber-500' 
                       : 'text-emerald-500'
                   }`}>
-                    {reviewComment.length} / 500 chars (min 20)
+                    {reviewComment.length} / 500 chars (min 10)
                   </span>
                 </div>
                 <textarea 
                   rows={4}
                   value={reviewComment}
                   onChange={e => setReviewComment(e.target.value)}
-                  placeholder="Tell us what you liked or disliked about the product... (20-500 characters)"
+                  placeholder="Tell us what you liked or disliked about the product... (10-500 characters)"
                   className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white resize-none"
                 ></textarea>
               </div>
               
               <button 
                 onClick={submitReview}
-                disabled={submittingReview || reviewRating === 0 || reviewComment.length < 20 || reviewComment.length > 500}
+                disabled={submittingReview || reviewRating === 0 || reviewComment.trim().length < 10 || reviewComment.length > 500}
                 className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingReview ? 'Submitting...' : 'Submit Review'}

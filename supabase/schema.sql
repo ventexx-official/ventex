@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS public.pitches (
   views integer DEFAULT 0,
   featured boolean DEFAULT false,
   qa_data jsonb DEFAULT '{}'::jsonb,
+  custom_qa jsonb DEFAULT '[]'::jsonb,
   team_data jsonb DEFAULT '[]'::jsonb,
   additional_docs jsonb DEFAULT '[]'::jsonb,
   video_url text,
@@ -117,6 +118,7 @@ CREATE TABLE IF NOT EXISTS public.products (
   average_rating numeric DEFAULT 0,
   review_count integer DEFAULT 0,
   featured boolean DEFAULT false,
+  qa_data jsonb DEFAULT '[]'::jsonb,
   created_at timestamptz DEFAULT now()
 );
 
@@ -342,7 +344,54 @@ CREATE POLICY "Founders can delete their own pitches"
   ON public.pitches FOR DELETE
   USING (auth.uid() = founder_id);
 
--- 21. Auto-calculate average_rating and review_count on products table
+-- 21. Saved Pitches RLS Policies
+ALTER TABLE public.saved_pitches ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their saved pitches"
+  ON public.saved_pitches FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can save pitches"
+  ON public.saved_pitches FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can remove saved pitches"
+  ON public.saved_pitches FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- 22. Product Q&A helper
+CREATE OR REPLACE FUNCTION public.append_product_question(
+  target_product_id uuid,
+  question jsonb
+)
+RETURNS jsonb
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  updated_questions jsonb;
+BEGIN
+  IF auth.uid() IS NULL THEN
+    RAISE EXCEPTION 'You must be logged in to ask a question.';
+  END IF;
+
+  UPDATE public.products
+  SET qa_data = COALESCE(qa_data, '[]'::jsonb) || jsonb_build_array(question)
+  WHERE id = target_product_id
+  RETURNING qa_data INTO updated_questions;
+
+  IF updated_questions IS NULL THEN
+    RAISE EXCEPTION 'Product not found.';
+  END IF;
+
+  RETURN updated_questions;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.append_product_question(uuid, jsonb) TO authenticated;
+
+-- 23. Auto-calculate average_rating and review_count on products table
 CREATE OR REPLACE FUNCTION public.handle_review_changes()
 RETURNS trigger AS $$
 DECLARE

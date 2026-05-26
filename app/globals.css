@@ -130,12 +130,17 @@ a:active {
   }
 
   .reveal {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: none;
     transition: opacity 500ms ease, transform 500ms ease;
   }
 
-  .reveal.revealed {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .js .reveal.revealed {
     opacity: 1;
     transform: none;
   }
