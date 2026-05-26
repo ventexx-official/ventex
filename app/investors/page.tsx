@@ -1,101 +1,84 @@
-"use client";
+import Link from "next/link";
+import { BadgeCheck, ChartNoAxesCombined, Search } from "lucide-react";
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import InvestorResponseBadge from '@/components/InvestorResponseBadge';
+const features = [
+  {
+    title: "Discover deals",
+    description: "Browse startup pitches and surface opportunities by sector, stage, and signal.",
+    icon: Search,
+  },
+  {
+    title: "Verify identity",
+    description: "Review founder profiles and platform context before starting serious conversations.",
+    icon: BadgeCheck,
+  },
+  {
+    title: "Track portfolio",
+    description: "Keep interest, responses, and startup updates easier to follow from one place.",
+    icon: ChartNoAxesCombined,
+  },
+];
+
+const benefits = [
+  "Access a growing pipeline of Indian startups",
+  "Review pitch context before requesting deeper diligence",
+  "Connect with founders building software, products, and digital businesses",
+  "Use one account for deal discovery and marketplace activity",
+];
 
 export default function InvestorsPage() {
-  const [investors, setInvestors] = useState<any[]>([]);
-  const [query, setQuery] = useState('');
-  const [sortBy, setSortBy] = useState('response_rate');
-
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from('users')
-        .select('id, full_name, avatar_url, bio, response_rate, investment_thesis, preferred_sectors, preferred_stages')
-        .eq('role', 'investor');
-      setInvestors(data || []);
-    };
-    load();
-  }, []);
-
-  const filtered = useMemo(() => {
-    const q = query.toLowerCase();
-    return investors
-      .filter((investor) => {
-        const haystack = [
-          investor.full_name,
-          investor.bio,
-          investor.investment_thesis,
-          ...(investor.preferred_sectors || []),
-          ...(investor.preferred_stages || []),
-        ].join(' ').toLowerCase();
-        return haystack.includes(q);
-      })
-      .sort((a, b) => {
-        if (sortBy === 'response_rate') return (b.response_rate ?? 100) - (a.response_rate ?? 100);
-        return (a.full_name || '').localeCompare(b.full_name || '');
-      });
-  }, [investors, query, sortBy]);
-
   return (
-    <div className="min-h-screen bg-[#F2F2F0] px-4 py-10">
-      <main className="mx-auto max-w-6xl space-y-8">
-        <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-tighter text-[#222222]">Investor network</h1>
-            <p className="mt-2 text-sm font-medium text-[#666666]">Find investors by thesis, stage, sector, and founder response rate.</p>
-          </div>
-          <Link href="/discover" className="text-sm font-black text-[#222222] underline underline-offset-4">Browse pitches</Link>
-        </header>
-
-        <div className="flex flex-col gap-3 rounded-3xl border border-[#e5e5e5] bg-white p-4 md:flex-row">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#888888]" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search sector, stage, thesis..."
-              className="w-full rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] py-3 pl-11 pr-4 text-sm font-bold outline-none focus:border-[#222222]"
-            />
-          </div>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[#222222] outline-none"
-          >
-            <option value="response_rate">Sort by response rate</option>
-            <option value="name">Sort by name</option>
-          </select>
+    <main className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="max-w-3xl space-y-5">
+          <h1 className="text-4xl font-black tracking-[-.04em] sm:text-5xl">
+            For Investors
+          </h1>
+          <p className="text-base leading-7 text-[var(--text2)] sm:text-lg">
+            Ventex helps investors find startup opportunities, understand founder context,
+            and keep promising companies organized as they move from discovery to follow-up.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {filtered.map((investor) => (
-            <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-3xl border border-[#e5e5e5] bg-white p-6 transition hover:shadow-md">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-[#222222] text-sm font-black text-white">
-                  {investor.avatar_url ? <img src={investor.avatar_url} alt="" className="h-full w-full object-cover" /> : (investor.full_name || 'I')[0]}
-                </div>
-                <div>
-                  <div className="font-black text-[#222222]">{investor.full_name || 'Investor'}</div>
-                  <InvestorResponseBadge response_rate={investor.response_rate} />
-                </div>
-              </div>
-              <p className="line-clamp-3 text-sm font-medium leading-relaxed text-[#666666]">
-                {investor.investment_thesis || investor.bio || 'Thesis not added yet.'}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {(investor.preferred_sectors || []).slice(0, 3).map((sector: string) => (
-                  <span key={sector} className="rounded-full bg-[#F2F2F0] px-2 py-1 text-[11px] font-bold text-[#222222]">{sector}</span>
-                ))}
-              </div>
-            </Link>
-          ))}
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <article
+                key={feature.title}
+                className="border bg-[var(--bg2)] p-6"
+                style={{ borderColor: "var(--border)" }}
+              >
+                <Icon className="h-5 w-5 text-[var(--text)]" />
+                <h2 className="mt-5 text-lg font-black tracking-[-.02em]">
+                  {feature.title}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--text3)]">
+                  {feature.description}
+                </p>
+              </article>
+            );
+          })}
         </div>
-      </main>
-    </div>
+
+        <section className="mt-12 border-t pt-8" style={{ borderColor: "var(--border)" }}>
+          <h2 className="text-2xl font-black tracking-[-.03em]">
+            Investor benefits
+          </h2>
+          <ul className="mt-5 grid gap-3 text-sm leading-6 text-[var(--text2)] sm:grid-cols-2">
+            {benefits.map((benefit) => (
+              <li key={benefit} className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--text)]" />
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <Link href="/signup?role=investor" className="btn-primary mt-10 inline-flex">
+          Join as investor →
+        </Link>
+      </section>
+    </main>
   );
 }
