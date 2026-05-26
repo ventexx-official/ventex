@@ -95,7 +95,7 @@ export async function POST(req: Request) {
       .single();
 
     if (saveError) {
-      return NextResponse.json({ error: saveError.message, score }, { status: 500 });
+      return NextResponse.json({ score, warning: saveError.message });
     }
 
     return NextResponse.json({ score: saved });

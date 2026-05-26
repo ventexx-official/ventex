@@ -5,9 +5,36 @@ import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
+import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
 const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'AgriTech', 'Cybersecurity'];
 const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
+const FALLBACK_INVESTORS = [
+  {
+    id: 'demo-investor-1',
+    full_name: 'Fintech Angel',
+    avatar_url: null,
+    investment_thesis: 'Looks for early payment, lending, and workflow startups with India-first distribution.',
+    preferred_sectors: ['Fintech', 'SaaS'],
+    response_rate: 92,
+  },
+  {
+    id: 'demo-investor-2',
+    full_name: 'SaaS Operator',
+    avatar_url: null,
+    investment_thesis: 'Supports B2B SaaS founders with GTM, pricing, and enterprise sales feedback.',
+    preferred_sectors: ['SaaS', 'AI/ML'],
+    response_rate: 84,
+  },
+  {
+    id: 'demo-investor-3',
+    full_name: 'Consumer Builder',
+    avatar_url: null,
+    investment_thesis: 'Interested in consumer, commerce, and marketplace founders building from India.',
+    preferred_sectors: ['E-commerce', 'Logistics'],
+    response_rate: 78,
+  },
+];
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
@@ -18,6 +45,7 @@ function formatCurrency(amount: number) {
 
 export default function Discover() {
   const [pitches, setPitches] = useState<any[]>([]);
+  const [investors, setInvestors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [industries, setIndustries] = useState<string[]>([]);
@@ -38,6 +66,19 @@ export default function Discover() {
     };
     load();
   }, [sortBy]);
+
+  useEffect(() => {
+    const loadInvestors = async () => {
+      const { data } = await supabase
+        .from('users')
+        .select('id, full_name, avatar_url, investment_thesis, preferred_sectors, response_rate')
+        .eq('role', 'investor')
+        .order('response_rate', { ascending: false })
+        .limit(3);
+      setInvestors(data || []);
+    };
+    loadInvestors();
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -154,6 +195,40 @@ export default function Discover() {
         </div>
 
         <main className="min-w-0 flex-1">
+          {(investors.length > 0 ? investors : FALLBACK_INVESTORS).length > 0 && (
+            <section className="mb-6">
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <h2 className="text-sm font-bold text-[var(--text)]">Responsive investors</h2>
+                <Link href="/investors" className="link-underline text-xs font-semibold text-[var(--text2)]">View all</Link>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                {(investors.length > 0 ? investors : FALLBACK_INVESTORS).map((investor) => (
+                  <Link
+                    key={investor.id}
+                    href={investor.id.startsWith('demo-') ? '/investors' : `/profile/${investor.id}`}
+                    className="border bg-[var(--bg2)] p-4 transition-colors hover:bg-[var(--bg3)]"
+                    style={{ borderColor: 'var(--border)' }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--text)] text-sm font-black text-[var(--bg)]">
+                        {investor.avatar_url ? <img src={investor.avatar_url} alt="" className="h-full w-full object-cover" /> : (investor.full_name || 'I')[0]}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-bold text-[var(--text)]">{investor.full_name || 'Investor'}</div>
+                        <div className="mt-2">
+                          <InvestorResponseBadge response_rate={investor.response_rate} />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="mt-3 line-clamp-2 text-xs leading-5 text-[var(--text2)]">
+                      {investor.investment_thesis || (investor.preferred_sectors || []).join(', ') || 'Thesis not added yet.'}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
           <div className="mb-6 flex items-center justify-between gap-4">
             <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text)] outline-none" style={{ borderColor: 'var(--border)' }}>
@@ -219,7 +294,7 @@ function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
       <div className="mt-3 flex flex-wrap gap-2">
         {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
         {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
-        {showRunway && runwayDays !== null ? <span className="tag border border-red-200 bg-red-50 text-red-600">closes in {runwayDays}d</span> : null}
+        {showRunway && runwayDays !== null ? <span className="tag border border-red-200 bg-red-50 text-red-600">⏰ Closes in {runwayDays} days</span> : null}
       </div>
       <p className="mt-4 line-clamp-3 flex-1 text-[13px] leading-6 text-[var(--text2)]">{pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}</p>
       <div className="my-5 h-px bg-[var(--border)]" />

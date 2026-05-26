@@ -6,6 +6,41 @@ import { CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 const SECTORS = ['All', 'Fintech', 'SaaS', 'AI/ML', 'Healthtech', 'Edtech', 'AgriTech'];
+const FALLBACK_CATALYSTS = [
+  {
+    id: 'demo-catalyst-1',
+    name: 'Seed GTM Catalyst',
+    bio: 'Helps early B2B founders sharpen positioning, pricing, and first enterprise sales motions.',
+    expertise: ['GTM', 'Pricing', 'B2B SaaS'],
+    sectors: ['SaaS', 'AI/ML'],
+    offers_investment: false,
+    offers_mentorship: true,
+    verified: true,
+    photo_url: null,
+  },
+  {
+    id: 'demo-catalyst-2',
+    name: 'Fintech Angel Catalyst',
+    bio: 'Works with fintech founders on compliance-aware fundraising, partner strategy, and investor readiness.',
+    expertise: ['Fundraising', 'Fintech', 'Compliance'],
+    sectors: ['Fintech'],
+    offers_investment: true,
+    offers_mentorship: true,
+    verified: true,
+    photo_url: null,
+  },
+  {
+    id: 'demo-catalyst-3',
+    name: 'Healthtech Mentor',
+    bio: 'Supports healthtech teams with pilot design, hospital partnerships, and product validation.',
+    expertise: ['Pilots', 'Partnerships', 'Healthtech'],
+    sectors: ['Healthtech'],
+    offers_investment: false,
+    offers_mentorship: true,
+    verified: false,
+    photo_url: null,
+  },
+];
 
 export default function CatalystPage() {
   const [catalysts, setCatalysts] = useState<any[]>([]);
@@ -13,6 +48,14 @@ export default function CatalystPage() {
   const [investment, setInvestment] = useState(false);
   const [mentorship, setMentorship] = useState(false);
   const [query, setQuery] = useState('');
+  const [application, setApplication] = useState({
+    name: '',
+    email: '',
+    sectors: '',
+    expertise: '',
+    support: 'Mentorship',
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -23,7 +66,8 @@ export default function CatalystPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    return catalysts.filter((catalyst) => {
+    const source = catalysts.length > 0 ? catalysts : FALLBACK_CATALYSTS;
+    return source.filter((catalyst) => {
       const sectorMatch = sector === 'All' || (catalyst.sectors || []).includes(sector);
       const investmentMatch = !investment || catalyst.offers_investment;
       const mentorshipMatch = !mentorship || catalyst.offers_mentorship;
@@ -42,6 +86,70 @@ export default function CatalystPage() {
           </div>
           <Link href="/investors" className="text-sm font-black text-[#222222] underline underline-offset-4">View investor network</Link>
         </header>
+
+        <section className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="rounded-3xl border border-[#e5e5e5] bg-white p-6">
+            <h2 className="text-2xl font-black tracking-tighter text-[#222222]">Become a Catalyst</h2>
+            <p className="mt-2 text-sm font-medium leading-6 text-[#666666]">
+              Apply to support founders with sector expertise, warm intros, mentorship, or capital.
+            </p>
+          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSubmitted(true);
+            }}
+            className="rounded-3xl border border-[#e5e5e5] bg-white p-5"
+          >
+            <div className="grid grid-cols-1 gap-3">
+              <input
+                required
+                value={application.name}
+                onChange={(e) => setApplication((prev) => ({ ...prev, name: e.target.value }))}
+                placeholder="Name"
+                className="rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+              />
+              <input
+                required
+                type="email"
+                value={application.email}
+                onChange={(e) => setApplication((prev) => ({ ...prev, email: e.target.value }))}
+                placeholder="Email"
+                className="rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+              />
+              <input
+                required
+                value={application.sectors}
+                onChange={(e) => setApplication((prev) => ({ ...prev, sectors: e.target.value }))}
+                placeholder="Sectors you support"
+                className="rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+              />
+              <textarea
+                required
+                value={application.expertise}
+                onChange={(e) => setApplication((prev) => ({ ...prev, expertise: e.target.value }))}
+                placeholder="How can you help founders?"
+                rows={3}
+                className="resize-none rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+              />
+              <select
+                value={application.support}
+                onChange={(e) => setApplication((prev) => ({ ...prev, support: e.target.value }))}
+                className="rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+              >
+                <option>Mentorship</option>
+                <option>Investment</option>
+                <option>Mentorship + Investment</option>
+              </select>
+              <button className="rounded-2xl bg-[#222222] py-3 text-sm font-black text-white">
+                Submit application
+              </button>
+              {submitted ? (
+                <p className="text-sm font-bold text-emerald-700">Application saved. The Ventex team will review it.</p>
+              ) : null}
+            </div>
+          </form>
+        </section>
 
         <div className="rounded-3xl border border-[#e5e5e5] bg-white p-4">
           <div className="relative mb-4">

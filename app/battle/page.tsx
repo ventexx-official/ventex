@@ -36,8 +36,8 @@ export default function BattlePage() {
       .eq('week_start', week)
       .order('votes', { ascending: false });
 
-    if (battleData && battleData.length > 0) {
-      setEntries(battleData);
+    if (battleData && battleData.length >= 5) {
+      setEntries(battleData.slice(0, 5));
       return;
     }
 
@@ -47,11 +47,24 @@ export default function BattlePage() {
       .eq('status', 'live')
       .limit(5);
 
-    setEntries((pitches || []).map((pitch) => ({ id: pitch.id, pitch_id: pitch.id, week_start: week, votes: 0, pitch })));
+    const existingByPitch = new Map((battleData || []).map((entry) => [entry.pitch_id, entry]));
+    const fallbackEntries = (pitches || []).map((pitch) => existingByPitch.get(pitch.id) || {
+      id: pitch.id,
+      pitch_id: pitch.id,
+      week_start: week,
+      votes: 0,
+      pitch,
+    });
+    setEntries(fallbackEntries.slice(0, 5));
   };
 
   useEffect(() => {
-    setVotedId(localStorage.getItem(`ventex_battle_vote_${week}`));
+    const init = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session?.user?.id || null;
+      setVotedId(localStorage.getItem(`ventex_battle_vote_${week}_${userId || 'guest'}`));
+    };
+    init();
     load();
 
     const channel = supabase
@@ -73,7 +86,13 @@ export default function BattlePage() {
       return;
     }
 
-    localStorage.setItem(`ventex_battle_vote_${week}`, entry.pitch_id);
+    const voteKey = `ventex_battle_vote_${week}_${session.user.id}`;
+    if (localStorage.getItem(voteKey)) {
+      setVotedId(localStorage.getItem(voteKey));
+      return;
+    }
+
+    localStorage.setItem(voteKey, entry.pitch_id);
     setVotedId(entry.pitch_id);
 
     const { data: existing } = await supabase
@@ -86,7 +105,7 @@ export default function BattlePage() {
     if (existing) {
       const { error } = await supabase.from('pitch_battles').update({ votes: (existing.votes || 0) + 1 }).eq('id', existing.id);
       if (error) {
-        localStorage.removeItem(`ventex_battle_vote_${week}`);
+        localStorage.removeItem(voteKey);
         setVotedId(null);
         alert('Vote failed: ' + error.message);
         return;
@@ -94,7 +113,7 @@ export default function BattlePage() {
     } else {
       const { error } = await supabase.from('pitch_battles').insert({ week_start: week, pitch_id: entry.pitch_id, votes: 1 });
       if (error) {
-        localStorage.removeItem(`ventex_battle_vote_${week}`);
+        localStorage.removeItem(voteKey);
         setVotedId(null);
         alert('Vote failed: ' + error.message);
         return;
