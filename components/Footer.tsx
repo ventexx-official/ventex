@@ -33,21 +33,21 @@ export default function Footer() {
     <footer className="border-t bg-[var(--bg2)] text-[var(--text)]" style={{ borderColor: 'var(--border)' }}>
       <div className="h-16 bg-gradient-to-b from-[var(--bg)] to-[var(--bg2)]" />
       <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_2fr]">
+        <div className="grid grid-cols-1 gap-10 text-center md:grid-cols-[1.4fr_2fr] md:text-left">
           <div>
             <Link href="/" className="text-xl font-bold tracking-[-.5px] text-[var(--text)]">
               Ventex
             </Link>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--text3)]">
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[var(--text3)] md:mx-0">
               Where startups pitch, fund and sell.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {columns.map((column) => (
               <div key={column.title}>
                 <h3 className="mono mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{column.title}</h3>
-                <div className="space-y-3">
+                <div className="flex flex-col items-center space-y-3 md:items-start">
                   {column.links.map(([label, href]) => (
                     <Link key={href} href={href} className="link-underline block w-fit text-sm text-[var(--text2)] hover:text-[var(--text)]">
                       {label}

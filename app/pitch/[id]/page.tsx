@@ -540,11 +540,11 @@ via Ventex`;
   }
 
   return (
-    <div className="bg-[#F2F2F0] dark:bg-[#111111] min-h-screen pb-24">
-      <div className="max-w-4xl mx-auto px-4 pt-12 space-y-6">
+    <div className="bg-[#F2F2F0] dark:bg-[#111111] min-h-screen pb-28 md:pb-24">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
         
         {/* HERO CARD */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-8 relative">
+        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-8 relative">
           {pitch.status === 'live' && pitch.is_raising === false && (
             <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#F2F2F0] dark:bg-[#333333] px-3 py-1 rounded-full">
               <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
@@ -557,13 +557,13 @@ via Ventex`;
             </div>
           )}
 
-          <div className="flex items-start gap-6 mb-8">
+          <div className="flex flex-col gap-5 mb-8 sm:flex-row sm:items-start sm:gap-6">
             <div className="w-20 h-20 bg-[#F2F2F0] dark:bg-[#333333] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
               {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <div className="text-2xl font-bold text-[#888888]">{pitch.title?.charAt(0)}</div>}
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-[#222222] dark:text-white mb-2">{pitch.title}</h1>
-              <p className="text-lg text-[#888888] mb-2">{pitch.tagline || pitch.short_description}</p>
+              <h1 className="text-2xl font-bold text-[#222222] dark:text-white mb-2 sm:text-3xl">{pitch.title}</h1>
+              <p className="text-base text-[#888888] mb-2 sm:text-lg">{pitch.tagline || pitch.short_description}</p>
               {founderProfile && (
                 <p className="text-sm text-[#888888] mb-4 flex flex-wrap items-center gap-2">
                   <span className="font-medium text-[#222222] dark:text-white">
@@ -585,7 +585,7 @@ via Ventex`;
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
               <span className="text-xl font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.amount_seeking)}</span>
@@ -616,7 +616,7 @@ via Ventex`;
             </div>
           )}
 
-          <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 md:flex">
              <button 
                onClick={() => {
                  if (investorPremium || ventexAccess) {
@@ -657,7 +657,7 @@ via Ventex`;
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <aside className="flex flex-col gap-3 md:sticky md:top-24">
           <button
             type="button"
             onClick={handleWhatsAppShare}
@@ -672,11 +672,11 @@ via Ventex`;
           >
             {linkCopied ? 'Copied! ✓' : 'Copy link 🔗'}
           </button>
-        </div>
+        </aside>
 
         {/* AI SUMMARY BAR */}
         {videoEmbedUrl ? (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
             <div className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider mb-3">60-second founder pitch 🎬</div>
             {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
               <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
@@ -691,7 +691,7 @@ via Ventex`;
             )}
           </div>
         ) : isPitchOwner ? (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center md:col-span-2">
             <div className="text-sm font-bold text-[#222222] dark:text-white mb-2">Add your 60-second founder pitch</div>
             <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[#222222] dark:text-white underline underline-offset-4">
               Edit pitch →
@@ -700,9 +700,9 @@ via Ventex`;
         ) : null}
 
         {matchedInvestors.length > 0 && (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-4">Best matched investors</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               {matchedInvestors.map((investor) => (
                 <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[#e5e5e5] dark:border-[#333333] p-4 hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
                   <div className="font-bold text-sm text-[#222222] dark:text-white">{investor.full_name || 'Investor'}</div>
@@ -716,7 +716,7 @@ via Ventex`;
         )}
 
         {pitch.ai_summary && (
-          <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 md:col-span-2">
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="w-4 h-4 text-[#888888]" />
               <span className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider">AI-generated briefing</span>
@@ -726,10 +726,10 @@ via Ventex`;
         )}
 
         {/* CONTENT SECTIONS */}
-        <div className="space-y-6">
+        <div className="space-y-6 md:col-span-2">
           {/* Problem & Solution */}
           <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
-            <div className="p-6 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+            <div className="p-5 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] sm:p-6">
               <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Problem & Solution</h2>
               <div className="flex gap-4 items-start mb-8">
                 <div className="w-8 h-8 rounded-full bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center flex-shrink-0 font-bold text-[#888888] text-sm">P</div>
@@ -749,9 +749,9 @@ via Ventex`;
           </div>
 
           {/* Market Opportunity */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Market opportunity</h2>
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
               <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4 text-center">
                 <div className="text-xs text-[#888888] font-bold mb-1">TAM</div>
                 <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.tam)}</div>
@@ -950,7 +950,7 @@ via Ventex`;
         </div>
 
         {/* COMMUNITY COMMENTS */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-8 mt-12">
+        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
           <h2 className="text-xl font-bold text-[#222222] dark:text-white mb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4">
             Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
           </h2>
@@ -1071,6 +1071,23 @@ via Ventex`;
             </div>
           )}
         </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-white/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
+        <button
+          onClick={() => {
+            if (investorPremium || ventexAccess) {
+              setIsInterestModalOpen(true);
+            } else {
+              if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+                router.push('/pricing');
+              }
+            }
+          }}
+          className="min-h-11 w-full rounded-full bg-[#222222] px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:bg-black dark:bg-white dark:text-[#222222] dark:hover:bg-gray-200"
+        >
+          Express interest
+        </button>
       </div>
 
       {/* Pitch Deck Modal Overlay */}

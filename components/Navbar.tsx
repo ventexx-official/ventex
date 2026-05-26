@@ -250,7 +250,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
               aria-label="Toggle menu"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -261,8 +261,14 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden border-t bg-[var(--bg)]" style={{ borderColor: 'var(--border)' }}>
-          <div className="px-4 pt-4 pb-6 space-y-1">
+        <div className="fixed inset-x-0 bottom-0 top-16 z-40 md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/20"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
+          />
+          <div className="relative max-h-full overflow-y-auto border-t bg-[var(--bg)] px-4 pb-8 pt-4 shadow-2xl transition-transform duration-200" style={{ borderColor: 'var(--border)' }}>
             <div className="mb-3">
               <ThemeToggle />
             </div>
@@ -271,7 +277,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                className={`block min-h-11 px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                   isActive(link.href)
                     ? 'bg-[var(--bg3)] text-[var(--text)]'
                     : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)]'
@@ -287,7 +293,7 @@ export default function Navbar() {
                   <Link
                     href="/cart"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center justify-between px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <ShoppingBag className="w-5 h-5" />
@@ -302,7 +308,7 @@ export default function Navbar() {
                   <Link
                     href={`/profile/${user.id}`}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <User className="w-5 h-5" />
                     My Profile
@@ -310,7 +316,7 @@ export default function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <LayoutDashboard className="w-5 h-5" />
                     My Dashboard
@@ -318,7 +324,7 @@ export default function Navbar() {
                   <Link
                     href="/my-purchases"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <Package className="w-5 h-5" />
                     My Purchases
@@ -326,14 +332,14 @@ export default function Navbar() {
                   <Link
                     href="/settings"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <Settings className="w-5 h-5" />
                     Settings
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                    className="flex min-h-11 items-center gap-3 w-full px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
                   >
                     <LogOut className="w-5 h-5" />
                     Logout

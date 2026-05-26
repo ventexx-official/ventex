@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
 
@@ -24,7 +24,6 @@ export default function Discover() {
   const [stages, setStages] = useState<string[]>([]);
   const [raisingOnly, setRaisingOnly] = useState(false);
   const [sortBy, setSortBy] = useState('latest');
-  const [mobileFilters, setMobileFilters] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -108,15 +107,50 @@ export default function Discover() {
       </header>
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row">
-        <aside className="hidden w-[280px] shrink-0 border-r pr-8 md:block" style={{ borderColor: 'var(--border)' }}>
+        <aside className="hidden w-[200px] shrink-0 border-r pr-6 md:block lg:w-[260px]" style={{ borderColor: 'var(--border)' }}>
           {filters}
         </aside>
 
         <div className="md:hidden">
-          <button type="button" onClick={() => setMobileFilters(true)} className="btn-secondary inline-flex items-center gap-2">
-            <SlidersHorizontal className="h-4 w-4" />
-            Filters
-          </button>
+          <div className="-mx-4 overflow-x-auto px-4 pb-2">
+            <div className="flex w-max gap-2">
+              <button
+                type="button"
+                onClick={() => setRaisingOnly(!raisingOnly)}
+                className={`tag min-h-11 border px-4 ${raisingOnly ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}
+              >
+                Raising only
+              </button>
+              {[...INDUSTRIES, ...STAGES].map((value) => {
+                const selected = industries.includes(value) || stages.includes(value);
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => {
+                      if (INDUSTRIES.includes(value)) toggle(value, industries, setIndustries);
+                      else toggle(value, stages, setStages);
+                    }}
+                    className={`tag min-h-11 border px-4 ${selected ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}
+                  >
+                    {value}
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                onClick={() => {
+                  setIndustries([]);
+                  setStages([]);
+                  setRaisingOnly(false);
+                  setQuery('');
+                }}
+                className="tag min-h-11 border border-[var(--border)] px-4"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
         </div>
 
         <main className="min-w-0 flex-1">
@@ -130,7 +164,7 @@ export default function Discover() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-[300px] animate-pulse bg-[var(--bg3)]" />)}
             </div>
           ) : filtered.length === 0 ? (
@@ -141,25 +175,13 @@ export default function Discover() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filtered.map((pitch, index) => <PitchCard key={pitch.id} pitch={pitch} delay={index * 50} />)}
             </div>
           )}
         </main>
       </div>
 
-      {mobileFilters && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <button className="absolute inset-0 bg-black/40" onClick={() => setMobileFilters(false)} aria-label="Close filters" />
-          <div className="absolute right-0 top-0 h-full w-[84vw] max-w-sm overflow-y-auto border-l bg-[var(--bg)] p-6" style={{ borderColor: 'var(--border)' }}>
-            <div className="mb-8 flex items-center justify-between">
-              <h2 className="font-bold text-[var(--text)]">Filters</h2>
-              <button onClick={() => setMobileFilters(false)} className="p-2 text-[var(--text2)]"><X className="h-5 w-5" /></button>
-            </div>
-            {filters}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

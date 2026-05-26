@@ -235,7 +235,7 @@ export default function MarketplacePage() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-10">
         
         {/* FILTER SIDEBAR */}
         <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
@@ -381,7 +381,7 @@ export default function MarketplacePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts.map(product => {
                   const now = new Date();
                   const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;

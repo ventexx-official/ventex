@@ -77,7 +77,7 @@ export default async function Home() {
             v1.0 · Early Access Now Open
           </div>
 
-          <h1 className="mt-8 max-w-5xl text-balance text-[clamp(40px,7vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
+          <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
             {['Where', 'startups'].map((word, index) => (
               <span key={word} className="reveal inline-block px-1" data-delay={String(index * 100)}>{word}</span>
             ))}
@@ -91,12 +91,12 @@ export default async function Home() {
             The platform for Indian founders, investors, and startup buyers.
           </p>
 
-          <div className="reveal mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row" data-delay="300">
-            <Link href="/founder/create-pitch" className="btn-primary">Submit your pitch</Link>
+          <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
+            <Link href="/founder/create-pitch" className="btn-primary inline-flex">Submit your pitch</Link>
             <Link href="/discover" className="btn-secondary">Browse startups →</Link>
           </div>
 
-          <div className="reveal mono mt-10 text-[11px] text-[var(--text3)]" data-delay="300">
+          <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
             {'//'} {livePitches} pitches · {productsCount ?? 0} products · early access
           </div>
 
@@ -161,7 +161,7 @@ export default async function Home() {
             Everything you need to pitch, fund and sell.
           </h2>
 
-          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -194,9 +194,9 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} how it works</div>
           <div className="relative mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="absolute left-0 right-0 top-10 hidden border-t border-dashed md:block" style={{ borderColor: 'var(--border2)' }} />
+            <div className="absolute bottom-0 left-6 top-0 border-l border-dashed md:left-0 md:right-0 md:top-10 md:border-l-0 md:border-t" style={{ borderColor: 'var(--border2)' }} />
             {steps.map(([number, title, desc], index) => (
-              <div key={number} className="reveal relative bg-[var(--bg)] pr-6" data-delay={String(index * 150)}>
+              <div key={number} className="reveal relative bg-[var(--bg)] pl-14 pr-6 md:pl-0" data-delay={String(index * 150)}>
                 <div className="mono text-5xl font-bold text-[var(--text3)]">{number}</div>
                 <h3 className="mt-5 text-2xl font-bold tracking-[-.02em] text-[var(--text)]">{title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{desc}</p>
