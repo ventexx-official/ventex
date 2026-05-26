@@ -169,6 +169,11 @@ a:active {
   to { transform: translateX(-50%); }
 }
 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes line-drop {
   0% { transform: translateY(-100%); opacity: 0; }
   30% { opacity: 1; }
