@@ -75,6 +75,7 @@ export default function PitchDetail() {
   } | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [savingPitch, setSavingPitch] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [matchedInvestors, setMatchedInvestors] = useState<any[]>([]);
 
   const handleSendInterest = async () => {
@@ -158,45 +159,47 @@ export default function PitchDetail() {
 
   const handleSavePitch = async () => {
     if (!currentUser) {
-      alert('Please log in to save pitches.');
+      router.push('/login');
       return;
     }
     if (!pitch) return;
+
+    const newSaved = !saved;
+    setSaved(newSaved);
     setSavingPitch(true);
+
     try {
-      const { data: existingSave } = await supabase
-        .from('saved_pitches')
-        .select('id')
-        .eq('user_id', currentUser.id)
-        .eq('pitch_id', pitch.id)
-        .maybeSingle();
+      if (newSaved) {
+        const { count: priorSaves } = await supabase
+          .from('saved_pitches')
+          .select('*', { count: 'exact', head: true })
+          .eq('pitch_id', pitch.id);
 
-      if (existingSave) {
-        alert('Pitch already in your watchlist.');
-        return;
-      }
+        const isFirstSave = (priorSaves ?? 0) === 0;
 
-      const { count: priorSaves } = await supabase
-        .from('saved_pitches')
-        .select('*', { count: 'exact', head: true })
-        .eq('pitch_id', pitch.id);
+        const { error } = await supabase.from('saved_pitches').insert({
+          user_id: currentUser.id,
+          pitch_id: pitch.id,
+        });
 
-      const isFirstSave = (priorSaves ?? 0) === 0;
+        if (error && !error.message.toLowerCase().includes('duplicate')) {
+          throw error;
+        }
 
-      const { error } = await supabase.from('saved_pitches').insert({
-        user_id: currentUser.id,
-        pitch_id: pitch.id,
-      });
-
-      if (error) {
-        throw error;
-      } else {
         if (isFirstSave && pitch.founder_id) {
           await awardXp('first_save', pitch.founder_id);
         }
-        alert('Pitch saved to your watchlist!');
+      } else {
+        const { error } = await supabase
+          .from('saved_pitches')
+          .delete()
+          .eq('user_id', currentUser.id)
+          .eq('pitch_id', pitch.id);
+
+        if (error) throw error;
       }
     } catch (err: unknown) {
+      setSaved(!newSaved);
       const message = err instanceof Error ? err.message : 'Failed to save pitch';
       alert(message);
     } finally {
@@ -386,6 +389,26 @@ via Ventex`;
 
     fetchMatches();
   }, [pitch, currentUser]);
+
+  useEffect(() => {
+    const checkSavedPitch = async () => {
+      if (!currentUser || !pitch?.id) {
+        setSaved(false);
+        return;
+      }
+
+      const { data } = await supabase
+        .from('saved_pitches')
+        .select('id')
+        .eq('user_id', currentUser.id)
+        .eq('pitch_id', pitch.id)
+        .maybeSingle();
+
+      setSaved(Boolean(data));
+    };
+
+    checkSavedPitch();
+  }, [currentUser, pitch?.id]);
 
   // Real-time subscription
   useEffect(() => {
@@ -611,9 +634,25 @@ via Ventex`;
             <button
               onClick={handleSavePitch}
               disabled={savingPitch}
-              className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white p-3 rounded-full hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors disabled:opacity-50"
+              className="disabled:opacity-50"
+              style={{
+                color: saved ? '#ef4444' : 'var(--text3)',
+                background: saved ? '#ef444415' : 'transparent',
+                border: saved ? '1px solid #ef444430' : '1px solid transparent',
+                borderRadius: '8px',
+                padding: '6px 8px',
+                transition: 'all 200ms',
+                transform: 'scale(1)',
+                animation: saved ? 'heartPop 0.35s ease' : undefined,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+              onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.9)'; }}
+              onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
+              aria-pressed={saved}
+              aria-label={saved ? 'Remove from watchlist' : 'Save to watchlist'}
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="w-5 h-5" fill={saved ? '#ef4444' : 'none'} />
             </button>
           </div>
         </div>

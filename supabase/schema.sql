@@ -207,7 +207,8 @@ CREATE TABLE IF NOT EXISTS public.saved_pitches (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
   pitch_id uuid REFERENCES public.pitches(id) ON DELETE CASCADE,
-  created_at timestamptz DEFAULT now()
+  created_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, pitch_id)
 );
 
 -- 12. pitch_scores
@@ -358,6 +359,11 @@ CREATE POLICY "Users can save pitches"
 CREATE POLICY "Users can remove saved pitches"
   ON public.saved_pitches FOR DELETE
   USING (auth.uid() = user_id);
+
+CREATE POLICY "Users manage own saved pitches"
+  ON public.saved_pitches FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 
 -- 22. Product Q&A helper
 CREATE OR REPLACE FUNCTION public.append_product_question(

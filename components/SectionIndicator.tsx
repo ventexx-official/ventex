@@ -45,11 +45,16 @@ export default function SectionIndicator() {
 
   return (
     <div
-      className="fixed bottom-8 left-1/2 z-50 hidden -translate-x-1/2 items-center rounded-xl border p-1 backdrop-blur-xl sm:flex"
+      className="fixed left-1/2 z-50 hidden -translate-x-1/2 items-center sm:flex"
       style={{
         animation: 'slideUp 240ms ease-out',
-        background: 'color-mix(in srgb, var(--bg2) 86%, transparent)',
-        borderColor: 'var(--border)',
+        background: 'rgba(0,0,0,0.85)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: '14px',
+        padding: '6px',
+        backdropFilter: 'blur(20px)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08)',
+        bottom: '40px',
       }}
     >
       <div className="flex items-center gap-1">
@@ -59,16 +64,16 @@ export default function SectionIndicator() {
             type="button"
             onClick={() => scrollTo(section.id)}
             style={{
-              background: active === section.id ? 'var(--bg)' : 'transparent',
-              color: active === section.id ? 'var(--text)' : 'var(--text2)',
+              background: active === section.id ? '#ffffff' : 'transparent',
+              color: active === section.id ? '#000000' : 'rgba(255,255,255,0.6)',
               border: 'none',
               borderRadius: '8px',
-              padding: '6px 14px',
-              fontSize: '12px',
-              fontWeight: active === section.id ? '600' : '400',
+              padding: '8px 18px',
+              fontSize: '13px',
+              fontWeight: active === section.id ? '700' : '400',
               cursor: 'pointer',
               transition: 'all 200ms',
-              boxShadow: active === section.id ? '0 1px 4px rgba(0,0,0,0.12)' : 'none',
+              boxShadow: active === section.id ? '0 2px 8px rgba(0,0,0,0.3)' : 'none',
               whiteSpace: 'nowrap',
               fontFamily: 'inherit',
             }}
