@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 
@@ -32,6 +33,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'pitchId is required' }, { status: 400 });
     }
 
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
+    const authClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const { data: authData, error: authError } = await authClient.auth.getUser();
+    if (authError || !authData.user) {
+      return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+    }
+
     const supabase = createSupabaseAdmin();
     const { data: pitch, error } = await supabase
       .from('pitches')
@@ -41,6 +57,10 @@ export async function POST(req: Request) {
 
     if (error || !pitch) {
       return NextResponse.json({ error: error?.message || 'Pitch not found' }, { status: 404 });
+    }
+
+    if (pitch.founder_id !== authData.user.id) {
+      return NextResponse.json({ error: 'Only the pitch founder can score this pitch' }, { status: 403 });
     }
 
     let score = fallbackScore(pitch);
@@ -60,7 +80,11 @@ export async function POST(req: Request) {
 
       const block = response.content[0];
       if (block?.type === 'text') {
-        score = JSON.parse(block.text);
+        try {
+          score = JSON.parse(block.text);
+        } catch {
+          score = fallbackScore(pitch);
+        }
       }
     }
 

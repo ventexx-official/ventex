@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 const SCORE_KEYS = [
   ['problem_clarity', 'Problem'],
@@ -20,9 +21,15 @@ export default function PitchScorePanel({ pitchId }: { pitchId: string }) {
     setLoading(true);
     setError('');
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('Login required to score this pitch');
+
       const res = await fetch('/api/score-pitch', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({ pitchId }),
       });
       const data = await res.json();

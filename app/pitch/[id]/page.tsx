@@ -210,7 +210,7 @@ export default function PitchDetail() {
 💰 Seeking ₹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
 📍 ${pitch.industry || 'Startup'} · ${pitch.company_stage || ''} · ${pitch.country || ''}
 👀 ${window.location.href}
-via Ventex — ventex-eight.vercel.app`;
+via Ventex`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 

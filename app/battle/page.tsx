@@ -67,6 +67,12 @@ export default function BattlePage() {
 
   const vote = async (entry: any) => {
     if (votedId) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      alert('Please log in to vote in the weekly pitch battle.');
+      return;
+    }
+
     localStorage.setItem(`ventex_battle_vote_${week}`, entry.pitch_id);
     setVotedId(entry.pitch_id);
 
@@ -78,9 +84,21 @@ export default function BattlePage() {
       .maybeSingle();
 
     if (existing) {
-      await supabase.from('pitch_battles').update({ votes: (existing.votes || 0) + 1 }).eq('id', existing.id);
+      const { error } = await supabase.from('pitch_battles').update({ votes: (existing.votes || 0) + 1 }).eq('id', existing.id);
+      if (error) {
+        localStorage.removeItem(`ventex_battle_vote_${week}`);
+        setVotedId(null);
+        alert('Vote failed: ' + error.message);
+        return;
+      }
     } else {
-      await supabase.from('pitch_battles').insert({ week_start: week, pitch_id: entry.pitch_id, votes: 1 });
+      const { error } = await supabase.from('pitch_battles').insert({ week_start: week, pitch_id: entry.pitch_id, votes: 1 });
+      if (error) {
+        localStorage.removeItem(`ventex_battle_vote_${week}`);
+        setVotedId(null);
+        alert('Vote failed: ' + error.message);
+        return;
+      }
     }
 
     load();

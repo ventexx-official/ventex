@@ -73,11 +73,11 @@ CREATE POLICY "pitch_battles public read" ON public.pitch_battles FOR SELECT USI
 
 DROP POLICY IF EXISTS "pitch_battles logged in vote" ON public.pitch_battles;
 CREATE POLICY "pitch_battles logged in vote" ON public.pitch_battles
-  FOR INSERT WITH CHECK (true);
+  FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
 DROP POLICY IF EXISTS "pitch_battles logged in update" ON public.pitch_battles;
 CREATE POLICY "pitch_battles logged in update" ON public.pitch_battles
-  FOR UPDATE USING (true);
+  FOR UPDATE USING (auth.uid() IS NOT NULL);
 
 DROP POLICY IF EXISTS "public users read profiles" ON public.users;
 CREATE POLICY "public users read profiles" ON public.users FOR SELECT USING (true);
