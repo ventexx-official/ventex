@@ -1,191 +1,177 @@
-import { Megaphone, Handshake, ShoppingBag, Sparkles, Star } from 'lucide-react';
+import { Globe, Handshake, Megaphone, Shield, ShoppingBag, TrendingUp, Users, Zap } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import SectionIndicator from '@/components/SectionIndicator';
 
 function formatCurrency(amount: number) {
+  if (!amount) return 'N/A';
   if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
   if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
-  return `₹${amount.toLocaleString()}`;
+  return `₹${amount.toLocaleString('en-IN')}`;
 }
+
+const features = [
+  {
+    icon: Megaphone,
+    title: 'Investor-grade pitch profiles',
+    desc: 'Turn a rough startup idea into a structured profile with traction, documents, video, Q&A, and AI summaries.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Funding-ready signals',
+    desc: 'Runway countdowns, response badges, XP, pitch scores, and investor matching help strong founders stand out.',
+  },
+  {
+    icon: Shield,
+    title: 'Premium data rooms',
+    desc: 'Protect traction and confidential documents while giving verified investors enough context to move fast.',
+  },
+  {
+    icon: Users,
+    title: 'Investor and catalyst network',
+    desc: 'Find investors, mentors, and operators by sector, stage, thesis, and response behavior.',
+  },
+  {
+    icon: Zap,
+    title: 'Momentum loops',
+    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible every week.',
+  },
+  {
+    icon: Globe,
+    title: 'India-first ecosystem',
+    desc: 'DPIIT scheme helpers, state heat maps, and founder tooling built around Indian startup realities.',
+  },
+];
+
+const steps = [
+  ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents.'],
+  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces.'],
+  ['03', 'Sell and scale', 'List products, unlock deal rooms, build proof, and convert attention into revenue or funding.'],
+];
 
 export default async function Home() {
   const { data: statsRows } = await supabase.rpc('get_homepage_stats');
   const livePitches = Number(statsRows?.[0]?.live_pitches ?? 0);
   const investors = Number(statsRows?.[0]?.investors ?? 0);
-  const showFoundingBanner = livePitches < 10 || investors < 10;
 
-  const { data: pitches } = await supabase
-    .from('pitches')
-    .select('*')
-    .eq('status', 'live')
-    .limit(3);
+  const [{ data: pitches }, { count: productsCount }] = await Promise.all([
+    supabase.from('pitches').select('*').eq('status', 'live').limit(3),
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('status', 'live'),
+  ]);
 
-  const marketplaceData = [
-    { id: 1, name: 'SaaS Dashboard UI Kit', seller: 'DesignPro', price: '₹2,499', rating: 4, discount: '20% OFF' },
-    { id: 2, name: 'Financial Model Template', seller: 'FinanceGuy', price: '₹999', rating: 5 },
-    { id: 3, name: 'SEO Audit Checklist', seller: 'GrowthHacks', price: '₹499', rating: 4 },
-    { id: 4, name: 'Investor Update Email Pack', seller: 'FounderTools', price: '₹799', rating: 5, discount: '10% OFF' }
+  const stats = [
+    ['Startups listed', livePitches],
+    ['Active investors', investors],
+    ['Products for sale', productsCount ?? 0],
   ];
 
   return (
     <>
-      {/* SECTION 1 — Hero */}
-      <section className="bg-[#222222] dark:bg-[#111111] min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="text-5xl md:text-7xl font-bold italic uppercase text-white tracking-wide">
-            WHERE STARTUPS PITCH, FUND AND SELL.
+      <SectionIndicator />
+
+      <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
+        <div className="absolute inset-0 bg-[var(--bg)]/60" />
+        <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
+          <div className="reveal mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)]" style={{ borderColor: 'var(--border2)' }}>
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+            v1.0 · Early Access Now Open
+          </div>
+
+          <h1 className="mt-8 max-w-5xl text-balance text-[clamp(40px,7vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
+            {['Where', 'startups'].map((word, index) => (
+              <span key={word} className="reveal inline-block px-1" data-delay={String(index * 100)}>{word}</span>
+            ))}
+            <span className="reveal inline-block px-1 text-[var(--text3)]" data-delay="200">pitch,</span>
+            <span className="reveal inline-block px-1 text-[var(--text3)]" data-delay="300">fund</span>
+            <span className="reveal inline-block px-1" data-delay="400">and</span>
+            <span className="reveal inline-block px-1" data-delay="500">sell.</span>
           </h1>
-          <p className="text-white text-lg md:text-xl font-light max-w-2xl mx-auto">
-            The global platform connecting founders, investors and buyers — all in one place.
+
+          <p className="reveal mt-6 max-w-[440px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
+            The platform for Indian founders, investors, and startup buyers.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/signup" className="bg-white text-[#222222] px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
-              Submit your pitch
-            </Link>
-            <Link href="/discover" className="border-[0.5px] border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-colors">
-              Browse startups
-            </Link>
+
+          <div className="reveal mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row" data-delay="300">
+            <Link href="/founder/create-pitch" className="btn-primary">Submit your pitch</Link>
+            <Link href="/discover" className="btn-secondary">Browse startups →</Link>
           </div>
-          <div className="pt-8 text-sm text-[#888888] font-medium flex flex-wrap items-center justify-center gap-2">
-            {showFoundingBanner ? (
-              <span>🚀 Early Access — Be a Founding Member · Limited spots</span>
-            ) : (
-              <>
-                <span>{livePitches} Startups</span>
-                <span>&middot;</span>
-                <span>{investors} Investors</span>
-              </>
-            )}
+
+          <div className="reveal mono mt-10 text-[11px] text-[var(--text3)]" data-delay="300">
+            {'//'} {livePitches} pitches · {productsCount ?? 0} products · early access
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
+            <span className="block h-6 w-px bg-[var(--text)]" style={{ animation: 'line-drop 1.6s ease-in-out infinite' }} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 2 — How it works */}
-      <section className="bg-white dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#222222] dark:text-white mb-16">
-            Everything a startup needs
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1 */}
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[10px] p-6 bg-white dark:bg-[#222222] flex flex-col items-start transition-colors">
-              <div className="bg-[#222222] dark:bg-[#111111] p-2.5 rounded-md mb-6">
-                <Megaphone className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-3">Pitch your startup</h3>
-              <p className="text-[#888888] leading-relaxed">
-                Create a full investor-grade pitch profile. Get discovered by investors, mentors and the startup community.
-              </p>
+      <section id="discover" className="border-y bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-8 flex items-end justify-between gap-6">
+            <div>
+              <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} discover</div>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">Live startups raising now.</h2>
             </div>
-            {/* Card 2 */}
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[10px] p-6 bg-white dark:bg-[#222222] flex flex-col items-start transition-colors">
-              <div className="bg-[#222222] dark:bg-[#111111] p-2.5 rounded-md mb-6">
-                <Handshake className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-3">Connect with investors</h3>
-              <p className="text-[#888888] leading-relaxed">
-                Verified investors browse, save and express interest in startups. Premium access unlocks full financials and deal flow tools.
-              </p>
-            </div>
-            {/* Card 3 */}
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[10px] p-6 bg-white dark:bg-[#222222] flex flex-col items-start transition-colors">
-              <div className="bg-[#222222] dark:bg-[#111111] p-2.5 rounded-md mb-6">
-                <ShoppingBag className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-3">Sell your products</h3>
-              <p className="text-[#888888] leading-relaxed">
-                List your startup's software, services, templates and hardware. Real buyers, real sales, real revenue.
-              </p>
-            </div>
+            <Link href="/discover" className="link-underline hidden text-sm font-semibold text-[var(--text2)] hover:text-[var(--text)] sm:block">View all →</Link>
           </div>
-        </div>
-      </section>
 
-      {/* SECTION 3 — Stats bar */}
-      <section className="bg-[#222222] dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          {showFoundingBanner ? (
-            <p className="text-center text-white text-xl md:text-2xl font-bold">
-              🚀 Early Access — Be a Founding Member · Limited spots
-            </p>
-          ) : (
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-[#444444]">
-              <div className="flex flex-col items-center flex-1 px-4 text-center pb-6 md:pb-0">
-                <span className="text-white text-3xl font-bold">{livePitches}</span>
-                <span className="text-[#888888] text-sm mt-1">Startups Listed</span>
-              </div>
-              <div className="flex flex-col items-center flex-1 px-4 text-center pt-6 md:pt-0">
-                <span className="text-white text-3xl font-bold">{investors}</span>
-                <span className="text-[#888888] text-sm mt-1">Active Investors</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* SECTION 4 — Featured pitches */}
-      <section className="bg-white dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-2xl font-bold text-[#222222] dark:text-white">Featured startups</h2>
-            <Link href="/discover" className="text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors text-sm font-medium">View all &rarr;</Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pitches?.map((pitch) => {
-              const valuation = pitch.amount_seeking && pitch.equity_pct 
-                ? pitch.amount_seeking / (pitch.equity_pct / 100)
-                : 0;
-
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {(pitches || []).map((pitch, index) => {
+              const valuation = pitch.amount_seeking && pitch.equity_pct ? pitch.amount_seeking / (pitch.equity_pct / 100) : 0;
               return (
-                <div key={pitch.id} className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[12px] p-6 bg-white dark:bg-[#222222] flex flex-col transition-colors">
-                  {/* Top row */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 bg-[#222222] dark:bg-[#111111] rounded-md"></div>
-                    {pitch.is_raising ? (
-                      <span className="bg-[#222222] dark:bg-[#111111] text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Raising</span>
-                    ) : (
-                      <span className="bg-[#e5e5e5] dark:bg-[#444444] text-[#222222] dark:text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Verified</span>
-                    )}
+                <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="card reveal flex min-h-[300px] flex-col p-5" data-delay={String(index * 100)}>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h3 className="truncate text-lg font-bold text-[var(--text)]">{pitch.title || 'Untitled startup'}</h3>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
+                        {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
+                      </div>
+                    </div>
+                    <span className="tag">{pitch.is_raising ? 'Raising' : 'Verified'}</span>
                   </div>
-                  
-                  <h3 className="font-bold text-[#222222] dark:text-white text-[14px] mb-3">{pitch.title}</h3>
-                  
-                  <div className="flex items-center gap-1 mb-2">
-                    <Sparkles className="w-3 h-3 text-[#888888]" />
-                    <span className="text-[#888888] text-[11px] font-medium uppercase tracking-wider">AI Briefing</span>
-                  </div>
-                  
-                  <p className="text-[#888888] text-[13px] leading-[1.6] line-clamp-3 mb-4 flex-grow">
-                    {pitch.ai_summary}
+
+                  <p className="mt-5 line-clamp-3 flex-1 text-sm leading-6 text-[var(--text2)]">
+                    {pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}
                   </p>
-                  
-                  <div className="flex gap-2 mb-6 flex-wrap">
-                    <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.industry}</span>
-                    <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.company_stage}</span>
-                    <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[10px] px-2 py-1 rounded-md">{pitch.country}</span>
+
+                  <div className="my-5 h-px bg-[var(--border)]" />
+                  <div className="grid grid-cols-3 gap-3">
+                    <Metric label="Seeking" value={formatCurrency(pitch.amount_seeking)} />
+                    <Metric label="Equity" value={pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A'} />
+                    <Metric label="Valuation" value={valuation ? formatCurrency(valuation) : 'N/A'} />
                   </div>
-                  
-                  <hr className="border-[#e5e5e5] dark:border-[#444444] mb-4" />
-                  
-                  <div className="grid grid-cols-3 gap-2 mb-6">
-                    <div className="bg-[#F2F2F0] dark:bg-[#333333] p-2 rounded-md text-center">
-                      <div className="text-[10px] text-[#888888] mb-1">Seeking</div>
-                      <div className="text-[11px] font-bold text-[#222222] dark:text-white">{pitch.amount_seeking ? formatCurrency(pitch.amount_seeking) : 'N/A'}</div>
-                    </div>
-                    <div className="bg-[#F2F2F0] dark:bg-[#333333] p-2 rounded-md text-center">
-                      <div className="text-[10px] text-[#888888] mb-1">Equity</div>
-                      <div className="text-[11px] font-bold text-[#222222] dark:text-white">{pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A'}</div>
-                    </div>
-                    <div className="bg-[#F2F2F0] dark:bg-[#333333] p-2 rounded-md text-center">
-                      <div className="text-[10px] text-[#888888] mb-1">Valuation</div>
-                      <div className="text-[11px] font-bold text-[#222222] dark:text-white">{valuation ? formatCurrency(valuation) : 'N/A'}</div>
-                    </div>
+
+                  <div className="mt-6 flex items-center justify-between text-sm">
+                    <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'India'}</span>
+                    <span className="text-[var(--text2)]">View pitch →</span>
                   </div>
-                  
-                  <div className="flex items-center justify-between mt-auto">
-                    <Link href={`/pitch/${pitch.id}`} className="text-[#888888] text-sm hover:text-[#222222] dark:hover:text-white underline decoration-[0.5px] underline-offset-4">Read full pitch &rarr;</Link>
-                    <button className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-medium hover:bg-black dark:hover:bg-gray-200 transition-colors">View</button>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="features" className="bg-[var(--bg)] py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} features</div>
+          <h2 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">
+            Everything you need to pitch, fund and sell.
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div key={feature.title} className="card reveal p-6" data-delay={String((index % 3) * 100)}>
+                  <div className="mb-6 flex h-10 w-10 items-center justify-center border bg-[var(--bg3)]" style={{ borderColor: 'var(--border)' }}>
+                    <Icon className="h-5 w-5 text-[var(--text)]" />
                   </div>
+                  <h3 className="font-bold text-[var(--text)]">{feature.title}</h3>
+                  <p className="mt-3 min-h-[72px] text-sm leading-6 text-[var(--text2)]">{feature.desc}</p>
+                  <div className="mono mt-6 text-[11px] text-[var(--text3)]">Learn more →</div>
                 </div>
               );
             })}
@@ -193,123 +179,53 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* SECTION 5 — Knowledge & government schemes */}
-      <section className="bg-[#F2F2F0] dark:bg-[#1a1a1a] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#222222] dark:text-white mb-12">Resources for founders</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-            {/* Left Column */}
-            <div>
-              <h3 className="text-sm font-bold text-[#888888] uppercase tracking-wider mb-6">Government schemes</h3>
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2">Startup India Seed Fund Scheme</h4>
-                  <p className="text-[#888888] text-sm mb-4">Financial assistance to startups for proof of concept, prototype development, product trials, market entry, and commercialization.</p>
-                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
-                </div>
-                <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2">DPIIT Recognition</h4>
-                  <p className="text-[#888888] text-sm mb-4">Unlock tax exemptions, easier compliance, fast-tracking of patent applications, and access to the Fund of Funds.</p>
-                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
-                </div>
-                <div className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] transition-colors">
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2">MeitY TIDE 2.0 Grants</h4>
-                  <p className="text-[#888888] text-sm mb-4">Promoting tech entrepreneurship through financial and technical support to incubators engaged in supporting ICT startups.</p>
-                  <Link href="/resources/government-schemes" className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4">Learn more &rarr;</Link>
-                </div>
-              </div>
+      <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
+        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
+          {stats.map(([label, value]) => (
+            <div key={label} className="reveal py-8 text-center">
+              <div className="mono text-4xl font-bold text-[var(--text)]">{value}</div>
+              <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
             </div>
-            
-            {/* Right Column */}
-            <div>
-              <h3 className="text-sm font-bold text-[#888888] uppercase tracking-wider mb-6">Latest news</h3>
-              <ul className="space-y-6">
-                <li className="border-b-[0.5px] border-[#e5e5e5] dark:border-[#444444] pb-6">
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">How to prepare your data room for Series A investors in 2024</h4>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-[#888888]">Ventex Insights</span>
-                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
-                  </div>
-                </li>
-                <li className="border-b-[0.5px] border-[#e5e5e5] dark:border-[#444444] pb-6">
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">The shift towards profitability: What seed stage VCs are looking for</h4>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-[#888888]">Founder&apos;s Weekly</span>
-                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
-                  </div>
-                </li>
-                <li>
-                  <h4 className="font-bold text-[#222222] dark:text-white mb-2 hover:underline cursor-pointer">Valuation benchmarks for SaaS startups in the Indian market</h4>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-[#888888]">Market Report</span>
-                    <span className="text-[#222222] dark:text-white font-medium">Read &rarr;</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* SECTION 6 — Marketplace preview */}
-      <section className="bg-white dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-2xl font-bold text-[#222222] dark:text-white">Startup-made products</h2>
-            <Link href="/marketplace" className="text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors text-sm font-medium">Browse marketplace &rarr;</Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {marketplaceData.map((product) => (
-              <div key={product.id} className="border-[0.5px] border-[#e5e5e5] dark:border-[#444444] rounded-[12px] overflow-hidden bg-white dark:bg-[#222222] flex flex-col transition-colors">
-                <div className="bg-[#F2F2F0] dark:bg-[#333333] w-full aspect-video relative flex items-center justify-center">
-                  <span className="text-[#888888] text-sm">Image</span>
-                </div>
-                <div className="p-4 flex flex-col flex-grow">
-                  <h3 className="font-bold text-[#222222] dark:text-white text-[13px] mb-1">{product.name}</h3>
-                  <p className="text-[#888888] text-[11px] mb-3">by {product.seller}</p>
-                  
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="font-bold text-[#222222] dark:text-white">{product.price}</span>
-                    {product.discount && (
-                      <span className="bg-[#222222] dark:bg-[#111111] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{product.discount}</span>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-0.5 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < product.rating ? 'text-[#222222] dark:text-white fill-[#222222] dark:fill-white' : 'text-[#e5e5e5] dark:text-[#444444]'}`} />
-                    ))}
-                  </div>
-                  
-                  <div className="mt-auto pt-2">
-                    <button className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-2 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">Buy now</button>
-                  </div>
-                </div>
+      <section id="how-it-works" className="bg-[var(--bg)] py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} how it works</div>
+          <div className="relative mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="absolute left-0 right-0 top-10 hidden border-t border-dashed md:block" style={{ borderColor: 'var(--border2)' }} />
+            {steps.map(([number, title, desc], index) => (
+              <div key={number} className="reveal relative bg-[var(--bg)] pr-6" data-delay={String(index * 150)}>
+                <div className="mono text-5xl font-bold text-[var(--text3)]">{number}</div>
+                <h3 className="mt-5 text-2xl font-bold tracking-[-.02em] text-[var(--text)]">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 7 — Final CTA banner */}
-      <section className="bg-[#222222] dark:bg-[#111111] py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Ready to pitch your startup to the world?
-          </h2>
-          <p className="text-[#888888] text-lg mb-10">
-            Join thousands of founders already on Ventex.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/signup" className="bg-white text-[#222222] px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors">
-              Create your pitch
-            </Link>
-            <Link href="/discover" className="border-[0.5px] border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-colors">
-              Learn how it works
-            </Link>
+      <section id="join" className="overflow-hidden border-y bg-[var(--bg2)] py-14 text-center" style={{ borderColor: 'var(--border)' }}>
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
+          <div className="mono mt-5 flex whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
+            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
+            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
+            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
           </div>
+          <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>
         </div>
       </section>
     </>
+  );
+}
+
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="mono text-[10px] uppercase text-[var(--text3)]">{label}</div>
+      <div className="mono mt-1 truncate text-base font-bold text-[var(--text)]">{value}</div>
+    </div>
   );
 }

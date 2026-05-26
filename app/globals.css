@@ -3,18 +3,169 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #222222;
+  --bg:#ffffff;
+  --bg2:#f8f8f8;
+  --bg3:#f0f0f0;
+  --border:#e5e5e5;
+  --border2:#d0d0d0;
+  --text:#000000;
+  --text2:#666666;
+  --text3:#aaaaaa;
+  --grid:#e5e5e5;
+  --card-shadow:0 2px 8px rgba(0,0,0,.06);
+  --card-shadow-hover:0 8px 24px rgba(0,0,0,.12);
+  --background: var(--bg);
+  --foreground: var(--text);
+}
+
+[data-theme="dark"] {
+  --bg:#000000;
+  --bg2:#0a0a0a;
+  --bg3:#141414;
+  --border:#1a1a1a;
+  --border2:#2a2a2a;
+  --text:#ffffff;
+  --text2:#888888;
+  --text3:#444444;
+  --grid:#1a1a1a;
+  --card-shadow:0 2px 8px rgba(0,0,0,.4);
+  --card-shadow-hover:0 8px 24px rgba(0,0,0,.6);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  /* The layout wrapper sets the default colors, this is just a fallback */
+  color: var(--text);
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  transition: background 300ms, color 300ms;
+}
+
+button:active,
+a:active {
+  transform: scale(.98);
+}
+
+::selection {
+  background: var(--text);
+  color: var(--bg);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: var(--card-shadow);
+    transition: all 200ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .btn-primary:hover {
+    opacity: .85;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--text2);
+    color: var(--text);
+  }
+
+  .tag {
+    background: var(--bg3);
+    color: var(--text2);
+    border-radius: 2px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 500ms ease, transform 500ms ease;
+  }
+
+  .reveal.revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-delay="50"] { transition-delay: 50ms; }
+  [data-delay="100"] { transition-delay: 100ms; }
+  [data-delay="150"] { transition-delay: 150ms; }
+  [data-delay="200"] { transition-delay: 200ms; }
+  [data-delay="300"] { transition-delay: 300ms; }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 180ms ease, color 180ms ease;
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes line-drop {
+  0% { transform: translateY(-100%); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
 }

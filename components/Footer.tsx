@@ -1,29 +1,66 @@
 import Link from 'next/link';
 
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      ['Discover', '/discover'],
+      ['Marketplace', '/marketplace'],
+      ['Catalyst', '/catalyst'],
+      ['Pitch battle', '/battle'],
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      ['About', '/about'],
+      ['Investors', '/investors'],
+      ['Resources', '/resources/schemes'],
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      ['Terms', '/terms'],
+      ['Privacy', '/privacy'],
+      ['Seller Agreement', '/seller-agreement'],
+    ],
+  },
+];
+
 export default function Footer() {
   return (
-    <footer className="bg-[#222222] text-white py-12 border-t border-[#333333]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0 mb-10">
-          <div className="flex flex-col items-start">
-            <Link href="/" className="font-black italic uppercase text-xl tracking-wider text-white hover:opacity-80 transition-opacity">
+    <footer className="border-t bg-[var(--bg2)] text-[var(--text)]" style={{ borderColor: 'var(--border)' }}>
+      <div className="h-16 bg-gradient-to-b from-[var(--bg)] to-[var(--bg2)]" />
+      <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_2fr]">
+          <div>
+            <Link href="/" className="text-xl font-bold tracking-[-.5px] text-[var(--text)]">
               Ventex
             </Link>
-            <span className="text-[#888888] text-sm mt-1">Where startups pitch, fund and sell.</span>
+            <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--text3)]">
+              Where startups pitch, fund and sell.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-3 text-sm">
-            <Link href="/about" className="text-[#888888] hover:text-white transition-colors">About</Link>
-            <Link href="/discover" className="text-[#888888] hover:text-white transition-colors">Discover</Link>
-            <Link href="/marketplace" className="text-[#888888] hover:text-white transition-colors">Marketplace</Link>
-            <Link href="/terms" className="text-[#888888] hover:text-white transition-colors">Terms</Link>
-            <Link href="/privacy" className="text-[#888888] hover:text-white transition-colors">Privacy</Link>
-            <Link href="/seller-agreement" className="text-[#888888] hover:text-white transition-colors">Seller Agreement</Link>
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            {columns.map((column) => (
+              <div key={column.title}>
+                <h3 className="mono mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{column.title}</h3>
+                <div className="space-y-3">
+                  {column.links.map(([label, href]) => (
+                    <Link key={href} href={href} className="link-underline block w-fit text-sm text-[var(--text2)] hover:text-[var(--text)]">
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="border-t border-[#333333] pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-[#888888] text-sm">&copy; 2025 Ventex. All rights reserved.</span>
-          <span className="text-[#555555] text-xs">Built for founders, investors & builders.</span>
+
+        <div className="mono mt-10 border-t pt-6 text-xs text-[var(--text3)]" style={{ borderColor: 'var(--border)' }}>
+          © 2025 Ventex. Built for India&apos;s builders.
         </div>
       </div>
     </footer>
