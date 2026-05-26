@@ -23,10 +23,10 @@ async function sendEmail(type: string, recipientEmail: string, data: Record<stri
   }
 }
 
-// We need an array of our specific price IDs to determine which tier the user bought.
-// In a real app, these would come from env vars.
-const VENTEX_ACCESS_PRICE_ID = 'price_ventex_access_placeholder';
-const INVESTOR_PREMIUM_PRICE_ID = 'price_investor_premium_placeholder';
+const PLAN_PRICE_IDS = {
+  ventex_access: process.env.STRIPE_PRICE_VENTEX_ACCESS,
+  investor_premium: process.env.STRIPE_PRICE_INVESTOR_PREMIUM,
+} as const;
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_SUBSCRIPTION_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (error: any) {
     console.error('Webhook signature verification failed:', error.message);
@@ -51,9 +51,10 @@ export async function POST(req: Request) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const userId = session.metadata?.userId;
+        const plan = session.metadata?.plan;
         const priceId = session.metadata?.priceId;
 
-        if (userId && priceId) {
+        if (userId && plan && priceId) {
           const endDate = new Date();
           endDate.setDate(endDate.getDate() + 30);
 
@@ -61,10 +62,13 @@ export async function POST(req: Request) {
             subscription_end_date: endDate.toISOString(),
           };
 
-          if (priceId === VENTEX_ACCESS_PRICE_ID) {
+          if (plan === 'ventex_access' && priceId === PLAN_PRICE_IDS.ventex_access) {
             updateData.ventex_access = true;
-          } else if (priceId === INVESTOR_PREMIUM_PRICE_ID) {
+          } else if (plan === 'investor_premium' && priceId === PLAN_PRICE_IDS.investor_premium) {
             updateData.investor_premium = true;
+          } else {
+            console.warn('[Stripe webhook] Ignoring unknown plan or price:', { plan, priceId });
+            break;
           }
 
           await supabaseAdmin

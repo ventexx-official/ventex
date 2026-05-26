@@ -454,13 +454,13 @@ export default function MarketplacePage() {
                           </div>
                           
                           {isCustom ? (
-                            <button className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
+                            <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
                               Request Work
-                            </button>
+                            </Link>
                           ) : (
-                            <button className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+                            <Link href={`/marketplace/${product.id}`} className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
                               Buy Now
-                            </button>
+                            </Link>
                           )}
                         </div>
                       </div>

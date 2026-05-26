@@ -159,11 +159,12 @@ export default function CartPage() {
 
       const res = await fetch('/api/marketplace/create-checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           cartItems: itemsPayload,
-          buyerId: session.user.id,
-          discountPct,
           promoCodeId: promoResult?.codeId || null,
         }),
       });

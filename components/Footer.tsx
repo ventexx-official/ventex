@@ -16,6 +16,7 @@ const columns = [
       ['About', '/about'],
       ['Investors', '/investors'],
       ['Resources', '/resources/schemes'],
+      ['Contact', '/contact'],
     ],
   },
   {
@@ -24,11 +25,15 @@ const columns = [
       ['Terms', '/terms'],
       ['Privacy', '/privacy'],
       ['Seller Agreement', '/seller-agreement'],
+      ['Refunds', '/refund-policy'],
+      ['Delivery', '/delivery-policy'],
     ],
   },
 ];
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="border-t bg-[var(--bg2)] text-[var(--text)]" style={{ borderColor: 'var(--border)' }}>
       <div className="h-16 bg-gradient-to-b from-[var(--bg)] to-[var(--bg2)]" />
@@ -60,7 +65,7 @@ export default function Footer() {
         </div>
 
         <div className="mono mt-10 border-t pt-6 text-xs text-[var(--text3)]" style={{ borderColor: 'var(--border)' }}>
-          © 2025 Ventex. Built for India&apos;s builders.
+          &copy; {year} Ventex. Built for India&apos;s builders.
         </div>
       </div>
     </footer>

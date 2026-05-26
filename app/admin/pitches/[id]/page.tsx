@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import {
@@ -95,7 +95,7 @@ export default function PitchReviewDetails() {
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
 
-  const fetchPitchDetails = async () => {
+  const fetchPitchDetails = useCallback(async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -121,13 +121,13 @@ export default function PitchReviewDetails() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, router]);
 
   useEffect(() => {
     if (id) {
       fetchPitchDetails();
     }
-  }, [id]);
+  }, [id, fetchPitchDetails]);
 
   const handleApprove = async () => {
     if (!pitch) return;

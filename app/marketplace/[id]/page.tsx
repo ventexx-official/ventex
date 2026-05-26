@@ -534,7 +534,9 @@ export default function ProductDetailPage() {
   };
 
   const handleBuyNow = async () => {
-    if (!currentUser) {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
       router.push('/login');
       return;
     }
@@ -544,11 +546,12 @@ export default function ProductDetailPage() {
     try {
       const res = await fetch('/api/marketplace/create-checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           cartItems: [{ product_id: product.id, quantity: 1 }],
-          buyerId: currentUser.id,
-          discountPct: 0,
           promoCodeId: null,
         }),
       });

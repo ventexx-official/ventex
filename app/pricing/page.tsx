@@ -10,8 +10,8 @@ export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleCheckout = async (priceId: string) => {
-    setLoading(priceId);
+  const handleCheckout = async (plan: string) => {
+    setLoading(plan);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -22,10 +22,12 @@ export default function PricingPage() {
 
       const res = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
-          priceId,
-          userId: session.user.id,
+          plan,
         }),
       });
 
@@ -66,7 +68,7 @@ export default function PricingPage() {
       description: 'For active community members',
       price: '₹149',
       period: 'per month',
-      priceId: 'price_ventex_access_placeholder',
+      plan: 'ventex_access',
       features: [
         'Everything in Free',
         'Discuss products directly',
@@ -75,7 +77,7 @@ export default function PricingPage() {
         'Access to founder Q&As',
       ],
       buttonText: 'Get access',
-      buttonAction: () => handleCheckout('price_ventex_access_placeholder'),
+      buttonAction: () => handleCheckout('ventex_access'),
       recommended: true,
       icon: Zap,
     },
@@ -84,7 +86,7 @@ export default function PricingPage() {
       description: 'For serious angel investors',
       price: '₹1,499',
       period: 'per month',
-      priceId: 'price_investor_premium_placeholder',
+      plan: 'investor_premium',
       features: [
         'Everything in Ventex Access',
         'Full financial teardowns',
@@ -93,7 +95,7 @@ export default function PricingPage() {
         'Direct founder introductions',
       ],
       buttonText: 'Go Premium',
-      buttonAction: () => handleCheckout('price_investor_premium_placeholder'),
+      buttonAction: () => handleCheckout('investor_premium'),
       recommended: false,
       icon: Star,
     },
@@ -159,14 +161,14 @@ export default function PricingPage() {
 
               <button
                 onClick={tier.buttonAction}
-                disabled={loading === tier.priceId}
+                disabled={loading === tier.plan}
                 className={`w-full py-4 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
                   tier.recommended
                     ? 'bg-[#222222] text-white hover:bg-black hover:shadow-lg'
                     : 'bg-[#F2F2F0] text-[#222222] hover:bg-[#e5e5e5]'
-                } ${loading === tier.priceId ? 'opacity-70 cursor-not-allowed' : 'active:scale-95'}`}
+                } ${loading === tier.plan ? 'opacity-70 cursor-not-allowed' : 'active:scale-95'}`}
               >
-                {loading === tier.priceId ? (
+                {loading === tier.plan ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>

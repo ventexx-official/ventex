@@ -7,16 +7,89 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+async function getAuthenticatedUser(req: Request) {
+  const authHeader = req.headers.get('authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  if (!token) return null;
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data.user) return null;
+  return data.user;
+}
+
+async function getValidatedDiscount(promoCodeId: string | null, productIds: string[]) {
+  if (!promoCodeId) {
+    return { discountPct: 0, promoCodeId: '' };
+  }
+
+  const { data: promo, error } = await supabaseAdmin
+    .from('promo_codes')
+    .select('*')
+    .eq('id', promoCodeId)
+    .single();
+
+  if (error || !promo) {
+    throw new Error('Invalid promo code.');
+  }
+
+  if (!promo.is_active) {
+    throw new Error('This promo code is inactive.');
+  }
+
+  if (promo.expires_at && new Date(promo.expires_at) < new Date()) {
+    throw new Error('This promo code has expired.');
+  }
+
+  if (promo.max_uses !== null && promo.used_count >= promo.max_uses) {
+    throw new Error('This promo code has reached its usage limit.');
+  }
+
+  if (promo.product_id && !productIds.includes(promo.product_id)) {
+    throw new Error('This promo code is not applicable to the items in your cart.');
+  }
+
+  const discountPct = Number(promo.discount_pct);
+  if (!Number.isFinite(discountPct) || discountPct < 0 || discountPct > 90) {
+    throw new Error('Invalid promo discount.');
+  }
+
+  return { discountPct, promoCodeId: promo.id };
+}
+
 export async function POST(req: Request) {
   try {
-    const { cartItems, buyerId, discountPct = 0, promoCodeId = null } = await req.json();
+    const { cartItems, promoCodeId = null } = await req.json();
 
-    if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0 || !buyerId) {
+    if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
       return new NextResponse('Missing required fields', { status: 400 });
     }
 
+    const authUser = await getAuthenticatedUser(req);
+    if (!authUser) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const buyerId = authUser.id;
+
     // 1. Fetch products and sellers from Supabase using service role (admin)
-    const productIds = cartItems.map((item: any) => item.product_id || item.product?.id);
+    const productIds = Array.from(new Set(cartItems.map((item: any) => item.product_id || item.product?.id).filter(Boolean)));
+    if (productIds.length === 0) {
+      return new NextResponse('Invalid cart items', { status: 400 });
+    }
+
+    const cartItemIds = cartItems.map((item: any) => item.id).filter(Boolean);
+    if (cartItemIds.length > 0) {
+      const { count, error: cartOwnershipError } = await supabaseAdmin
+        .from('cart_items')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', buyerId)
+        .in('id', cartItemIds);
+
+      if (cartOwnershipError || count !== cartItemIds.length) {
+        return new NextResponse('Invalid cart ownership', { status: 403 });
+      }
+    }
     
     const { data: productsData, error: productsError } = await supabaseAdmin
       .from('products')
@@ -93,11 +166,12 @@ export async function POST(req: Request) {
       return product.price;
     };
 
-    const discountRate = 1 - discountPct / 100;
+    const validatedPromo = await getValidatedDiscount(promoCodeId, productIds);
+    const discountRate = 1 - validatedPromo.discountPct / 100;
 
     const lineItems = targetSellerItems.map((item: any) => {
       const basePrice = getActivePrice(item.product);
-      const discountedPrice = Math.round(basePrice * discountRate);
+      const discountedPrice = Math.max(1, Math.round(basePrice * discountRate));
       
       return {
         price_data: {
@@ -118,7 +192,7 @@ export async function POST(req: Request) {
     let totalApplicationFee = 0;
     const purchaseDetails = targetSellerItems.map((item: any) => {
       const basePrice = getActivePrice(item.product);
-      const discountedPrice = Math.round(basePrice * discountRate);
+      const discountedPrice = Math.max(1, Math.round(basePrice * discountRate));
       const amountPaid = discountedPrice * item.quantity;
       const ventexFee = Math.round(amountPaid * 0.05); // 5% fee
       const sellerPayout = amountPaid - ventexFee; // 95% payout
@@ -168,7 +242,7 @@ export async function POST(req: Request) {
         sellerId: targetSellerId,
         cartItemIds: JSON.stringify(targetSellerItems.map((item: any) => item.id).filter(Boolean)),
         productDetails: JSON.stringify(purchaseDetails),
-        promoCodeId: promoCodeId || '',
+        promoCodeId: validatedPromo.promoCodeId,
       },
     });
 

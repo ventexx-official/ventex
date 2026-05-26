@@ -7,13 +7,41 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const PLAN_PRICE_IDS = {
+  ventex_access: process.env.STRIPE_PRICE_VENTEX_ACCESS,
+  investor_premium: process.env.STRIPE_PRICE_INVESTOR_PREMIUM,
+} as const;
+
+async function getAuthenticatedUser(req: Request) {
+  const authHeader = req.headers.get('authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  if (!token) return null;
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data.user) return null;
+  return data.user;
+}
+
 export async function POST(req: Request) {
   try {
-    const { priceId, userId } = await req.json();
+    const { plan } = await req.json();
 
-    if (!priceId || !userId) {
-      return new NextResponse('Missing priceId or userId', { status: 400 });
+    if (!plan || !(plan in PLAN_PRICE_IDS)) {
+      return new NextResponse('Invalid plan', { status: 400 });
     }
+
+    const authUser = await getAuthenticatedUser(req);
+    if (!authUser) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const priceId = PLAN_PRICE_IDS[plan as keyof typeof PLAN_PRICE_IDS];
+    if (!priceId) {
+      return new NextResponse('Stripe price is not configured', { status: 500 });
+    }
+
+    const userId = authUser.id;
 
     // Get user from Supabase
     const { data: user, error: userError } = await supabaseAdmin
@@ -60,7 +88,8 @@ export async function POST(req: Request) {
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/pricing`,
       metadata: {
         userId,
-        priceId, // Useful for the webhook to determine which tier was bought
+        plan,
+        priceId,
       },
     });
 
