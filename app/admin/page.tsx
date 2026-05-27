@@ -13,9 +13,24 @@ import {
   Calendar
 } from "lucide-react";
 
+const FEATURE_FLAGS = [
+  ["ventex_live_enabled", "Ventex Live page"],
+  ["live_founder_applications", "Ventex Live founder applications"],
+  ["live_investor_applications", "Ventex Live investor applications"],
+  ["homepage_featured_this_week", "Homepage Featured This Week"],
+  ["investor_leaderboard", "Investor Leaderboard"],
+  ["xp_system", "XP System"],
+  ["winners_archive", "Winners Archive"],
+  ["referral_system", "Referral System"],
+  ["email_digests", "Email Digests"],
+  ["embeddable_badges", "Embeddable Badges"],
+  ["cold_pitch_challenge", "Cold Pitch Challenge"],
+] as const;
+
 export default function AdminOverview() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
+  const [flags, setFlags] = useState<Record<string, boolean>>({});
 
   const fetchStats = async () => {
     try {
@@ -80,6 +95,13 @@ export default function AdminOverview() {
         totalFees,
         thisMonthRevenue
       });
+
+      const { data: flagRows } = await supabase.from("feature_flags").select("key, enabled");
+      const nextFlags = Object.fromEntries(FEATURE_FLAGS.map(([key]) => [key, false]));
+      (flagRows || []).forEach((row: any) => {
+        nextFlags[row.key] = !!row.enabled;
+      });
+      setFlags(nextFlags);
     } catch (err) {
       console.error("Error loading admin stats:", err);
     } finally {
@@ -90,6 +112,19 @@ export default function AdminOverview() {
   useEffect(() => {
     fetchStats();
   }, []);
+
+  const updateFlag = async (key: string, enabled: boolean) => {
+    setFlags((prev) => ({ ...prev, [key]: enabled }));
+    const { error } = await supabase.from("feature_flags").upsert({
+      key,
+      enabled,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "key" });
+    if (error) {
+      alert(`Could not update feature flag: ${error.message}`);
+      setFlags((prev) => ({ ...prev, [key]: !enabled }));
+    }
+  };
 
   if (loading) {
     return (
@@ -103,6 +138,21 @@ export default function AdminOverview() {
 
   return (
     <div className="space-y-8">
+      <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-6">
+        <div className="mb-5">
+          <h2 className="text-xl font-bold text-white tracking-tight">Feature Flags</h2>
+          <p className="text-sm text-neutral-400 mt-1">Admin-controlled launches. Every new feature defaults to OFF until explicitly enabled.</p>
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {FEATURE_FLAGS.map(([key, label]) => (
+            <label key={key} className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-neutral-900 bg-black/20 p-4">
+              <span className="text-sm font-semibold text-white">{label}</span>
+              <input type="checkbox" checked={!!flags[key]} onChange={(e) => updateFlag(key, e.target.checked)} className="h-4 w-4 accent-violet-500" />
+            </label>
+          ))}
+        </div>
+      </div>
+
       {/* Top Welcome Panel */}
       <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>

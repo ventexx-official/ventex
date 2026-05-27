@@ -38,10 +38,12 @@ const features = [
   },
   {
     icon: Globe,
-    title: 'India-first ecosystem',
-    desc: 'DPIIT scheme helpers, state heat maps, and founder tooling built around Indian startup realities.',
+    title: 'Built for founders worldwide',
+    desc: 'Global resources, founder workflows, and marketplace tooling built around startup realities.',
   },
 ];
+
+const featureLinks = ['/discover', '/discover', '/discover', '/catalyst', '/battle', '/marketplace'];
 
 const steps = [
   ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents.'],
@@ -58,6 +60,19 @@ export default async function Home() {
     supabase.from('pitches').select('*').eq('status', 'live').limit(3),
     supabase.from('products').select('*', { count: 'exact', head: true }).eq('status', 'live'),
   ]);
+  const { data: featuredFlag } = await supabase
+    .from('feature_flags')
+    .select('enabled')
+    .eq('key', 'homepage_featured_this_week')
+    .maybeSingle();
+  const { data: featuredPitches } = featuredFlag?.enabled
+    ? await supabase
+        .from('pitches')
+        .select('*')
+        .in('status', ['live', 'published'])
+        .order('pitch_score', { ascending: false })
+        .limit(3)
+    : { data: [] as any[] };
 
   const stats = [
     ['Startups listed', livePitches],
@@ -78,17 +93,11 @@ export default async function Home() {
           </div>
 
           <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
-            {['Where', 'startups'].map((word, index) => (
-              <span key={word} className="reveal inline-block px-1" data-delay={String(index * 100)}>{word}</span>
-            ))}
-            <span className="reveal inline-block px-1 text-[var(--text3)]" data-delay="200">pitch,</span>
-            <span className="reveal inline-block px-1 text-[var(--text3)]" data-delay="300">fund</span>
-            <span className="reveal inline-block px-1" data-delay="400">and</span>
-            <span className="reveal inline-block px-1" data-delay="500">sell.</span>
+            Where startups pitch, fund and sell.
           </h1>
 
           <p className="reveal mt-6 max-w-[440px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            The platform for Indian founders, investors, and startup buyers.
+            The platform for founders, investors, and startup builders — worldwide.
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
@@ -97,7 +106,9 @@ export default async function Home() {
           </div>
 
           <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
-            {'//'} {livePitches} pitches · {productsCount ?? 0} products · early access
+            {'//'} {livePitches > 20 && investors > 10 && (productsCount ?? 0) > 10
+              ? `${livePitches} startups · ${investors} investors · ${productsCount ?? 0} products`
+              : 'A growing global network of founders, investors, and builders.'}
           </div>
 
           <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
@@ -105,6 +116,22 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {featuredFlag?.enabled && (featuredPitches || []).length > 0 ? (
+        <section className="border-y bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} featured this week</div>
+            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+              {(featuredPitches || []).map((pitch) => (
+                <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="card p-5">
+                  <h2 className="text-lg font-black text-[var(--text)]">{pitch.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--text2)]">{pitch.tagline || pitch.short_description || pitch.ai_summary}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section id="discover" className="border-y bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
         <div className="mx-auto max-w-6xl px-4">
@@ -144,7 +171,7 @@ export default async function Home() {
                   </div>
 
                   <div className="mt-6 flex items-center justify-between text-sm">
-                    <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'India'}</span>
+                    <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
                     <span className="text-[var(--text2)]">View pitch →</span>
                   </div>
                 </Link>
@@ -171,7 +198,7 @@ export default async function Home() {
                   </div>
                   <h3 className="font-bold text-[var(--text)]">{feature.title}</h3>
                   <p className="mt-3 min-h-[72px] text-sm leading-6 text-[var(--text2)]">{feature.desc}</p>
-                  <div className="mono mt-6 text-[11px] text-[var(--text3)]">Learn more →</div>
+                  <Link href={featureLinks[index]} className="mono mt-6 inline-flex text-[11px] font-bold text-[var(--text2)] hover:text-[var(--text)]">Learn more →</Link>
                 </div>
               );
             })}
@@ -210,9 +237,9 @@ export default async function Home() {
         <div className="mx-auto max-w-4xl px-4">
           <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
           <div className="mono mt-5 flex whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
-            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
-            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
-            <span className="pr-8">Early access · Founding member · India first · Pitch · Fund · Sell ·</span>
+            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
           </div>
           <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>
         </div>

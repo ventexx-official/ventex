@@ -34,6 +34,20 @@ export default function NewProductPage() {
   // Form states
   const [name, setName] = useState("");
   const [type, setType] = useState<"fixed_price" | "custom_work">("fixed_price");
+  const [listingType, setListingType] = useState<"software" | "freelance" | "job">("software");
+  const [rateType, setRateType] = useState("Fixed price");
+  const [rateUsd, setRateUsd] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("1 week");
+  const [skills, setSkills] = useState("");
+  const [portfolioLink, setPortfolioLink] = useState("");
+  const [jobType, setJobType] = useState("Full-time");
+  const [workMode, setWorkMode] = useState("Remote");
+  const [jobLocation, setJobLocation] = useState("");
+  const [compensationType, setCompensationType] = useState("Salary");
+  const [salaryMin, setSalaryMin] = useState("");
+  const [salaryMax, setSalaryMax] = useState("");
+  const [equityPct, setEquityPct] = useState("");
+  const [applyTarget, setApplyTarget] = useState("");
   const [description, setDescription] = useState("");
   const [features, setFeatures] = useState<string[]>([""]);
   const [price, setPrice] = useState("");
@@ -234,7 +248,7 @@ export default function NewProductPage() {
         finalDescription += "\n\n### Key Features\n" + cleanedFeatures.map(f => `- ${f}`).join("\n");
       }
 
-      const parsedPrice = type === "custom_work" ? 0 : Math.round(parseFloat(price) * 100);
+      const parsedPrice = type === "custom_work" || !price ? 0 : Math.round(parseFloat(price) * 100);
       const parsedDiscountPrice = (type === "custom_work" || !hasDeal || !dealPrice) 
         ? null 
         : Math.round(parseFloat(dealPrice) * 100);
@@ -247,8 +261,23 @@ export default function NewProductPage() {
         price: parsedPrice,
         discount_price: parsedDiscountPrice,
         type,
+        listing_type: listingType,
         category,
         sector,
+        rate_type: rateType,
+        rate_amount_inr: price ? Number(price) : null,
+        rate_amount_usd: rateUsd ? Number(rateUsd) : null,
+        delivery_time: deliveryTime,
+        skills_tags: skills.split(',').map((item) => item.trim()).filter(Boolean),
+        portfolio_link: portfolioLink || null,
+        job_type: jobType,
+        work_mode: workMode,
+        location: workMode === "Remote" ? null : jobLocation,
+        compensation_type: compensationType,
+        salary_range: salaryMin || salaryMax ? `₹${salaryMin || 0} - ₹${salaryMax || 0}/month` : null,
+        equity_pct: equityPct ? Number(equityPct) : null,
+        apply_url: applyTarget.startsWith('http') ? applyTarget : null,
+        apply_email: applyTarget.includes('@') ? applyTarget : null,
         status: "pending", // admin reviews first
         deal_end_date: (hasDeal && dealEndDate) ? new Date(dealEndDate).toISOString() : null,
       };
@@ -320,8 +349,28 @@ export default function NewProductPage() {
             <section className="space-y-4">
               <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">01. Listing Type & Name</h3>
               
-              {/* Type toggle */}
               <div className="space-y-2">
+                <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Marketplace Listing Type</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { id: "software", label: "Software" },
+                    { id: "freelance", label: "Freelance" },
+                    { id: "job", label: "Job Post" },
+                  ].map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => setListingType(option.id as any)}
+                      className={`rounded-2xl border p-3 text-sm font-black ${listingType === option.id ? "border-[#222222] bg-[#222222] text-white" : "border-[#e5e5e5] bg-[#F2F2F0] text-[#222222]"}`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Type toggle */}
+              {listingType === "software" && <div className="space-y-2">
                 <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Pricing Type</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
@@ -345,7 +394,7 @@ export default function NewProductPage() {
                     </button>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* Product Name */}
               <div className="space-y-2 pt-2">
@@ -538,7 +587,42 @@ export default function NewProductPage() {
               </div>
             </section>
 
+            {listingType === "freelance" && (
+              <section className="space-y-4 pt-2">
+                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">Freelance Service Details</h3>
+                <select value={rateType} onChange={(e) => setRateType(e.target.value)} className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222]"><option>Hourly</option><option>Fixed price</option></select>
+                <div className="grid grid-cols-2 gap-3">
+                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Rate amount ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={rateUsd} onChange={(e) => setRateUsd(e.target.value)} placeholder="Rate amount $" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                </div>
+                <select value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">
+                  {["1 day", "3 days", "1 week", "2 weeks", "Custom"].map((item) => <option key={item}>{item}</option>)}
+                </select>
+                <input value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="Skills tags, comma-separated: React, Node.js, Python" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                <input value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} placeholder="Portfolio link (optional)" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+              </section>
+            )}
+
+            {listingType === "job" && (
+              <section className="space-y-4 pt-2">
+                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">Job Post Details</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <select value={jobType} onChange={(e) => setJobType(e.target.value)} className="bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Full-time", "Part-time", "Contract", "Internship"].map((item) => <option key={item}>{item}</option>)}</select>
+                  <select value={workMode} onChange={(e) => setWorkMode(e.target.value)} className="bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Remote", "Hybrid", "On-site"].map((item) => <option key={item}>{item}</option>)}</select>
+                </div>
+                {workMode !== "Remote" && <input value={jobLocation} onChange={(e) => setJobLocation(e.target.value)} placeholder="Location" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />}
+                <select value={compensationType} onChange={(e) => setCompensationType(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Salary", "Equity", "Salary + Equity"].map((item) => <option key={item}>{item}</option>)}</select>
+                <div className="grid grid-cols-3 gap-3">
+                  <input value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} placeholder="Salary min ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} placeholder="Salary max ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={equityPct} onChange={(e) => setEquityPct(e.target.value)} placeholder="Equity %" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                </div>
+                <input value={applyTarget} onChange={(e) => setApplyTarget(e.target.value)} placeholder="Apply link or email" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+              </section>
+            )}
+
             {/* 6. Pricing, Digital Goods, Custom Contracts */}
+            {listingType === "software" && (
             <section className="space-y-4 pt-2">
               <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">06. Pricing & Delivery</h3>
 
@@ -648,6 +732,7 @@ export default function NewProductPage() {
                 </div>
               )}
             </section>
+            )}
 
             {/* 7. Safety Info box */}
             <div className="bg-amber-50 border-[0.5px] border-amber-200 rounded-2xl p-5 flex items-start gap-3">

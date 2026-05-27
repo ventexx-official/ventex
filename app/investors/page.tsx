@@ -20,7 +20,7 @@ const features = [
 ];
 
 const benefits = [
-  "Access a growing pipeline of Indian startups",
+  "Access a growing pipeline of global startups",
   "Review pitch context before requesting deeper diligence",
   "Connect with founders building software, products, and digital businesses",
   "Use one account for deal discovery and marketplace activity",
@@ -62,6 +62,12 @@ export default function InvestorsPage() {
         </div>
 
         <section className="mt-12 border-t pt-8" style={{ borderColor: "var(--border)" }}>
+          <div className="mb-8 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
+            <h2 className="text-xl font-black tracking-[-.03em]">Verified investors coming soon.</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--text2)]">
+              Apply to join the Ventex investor network and help founders with funding-only conversations through Investor Accounts.
+            </p>
+          </div>
           <h2 className="text-2xl font-black tracking-[-.03em]">
             Investor benefits
           </h2>

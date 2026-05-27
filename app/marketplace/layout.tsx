@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Marketplace",
-  description: "Browse startup products, templates, services, courses, and tools listed by verified Ventex founders.",
+  title: "Startup Marketplace — Buy Software, Hire Developers — Ventex",
+  description: "Buy software products, hire freelance developers, or post a job for your startup.",
   alternates: {
     canonical: "/marketplace",
   },
   openGraph: {
-    title: "Marketplace | Ventex",
-    description: "Browse startup products, templates, services, courses, and tools listed by verified Ventex founders.",
+    title: "Startup Marketplace — Buy Software, Hire Developers — Ventex",
+    description: "Buy software products, hire freelance developers, or post a job for your startup.",
     url: "/marketplace",
     type: "website",
+    images: ["https://ventex.app/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Startup Marketplace — Buy Software, Hire Developers — Ventex",
+    description: "Buy software products, hire freelance developers, or post a job for your startup.",
+    images: ["https://ventex.app/og-image.png"],
   },
 };
 

@@ -41,11 +41,25 @@ export default function BattlePage() {
       return;
     }
 
-    const { data: pitches } = await supabase
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+    let { data: pitches } = await supabase
       .from('pitches')
-      .select('id, title, tagline, logo_url, industry, company_stage')
-      .eq('status', 'live')
-      .limit(5);
+      .select('id, title, tagline, logo_url, industry, company_stage, pitch_score, created_at, is_raising')
+      .in('status', ['live', 'published'])
+      .eq('is_raising', true)
+      .gte('created_at', fourteenDaysAgo)
+      .order('pitch_score', { ascending: false })
+      .limit(8);
+
+    if (!pitches || pitches.length === 0) {
+      const fallback = await supabase
+        .from('pitches')
+        .select('id, title, tagline, logo_url, industry, company_stage, pitch_score, created_at, is_raising')
+        .in('status', ['live', 'published'])
+        .order('created_at', { ascending: false })
+        .limit(8);
+      pitches = fallback.data || [];
+    }
 
     const existingByPitch = new Map((battleData || []).map((entry) => [entry.pitch_id, entry]));
     const fallbackEntries = (pitches || []).map((pitch) => existingByPitch.get(pitch.id) || {
@@ -55,7 +69,7 @@ export default function BattlePage() {
       votes: 0,
       pitch,
     });
-    setEntries(fallbackEntries.slice(0, 5));
+    setEntries(fallbackEntries.slice(0, 8));
   };
 
   useEffect(() => {
@@ -136,10 +150,10 @@ export default function BattlePage() {
 
         {entries.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-white p-10 text-center text-sm font-bold text-[#888888]">
-            No live pitches available for this week yet.
+            Battle entries are being prepared. Submit a pitch to be considered this week.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
             {entries.map((entry) => {
               const pitch = entry.pitch || {};
               const pct = totalVotes ? Math.round(((entry.votes || 0) / totalVotes) * 100) : 0;

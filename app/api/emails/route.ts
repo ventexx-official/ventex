@@ -75,7 +75,13 @@ type EmailType =
   | 'product_sold'
   | 'order_confirmation'
   | 'ai_summary_ready'
-  | 'pitch_rejected';
+  | 'pitch_rejected'
+  | 'contact_submission'
+  | 'catalyst_application'
+  | 'live_founder_application'
+  | 'live_investor_application'
+  | 'build_request'
+  | 'weekly_digest';
 
 function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
@@ -186,6 +192,51 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <p>Please update your pitch details according to the feedback and resubmit for review.</p>`,
           ctaText: 'Edit Pitch',
           ctaUrl: `${VENTEX_URL}/founder/dashboard`,
+        }),
+      };
+
+    case 'contact_submission':
+      return {
+        subject: `New Ventex contact submission: ${data.subject || 'General'}`,
+        html: buildEmail({
+          heading: 'New contact submission',
+          body: `<p><strong>Name:</strong> ${data.name || 'Unknown'}</p>
+                 <p><strong>Email:</strong> ${data.email || 'Unknown'}</p>
+                 <p><strong>Subject:</strong> ${data.subject || 'General'}</p>
+                 <p><strong>Message:</strong></p>
+                 <blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;">${data.message || ''}</blockquote>`,
+          ctaText: 'Open Admin',
+          ctaUrl: `${VENTEX_URL}/admin`,
+        }),
+      };
+
+    case 'catalyst_application':
+      return {
+        subject: `Ventex Catalyst application: ${data.fullName || data.name || 'Applicant'}`,
+        html: buildEmail({
+          heading: 'Catalyst application received',
+          body: `<p><strong>Name:</strong> ${data.fullName || data.name || 'Unknown'}</p>
+                 <p><strong>Email:</strong> ${data.email || 'Unknown'}</p>
+                 <p><strong>Role:</strong> ${data.role || data.support || 'Unknown'}</p>
+                 <p><strong>LinkedIn:</strong> ${data.linkedinUrl || data.linkedin || 'Not provided'}</p>
+                 <p><strong>Bio:</strong> ${data.bio || ''}</p>
+                 <p><strong>Offer:</strong> ${data.offer || data.expertise || ''}</p>`,
+          ctaText: 'Review in Admin',
+          ctaUrl: `${VENTEX_URL}/admin`,
+        }),
+      };
+
+    case 'live_founder_application':
+    case 'live_investor_application':
+    case 'build_request':
+    case 'weekly_digest':
+      return {
+        subject: data.subject || 'Ventex notification',
+        html: buildEmail({
+          heading: data.heading || 'Ventex notification',
+          body: data.body || '<p>A Ventex workflow was triggered.</p>',
+          ctaText: data.ctaText,
+          ctaUrl: data.ctaUrl,
         }),
       };
 

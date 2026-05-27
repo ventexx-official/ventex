@@ -2,39 +2,12 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Search } from 'lucide-react';
+import { Filter, Search, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
-import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
 const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'AgriTech', 'Cybersecurity'];
 const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
-const FALLBACK_INVESTORS = [
-  {
-    id: 'demo-investor-1',
-    full_name: 'Fintech Angel',
-    avatar_url: null,
-    investment_thesis: 'Looks for early payment, lending, and workflow startups with India-first distribution.',
-    preferred_sectors: ['Fintech', 'SaaS'],
-    response_rate: 92,
-  },
-  {
-    id: 'demo-investor-2',
-    full_name: 'SaaS Operator',
-    avatar_url: null,
-    investment_thesis: 'Supports B2B SaaS founders with GTM, pricing, and enterprise sales feedback.',
-    preferred_sectors: ['SaaS', 'AI/ML'],
-    response_rate: 84,
-  },
-  {
-    id: 'demo-investor-3',
-    full_name: 'Consumer Builder',
-    avatar_url: null,
-    investment_thesis: 'Interested in consumer, commerce, and marketplace founders building from India.',
-    preferred_sectors: ['E-commerce', 'Logistics'],
-    response_rate: 78,
-  },
-];
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
@@ -45,45 +18,38 @@ function formatCurrency(amount: number) {
 
 export default function Discover() {
   const [pitches, setPitches] = useState<any[]>([]);
-  const [investors, setInvestors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [industries, setIndustries] = useState<string[]>([]);
   const [stages, setStages] = useState<string[]>([]);
   const [raisingOnly, setRaisingOnly] = useState(false);
   const [sortBy, setSortBy] = useState('latest');
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      let request = supabase.from('pitches').select('*').eq('status', 'live');
-      if (sortBy === 'latest') request = request.order('created_at', { ascending: false });
+      let request = supabase
+        .from('pitches')
+        .select('*')
+        .in('status', ['live', 'published'])
+        .order('created_at', { ascending: false });
+
       if (sortBy === 'most_viewed') request = request.order('views', { ascending: false });
       if (sortBy === 'funding_high') request = request.order('amount_seeking', { ascending: false });
-      const { data } = await request;
+
+      const { data, error } = await request;
+      if (error) console.error('[Discover] pitch fetch failed:', error);
       setPitches(data || []);
       setLoading(false);
     };
     load();
   }, [sortBy]);
 
-  useEffect(() => {
-    const loadInvestors = async () => {
-      const { data } = await supabase
-        .from('users')
-        .select('id, full_name, avatar_url, investment_thesis, preferred_sectors, response_rate')
-        .eq('role', 'investor')
-        .order('response_rate', { ascending: false })
-        .limit(3);
-      setInvestors(data || []);
-    };
-    loadInvestors();
-  }, []);
-
   const filtered = useMemo(() => {
-    const q = query.toLowerCase();
+    const q = query.trim().toLowerCase();
     return pitches.filter((pitch) => {
-      const queryMatch = [pitch.title, pitch.tagline, pitch.industry, pitch.company_stage, pitch.state, pitch.country]
+      const queryMatch = !q || [pitch.title, pitch.tagline, pitch.industry, pitch.company_stage, pitch.state, pitch.country]
         .join(' ')
         .toLowerCase()
         .includes(q);
@@ -98,28 +64,22 @@ export default function Discover() {
     setList(list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
   };
 
+  const resetFilters = () => {
+    setIndustries([]);
+    setStages([]);
+    setRaisingOnly(false);
+    setQuery('');
+  };
+
   const filters = (
     <div className="space-y-8">
       <FilterGroup title="Industry" values={INDUSTRIES} selected={industries} onToggle={(v) => toggle(v, industries, setIndustries)} />
       <FilterGroup title="Stage" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
-      <div>
-        <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-[var(--text)]">
-          <input type="checkbox" checked={raisingOnly} onChange={(e) => setRaisingOnly(e.target.checked)} />
-          Actively raising only
-        </label>
-      </div>
-      <button
-        type="button"
-        onClick={() => {
-          setIndustries([]);
-          setStages([]);
-          setRaisingOnly(false);
-          setQuery('');
-        }}
-        className="btn-secondary w-full"
-      >
-        Reset filters
-      </button>
+      <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-[var(--text)]">
+        <input type="checkbox" checked={raisingOnly} onChange={(e) => setRaisingOnly(e.target.checked)} />
+        Actively raising only
+      </label>
+      <button type="button" onClick={resetFilters} className="btn-secondary w-full">Reset filters</button>
     </div>
   );
 
@@ -138,7 +98,7 @@ export default function Discover() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search startups, sectors, states..."
+                placeholder="Search startups, sectors, countries..."
                 className="w-full border bg-[var(--bg)] py-3 pl-11 pr-4 text-sm font-medium text-[var(--text)] outline-none"
                 style={{ borderColor: 'var(--border)' }}
               />
@@ -153,81 +113,31 @@ export default function Discover() {
         </aside>
 
         <div className="md:hidden">
-          <div className="-mx-4 overflow-x-auto px-4 pb-2">
-            <div className="flex w-max gap-2">
-              <button
-                type="button"
-                onClick={() => setRaisingOnly(!raisingOnly)}
-                className={`tag min-h-11 border px-4 ${raisingOnly ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}
-              >
-                Raising only
-              </button>
-              {[...INDUSTRIES, ...STAGES].map((value) => {
-                const selected = industries.includes(value) || stages.includes(value);
-                return (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => {
-                      if (INDUSTRIES.includes(value)) toggle(value, industries, setIndustries);
-                      else toggle(value, stages, setStages);
-                    }}
-                    className={`tag min-h-11 border px-4 ${selected ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}
-                  >
-                    {value}
+          <button type="button" onClick={() => setDrawerOpen(true)} className="btn-secondary inline-flex items-center gap-2">
+            <Filter className="h-4 w-4" /> Filters
+          </button>
+          {drawerOpen ? (
+            <div className="fixed inset-0 z-50 bg-black/40">
+              <div className="ml-auto h-full w-[86vw] max-w-sm overflow-y-auto bg-[var(--bg)] p-5 shadow-2xl">
+                <div className="mb-6 flex items-center justify-between">
+                  <h2 className="text-lg font-black text-[var(--text)]">Filters</h2>
+                  <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Close filters">
+                    <X className="h-5 w-5" />
                   </button>
-                );
-              })}
-              <button
-                type="button"
-                onClick={() => {
-                  setIndustries([]);
-                  setStages([]);
-                  setRaisingOnly(false);
-                  setQuery('');
-                }}
-                className="tag min-h-11 border border-[var(--border)] px-4"
-              >
-                Reset
-              </button>
+                </div>
+                {filters}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
 
         <main className="min-w-0 flex-1">
-          {(investors.length > 0 ? investors : FALLBACK_INVESTORS).length > 0 && (
-            <section className="mb-6">
-              <div className="mb-3 flex items-center justify-between gap-4">
-                <h2 className="text-sm font-bold text-[var(--text)]">Responsive investors</h2>
-                <Link href="/investors" className="link-underline text-xs font-semibold text-[var(--text2)]">View all</Link>
-              </div>
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                {(investors.length > 0 ? investors : FALLBACK_INVESTORS).map((investor) => (
-                  <Link
-                    key={investor.id}
-                    href={investor.id.startsWith('demo-') ? '/investors' : `/profile/${investor.id}`}
-                    className="border bg-[var(--bg2)] p-4 transition-colors hover:bg-[var(--bg3)]"
-                    style={{ borderColor: 'var(--border)' }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--text)] text-sm font-black text-[var(--bg)]">
-                        {investor.avatar_url ? <img src={investor.avatar_url} alt="" className="h-full w-full object-cover" /> : (investor.full_name || 'I')[0]}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="truncate text-sm font-bold text-[var(--text)]">{investor.full_name || 'Investor'}</div>
-                        <div className="mt-2">
-                          <InvestorResponseBadge response_rate={investor.response_rate} />
-                        </div>
-                      </div>
-                    </div>
-                    <p className="mt-3 line-clamp-2 text-xs leading-5 text-[var(--text2)]">
-                      {investor.investment_thesis || (investor.preferred_sectors || []).join(', ') || 'Thesis not added yet.'}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
+          <section className="mb-6 border bg-[var(--bg2)] p-5" style={{ borderColor: 'var(--border)' }}>
+            <h2 className="text-base font-black text-[var(--text)]">Responsive investors</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--text2)]">
+              Verified investors coming soon. <Link href="/investors" className="font-bold underline underline-offset-4">Apply to join the Ventex investor network →</Link>
+            </p>
+          </section>
 
           <div className="mb-6 flex items-center justify-between gap-4">
             <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
@@ -245,8 +155,10 @@ export default function Discover() {
           ) : filtered.length === 0 ? (
             <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>
               <div>
-                <div className="mono text-xs uppercase tracking-[.12em] text-[var(--text3)]">{'//'} no results</div>
-                <p className="mt-3 text-sm text-[var(--text2)]">Try loosening the filters or search query.</p>
+                <div className="mono text-xs uppercase tracking-[.12em] text-[var(--text3)]">{'//'} no startups found</div>
+                <p className="mt-3 text-sm text-[var(--text2)]">
+                  {pitches.length === 0 ? 'No published startups are live yet.' : 'Try loosening the filters or search query.'}
+                </p>
               </div>
             </div>
           ) : (
@@ -256,7 +168,6 @@ export default function Discover() {
           )}
         </main>
       </div>
-
     </div>
   );
 }
@@ -265,13 +176,9 @@ function FilterGroup({ title, values, selected, onToggle }: { title: string; val
   return (
     <section>
       <h3 className="mono mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{title}</h3>
-      <div className="flex flex-wrap gap-2 md:flex-col">
+      <div className="flex flex-col gap-2">
         {values.map((value) => (
-          <button
-            key={value}
-            onClick={() => onToggle(value)}
-            className={`tag w-fit border transition-transform hover:translate-x-0.5 ${selected.includes(value) ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}
-          >
+          <button key={value} onClick={() => onToggle(value)} className={`tag w-fit border transition-transform hover:translate-x-0.5 ${selected.includes(value) ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}>
             {value}
           </button>
         ))}
@@ -294,7 +201,7 @@ function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
       <div className="mt-3 flex flex-wrap gap-2">
         {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
         {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
-        {showRunway && runwayDays !== null ? <span className="tag border border-red-200 bg-red-50 text-red-600">⏰ Closes in {runwayDays} days</span> : null}
+        {showRunway && runwayDays !== null ? <span className="tag border border-red-200 bg-red-50 text-red-600">Closes in {runwayDays} days</span> : null}
       </div>
       <p className="mt-4 line-clamp-3 flex-1 text-[13px] leading-6 text-[var(--text2)]">{pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}</p>
       <div className="my-5 h-px bg-[var(--border)]" />
@@ -304,7 +211,7 @@ function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
         <Metric label="Valuation" value={valuation ? formatCurrency(valuation) : 'N/A'} />
       </div>
       <div className="mt-6 flex items-center justify-between text-sm">
-        <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'India'}</span>
+        <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
         <span className="text-[var(--text2)]">View pitch →</span>
       </div>
     </Link>

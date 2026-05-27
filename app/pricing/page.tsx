@@ -1,192 +1,122 @@
 "use client";
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-import { Check, Star, Zap, Shield, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { ChevronDown, Check } from 'lucide-react';
+
+type PriceMode = 'both' | 'inr' | 'usd';
+
+const groups = [
+  {
+    heading: 'For Founders',
+    tiers: [
+      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
+      { name: 'Builder', inr: '₹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
+      { name: 'Pro', inr: '₹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'Ventex Live priority application'] },
+    ],
+  },
+  {
+    heading: 'For Investors',
+    tiers: [
+      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['View 5 pitches/month', 'Basic search'] },
+      { name: 'Basic', inr: '₹499/month', usd: '$6/month', features: ['Unlimited pitch views', 'Save pitches', 'Contact founders'] },
+      { name: 'Pro', inr: '₹1499/month', usd: '$18/month', features: ['All Basic features', 'Data rooms', 'Investor badge', 'Priority matching', 'Portfolio tracking', 'Analytics'] },
+    ],
+  },
+  {
+    heading: 'Marketplace Buyers (Premium)',
+    tiers: [
+      { name: 'Premium', inr: '₹199/month', usd: '$3/month', features: ['Buy software products', 'Post job applications', 'Request custom builds from founders'] },
+    ],
+  },
+];
+
+const faqs = [
+  ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace — buy software, hire developers, and request custom builds. It does not include investor features.'],
+  ['What is an Investor Account?', 'Investor accounts are for discovering startups, viewing pitches, and connecting with founders for funding. Separate from Premium.'],
+  ['Can I be both a founder and an investor?', 'Yes. You can hold multiple roles under one account.'],
+  ['Is there a free trial?', 'All paid tiers include a 7-day free trial. No card required.'],
+  ['What currency do you charge in?', 'You can pay in INR or USD. Prices shown in both.'],
+];
+
+function displayPrice(tier: { inr: string; usd: string }, mode: PriceMode) {
+  if (mode === 'inr') return tier.inr;
+  if (mode === 'usd') return tier.usd;
+  return `${tier.inr} · ${tier.usd}`;
+}
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState<string | null>(null);
-  const router = useRouter();
-
-  const handleCheckout = async (plan: string) => {
-    setLoading(plan);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        router.push('/login?redirect=/pricing');
-        return;
-      }
-
-      const res = await fetch('/api/stripe/create-checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          plan,
-        }),
-      });
-
-      const data = await res.json();
-      
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL returned');
-      }
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      alert('Checkout failed: Please check your API keys and configuration.');
-    } finally {
-      setLoading(null);
-    }
-  };
-
-  const tiers = [
-    {
-      name: 'Free',
-      description: 'Perfect for exploring the ecosystem',
-      price: '₹0',
-      period: 'forever',
-      features: [
-        'Browse public startup pitches',
-        'View product marketplace',
-        'Join community discussions',
-        'Create a basic profile',
-      ],
-      buttonText: 'Get started free',
-      buttonAction: () => router.push('/signup'),
-      recommended: false,
-      icon: Shield,
-    },
-    {
-      name: 'Ventex Access',
-      description: 'For active community members',
-      price: '₹149',
-      period: 'per month',
-      plan: 'ventex_access',
-      features: [
-        'Everything in Free',
-        'Discuss products directly',
-        'Express investment interest',
-        'Priority support',
-        'Access to founder Q&As',
-      ],
-      buttonText: 'Get access',
-      buttonAction: () => handleCheckout('ventex_access'),
-      recommended: true,
-      icon: Zap,
-    },
-    {
-      name: 'Investor Premium',
-      description: 'For serious angel investors',
-      price: '₹1,499',
-      period: 'per month',
-      plan: 'investor_premium',
-      features: [
-        'Everything in Ventex Access',
-        'Full financial teardowns',
-        'Downloadable pitch decks',
-        'Advanced deal flow tools',
-        'Direct founder introductions',
-      ],
-      buttonText: 'Go Premium',
-      buttonAction: () => handleCheckout('investor_premium'),
-      recommended: false,
-      icon: Star,
-    },
-  ];
+  const [mode, setMode] = useState<PriceMode>('both');
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-black text-[#222222] tracking-tighter uppercase mb-4">
-            Choose your access level
-          </h1>
-          <p className="text-lg text-[#888888] font-medium max-w-2xl mx-auto">
-            Whether you're just exploring or ready to invest, we have a plan designed to help you succeed in the Ventex ecosystem.
-          </p>
+    <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222] dark:bg-[#111111] dark:text-white">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[#666666] dark:text-gray-400">Pricing</p>
+            <h1 className="max-w-3xl text-4xl font-black uppercase tracking-tight md:text-6xl">Plans for founders, investors, and marketplace buyers.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#666666] dark:text-gray-300">Ventex Premium is marketplace access only. Investor Accounts are separate and built for pitch discovery, deal flow, and founder contact.</p>
+          </div>
+          <div className="inline-flex rounded-full border border-black/10 bg-white p-1 dark:border-white/10 dark:bg-[#1a1a1a]">
+            {[
+              ['both', '₹ INR / $ USD'],
+              ['inr', '₹ INR'],
+              ['usd', '$ USD'],
+            ].map(([value, label]) => (
+              <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[#222222] text-white dark:bg-white dark:text-[#222222]' : 'text-[#666666] dark:text-gray-300'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
-          {tiers.map((tier, idx) => (
-            <div 
-              key={tier.name}
-              className={`relative bg-white rounded-[32px] p-8 border-[0.5px] ${
-                tier.recommended 
-                  ? 'border-[#222222] shadow-2xl scale-100 md:scale-105 z-10' 
-                  : 'border-[#e5e5e5] shadow-sm scale-100'
-              } transition-all duration-300 flex flex-col h-full`}
-            >
-              {tier.recommended && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#222222] text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">
-                  Recommended
-                </div>
-              )}
-
-              <div className="mb-8">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${
-                  tier.recommended ? 'bg-[#222222] text-white' : 'bg-[#F2F2F0] text-[#222222]'
-                }`}>
-                  <tier.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-2xl font-black text-[#222222] mb-2">{tier.name}</h3>
-                <p className="text-sm text-[#888888] font-medium h-10">{tier.description}</p>
-              </div>
-
-              <div className="mb-8">
-                <div className="flex items-end gap-2">
-                  <span className="text-5xl font-black text-[#222222]">{tier.price}</span>
-                  <span className="text-sm text-[#888888] font-medium mb-2">/ {tier.period}</span>
-                </div>
-              </div>
-
-              <ul className="space-y-4 mb-8 flex-grow">
-                {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      tier.recommended ? 'bg-emerald-100 text-emerald-600' : 'bg-[#F2F2F0] text-[#222222]'
-                    }`}>
-                      <Check className="w-3 h-3" />
+        <div className="grid gap-5 lg:grid-cols-3">
+          {groups.map((group) => (
+            <section key={group.heading} className="rounded-lg border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+              <h2 className="mb-5 text-xl font-black">{group.heading}</h2>
+              <div className="space-y-4">
+                {group.tiers.map((tier) => (
+                  <article key={tier.name} className="rounded-lg border border-black/10 p-5 dark:border-white/10">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-lg font-black">{tier.name}</h3>
+                        <p className="mt-1 text-2xl font-black tracking-tight">{displayPrice(tier, mode)}</p>
+                      </div>
+                      {tier.name === 'Premium' ? <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black text-emerald-700">Marketplace only</span> : null}
                     </div>
-                    <span className="text-sm font-medium text-[#222222] leading-snug">{feature}</span>
-                  </li>
+                    <ul className="mt-5 space-y-3">
+                      {tier.features.map((feature) => (
+                        <li key={feature} className="flex gap-3 text-sm text-[#555555] dark:text-gray-300">
+                          <Check className="mt-0.5 h-4 w-4 flex-none text-emerald-600" /> {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-white dark:text-[#222222]">
+                      Start 7-day trial
+                    </Link>
+                  </article>
                 ))}
-              </ul>
-
-              <button
-                onClick={tier.buttonAction}
-                disabled={loading === tier.plan}
-                className={`w-full py-4 rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-                  tier.recommended
-                    ? 'bg-[#222222] text-white hover:bg-black hover:shadow-lg'
-                    : 'bg-[#F2F2F0] text-[#222222] hover:bg-[#e5e5e5]'
-                } ${loading === tier.plan ? 'opacity-70 cursor-not-allowed' : 'active:scale-95'}`}
-              >
-                {loading === tier.plan ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    {tier.buttonText}
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </div>
+              </div>
+            </section>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-sm text-[#888888] font-medium">
-            Have questions about our plans? <Link href="/contact" className="text-[#222222] underline underline-offset-4 font-bold hover:text-black">Contact our support team</Link>.
-          </p>
-        </div>
+        <section className="mt-12 rounded-lg border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+          <h2 className="mb-4 text-2xl font-black">FAQ</h2>
+          <div className="divide-y divide-black/10 dark:divide-white/10">
+            {faqs.map(([question, answer], index) => (
+              <div key={question}>
+                <button type="button" onClick={() => setOpenFaq(openFaq === index ? null : index)} className="flex w-full items-center justify-between gap-4 py-4 text-left font-black">
+                  {question}
+                  <ChevronDown className={`h-5 w-5 transition-transform ${openFaq === index ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === index ? <p className="pb-4 text-sm leading-6 text-[#666666] dark:text-gray-300">{answer}</p> : null}
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

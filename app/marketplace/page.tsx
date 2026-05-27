@@ -110,6 +110,7 @@ export default function MarketplacePage() {
   const [selectedType, setSelectedType] = useState<string>('All');
   const [dealsOnly, setDealsOnly] = useState<boolean>(false);
   const [minRating, setMinRating] = useState<number>(0);
+  const [listingTab, setListingTab] = useState<'All' | 'software' | 'freelance' | 'job'>('All');
 
   const CATEGORIES = ['All', 'Software', 'Templates', 'Services', 'Hardware', 'Courses'];
   const TYPES = ['All', 'fixed_price', 'custom_work'];
@@ -130,7 +131,7 @@ export default function MarketplacePage() {
           seller:seller_id ( id, full_name, avatar_url ),
           pitch:pitch_id ( id, title )
         `)
-        .eq('status', 'live');
+        .in('status', ['live', 'published']);
         
       if (!error && data) {
         setProducts(data);
@@ -156,6 +157,8 @@ export default function MarketplacePage() {
       if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
       if (selectedSector !== 'All' && p.sector !== selectedSector) return false;
       if (selectedType !== 'All' && p.type !== selectedType) return false;
+      const listingType = p.listing_type || (p.type === 'freelance' || p.type === 'job' ? p.type : 'software');
+      if (listingTab !== 'All' && listingType !== listingTab) return false;
       if (dealsOnly && (!p.discount_price || !p.deal_end_date || new Date(p.deal_end_date) <= now)) return false;
       if (minRating > 0 && (p.average_rating || 0) < minRating) return false;
       
@@ -166,7 +169,7 @@ export default function MarketplacePage() {
       return true;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [products, searchQuery, selectedCategory, selectedSector, selectedType, dealsOnly, minRating, priceMin, priceMax, tick]);
+  }, [products, searchQuery, selectedCategory, selectedSector, selectedType, dealsOnly, minRating, priceMin, priceMax, listingTab, tick]);
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
@@ -191,6 +194,12 @@ export default function MarketplacePage() {
               className="w-full pl-12 pr-4 py-3.5 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-medium focus:outline-none focus:bg-white dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
             />
           </div>
+        </div>
+      </div>
+
+      <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
+        <div className="mx-auto max-w-7xl">
+          Ventex Premium is for marketplace access — buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
         </div>
       </div>
 
@@ -347,6 +356,23 @@ export default function MarketplacePage() {
 
         {/* PRODUCT GRID */}
         <div className="flex-1">
+          <div className="mb-6 flex flex-wrap gap-2">
+            {[
+              ['All', 'All'],
+              ['software', 'Software'],
+              ['freelance', 'Freelance'],
+              ['job', 'Jobs'],
+            ].map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setListingTab(value as any)}
+                className={`rounded-full border px-4 py-2 text-xs font-black ${listingTab === value ? 'border-[#222222] bg-[#222222] text-white dark:border-white dark:bg-white dark:text-[#222222]' : 'border-[#e5e5e5] bg-white text-[#222222] dark:border-[#333333] dark:bg-[#1a1a1a] dark:text-white'}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           {loading ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
@@ -385,7 +411,10 @@ export default function MarketplacePage() {
                 {filteredProducts.map(product => {
                   const now = new Date();
                   const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
+                  const listingType = product.listing_type || (product.type === 'freelance' || product.type === 'job' ? product.type : 'software');
                   const isCustom = product.type === 'custom_work';
+                  const isFreelance = listingType === 'freelance';
+                  const isJob = listingType === 'job';
 
                   return (
                     <div key={product.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
@@ -410,9 +439,9 @@ export default function MarketplacePage() {
                           <Link href={`/marketplace/${product.id}`}>
                             <h3 className="font-bold text-[#222222] dark:text-white text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
                           </Link>
-                          {isCustom && (
+                          {(isCustom || isFreelance || isJob) && (
                             <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#888888] dark:text-gray-300 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded flex-shrink-0">
-                              Request
+                              {isJob ? 'Job' : isFreelance ? 'Freelance' : 'Request'}
                             </span>
                           )}
                         </div>
@@ -440,7 +469,9 @@ export default function MarketplacePage() {
 
                         <div className="mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-end justify-between">
                           <div>
-                            {isCustom ? (
+                            {isJob ? (
+                              <p className="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-0.5">{product.job_type || 'Role'}</p>
+                            ) : isCustom || isFreelance ? (
                               <p className="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-0.5">Starts from</p>
                             ) : null}
                             <div className="flex items-baseline gap-2">
@@ -453,9 +484,13 @@ export default function MarketplacePage() {
                             </div>
                           </div>
                           
-                          {isCustom ? (
+                          {isJob ? (
+                            <a href={product.apply_url || (product.apply_email ? `mailto:${product.apply_email}` : `/marketplace/${product.id}`)} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
+                              Apply
+                            </a>
+                          ) : isCustom || isFreelance ? (
                             <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
-                              Request Work
+                              Request
                             </Link>
                           ) : (
                             <Link href={`/marketplace/${product.id}`} className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">

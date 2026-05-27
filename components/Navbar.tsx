@@ -90,6 +90,7 @@ export default function Navbar() {
     { href: '/discover', label: 'Discover' },
     { href: '/marketplace', label: 'Marketplace' },
     { href: '/catalyst', label: 'Catalyst' },
+    { href: '/pricing', label: 'Pricing' },
   ];
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

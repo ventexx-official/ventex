@@ -83,8 +83,8 @@ export default function PitchDetail() {
       alert("Please log in to express interest.");
       return;
     }
-    if (!investorPremium && !ventexAccess) {
-      if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+    if (!investorPremium) {
+      if (confirm("Investor Account required to express interest. Premium is marketplace-only. View investor plans now?")) {
         router.push('/pricing');
       }
       return;
@@ -139,7 +139,7 @@ export default function PitchDetail() {
             payload: {
               pitchFounderId: pitch.founder_id,
               startupName: pitch.title,
-              investorName: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'A premium investor',
+              investorName: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'An investor',
               message: interestMessage,
             },
           }),
@@ -237,13 +237,20 @@ via Ventex`;
     setIsCheckingOut(true);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/login');
+        return;
+      }
+
       const res = await fetch('/api/marketplace/create-checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           cartItems: [{ product_id: prod.id, quantity: 1 }],
-          buyerId: currentUser.id,
-          discountPct: 0,
           promoCodeId: null,
         }),
       });
@@ -285,7 +292,7 @@ via Ventex`;
           .from('pitches')
           .select('*')
           .eq('id', id)
-          .single();
+          .maybeSingle();
           
         if (pitchError) throw pitchError;
         setPitch(pitchData);
@@ -302,7 +309,8 @@ via Ventex`;
         const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select('*')
-          .eq('pitch_id', id);
+          .eq('pitch_id', id)
+          .in('status', ['live', 'published']);
           
         if (productsError) throw productsError;
         setProducts(productsData || []);
@@ -331,7 +339,7 @@ via Ventex`;
           setCurrentProfile(profile);
           const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
           setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
-          setVentexAccess(!!((profile.ventex_access || profile.investor_premium) && hasActiveSub));
+          setVentexAccess(!!(profile.ventex_access && hasActiveSub));
         }
       }
       // Load liked comments from localStorage
@@ -619,10 +627,10 @@ via Ventex`;
           <div className="hidden items-center gap-3 md:flex">
              <button 
                onClick={() => {
-                 if (investorPremium || ventexAccess) {
+                 if (investorPremium) {
                    setIsInterestModalOpen(true);
                  } else {
-                   if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+                   if (confirm("Investor Account required. Premium is marketplace-only. View investor plans now?")) {
                      router.push('/pricing');
                    }
                  }
@@ -867,10 +875,10 @@ via Ventex`;
                   <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Premium content</h3>
-                  <p className="text-sm text-[#888888] mb-6">Financial data and traction details are reserved for verified premium investors.</p>
+                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Investor Account required</h3>
+                  <p className="text-sm text-[#888888] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
                   <Link href="/pricing" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
-                    Unlock with Investor Premium
+                    View Investor Accounts
                   </Link>
                 </div>
               </div>
@@ -938,10 +946,10 @@ via Ventex`;
                   <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Premium content</h3>
-                  <p className="text-sm text-[#888888] mb-6">Pitch decks and confidential files are reserved for verified premium investors.</p>
+                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Investor Account required</h3>
+                  <p className="text-sm text-[#888888] mb-6">Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.</p>
                   <Link href="/pricing" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
-                    Unlock with Investor Premium
+                    View Investor Accounts
                   </Link>
                 </div>
               </div>
@@ -1076,10 +1084,10 @@ via Ventex`;
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-white/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
         <button
           onClick={() => {
-            if (investorPremium || ventexAccess) {
+            if (investorPremium) {
               setIsInterestModalOpen(true);
             } else {
-              if (confirm("Ventex Access or Investor Premium is required to express interest. Upgrade now?")) {
+              if (confirm("Investor Account required. Premium is marketplace-only. View investor plans now?")) {
                 router.push('/pricing');
               }
             }

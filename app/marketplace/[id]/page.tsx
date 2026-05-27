@@ -66,6 +66,10 @@ export default function ProductDetailPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const [requirements, setRequirements] = useState('');
+  const [requestName, setRequestName] = useState('');
+  const [requestBudget, setRequestBudget] = useState('');
+  const [requestTimeline, setRequestTimeline] = useState('');
+  const [requestEmail, setRequestEmail] = useState('');
   const [submittingRequest, setSubmittingRequest] = useState(false);
 
   const [newQuestion, setNewQuestion] = useState('');
@@ -167,7 +171,7 @@ export default function ProductDetailPage() {
   // Derived Values
   const now = new Date();
   const isDeal = product?.discount_price && product?.deal_end_date && new Date(product.deal_end_date) > now;
-  const isCustom = product?.type === 'custom_work';
+  const isCustom = product?.type === 'custom_work' || product?.is_custom_build || product?.listing_type === 'freelance';
 
   const handleRequestWork = async () => {
     if (!currentUser) {
@@ -175,12 +179,12 @@ export default function ProductDetailPage() {
       return;
     }
     
-    // Check Ventex Access
+    // Check marketplace Premium access
     const hasAccess = currentUser.ventex_access || currentUser.investor_premium;
     const hasValidSub = currentUser.subscription_end_date && new Date(currentUser.subscription_end_date) > now;
     
     if (!hasAccess || !hasValidSub) {
-      if (confirm("Ventex Access or Premium is required to request custom work. Upgrade now?")) {
+      if (confirm("Ventex Premium is required for marketplace custom build requests. Upgrade now?")) {
         router.push('/pricing');
       }
       return;
@@ -242,11 +246,15 @@ export default function ProductDetailPage() {
     setSubmittingRequest(true);
 
     try {
-      const { error: reqError } = await supabase.from('project_requests').insert({
+      const { error: reqError } = await supabase.from('build_requests').insert({
         buyer_id: currentUser.id,
         seller_id: product.seller_id,
         product_id: product.id,
-        requirements,
+        name: requestName,
+        project_description: requirements,
+        budget_range: requestBudget,
+        timeline_needed: requestTimeline,
+        contact_email: requestEmail,
         status: 'pending'
       });
 
@@ -256,13 +264,17 @@ export default function ProductDetailPage() {
       await supabase.from('notifications').insert({
         user_id: product.seller_id,
         type: 'new_request',
-        message: `New custom work request for ${product.name} from ${currentUser.full_name}`,
-        link: `/founder/dashboard` // placeholder link
+        message: `New custom build request for ${product.name} from ${currentUser.full_name || requestName || 'a buyer'}`,
+        link: `/founder/dashboard`
       });
 
       setIsRequestModalOpen(false);
       setRequirements('');
-      alert("Request sent successfully! The founder has been notified.");
+      setRequestName('');
+      setRequestBudget('');
+      setRequestTimeline('');
+      setRequestEmail('');
+      alert("This is a product inquiry, not an investment discussion. The founder will respond to your project request.");
     } catch (err: any) {
       alert("Error: " + err.message);
     } finally {
@@ -647,6 +659,11 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
+      <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
+        <div className="mx-auto max-w-6xl">
+          Ventex Premium is for marketplace access — buying software, hiring, and custom build requests. For investment features, see <Link href="/pricing" className="underline underline-offset-4">Investor Accounts</Link>.
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto px-4 md:px-6 pt-12 space-y-12">
         
         {/* TOP SECTION: Two Columns */}
@@ -751,7 +768,7 @@ export default function ProductDetailPage() {
                   <button onClick={handleRequestWork} className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
                     Request Work
                   </button>
-                  <p className="text-xs text-center text-[#888888] font-medium">Ventex Access required to discuss requirements.</p>
+                  <p className="text-xs text-center text-[#888888] font-medium">Ventex Premium required to discuss marketplace requirements.</p>
                 </>
               ) : (
                 <div className="flex gap-3">
@@ -1046,16 +1063,20 @@ export default function ProductDetailPage() {
               <X className="w-4 h-4 text-[#888888]" />
             </button>
             <div className="p-8">
-              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-2">Request Custom Work</h2>
-              <p className="text-sm text-[#888888] mb-6">Describe your requirements for <strong>{product.name}</strong>. The founder will review and reply with a formal quote.</p>
+              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-2">Request Custom Build</h2>
+              <p className="text-sm text-[#888888] mb-6">This is a product inquiry, not an investment discussion. The founder will respond to your project request.</p>
+              <input value={requestName} onChange={(e) => setRequestName(e.target.value)} placeholder="Your name" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
               
               <textarea 
                 rows={5}
                 value={requirements}
                 onChange={e => setRequirements(e.target.value)}
-                placeholder="E.g., I need a custom payment gateway integration and a redesigned dashboard layout..."
-                className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white mb-6 resize-none"
+                placeholder="Project description"
+                className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white mb-3 resize-none"
               ></textarea>
+              <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (₹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
+              <input value={requestTimeline} onChange={(e) => setRequestTimeline(e.target.value)} placeholder="Timeline needed" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
+              <input value={requestEmail} onChange={(e) => setRequestEmail(e.target.value)} placeholder="Contact email" type="email" className="mb-6 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
               
               <button 
                 onClick={submitRequest}

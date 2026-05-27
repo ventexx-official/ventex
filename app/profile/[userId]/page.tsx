@@ -18,6 +18,8 @@ type UserProfile = {
   investment_thesis?: string | null;
   preferred_sectors?: string[] | null;
   preferred_stages?: string[] | null;
+  xp?: number | null;
+  badges?: string[] | null;
 };
 
 type PitchCardData = {
@@ -63,6 +65,8 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
   const initial = (displayName.trim()?.[0] || 'U').toUpperCase();
   const role = (profile?.role || 'visitor').toLowerCase();
   const joined = useMemo(() => formatJoined(profile?.created_at), [profile?.created_at]);
+  const xp = Number(profile?.xp || 0);
+  const badges = profile?.badges || ['Pitch Submitted', 'Marketplace Seller'];
 
   useEffect(() => {
     const load = async () => {
@@ -173,6 +177,24 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
               <div className="text-sm text-[#444444] mt-4 whitespace-pre-wrap">
                 {profile.bio?.trim() ? profile.bio : 'No bio added yet.'}
               </div>
+              {role === 'founder' && (
+                <div className="mt-5 rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] p-4">
+                  <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-[#666666]">
+                    <span>Founder XP</span>
+                    <span>{xp} XP</span>
+                  </div>
+                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e5e5e5]">
+                    <div className="h-full bg-emerald-500" style={{ width: `${Math.min(100, xp % 100)}%` }} />
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventex Live Participant'].map((badge) => (
+                      <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[#222222] text-white' : 'bg-white text-[#888888]'}`}>
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {isOwnProfile && (
