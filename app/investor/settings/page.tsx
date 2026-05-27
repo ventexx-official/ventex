@@ -60,6 +60,17 @@ export default function InvestorSettingsPage() {
         <Section title="Preferred sectors" values={SECTORS} selected={sectors} onToggle={(v) => toggle(v, sectors, setSectors)} />
         <Section title="Preferred stages" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
 
+        <section className="mt-8 rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] p-5">
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#222222]">Two-Factor Authentication</h2>
+          <p className="mt-2 text-sm font-medium text-[#666666]">Protect your account with an authenticator app.</p>
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-xs font-black uppercase tracking-widest text-[#888888]">Status: Not enabled</span>
+            <button type="button" className="rounded-2xl bg-[#222222] px-5 py-2.5 text-sm font-black text-white">
+              Enable 2FA
+            </button>
+          </div>
+        </section>
+
         <button onClick={save} disabled={saving} className="mt-8 rounded-2xl bg-[#222222] px-6 py-3 text-sm font-black text-white disabled:opacity-50">
           {saving ? 'Saving...' : 'Save thesis'}
         </button>

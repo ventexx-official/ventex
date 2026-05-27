@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
+import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Weekly Pitch Battle — Vote for the Best Startup — Ventex",
+  title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
   description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
   alternates: { canonical: "/battle" },
   openGraph: {
-    title: "Weekly Pitch Battle — Vote for the Best Startup — Ventex",
+    title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
     description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
     url: "/battle",
     type: "website",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Weekly Pitch Battle — Vote for the Best Startup — Ventex",
+    title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
     description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
 };
 

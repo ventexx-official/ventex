@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
+import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About Ventex — Built for Founders Worldwide",
-  description: "Ventex is built for founders worldwide — pitch investors, sell products, and scale your startup.",
+  title: "About Ventex - India's Startup Pitch & Funding Platform",
+  description: "Learn about Ventex, the platform built for Indian founders, investors, and startup sellers.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "About Ventex — Built for Founders Worldwide",
-    description: "Ventex is built for founders worldwide — pitch investors, sell products, and scale your startup.",
+    title: "About Ventex - India's Startup Pitch & Funding Platform",
+    description: "Learn about Ventex, the platform built for Indian founders, investors, and startup sellers.",
     url: "/about",
     type: "website",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Ventex — Built for Founders Worldwide",
-    description: "Ventex is built for founders worldwide — pitch investors, sell products, and scale your startup.",
-    images: ["https://ventex.app/og-image.png"],
+    title: "About Ventex - India's Startup Pitch & Funding Platform",
+    description: "Learn about Ventex, the platform built for Indian founders, investors, and startup sellers.",
+    images: [OG_IMAGE_URL],
   },
 };
 

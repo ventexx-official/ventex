@@ -16,10 +16,17 @@ export default function AboutPage() {
               About Ventex
             </h1>
             <p className="max-w-3xl text-base leading-7 text-[var(--text2)] sm:text-lg">
-              Ventex is a global platform where startups can pitch investors, sell software products,
+              Ventex is an India-first platform where startups can pitch investors, sell software products,
               offer freelance services, and create job opportunities in one focused workspace.
             </p>
           </div>
+
+          <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
+            <h2 className="text-2xl font-black tracking-[-.03em]">Our Mission</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text2)]">
+              To build the most trusted startup infrastructure in India - where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
+            </p>
+          </section>
 
           <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
             <h2 className="text-2xl font-black tracking-[-.03em]">Why we built Ventex</h2>
@@ -34,25 +41,24 @@ export default function AboutPage() {
                 list useful products or services, and be discovered by people who can actually help.
               </p>
               <p>
-                The result is a platform built for founders worldwide: part pitch network, part marketplace,
+                The result is a platform built for India&apos;s builders: part pitch network, part marketplace,
                 part operating layer for early momentum.
               </p>
             </div>
           </section>
 
           <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
-            <h2 className="text-2xl font-black tracking-[-.03em]">The team</h2>
+            <h2 className="text-2xl font-black tracking-[-.03em]">Our Team</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <article className="border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
-                <h3 className="font-black">Ventex Founding Team</h3>
-                <p className="mt-2 text-sm text-[var(--text2)]">Product, engineering, founder experience, and marketplace operations.</p>
+              <article className="flex gap-4 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
+                <div className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[var(--text)] text-sm font-black text-[var(--bg)]">V</div>
+                <div>
+                  <h3 className="font-black">Founder & CEO, Ventex</h3>
+                  <p className="mt-2 text-sm text-[var(--text2)]">Building India&apos;s startup graph from day one.</p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[.12em] text-[var(--text3)]">More team members coming soon as we grow.</p>
+                </div>
               </article>
             </div>
-          </section>
-
-          <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
-            <h2 className="text-2xl font-black tracking-[-.03em]">Our mission</h2>
-            <p className="mt-3 text-lg font-black">Help founders earn trust, find capital, and turn startup momentum into revenue.</p>
           </section>
 
           <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>

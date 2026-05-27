@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FileText, ShieldAlert, Gavel, Scale, AlertTriangle } from "lucide-react";
+import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Ventex — Startup Platform",
@@ -14,13 +15,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Terms of Service | Ventex — Startup Platform",
     description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventex.",
-    url: "https://ventex.com/terms",
+    url: `${BASE_URL}/terms`,
     type: "website",
     siteName: "Ventex",
   },
 };
 
 export default function TermsPage() {
+  const currentYear = new Date().getFullYear();
+  const legalEmail = process.env.NEXT_PUBLIC_LEGAL_EMAIL || emailFor("legal");
   const sections = [
     {
       id: "acceptance",
@@ -151,8 +154,8 @@ export default function TermsPage() {
 
         {/* Compliance Footer */}
         <div className="text-center pt-10 border-t border-neutral-900 text-xs text-neutral-500 font-mono space-y-2">
-          <p>© 2026 Ventex. All rights reserved.</p>
-          <p>For legal inquiries, contact legal@ventex.com</p>
+          <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
+          <p>For legal inquiries, contact {legalEmail}</p>
         </div>
       </div>
     </div>

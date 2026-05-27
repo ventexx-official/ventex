@@ -63,6 +63,7 @@ export default function PitchDetail() {
   const [investorPremium, setInvestorPremium] = useState(false);
   const [ventexAccess, setVentexAccess] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
+  const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
   
   // Interest modal state
   const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
@@ -513,6 +514,23 @@ via Ventex`;
     await supabase.from('comments').update({ likes: alreadyLiked ? currentLikes - 1 : currentLikes + 1 }).eq('id', commentId);
   };
 
+  const handleOpenDeck = () => {
+    if (!investorPremium) return;
+    setIsNdaModalOpen(true);
+  };
+
+  const handleAcceptNda = async () => {
+    if (currentUser && pitch?.id) {
+      await supabase.from('data_room_agreements').insert({
+        user_id: currentUser.id,
+        pitch_id: pitch.id,
+        agreed_at: new Date().toISOString(),
+      });
+    }
+    setIsNdaModalOpen(false);
+    setIsDeckModalOpen(true);
+  };
+
   const getInitials = (name: string) => {
     if (!name) return '?';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -536,6 +554,7 @@ via Ventex`;
     : 0;
   const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
   const isPitchOwner = currentUser?.id === pitch?.founder_id;
+  const canSeeFinancialDetails = Boolean(currentUser);
 
   if (!pitch) {
     return (
@@ -596,19 +615,25 @@ via Ventex`;
           <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.amount_seeking)}</span>
+              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Members only'}</span>
             </div>
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A'}</span>
+              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Members only'}</span>
             </div>
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
               <span className="text-xl font-bold text-[#222222] dark:text-white">
-                {pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A'}
+                {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Members only'}
               </span>
             </div>
           </div>
+
+          {!canSeeFinancialDetails && (
+            <div className="mb-8 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] p-4 text-sm font-semibold text-[#666666] dark:border-[#333333] dark:bg-[#222222] dark:text-gray-300">
+              Financial details visible to registered members only.
+            </div>
+          )}
 
           {showRunway && runwayCountdown && (
             <div className="mb-8">
@@ -932,7 +957,7 @@ via Ventex`;
                 </div>
               </div>
               <button 
-                onClick={() => { if (investorPremium) setIsDeckModalOpen(true); }}
+                onClick={handleOpenDeck}
                 className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
                 disabled={!investorPremium}
               >
@@ -1097,6 +1122,25 @@ via Ventex`;
           Express interest
         </button>
       </div>
+
+      {isNdaModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-[#1a1a1a]">
+            <h3 className="text-lg font-bold text-[#222222] dark:text-white">Data room NDA terms</h3>
+            <p className="mt-3 text-sm leading-6 text-[#888888]">
+              By accessing this data room, you agree that all information is confidential and subject to Ventex&apos;s NDA terms.
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[#e5e5e5] px-5 py-2.5 text-sm font-bold text-[#222222] dark:border-[#333333] dark:text-white">
+                Cancel
+              </button>
+              <button onClick={handleAcceptNda} className="rounded-full bg-[#222222] px-5 py-2.5 text-sm font-bold text-white dark:bg-white dark:text-[#222222]">
+                I Agree - View Documents
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pitch Deck Modal Overlay */}
       {isDeckModalOpen && pitch.id && (

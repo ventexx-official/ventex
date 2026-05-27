@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Delivery Policy",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function DeliveryPolicyPage() {
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor("support");
   return (
     <main className="min-h-screen bg-[#0A0A0C] px-6 py-16 text-neutral-300">
       <article className="mx-auto max-w-4xl space-y-8">
@@ -35,7 +37,7 @@ export default function DeliveryPolicyPage() {
 
         <section className="space-y-3">
           <h2 className="text-xl font-black text-white">Failed Delivery</h2>
-          <p>Buyers should contact support@ventex.app if access is not delivered after payment. Ventex may request seller evidence, resend access, or open a dispute review.</p>
+          <p>Buyers should contact {supportEmail} if access is not delivered after payment. Ventex may request seller evidence, resend access, or open a dispute review.</p>
         </section>
       </article>
     </main>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { BASE_URL } from '@/lib/site';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -84,7 +85,7 @@ Downloads Remaining: ${2 - downloadCount}
 -----------------------------------------
 YOUR ACCESS KEY / RESOURCE LINK:
 -----------------------------------------
-https://ventex.co/secure/vault/access-${order.id.slice(0, 8)}
+${BASE_URL}/secure/vault/access-${order.id.slice(0, 8)}
 
 Please save this file. The link in this document is active, 
 but this text delivery can only be downloaded 3 times.

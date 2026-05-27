@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Refund and Cancellation Policy",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function RefundPolicyPage() {
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor("support");
   return (
     <main className="min-h-screen bg-[#0A0A0C] px-6 py-16 text-neutral-300">
       <article className="mx-auto max-w-4xl space-y-8">
@@ -35,7 +37,7 @@ export default function RefundPolicyPage() {
 
         <section className="space-y-3">
           <h2 className="text-xl font-black text-white">How to Request Help</h2>
-          <p>Email support@ventex.app with your order ID, payment email, product name, and reason for the request. Replace this address with your official support inbox before launch if needed.</p>
+          <p>Email {supportEmail} with your order ID, payment email, product name, and reason for the request.</p>
         </section>
       </article>
     </main>

@@ -67,6 +67,9 @@ export default function Signup() {
           </Link>
           <h1 className="text-xl font-bold mt-4 text-[#222222] dark:text-white">Create an account</h1>
           <p className="text-sm text-[#888888] mt-2">Join Ventex to discover, fund, or sell startups.</p>
+          <div className="mt-4 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] p-3 text-left text-xs leading-5 text-[#666666] dark:border-[#333333] dark:bg-[#222222] dark:text-gray-300">
+            <strong className="text-[#222222] dark:text-white">Investor verification:</strong> Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
+          </div>
         </div>
 
         {success ? (

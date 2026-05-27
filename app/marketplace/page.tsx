@@ -247,7 +247,7 @@ export default function MarketplacePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-10">
         
         {/* FILTER SIDEBAR */}
-        <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
+        {(loading || products.length > 0) ? <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="font-black text-[#222222] dark:text-white uppercase tracking-tight flex items-center gap-2">
               <Filter className="w-5 h-5" /> Filters
@@ -352,11 +352,11 @@ export default function MarketplacePage() {
               </div>
             </div>
           </div>
-        </aside>
+        </aside> : null}
 
         {/* PRODUCT GRID */}
         <div className="flex-1">
-          <div className="mb-6 flex flex-wrap gap-2">
+          {(loading || products.length > 0) ? <div className="mb-6 flex flex-wrap gap-2">
             {[
               ['All', 'All'],
               ['software', 'Software'],
@@ -372,7 +372,7 @@ export default function MarketplacePage() {
                 {label}
               </button>
             ))}
-          </div>
+          </div> : null}
           {loading ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
@@ -380,17 +380,23 @@ export default function MarketplacePage() {
           ) : filteredProducts.length === 0 ? (
             <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-3xl p-12 text-center">
               <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">No products found</h3>
-              <p className="text-[#888888] mb-6">Try adjusting your filters or search query.</p>
-              <button 
-                onClick={() => {
-                  setSearchQuery(''); setSelectedCategory('All'); setSelectedSector('All'); 
-                  setSelectedType('All'); setDealsOnly(false); setMinRating(0); setPriceMin(''); setPriceMax('');
-                }}
-                className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
-              >
-                Clear all filters
-              </button>
+              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">{products.length === 0 ? 'No products listed yet.' : 'No products found'}</h3>
+              <p className="text-[#888888] mb-6">{products.length === 0 ? 'Are you a founder with a product to sell?' : 'Try adjusting your filters or search query.'}</p>
+              {products.length === 0 ? (
+                <Link href="/founder/store/new-product" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
+                  List your product
+                </Link>
+              ) : (
+                <button 
+                  onClick={() => {
+                    setSearchQuery(''); setSelectedCategory('All'); setSelectedSector('All'); 
+                    setSelectedType('All'); setDealsOnly(false); setMinRating(0); setPriceMin(''); setPriceMax('');
+                  }}
+                  className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
           ) : (
             <>

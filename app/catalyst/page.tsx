@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { emailFor } from '@/lib/site';
 
 const SECTORS = ['Fintech', 'SaaS', 'AI/ML', 'Healthtech', 'Edtech', 'AgriTech', 'Consumer', 'Logistics', 'Other'];
 
 export default function CatalystPage() {
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor('support');
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -69,7 +71,7 @@ export default function CatalystPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'catalyst_application',
-          recipientEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'support@ventex.app',
+          recipientEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || supportEmail,
           data: { ...form, fullName: form.fullName },
         }),
       });

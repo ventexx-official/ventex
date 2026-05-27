@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Eye, ShieldCheck, Lock, Landmark, Mail } from "lucide-react";
+import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Ventex — Startup Platform",
@@ -14,13 +15,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Privacy Policy | Ventex — Startup Platform",
     description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
-    url: "https://ventex.com/privacy",
+    url: `${BASE_URL}/privacy`,
     type: "website",
     siteName: "Ventex",
   },
 };
 
 export default function PrivacyPage() {
+  const currentYear = new Date().getFullYear();
+  const privacyEmail = process.env.NEXT_PUBLIC_PRIVACY_EMAIL || emailFor("privacy");
   const points = [
     {
       icon: Eye,
@@ -126,16 +129,16 @@ export default function PrivacyPage() {
             </p>
           </div>
           <a
-            href="mailto:privacy@ventex.com"
+            href={`mailto:${privacyEmail}`}
             className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2"
           >
-            <Mail className="w-4 h-4" /> Contact privacy@ventex.com
+            <Mail className="w-4 h-4" /> Contact {privacyEmail}
           </a>
         </div>
 
         {/* Compliance Footer */}
         <div className="text-center pt-6 border-t border-neutral-900 text-xs text-neutral-500 font-mono">
-          <p>© 2026 Ventex. All rights reserved.</p>
+          <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
         </div>
       </div>
     </div>

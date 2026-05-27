@@ -2,6 +2,7 @@ import { Globe, Handshake, Megaphone, Shield, ShoppingBag, TrendingUp, Users, Za
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import SectionIndicator from '@/components/SectionIndicator';
+import ArenaEvents from '@/components/ArenaEvents';
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
@@ -43,7 +44,7 @@ const features = [
   },
 ];
 
-const featureLinks = ['/discover', '/discover', '/discover', '/catalyst', '/battle', '/marketplace'];
+const featureLinks = ['/pricing#founders', '/pricing#investors', '/pricing#data-rooms', '/catalyst', '/arena', '/marketplace'];
 
 const steps = [
   ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents.'],
@@ -73,12 +74,6 @@ export default async function Home() {
         .order('pitch_score', { ascending: false })
         .limit(3)
     : { data: [] as any[] };
-
-  const stats = [
-    ['Startups listed', livePitches],
-    ['Active investors', investors],
-    ['Products for sale', productsCount ?? 0],
-  ];
 
   return (
     <>
@@ -206,14 +201,21 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
-        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
-          {stats.map(([label, value]) => (
-            <div key={label} className="reveal py-8 text-center">
-              <div className="mono text-4xl font-bold text-[var(--text)]">{value}</div>
-              <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
+      <section className="overflow-hidden border-y bg-[#090504] py-16 text-white" style={{ borderColor: 'rgba(245,158,11,.25)' }}>
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mono text-[10px] font-bold uppercase tracking-[.16em] text-amber-200/70">{'//'} the arena</div>
+          <div className="mt-5 grid gap-8 lg:grid-cols-[.9fr_1.4fr] lg:items-center">
+            <div>
+              <h2 className="text-3xl font-black tracking-[-.03em] md:text-5xl">THE ARENA IS COMING.</h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-orange-50/75">
+                India&apos;s first monthly live startup pitch event. 5 founders. Real investors. Live and on record.
+              </p>
+              <Link href="/arena" className="mt-7 inline-flex rounded-full bg-amber-300 px-5 py-3 text-sm font-black text-[#160b04]">
+                See upcoming events
+              </Link>
             </div>
-          ))}
+            <ArenaEvents compact />
+          </div>
         </div>
       </section>
 

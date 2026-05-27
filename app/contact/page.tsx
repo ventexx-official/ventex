@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Mail, MapPin, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { emailFor } from "@/lib/site";
 
 export default function ContactPage() {
+  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor("support");
   const [form, setForm] = useState({ name: "", email: "", subject: "General", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState("");
@@ -25,7 +27,7 @@ export default function ContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "contact_submission",
-          recipientEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || "support@ventex.app",
+          recipientEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || supportEmail,
           data: form,
         }),
       });
@@ -55,7 +57,7 @@ export default function ContactPage() {
             <section className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
               <Mail className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Support Email</h2>
-              <a className="text-sm font-bold underline underline-offset-4" href="mailto:support@ventex.app">support@ventex.app</a>
+              <a className="text-sm font-bold underline underline-offset-4" href={`mailto:${supportEmail}`}>{supportEmail}</a>
               <p className="mt-3 text-xs leading-5 text-[#666666] dark:text-gray-400">Target response time: 2 business days.</p>
             </section>
             <section className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">

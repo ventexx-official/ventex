@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout";
+import { BASE_URL, OG_IMAGE_URL } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,7 +17,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ventex-eight.vercel.app"),
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "Ventex — Where Startups Pitch, Fund and Sell",
     template: "%s | Ventex",
@@ -31,13 +32,13 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "Ventex",
     type: "website",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ventex — Where Startups Pitch, Fund and Sell",
     description: "The global platform where startups pitch to investors, sell products, and hire developers.",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
 };
 

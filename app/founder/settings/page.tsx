@@ -300,6 +300,16 @@ export default function FounderSettingsPage() {
                   <Mail className="w-4 h-4" />
                   <span>Email notifications are enabled automatically for investor interests & product sales.</span>
                 </div>
+                <div className="flex flex-col gap-4 bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-[#222222]">Two-Factor Authentication</h4>
+                    <p className="mt-1 text-xs font-semibold text-[#888888]">Protect your account with an authenticator app.</p>
+                    <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[#888888]">Status: Not enabled</p>
+                  </div>
+                  <button type="button" className="rounded-2xl bg-[#222222] px-5 py-2.5 text-sm font-black text-white">
+                    Enable 2FA
+                  </button>
+                </div>
               </div>
             </section>
 

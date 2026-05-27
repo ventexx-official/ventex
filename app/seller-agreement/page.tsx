@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Handshake, Landmark, Ban, ShieldAlert, BadgeCent } from "lucide-react";
+import { BASE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Seller Agreement | Ventex — Startup Platform",
@@ -14,13 +15,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Seller Agreement | Ventex — Startup Platform",
     description: "Seller Terms and conditions regulating digital product listings, fee structures, escrow processing, and strict anti-bypass rules on the Ventex marketplace.",
-    url: "https://ventex.com/seller-agreement",
+    url: `${BASE_URL}/seller-agreement`,
     type: "website",
     siteName: "Ventex",
   },
 };
 
 export default function SellerAgreementPage() {
+  const currentYear = new Date().getFullYear();
   const clauses = [
     {
       icon: Handshake,
@@ -124,7 +126,7 @@ export default function SellerAgreementPage() {
 
         {/* Compliance Footer */}
         <div className="text-center pt-6 border-t border-neutral-900 text-xs text-neutral-500 font-mono">
-          <p>© 2026 Ventex. All rights reserved.</p>
+          <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
         </div>
       </div>
     </div>

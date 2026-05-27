@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { generatePitchSummary } from '@/lib/claude';
 import { supabase } from '@/lib/supabase';
 import { createClient } from '@supabase/supabase-js';
+import { BASE_URL } from '@/lib/site';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,7 +11,7 @@ const supabaseAdmin = createClient(
 
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = BASE_URL;
     await fetch(`${baseUrl}/api/emails`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

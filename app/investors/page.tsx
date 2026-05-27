@@ -20,10 +20,18 @@ const features = [
 ];
 
 const benefits = [
-  "Access a growing pipeline of global startups",
-  "Review pitch context before requesting deeper diligence",
-  "Connect with founders building software, products, and digital businesses",
-  "Use one account for deal discovery and marketplace activity",
+  {
+    title: "Curated deal flow",
+    description: "Access a growing pipeline of India-first startups with stage, sector, and traction context.",
+  },
+  {
+    title: "Confidential diligence",
+    description: "Request deeper founder details only after account verification and member checks.",
+  },
+  {
+    title: "Founder contact readiness",
+    description: "Save pitches, track follow-ups, and move serious conversations into the right workflow.",
+  },
 ];
 
 export default function InvestorsPage() {
@@ -63,26 +71,28 @@ export default function InvestorsPage() {
 
         <section className="mt-12 border-t pt-8" style={{ borderColor: "var(--border)" }}>
           <div className="mb-8 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
-            <h2 className="text-xl font-black tracking-[-.03em]">Verified investors coming soon.</h2>
+            <h2 className="text-xl font-black tracking-[-.03em]">Investor verification notice</h2>
             <p className="mt-2 text-sm leading-6 text-[var(--text2)]">
-              Apply to join the Ventex investor network and help founders with funding-only conversations through Investor Accounts.
+              Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
             </p>
+            <p className="mt-3 text-sm font-bold text-[var(--text)]">Applications reviewed by Ventex team. Investor accounts are verified before activation.</p>
           </div>
+
           <h2 className="text-2xl font-black tracking-[-.03em]">
-            Investor benefits
+            Why join as investor
           </h2>
-          <ul className="mt-5 grid gap-3 text-sm leading-6 text-[var(--text2)] sm:grid-cols-2">
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
             {benefits.map((benefit) => (
-              <li key={benefit} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--text)]" />
-                <span>{benefit}</span>
-              </li>
+              <article key={benefit.title} className="border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
+                <h3 className="font-black">{benefit.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{benefit.description}</p>
+              </article>
             ))}
-          </ul>
+          </div>
         </section>
 
-        <Link href="/signup?role=investor" className="btn-primary mt-10 inline-flex">
-          Join as investor →
+        <Link href="/signup?role=investor" className="btn-primary mt-10 inline-flex px-7 py-4 text-base">
+          Join as investor
         </Link>
       </section>
     </main>

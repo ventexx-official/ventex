@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact Ventex",
@@ -9,13 +10,13 @@ export const metadata: Metadata = {
     description: "Contact Ventex for support, bug reports, partnerships, press, and marketplace questions.",
     url: "/contact",
     type: "website",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact Ventex",
     description: "Contact Ventex for support, bug reports, partnerships, press, and marketplace questions.",
-    images: ["https://ventex.app/og-image.png"],
+    images: [OG_IMAGE_URL],
   },
 };
 

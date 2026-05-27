@@ -10,10 +10,10 @@ const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI
 const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
 
 function formatCurrency(amount: number) {
-  if (!amount) return 'N/A';
-  if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
-  if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
-  return `₹${amount.toLocaleString('en-IN')}`;
+  if (!amount) return 'Members only';
+  if (amount >= 10000000) return `Rs ${(amount / 10000000).toFixed(1)}Cr`;
+  if (amount >= 100000) return `Rs ${(amount / 100000).toFixed(1)}L`;
+  return `Rs ${amount.toLocaleString('en-IN')}`;
 }
 
 export default function Discover() {
@@ -83,6 +83,8 @@ export default function Discover() {
     </div>
   );
 
+  const showFilters = loading || pitches.length > 0;
+
   return (
     <div className="min-h-screen bg-[var(--bg)]">
       <header className="grid-bg border-b bg-[var(--bg2)]/70 px-4 py-16" style={{ borderColor: 'var(--border)' }}>
@@ -108,45 +110,44 @@ export default function Discover() {
       </header>
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row">
-        <aside className="hidden w-[200px] shrink-0 border-r pr-6 md:block lg:w-[260px]" style={{ borderColor: 'var(--border)' }}>
-          {filters}
-        </aside>
+        {showFilters ? (
+          <aside className="hidden w-[200px] shrink-0 border-r pr-6 md:block lg:w-[260px]" style={{ borderColor: 'var(--border)' }}>
+            {filters}
+          </aside>
+        ) : null}
 
-        <div className="md:hidden">
-          <button type="button" onClick={() => setDrawerOpen(true)} className="btn-secondary inline-flex items-center gap-2">
-            <Filter className="h-4 w-4" /> Filters
-          </button>
-          {drawerOpen ? (
-            <div className="fixed inset-0 z-50 bg-black/40">
-              <div className="ml-auto h-full w-[86vw] max-w-sm overflow-y-auto bg-[var(--bg)] p-5 shadow-2xl">
-                <div className="mb-6 flex items-center justify-between">
-                  <h2 className="text-lg font-black text-[var(--text)]">Filters</h2>
-                  <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Close filters">
-                    <X className="h-5 w-5" />
-                  </button>
+        {showFilters ? (
+          <div className="md:hidden">
+            <button type="button" onClick={() => setDrawerOpen(true)} className="btn-secondary inline-flex items-center gap-2">
+              <Filter className="h-4 w-4" /> Filters
+            </button>
+            {drawerOpen ? (
+              <div className="fixed inset-0 z-50 bg-black/40">
+                <div className="ml-auto h-full w-[86vw] max-w-sm overflow-y-auto bg-[var(--bg)] p-5 shadow-2xl">
+                  <div className="mb-6 flex items-center justify-between">
+                    <h2 className="text-lg font-black text-[var(--text)]">Filters</h2>
+                    <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Close filters">
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+                  {filters}
                 </div>
-                {filters}
               </div>
-            </div>
-          ) : null}
-        </div>
+            ) : null}
+          </div>
+        ) : null}
 
         <main className="min-w-0 flex-1">
-          <section className="mb-6 border bg-[var(--bg2)] p-5" style={{ borderColor: 'var(--border)' }}>
-            <h2 className="text-base font-black text-[var(--text)]">Responsive investors</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--text2)]">
-              Verified investors coming soon. <Link href="/investors" className="font-bold underline underline-offset-4">Apply to join the Ventex investor network →</Link>
-            </p>
-          </section>
-
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text)] outline-none" style={{ borderColor: 'var(--border)' }}>
-              <option value="latest">Latest</option>
-              <option value="most_viewed">Most viewed</option>
-              <option value="funding_high">Funding: High to low</option>
-            </select>
-          </div>
+          {showFilters ? (
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text)] outline-none" style={{ borderColor: 'var(--border)' }}>
+                <option value="latest">Latest</option>
+                <option value="most_viewed">Most viewed</option>
+                <option value="funding_high">Funding: High to low</option>
+              </select>
+            </div>
+          ) : null}
 
           {loading ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -154,11 +155,12 @@ export default function Discover() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>
-              <div>
-                <div className="mono text-xs uppercase tracking-[.12em] text-[var(--text3)]">{'//'} no startups found</div>
-                <p className="mt-3 text-sm text-[var(--text2)]">
-                  {pitches.length === 0 ? 'No published startups are live yet.' : 'Try loosening the filters or search query.'}
+              <div className="max-w-md px-6">
+                <div className="mono text-xs uppercase tracking-[.12em] text-[var(--text3)]">{'//'} early access</div>
+                <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
+                  {pitches.length === 0 ? "No startups match your filters yet. We're in early access - be the first to pitch." : 'No startups match your filters yet. Try loosening the filters or search query.'}
                 </p>
+                <Link href="/founder/create-pitch" className="btn-primary mt-6 inline-flex">Submit your pitch</Link>
               </div>
             </div>
           ) : (
@@ -188,7 +190,6 @@ function FilterGroup({ title, values, selected, onToggle }: { title: string; val
 }
 
 function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
-  const valuation = pitch.amount_seeking && pitch.equity_pct ? pitch.amount_seeking / (pitch.equity_pct / 100) : 0;
   const runwayDays = getRunwayDays(pitch.round_closes_at);
   const showRunway = shouldShowRunway(pitch.is_raising, pitch.round_closes_at);
 
@@ -207,12 +208,13 @@ function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
       <div className="my-5 h-px bg-[var(--border)]" />
       <div className="grid grid-cols-3 gap-3">
         <Metric label="Ask" value={formatCurrency(pitch.amount_seeking)} />
-        <Metric label="Equity" value={pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A'} />
-        <Metric label="Valuation" value={valuation ? formatCurrency(valuation) : 'N/A'} />
+        <Metric label="Equity" value="Members only" />
+        <Metric label="Valuation" value="Members only" />
       </div>
+      <p className="mt-4 text-[11px] font-semibold text-[var(--text3)]">Financial details visible to registered members only.</p>
       <div className="mt-6 flex items-center justify-between text-sm">
         <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
-        <span className="text-[var(--text2)]">View pitch →</span>
+        <span className="text-[var(--text2)]">View pitch</span>
       </div>
     </Link>
   );

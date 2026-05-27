@@ -7,7 +7,8 @@ const columns = [
       ['Discover', '/discover'],
       ['Marketplace', '/marketplace'],
       ['Catalyst', '/catalyst'],
-      ['Pitch battle', '/battle'],
+      ['The Arena', '/arena'],
+      ['Pitch Battle', '/battle'],
       ['Pricing', '/pricing'],
     ],
   },
@@ -18,6 +19,7 @@ const columns = [
       ['Investors', '/investors'],
       ['Resources', '/resources/schemes'],
       ['Contact', '/contact'],
+      ['Events', '/events'],
     ],
   },
   {
@@ -33,6 +35,8 @@ const columns = [
 ];
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="border-t bg-[var(--bg2)] text-[var(--text)]" style={{ borderColor: 'var(--border)' }}>
       <div className="h-16 bg-gradient-to-b from-[var(--bg)] to-[var(--bg2)]" />
@@ -64,7 +68,7 @@ export default function Footer() {
         </div>
 
         <div className="mono mt-10 border-t pt-6 text-xs text-[var(--text3)]" style={{ borderColor: 'var(--border)' }}>
-          &copy; 2026 Ventex. Built for the world&apos;s builders.
+          &copy; {currentYear} Ventex. Built for India&apos;s builders.
         </div>
       </div>
     </footer>

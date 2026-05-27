@@ -1,0 +1,3 @@
+Contact: /contact
+Preferred-Languages: en
+Policy: /privacy
