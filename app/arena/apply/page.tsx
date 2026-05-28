@@ -34,8 +34,7 @@ export default function ArenaApplyPage() {
     return (
       <main className="min-h-screen bg-[#090504] px-4 py-20 text-white">
         <div className="mx-auto max-w-2xl rounded-lg border border-amber-300/25 bg-white/[.04] p-8 text-center">
-          <h1 className="text-3xl font-black">Application received.</h1>
-          <p className="mt-4 text-sm leading-7 text-orange-50/75">Application received. You&apos;ll hear from us if selected.</p>
+          <h1 className="text-3xl font-black">Application received. You&apos;ll hear from us if selected.</h1>
         </div>
       </main>
     );

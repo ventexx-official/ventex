@@ -35,7 +35,7 @@ const faqs = [
   ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace — buy software, hire developers, and request custom builds. It does not include investor features.'],
   ['What is an Investor Account?', 'Investor accounts are for discovering startups, viewing pitches, and connecting with founders for funding. Separate from Premium.'],
   ['Can I be both a founder and an investor?', 'Yes. You can hold multiple roles under one account.'],
-  ['Is there a free trial?', 'All paid tiers include a 7-day free trial. No card required.'],
+  ['Is every plan free during early access?', 'Yes. All features are unlocked during early access. No card required.'],
   ['What currency do you charge in?', 'You can pay in INR or USD. Prices shown in both.'],
 ];
 
@@ -52,6 +52,11 @@ export default function PricingPage() {
   return (
     <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222] dark:bg-[#111111] dark:text-white">
       <div className="mx-auto max-w-7xl">
+        <div className="mb-8 rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">
+          <p className="text-lg font-black">Everything is free during early access.</p>
+          <p className="mt-1 text-sm font-bold">Ventex is completely free during early access. All features unlocked. No card required.</p>
+        </div>
+
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[#666666] dark:text-gray-400">Pricing</p>
@@ -93,7 +98,7 @@ export default function PricingPage() {
                       ))}
                     </ul>
                     <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-white dark:text-[#222222]">
-                      {tier.name === 'Free' ? 'Get Started Free →' : 'Start 7-day trial'}
+                      {tier.name === 'Free' ? 'Get started →' : 'Join free →'}
                     </Link>
                   </article>
                 ))}
@@ -101,6 +106,13 @@ export default function PricingPage() {
             </section>
           ))}
         </div>
+
+        <section className="mt-12 rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+          <h2 className="text-2xl font-black">When you raise, we take 2%.</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-[#666666] dark:text-gray-300">
+            No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee — only on success. Free during early access.
+          </p>
+        </section>
 
         <section className="mt-12 rounded-lg border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
           <h2 className="mb-4 text-2xl font-black">FAQ</h2>

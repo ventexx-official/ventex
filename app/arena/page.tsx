@@ -28,7 +28,7 @@ export default function ArenaPage() {
           <h1 className="mt-5 max-w-4xl text-5xl font-black tracking-[-.05em] sm:text-7xl">THE ARENA</h1>
           <p className="mt-4 text-2xl font-black text-amber-100">Where founders face the fire.</p>
           <p className="mt-6 max-w-2xl text-base leading-8 text-orange-50/80">
-            A monthly live pitch event where India&apos;s boldest founders pitch to real investors — live, raw, and on record.
+            A monthly live pitch event. India&apos;s boldest founders. Real investors. Live and on record.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch →</Link>
@@ -57,8 +57,8 @@ export default function ArenaPage() {
           <div className="mt-8 grid gap-4 md:grid-cols-4">
             {[
               ["01", "Apply to pitch", "Submit your startup through Ventex"],
-              ["02", "Get selected", "Top 5 founders chosen each month"],
-              ["03", "Go live", "Pitch in front of investors, streamed live"],
+              ["02", "Get selected", "top 5 founders monthly"],
+              ["03", "Go live", "streamed live"],
               ["04", "Get amplified", "Best moments become Reels and Shorts"],
             ].map(([number, title, desc]) => (
               <article key={number} className="rounded-lg border border-amber-300/20 bg-white/[.04] p-5">
@@ -82,7 +82,7 @@ export default function ArenaPage() {
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 md:items-center">
           <div>
             <h2 className="text-3xl font-black tracking-[-.03em]">Think you&apos;re ready for The Arena?</h2>
-            <p className="mt-4 text-sm leading-7 text-orange-50/75">Applications open for Season 1. Limited spots. India-only. Free to apply.</p>
+            <p className="mt-4 text-sm leading-7 text-orange-50/75">Applications open for Season 1. Free to apply. Limited spots.</p>
             <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now →</Link>
           </div>
           <ArenaWaitlistForm />

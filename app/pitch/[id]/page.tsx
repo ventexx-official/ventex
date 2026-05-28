@@ -67,6 +67,7 @@ export default function PitchDetail() {
   
   // Interest modal state
   const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
+  const [interestAmount, setInterestAmount] = useState('');
   const [interestMessage, setInterestMessage] = useState('');
   const [sendingInterest, setSendingInterest] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -82,12 +83,6 @@ export default function PitchDetail() {
   const handleSendInterest = async () => {
     if (!currentUser) {
       alert("Please log in to express interest.");
-      return;
-    }
-    if (!investorPremium) {
-      if (confirm("Investor Account required to express interest. Premium is marketplace-only. View investor plans now?")) {
-        router.push('/pricing');
-      }
       return;
     }
     if (interestMessage.length > 500) {
@@ -119,6 +114,46 @@ export default function PitchDetail() {
       if (isFirstInterest && pitch.founder_id) {
         await awardXp('first_interest', pitch.founder_id);
       }
+
+      let conversationId: string | null = null;
+      if (pitch.founder_id) {
+        const { data: existingConversation } = await supabase
+          .from('conversations')
+          .select('id')
+          .eq('pitch_id', pitch.id)
+          .eq('founder_id', pitch.founder_id)
+          .eq('investor_id', currentUser.id)
+          .maybeSingle();
+
+        if (existingConversation?.id) {
+          conversationId = existingConversation.id;
+        } else {
+          const { data: newConversation, error: conversationError } = await supabase
+            .from('conversations')
+            .insert({
+              founder_id: pitch.founder_id,
+              investor_id: currentUser.id,
+              pitch_id: pitch.id,
+              last_message_at: new Date().toISOString(),
+            })
+            .select('id')
+            .single();
+          if (conversationError) throw conversationError;
+          conversationId = newConversation?.id || null;
+        }
+
+        if (conversationId) {
+          const amount = Number(interestAmount);
+          await supabase.from('deals').insert({
+            pitch_id: pitch.id,
+            founder_id: pitch.founder_id,
+            investor_id: currentUser.id,
+            conversation_id: conversationId,
+            agreed_amount: amount > 0 ? amount : null,
+            status: 'interested',
+          });
+        }
+      }
  
       // Create notification for founder
       if (pitch.founder_id) {
@@ -149,6 +184,7 @@ export default function PitchDetail() {
 
       alert("Interest expressed successfully! The founder has been notified.");
       setIsInterestModalOpen(false);
+      setInterestAmount('');
       setInterestMessage('');
     } catch (err: any) {
       console.error(err);
@@ -652,13 +688,8 @@ via Ventex`;
           <div className="hidden items-center gap-3 md:flex">
              <button 
                onClick={() => {
-                 if (investorPremium) {
-                   setIsInterestModalOpen(true);
-                 } else {
-                   if (confirm("Investor Account required. Premium is marketplace-only. View investor plans now?")) {
-                     router.push('/pricing');
-                   }
-                 }
+                 if (!currentUser) router.push('/login');
+                 else setIsInterestModalOpen(true);
                }}
                className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
              >
@@ -1109,13 +1140,8 @@ via Ventex`;
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-white/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
         <button
           onClick={() => {
-            if (investorPremium) {
-              setIsInterestModalOpen(true);
-            } else {
-              if (confirm("Investor Account required. Premium is marketplace-only. View investor plans now?")) {
-                router.push('/pricing');
-              }
-            }
+            if (!currentUser) router.push('/login');
+            else setIsInterestModalOpen(true);
           }}
           className="min-h-11 w-full rounded-full bg-[#222222] px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:bg-black dark:bg-white dark:text-[#222222] dark:hover:bg-gray-200"
         >
@@ -1128,7 +1154,7 @@ via Ventex`;
           <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-[#1a1a1a]">
             <h3 className="text-lg font-bold text-[#222222] dark:text-white">Data room NDA terms</h3>
             <p className="mt-3 text-sm leading-6 text-[#888888]">
-              By accessing this data room you agree all information is confidential and subject to Ventex&apos;s NDA terms.
+              By accessing this data room you agree all information is confidential.
             </p>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[#e5e5e5] px-5 py-2.5 text-sm font-bold text-[#222222] dark:border-[#333333] dark:text-white">
@@ -1184,6 +1210,17 @@ via Ventex`;
             </div>
             
             <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">Amount</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={interestAmount}
+                  onChange={(e) => setInterestAmount(e.target.value)}
+                  placeholder="Enter amount you are interested in"
+                  className="w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222] dark:border-[#333333] dark:bg-[#222222] dark:text-white"
+                />
+              </div>
               <div>
                 <label className="block text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">Message to Founder</label>
                 <textarea 

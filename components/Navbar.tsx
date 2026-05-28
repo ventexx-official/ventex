@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Menu, X, LayoutDashboard, LogOut, Settings, User, ShoppingBag, Package } from 'lucide-react';
+import { Menu, X, LayoutDashboard, LogOut, Settings, User, ShoppingBag, Package, MessageSquare } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter, usePathname } from 'next/navigation';
@@ -14,6 +14,7 @@ export default function Navbar() {
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const avatarMenuRef = useRef<HTMLDivElement | null>(null);
@@ -24,6 +25,25 @@ export default function Navbar() {
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId);
     setCartCount(count || 0);
+  };
+
+  const fetchUnreadMessages = async (userId: string) => {
+    const { data: conversations } = await supabase
+      .from('conversations')
+      .select('id')
+      .or(`founder_id.eq.${userId},investor_id.eq.${userId}`);
+    const ids = (conversations || []).map((item: any) => item.id);
+    if (ids.length === 0) {
+      setUnreadMessages(0);
+      return;
+    }
+    const { count } = await supabase
+      .from('messages')
+      .select('*', { count: 'exact', head: true })
+      .in('conversation_id', ids)
+      .neq('sender_id', userId)
+      .eq('read', false);
+    setUnreadMessages(count || 0);
   };
 
   useEffect(() => {
@@ -54,8 +74,10 @@ export default function Navbar() {
           setUserProfile({ full_name: profile.full_name, avatar_url: profile.avatar_url });
         }
         fetchCartCount(session.user.id);
+        fetchUnreadMessages(session.user.id);
       } else {
         setUserProfile(null);
+        setUnreadMessages(0);
       }
     };
     checkUser();
@@ -70,8 +92,10 @@ export default function Navbar() {
             }
           });
         fetchCartCount(session.user.id);
+        fetchUnreadMessages(session.user.id);
       } else {
         setUserProfile(null);
+        setUnreadMessages(0);
       }
     });
 
@@ -149,6 +173,18 @@ export default function Navbar() {
             <ThemeToggle />
             {user ? (
               <>
+                <Link
+                  href="/messages"
+                  className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] transition-colors"
+                  aria-label="Messages"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  {unreadMessages > 0 && (
+                    <span className="absolute top-0.5 right-0.5 min-w-4 h-4 rounded-full bg-red-500 px-1 text-[10px] font-bold text-white flex items-center justify-center">
+                      {unreadMessages}
+                    </span>
+                  )}
+                </Link>
                 <Link
                   href="/cart"
                   className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] transition-colors"
@@ -291,6 +327,21 @@ export default function Navbar() {
             <div className="pt-4 border-t mt-4 space-y-2" style={{ borderColor: 'var(--border)' }}>
               {user ? (
                 <>
+                  <Link
+                    href="/messages"
+                    onClick={() => setIsOpen(false)}
+                    className="flex min-h-11 items-center justify-between px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <MessageSquare className="w-5 h-5" />
+                      Messages
+                    </div>
+                    {unreadMessages > 0 && (
+                      <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {unreadMessages}
+                      </span>
+                    )}
+                  </Link>
                   <Link
                     href="/cart"
                     onClick={() => setIsOpen(false)}

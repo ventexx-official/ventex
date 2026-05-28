@@ -3,7 +3,7 @@ import Link from "next/link";
 const events = [
   {
     name: "The Arena - Season 1, Episode 1",
-    label: "Season 1 Episode 1",
+    label: "Season 1 Ep 1",
     theme: "India's Next Big Idea",
     format: "5 founders x 5 minutes each",
     investorPanel: "To be announced",
@@ -11,16 +11,16 @@ const events = [
   },
   {
     name: "The Arena - Season 1, Episode 2",
-    label: "Season 1 Episode 2",
-    theme: "Deep Tech & AI Founders",
+    label: "Season 1 Ep 2",
+    theme: "Deep Tech & AI",
     format: "5 founders x 5 minutes each",
     investorPanel: "To be announced",
     location: "Online (Live Stream)",
   },
   {
     name: "The Arena - Season 1, Episode 3",
-    label: "Season 1 Episode 3",
-    theme: "SaaS & B2B Startups",
+    label: "Season 1 Ep 3",
+    theme: "SaaS & B2B",
     format: "5 founders x 5 minutes each",
     investorPanel: "To be announced",
     location: "Online (Live Stream)",
@@ -44,7 +44,7 @@ export default function ArenaEvents({ compact = false }: { compact?: boolean }) 
           </div>
           <p className="mt-4 text-sm font-bold text-amber-200">{event.theme}</p>
           <div className="mt-5 space-y-2 text-xs leading-5 text-orange-50/70">
-            <p>Dates to be announced.</p>
+            <p>Season 1 dates will be announced. Stay tuned.</p>
             <p>{event.format}</p>
             <p>Investor Panel: {event.investorPanel}</p>
             <p>{event.location}</p>

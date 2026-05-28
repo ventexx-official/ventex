@@ -71,7 +71,7 @@ export default function InvestorSettingsPage() {
         <Section title="Preferred stages" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
 
         <section className="mt-8 rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] p-5">
-          <h2 className="text-sm font-black uppercase tracking-widest text-[#222222]">Two-Factor Authentication — protect your account.</h2>
+          <h2 className="text-sm font-black uppercase tracking-widest text-[#222222]">Two-Factor Authentication</h2>
           <p className="mt-2 text-sm font-medium text-[#666666]">Protect your account with an authenticator app.</p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <span className="text-xs font-black uppercase tracking-widest text-[#888888]">Status: {twoFactorEnabled ? 'Enabled' : 'Not enabled'}</span>

@@ -49,6 +49,7 @@ import PitchScorePanel from '@/components/PitchScorePanel';
 export default function FounderDashboard() {
   const [pitches, setPitches] = useState<any[]>([]);
   const [interests, setInterests] = useState<any[]>([]);
+  const [agreedDeals, setAgreedDeals] = useState<any[]>([]);
   const [disputes, setDisputes] = useState<any[]>([]);
   const [expandedDisputeId, setExpandedDisputeId] = useState<string | null>(null);
   const [rebuttalText, setRebuttalText] = useState('');
@@ -82,6 +83,15 @@ export default function FounderDashboard() {
 
       // Use profile if available, otherwise build one from session data
       setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
+
+      const { data: dealsData } = await supabase
+        .from('deals')
+        .select('*, investor:investor_id(full_name,email)')
+        .eq('founder_id', session.user.id)
+        .eq('status', 'agreed')
+        .order('created_at', { ascending: false });
+
+      setAgreedDeals(dealsData || []);
 
       const { data: pitchesData } = await supabase
         .from('pitches').select('*')
@@ -494,6 +504,12 @@ export default function FounderDashboard() {
               <Plus className="w-5 h-5" /> Create New Pitch
             </button>
           </header>
+
+          {agreedDeals.map((deal) => (
+            <div key={deal.id} className="mb-6 rounded-3xl border-[0.5px] border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-900">
+              Deal agreed with {deal.investor?.full_name || deal.investor?.email || 'investor'}. Platform fee of Rs {Number(deal.fee_amount || 0).toLocaleString('en-IN')} will apply post early access.
+            </div>
+          ))}
 
           {/* XP PROGRESS */}
           {userProfile && (

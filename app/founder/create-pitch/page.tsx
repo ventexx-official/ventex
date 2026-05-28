@@ -294,9 +294,34 @@ export default function CreatePitch() {
     setSaving(false);
   }, [pitchId, buildPitchPayload, updatePitch]);
 
+  const notifySavedInvestors = async () => {
+    if (!pitchId) return;
+    const { data: savedRows } = await supabase
+      .from('saved_pitches')
+      .select('user_id')
+      .eq('pitch_id', pitchId);
+
+    const userIds = Array.from(new Set((savedRows || []).map((row: any) => row.user_id).filter(Boolean)));
+    if (userIds.length === 0) return;
+
+    await supabase.from('notifications').insert(userIds.map((userId) => ({
+      user_id: userId,
+      type: 'funding_closed',
+      message: 'A pitch you saved has marked funding as closed.',
+      link: `/pitch/${pitchId}`,
+    })));
+  };
+
   const handleChange = (field: string, value: any) => {
     setFormData(prev => {
       const newData = { ...prev, [field]: value };
+      if (field === 'is_raising' && prev.is_raising === true && value === false) {
+        setTimeout(() => {
+          if (confirm('Notify your Ventex investors?')) {
+            notifySavedInvestors();
+          }
+        }, 0);
+      }
       
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = setTimeout(() => {
