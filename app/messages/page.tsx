@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Send } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { sanitizeMessage } from "@/lib/message-protection";
+import { getDealEnforcementState } from "@/lib/deal-enforcement";
 
 type ConversationMeta = {
   preview: string;
@@ -29,6 +30,7 @@ function MessagesContent() {
   const [user, setUser] = useState<any>(null);
   const [conversations, setConversations] = useState<any[]>([]);
   const [conversationMeta, setConversationMeta] = useState<Record<string, ConversationMeta>>({});
+  const [dealsByConversation, setDealsByConversation] = useState<Record<string, any>>({});
   const [selectedId, setSelectedId] = useState<string>("");
   const [messages, setMessages] = useState<any[]>([]);
   const [draft, setDraft] = useState("");
@@ -53,11 +55,17 @@ function MessagesContent() {
 
       const ids = (data || []).map((conversation: any) => conversation.id);
       if (ids.length > 0) {
-        const { data: messageRows } = await supabase
-          .from("messages")
-          .select("id, conversation_id, sender_id, content, read, created_at")
-          .in("conversation_id", ids)
-          .order("created_at", { ascending: false });
+        const [{ data: messageRows }, { data: dealRows }] = await Promise.all([
+          supabase
+            .from("messages")
+            .select("id, conversation_id, sender_id, content, read, created_at")
+            .in("conversation_id", ids)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("deals")
+            .select("*")
+            .in("conversation_id", ids),
+        ]);
 
         const meta: Record<string, ConversationMeta> = {};
         ids.forEach((conversationId: string) => {
@@ -70,8 +78,10 @@ function MessagesContent() {
           };
         });
         setConversationMeta(meta);
+        setDealsByConversation(Object.fromEntries((dealRows || []).map((deal: any) => [deal.conversation_id, deal])));
       } else {
         setConversationMeta({});
+        setDealsByConversation({});
       }
     };
     load();
@@ -98,9 +108,11 @@ function MessagesContent() {
 
   const selected = useMemo(() => conversations.find((item) => item.id === selectedId), [conversations, selectedId]);
   const isFounder = selected?.founder_id === user?.id;
+  const selectedDeal = selected ? dealsByConversation[selected.id] : null;
+  const enforcement = getDealEnforcementState(selectedDeal);
 
   const sendMessage = async (force = false) => {
-    if (!draft.trim() || !selected || !user) return;
+    if (!draft.trim() || !selected || !user || enforcement.isLocked || enforcement.isBanned) return;
     const result = sanitizeMessage(draft.trim());
     if (result.hasExternalUrl && !force) {
       setShowExternalWarning(true);
@@ -191,6 +203,13 @@ function MessagesContent() {
                   {isFounder ? <button onClick={markDealAgreed} className="btn-primary">Mark Deal as Agreed</button> : null}
                 </div>
               </header>
+              {(selectedDeal && (enforcement.isLocked || enforcement.isBanned || enforcement.isPartialUnlock)) ? (
+                <div className={`border-b p-4 text-sm font-bold ${enforcement.isLocked || enforcement.isBanned ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-800"}`} style={{ borderColor: "var(--border)" }}>
+                  <p>{enforcement.label}</p>
+                  {enforcement.isSevenDayOverdue ? <p className="mt-1 text-xs">Pitch hidden from Discover and data room access revoked when fee collection activates post early access.</p> : null}
+                  {enforcement.isFourteenDayOverdue ? <p className="mt-1 text-xs">Pitch permanently delisted, founder added to blacklist, and investor receives 1 month credit when enforcement activates.</p> : null}
+                </div>
+              ) : null}
               <div className="flex-1 space-y-3 overflow-y-auto p-4">
                 {messages.map((message) => {
                   const founderMessage = message.sender_id === selected.founder_id;
@@ -213,8 +232,8 @@ function MessagesContent() {
                 </div>
               ) : null}
               <div className="flex gap-2 border-t p-4" style={{ borderColor: "var(--border)" }}>
-                <input value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") sendMessage(); }} className="min-h-11 flex-1 border bg-[var(--bg)] px-4 text-sm outline-none" style={{ borderColor: "var(--border)" }} placeholder="Write a message..." />
-                <button onClick={() => sendMessage()} className="btn-primary inline-flex items-center gap-2"><Send className="h-4 w-4" /> Send</button>
+                <input disabled={enforcement.isLocked || enforcement.isBanned} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") sendMessage(); }} className="min-h-11 flex-1 border bg-[var(--bg)] px-4 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60" style={{ borderColor: "var(--border)" }} placeholder={enforcement.isLocked || enforcement.isBanned ? "Conversation paused — pending platform fee settlement" : "Write a message..."} />
+                <button disabled={enforcement.isLocked || enforcement.isBanned} onClick={() => sendMessage()} className="btn-primary inline-flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"><Send className="h-4 w-4" /> Send</button>
               </div>
             </>
           ) : (

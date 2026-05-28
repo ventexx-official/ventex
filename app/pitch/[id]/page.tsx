@@ -14,6 +14,7 @@ import {
   getRunwayProgress,
   shouldShowRunway,
 } from '@/lib/runway';
+import { getDealEnforcementState } from '@/lib/deal-enforcement';
 
 // Fire-and-forget email helper
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
@@ -79,6 +80,7 @@ export default function PitchDetail() {
   const [savingPitch, setSavingPitch] = useState(false);
   const [saved, setSaved] = useState(false);
   const [matchedInvestors, setMatchedInvestors] = useState<any[]>([]);
+  const [pitchDeal, setPitchDeal] = useState<any>(null);
 
   const handleSendInterest = async () => {
     if (!currentUser) {
@@ -455,6 +457,28 @@ via Ventex`;
     checkSavedPitch();
   }, [currentUser, pitch?.id]);
 
+  useEffect(() => {
+    const fetchPitchDeal = async () => {
+      if (!currentUser || !pitch?.id) {
+        setPitchDeal(null);
+        return;
+      }
+
+      const { data } = await supabase
+        .from('deals')
+        .select('*')
+        .eq('pitch_id', pitch.id)
+        .or(`founder_id.eq.${currentUser.id},investor_id.eq.${currentUser.id}`)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      setPitchDeal(data || null);
+    };
+
+    fetchPitchDeal();
+  }, [currentUser, pitch?.id]);
+
   // Real-time subscription
   useEffect(() => {
     if (!id) return;
@@ -551,7 +575,8 @@ via Ventex`;
   };
 
   const handleOpenDeck = () => {
-    if (!investorPremium) return;
+    const enforcement = getDealEnforcementState(pitchDeal);
+    if (!investorPremium || enforcement.isLocked || enforcement.isBanned) return;
     setIsNdaModalOpen(true);
   };
 
@@ -591,6 +616,7 @@ via Ventex`;
   const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
   const isPitchOwner = currentUser?.id === pitch?.founder_id;
   const canSeeFinancialDetails = Boolean(currentUser);
+  const dealEnforcement = getDealEnforcementState(pitchDeal);
 
   if (!pitch) {
     return (
@@ -977,7 +1003,7 @@ via Ventex`;
           <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Documents</h2>
             
-            <div className={`flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
+            <div className={`flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-[#F2F2F0] dark:bg-[#333333] rounded-md flex items-center justify-center">
                   <FileText className="w-5 h-5 text-[#888888]" />
@@ -990,20 +1016,20 @@ via Ventex`;
               <button 
                 onClick={handleOpenDeck}
                 className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
-                disabled={!investorPremium}
+                disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
               >
                 View Pitch Deck
               </button>
             </div>
 
-            {!investorPremium && (
+            {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px]">
                 <div className="bg-white dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
                   <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Investor Account required</h3>
-                  <p className="text-sm text-[#888888] mb-6">Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.</p>
+                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
+                  <p className="text-sm text-[#888888] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
                   <Link href="/pricing" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
                     View Investor Accounts
                   </Link>

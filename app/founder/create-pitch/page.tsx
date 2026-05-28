@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { awardXp } from '@/lib/award-xp';
 import { isPitchProfileComplete } from '@/lib/pitch-completion';
+import { getDealEnforcementState } from '@/lib/deal-enforcement';
 import { 
   Plus, 
   X, 
@@ -57,6 +58,7 @@ export default function CreatePitch() {
   const [editingMember, setEditingMember] = useState<any>(null);
   const [drawerType, setDrawerType] = useState<'member' | 'advisor'>('member');
   const [submitting, setSubmitting] = useState(false);
+  const [pitchCreationLocked, setPitchCreationLocked] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -114,6 +116,17 @@ export default function CreatePitch() {
         return;
       }
       setFounderId(user.id);
+
+      const { data: founderDeals } = await supabase
+        .from('deals')
+        .select('*')
+        .eq('founder_id', user.id)
+        .is('paid_at', null);
+      const hasCreationLock = (founderDeals || []).some((deal: any) => {
+        const enforcement = getDealEnforcementState(deal);
+        return enforcement.isLocked || enforcement.isBanned;
+      });
+      setPitchCreationLocked(hasCreationLock);
 
       // Check for draft
       const { data: existingPitch } = await supabase
@@ -374,6 +387,10 @@ export default function CreatePitch() {
       alert("Error: No pitch ID found. Please try refreshing the page.");
       return;
     }
+    if (pitchCreationLocked) {
+      alert("Founder cannot create new pitches while a platform fee settlement is overdue post early access.");
+      return;
+    }
     
     setSubmitting(true);
     
@@ -439,6 +456,12 @@ export default function CreatePitch() {
           </div>
         </div>
       </div>
+
+      {pitchCreationLocked && (
+        <div className="bg-red-50 px-4 py-3 text-center text-sm font-bold text-red-700">
+          Founder cannot create new pitches while a platform fee settlement is overdue post early access.
+        </div>
+      )}
 
       <div className="max-w-4xl mx-auto mt-8 px-4">
         {/* Tabs */}

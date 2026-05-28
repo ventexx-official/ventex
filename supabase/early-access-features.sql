@@ -60,6 +60,8 @@ create table if not exists public.deals (
   invoice_sent_at timestamptz,
   paid_at timestamptz,
   due_date timestamptz,
+  partial_unlock_until timestamptz,
+  investor_credit_until timestamptz,
   created_at timestamptz default now()
 );
 
