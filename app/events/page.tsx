@@ -22,7 +22,7 @@ export default function EventsPage() {
     <main className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
       <section className="mx-auto max-w-6xl px-4 py-16">
         <p className="mono text-xs font-black uppercase tracking-[.16em] text-[var(--text3)]">Events</p>
-        <h1 className="mt-3 text-4xl font-black tracking-[-.04em] md:text-6xl">Ventex events hub.</h1>
+        <h1 className="mt-3 text-4xl font-black tracking-[-.04em] md:text-6xl">Ventex Events — Where the ecosystem meets.</h1>
         <Link href="/arena" className="mt-10 block rounded-lg border border-amber-400/30 bg-[#120b08] p-6 text-white shadow-[0_0_40px_rgba(245,158,11,.12)]">
           <span className="mono text-xs font-black uppercase tracking-[.16em] text-amber-200/70">Featured event</span>
           <h2 className="mt-3 text-3xl font-black">The Arena - Season 1</h2>

@@ -7,9 +7,15 @@ const columns = [
       ['Discover', '/discover'],
       ['Marketplace', '/marketplace'],
       ['Catalyst', '/catalyst'],
+      ['Pricing', '/pricing'],
+    ],
+  },
+  {
+    title: 'Events',
+    links: [
       ['The Arena', '/arena'],
       ['Pitch Battle', '/battle'],
-      ['Pricing', '/pricing'],
+      ['Events', '/events'],
     ],
   },
   {
@@ -17,9 +23,8 @@ const columns = [
     links: [
       ['About', '/about'],
       ['Investors', '/investors'],
-      ['Resources', '/resources/schemes'],
       ['Contact', '/contact'],
-      ['Events', '/events'],
+      ['Resources', '/resources/schemes'],
     ],
   },
   {
@@ -41,7 +46,7 @@ export default function Footer() {
     <footer className="border-t bg-[var(--bg2)] text-[var(--text)]" style={{ borderColor: 'var(--border)' }}>
       <div className="h-16 bg-gradient-to-b from-[var(--bg)] to-[var(--bg2)]" />
       <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 text-center md:grid-cols-[1.4fr_2fr] md:text-left">
+        <div className="grid grid-cols-1 gap-10 text-center md:grid-cols-[1.1fr_2.4fr] md:text-left">
           <div>
             <Link href="/" className="text-xl font-bold tracking-[-.5px] text-[var(--text)]">
               Ventex
@@ -51,7 +56,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {columns.map((column) => (
               <div key={column.title}>
                 <h3 className="mono mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{column.title}</h3>

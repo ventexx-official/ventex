@@ -31,6 +31,8 @@ export default function FounderSettingsPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [enrolling2fa, setEnrolling2fa] = useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
@@ -112,6 +114,21 @@ export default function FounderSettingsPage() {
     const seeds = ["lucky", "sparky", "buster", "shadow", "fluffy", "pepper", "oreo"];
     const seed = seeds[Math.floor(Math.random() * seeds.length)] + Math.floor(Math.random() * 100);
     setAvatarUrl(`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`);
+  };
+
+  const enableTwoFactor = async () => {
+    setEnrolling2fa(true);
+    setErrorMsg("");
+    try {
+      const { error } = await supabase.auth.mfa.enroll({ factorType: "totp" });
+      if (error) throw error;
+      setTwoFactorEnabled(true);
+      setSuccessMsg("2FA setup started. Follow your authenticator app prompts to finish enrollment.");
+    } catch (err: any) {
+      setErrorMsg(err.message || "Could not start 2FA setup.");
+    } finally {
+      setEnrolling2fa(false);
+    }
   };
 
   if (loading) {
@@ -302,12 +319,12 @@ export default function FounderSettingsPage() {
                 </div>
                 <div className="flex flex-col gap-4 bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-[#222222]">Two-Factor Authentication</h4>
+                    <h4 className="text-sm font-bold text-[#222222]">Two-Factor Authentication — protect your account.</h4>
                     <p className="mt-1 text-xs font-semibold text-[#888888]">Protect your account with an authenticator app.</p>
-                    <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[#888888]">Status: Not enabled</p>
+                    <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[#888888]">Status: {twoFactorEnabled ? "Enabled" : "Not enabled"}</p>
                   </div>
-                  <button type="button" className="rounded-2xl bg-[#222222] px-5 py-2.5 text-sm font-black text-white">
-                    Enable 2FA
+                  <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[#222222] px-5 py-2.5 text-sm font-black text-white disabled:opacity-50">
+                    {enrolling2fa ? "Starting..." : "Enable 2FA"}
                   </button>
                 </div>
               </div>

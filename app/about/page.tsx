@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const roadmap = [
-  "Ventex Live pitch nights with founder applications and investor judges.",
+  "The Arena — monthly live pitch events with founder applications and investor judges.",
   "Deeper marketplace workflows for freelance services, jobs, and custom builds.",
   "Founder growth tools including referrals, badges, weekly digests, and public proof assets.",
 ];

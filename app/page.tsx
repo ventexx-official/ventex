@@ -1,14 +1,13 @@
-import { Globe, Handshake, Megaphone, Shield, ShoppingBag, TrendingUp, Users, Zap } from 'lucide-react';
+import { Globe, Megaphone, Shield, TrendingUp, Users, Zap } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import SectionIndicator from '@/components/SectionIndicator';
-import ArenaEvents from '@/components/ArenaEvents';
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
-  if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
-  if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
-  return `₹${amount.toLocaleString('en-IN')}`;
+  if (amount >= 10000000) return `Rs ${(amount / 10000000).toFixed(1)}Cr`;
+  if (amount >= 100000) return `Rs ${(amount / 100000).toFixed(1)}L`;
+  return `Rs ${amount.toLocaleString('en-IN')}`;
 }
 
 const features = [
@@ -44,8 +43,6 @@ const features = [
   },
 ];
 
-const featureLinks = ['/pricing#founders', '/pricing#investors', '/pricing#data-rooms', '/catalyst', '/arena', '/marketplace'];
-
 const steps = [
   ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents.'],
   ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces.'],
@@ -53,14 +50,18 @@ const steps = [
 ];
 
 export default async function Home() {
-  const { data: statsRows } = await supabase.rpc('get_homepage_stats');
-  const livePitches = Number(statsRows?.[0]?.live_pitches ?? 0);
-  const investors = Number(statsRows?.[0]?.investors ?? 0);
-
-  const [{ data: pitches }, { count: productsCount }] = await Promise.all([
+  const [
+    { data: pitches },
+    { count: startupsCount },
+    { count: investorsCount },
+    { count: productsCount },
+  ] = await Promise.all([
     supabase.from('pitches').select('*').eq('status', 'live').limit(3),
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('status', 'live'),
+    supabase.from('pitches').select('*', { count: 'exact', head: true }),
+    supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'investor'),
+    supabase.from('products').select('*', { count: 'exact', head: true }),
   ]);
+
   const { data: featuredFlag } = await supabase
     .from('feature_flags')
     .select('enabled')
@@ -74,6 +75,12 @@ export default async function Home() {
         .order('pitch_score', { ascending: false })
         .limit(3)
     : { data: [] as any[] };
+
+  const stats = [
+    ['Total startups listed', startupsCount ?? 0],
+    ['Total registered investors', investorsCount ?? 0],
+    ['Total marketplace products', productsCount ?? 0],
+  ];
 
   return (
     <>
@@ -92,18 +99,16 @@ export default async function Home() {
           </h1>
 
           <p className="reveal mt-6 max-w-[440px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            The platform for founders, investors, and startup builders — worldwide.
+            The platform for founders, investors, and startup builders - worldwide.
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
             <Link href="/founder/create-pitch" className="btn-primary inline-flex">Submit your pitch</Link>
-            <Link href="/discover" className="btn-secondary">Browse startups →</Link>
+            <Link href="/discover" className="btn-secondary">Browse startups</Link>
           </div>
 
           <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
-            {'//'} {livePitches > 20 && investors > 10 && (productsCount ?? 0) > 10
-              ? `${livePitches} startups · ${investors} investors · ${productsCount ?? 0} products`
-              : 'A growing global network of founders, investors, and builders.'}
+            {'//'} A growing global network of founders, investors, and builders.
           </div>
 
           <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
@@ -135,7 +140,7 @@ export default async function Home() {
               <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} discover</div>
               <h2 className="mt-3 text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">Live startups raising now.</h2>
             </div>
-            <Link href="/discover" className="link-underline hidden text-sm font-semibold text-[var(--text2)] hover:text-[var(--text)] sm:block">View all →</Link>
+            <Link href="/discover" className="link-underline hidden text-sm font-semibold text-[var(--text2)] hover:text-[var(--text)] sm:block">View all</Link>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -167,7 +172,7 @@ export default async function Home() {
 
                   <div className="mt-6 flex items-center justify-between text-sm">
                     <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
-                    <span className="text-[var(--text2)]">View pitch →</span>
+                    <span className="text-[var(--text2)]">View pitch</span>
                   </div>
                 </Link>
               );
@@ -193,7 +198,6 @@ export default async function Home() {
                   </div>
                   <h3 className="font-bold text-[var(--text)]">{feature.title}</h3>
                   <p className="mt-3 min-h-[72px] text-sm leading-6 text-[var(--text2)]">{feature.desc}</p>
-                  <Link href={featureLinks[index]} className="mono mt-6 inline-flex text-[11px] font-bold text-[var(--text2)] hover:text-[var(--text)]">Learn more →</Link>
                 </div>
               );
             })}
@@ -201,21 +205,15 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="overflow-hidden border-y bg-[#090504] py-16 text-white" style={{ borderColor: 'rgba(245,158,11,.25)' }}>
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="mono text-[10px] font-bold uppercase tracking-[.16em] text-amber-200/70">{'//'} the arena</div>
-          <div className="mt-5 grid gap-8 lg:grid-cols-[.9fr_1.4fr] lg:items-center">
-            <div>
-              <h2 className="text-3xl font-black tracking-[-.03em] md:text-5xl">THE ARENA IS COMING.</h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-orange-50/75">
-                India&apos;s first monthly live startup pitch event. 5 founders. Real investors. Live and on record.
-              </p>
-              <Link href="/arena" className="mt-7 inline-flex rounded-full bg-amber-300 px-5 py-3 text-sm font-black text-[#160b04]">
-                See upcoming events
-              </Link>
+      <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
+        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
+          {stats.map(([label, value]) => (
+            <div key={label} className="reveal py-8 text-center">
+              <div className="mono text-4xl font-bold text-[var(--text)]">{value}</div>
+              <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
+              <div className="mt-2 text-xs font-semibold text-[var(--text2)]">and growing</div>
             </div>
-            <ArenaEvents compact />
-          </div>
+          ))}
         </div>
       </section>
 
@@ -238,10 +236,12 @@ export default async function Home() {
       <section id="join" className="overflow-hidden border-y bg-[var(--bg2)] py-14 text-center" style={{ borderColor: 'var(--border)' }}>
         <div className="mx-auto max-w-4xl px-4">
           <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
-          <div className="mono mt-5 flex whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
-            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
-            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
-            <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+          <div className="mt-5 h-5 overflow-hidden">
+            <div className="mono flex w-max whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+            </div>
           </div>
           <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>
         </div>

@@ -17,14 +17,13 @@ create table if not exists public.events (
 
 create table if not exists public.arena_applications (
   id uuid primary key default gen_random_uuid(),
-  founder_name text not null,
-  startup_name text not null,
-  one_line_pitch text not null,
-  sector text not null,
-  stage text not null,
-  arena_ready text not null,
-  pitch_profile_url text,
-  email text not null,
+  founder_name text,
+  startup_name text,
+  one_liner text,
+  sector text,
+  stage text,
+  why_ready text,
+  email text,
   created_at timestamptz default now()
 );
 

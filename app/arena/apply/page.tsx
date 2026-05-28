@@ -12,11 +12,10 @@ export default function ArenaApplyPage() {
   const [form, setForm] = useState({
     founder_name: "",
     startup_name: "",
-    one_line_pitch: "",
+    one_liner: "",
     sector: SECTORS[0],
     stage: STAGES[0],
-    arena_ready: "",
-    pitch_profile_url: "",
+    why_ready: "",
     email: "",
   });
 
@@ -36,7 +35,7 @@ export default function ArenaApplyPage() {
       <main className="min-h-screen bg-[#090504] px-4 py-20 text-white">
         <div className="mx-auto max-w-2xl rounded-lg border border-amber-300/25 bg-white/[.04] p-8 text-center">
           <h1 className="text-3xl font-black">Application received.</h1>
-          <p className="mt-4 text-sm leading-7 text-orange-50/75">We review all applications before each episode. You&apos;ll hear from us if you&apos;re selected.</p>
+          <p className="mt-4 text-sm leading-7 text-orange-50/75">Application received. You&apos;ll hear from us if selected.</p>
         </div>
       </main>
     );
@@ -50,17 +49,14 @@ export default function ArenaApplyPage() {
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           <Field label="Founder name" value={form.founder_name} onChange={(v) => update("founder_name", v)} required />
           <Field label="Startup name" value={form.startup_name} onChange={(v) => update("startup_name", v)} required />
-          <Field label="One-line pitch" value={form.one_line_pitch} onChange={(v) => update("one_line_pitch", v.slice(0, 100))} required maxLength={100} />
+          <Field label="One-line pitch" value={form.one_liner} onChange={(v) => update("one_liner", v.slice(0, 100))} required maxLength={100} />
           <Field label="Email for updates" type="email" value={form.email} onChange={(v) => update("email", v)} required />
           <Select label="Sector" value={form.sector} values={SECTORS} onChange={(v) => update("sector", v)} />
           <Select label="Stage" value={form.stage} values={STAGES} onChange={(v) => update("stage", v)} />
           <div className="sm:col-span-2">
-            <label className="mb-2 block text-xs font-black uppercase tracking-widest text-amber-100/70">What makes you Arena-ready?</label>
-            <textarea required rows={5} maxLength={300} value={form.arena_ready} onChange={(e) => update("arena_ready", e.target.value.slice(0, 300))} className="w-full rounded-lg border border-amber-300/25 bg-black/25 p-4 text-sm outline-none" />
-            <p className="mt-1 text-xs text-orange-50/50">{form.arena_ready.length}/300 chars</p>
-          </div>
-          <div className="sm:col-span-2">
-            <Field label="Link to existing Ventex pitch profile (optional)" value={form.pitch_profile_url} onChange={(v) => update("pitch_profile_url", v)} />
+            <label className="mb-2 block text-xs font-black uppercase tracking-widest text-amber-100/70">Why are you Arena-ready?</label>
+            <textarea required rows={5} maxLength={300} value={form.why_ready} onChange={(e) => update("why_ready", e.target.value.slice(0, 300))} className="w-full rounded-lg border border-amber-300/25 bg-black/25 p-4 text-sm outline-none" />
+            <p className="mt-1 text-xs text-orange-50/50">{form.why_ready.length}/300 chars</p>
           </div>
         </div>
         <button disabled={saving} className="mt-8 rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04] disabled:opacity-60">

@@ -12,7 +12,7 @@ const groups = [
     tiers: [
       { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
       { name: 'Builder', inr: '₹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
-      { name: 'Pro', inr: '₹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena priority application'] },
+      { name: 'Pro', inr: '₹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena - priority application'] },
     ],
   },
   {
@@ -93,7 +93,7 @@ export default function PricingPage() {
                       ))}
                     </ul>
                     <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-white dark:text-[#222222]">
-                      {tier.name === 'Free' ? 'Get Started Free' : 'Start 7-day trial'}
+                      {tier.name === 'Free' ? 'Get Started Free →' : 'Start 7-day trial'}
                     </Link>
                   </article>
                 ))}

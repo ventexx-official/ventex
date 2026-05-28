@@ -615,23 +615,23 @@ via Ventex`;
           <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Members only'}</span>
+              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Sign in'}</span>
             </div>
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Members only'}</span>
+              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Sign in'}</span>
             </div>
             <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
               <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
               <span className="text-xl font-bold text-[#222222] dark:text-white">
-                {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Members only'}
+                {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Sign in'}
               </span>
             </div>
           </div>
 
           {!canSeeFinancialDetails && (
             <div className="mb-8 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] p-4 text-sm font-semibold text-[#666666] dark:border-[#333333] dark:bg-[#222222] dark:text-gray-300">
-              Financial details visible to registered members only.
+              Sign in to view financial details.
             </div>
           )}
 
@@ -1128,14 +1128,14 @@ via Ventex`;
           <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-[#1a1a1a]">
             <h3 className="text-lg font-bold text-[#222222] dark:text-white">Data room NDA terms</h3>
             <p className="mt-3 text-sm leading-6 text-[#888888]">
-              By accessing this data room, you agree that all information is confidential and subject to Ventex&apos;s NDA terms.
+              By accessing this data room you agree all information is confidential and subject to Ventex&apos;s NDA terms.
             </p>
             <div className="mt-6 flex justify-end gap-3">
               <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[#e5e5e5] px-5 py-2.5 text-sm font-bold text-[#222222] dark:border-[#333333] dark:text-white">
                 Cancel
               </button>
               <button onClick={handleAcceptNda} className="rounded-full bg-[#222222] px-5 py-2.5 text-sm font-bold text-white dark:bg-white dark:text-[#222222]">
-                I Agree - View Documents
+                I Agree — View Documents
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ArenaEvents from "@/components/ArenaEvents";
 import ArenaWaitlistForm from "@/components/ArenaWaitlistForm";
+import ArenaNotifyModal from "@/components/ArenaNotifyModal";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -24,13 +25,14 @@ export default function ArenaPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(245,158,11,.35),transparent_38%),linear-gradient(180deg,rgba(120,30,0,.35),transparent_55%)]" />
         <div className="relative mx-auto max-w-6xl">
           <p className="mono text-xs font-black uppercase tracking-[.2em] text-amber-200">THE ARENA</p>
-          <h1 className="mt-5 max-w-4xl text-5xl font-black tracking-[-.05em] sm:text-7xl">Where founders face the fire.</h1>
+          <h1 className="mt-5 max-w-4xl text-5xl font-black tracking-[-.05em] sm:text-7xl">THE ARENA</h1>
+          <p className="mt-4 text-2xl font-black text-amber-100">Where founders face the fire.</p>
           <p className="mt-6 max-w-2xl text-base leading-8 text-orange-50/80">
-            A monthly live pitch event where India&apos;s boldest founders pitch to real investors - live, raw, and on record.
+            A monthly live pitch event where India&apos;s boldest founders pitch to real investors — live, raw, and on record.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch</Link>
-            <a href="#notify" className="rounded-full border border-amber-300/40 px-6 py-3 text-sm font-black text-amber-100">Notify Me</a>
+            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch →</Link>
+            <ArenaNotifyModal />
           </div>
         </div>
       </section>
@@ -55,9 +57,9 @@ export default function ArenaPage() {
           <div className="mt-8 grid gap-4 md:grid-cols-4">
             {[
               ["01", "Apply to pitch", "Submit your startup through Ventex"],
-              ["02", "Get selected", "Top 5 founders chosen each month by the Ventex team"],
+              ["02", "Get selected", "Top 5 founders chosen each month"],
               ["03", "Go live", "Pitch in front of investors, streamed live"],
-              ["04", "Get amplified", "Best moments cut into Reels and published across platforms"],
+              ["04", "Get amplified", "Best moments become Reels and Shorts"],
             ].map(([number, title, desc]) => (
               <article key={number} className="rounded-lg border border-amber-300/20 bg-white/[.04] p-5">
                 <div className="mono text-3xl font-black text-amber-200/50">{number}</div>
@@ -81,7 +83,7 @@ export default function ArenaPage() {
           <div>
             <h2 className="text-3xl font-black tracking-[-.03em]">Think you&apos;re ready for The Arena?</h2>
             <p className="mt-4 text-sm leading-7 text-orange-50/75">Applications open for Season 1. Limited spots. India-only. Free to apply.</p>
-            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now</Link>
+            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now →</Link>
           </div>
           <ArenaWaitlistForm />
         </div>

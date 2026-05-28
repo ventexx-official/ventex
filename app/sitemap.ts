@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/catalyst",
     "/pricing",
     "/arena",
+    "/arena/apply",
     "/events",
     "/about",
     "/investors",
