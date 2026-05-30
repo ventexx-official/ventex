@@ -121,6 +121,17 @@ export default function MarketplacePage() {
     return () => clearInterval(t);
   }, []);
 
+  const [activeTab, setActiveTab] = useState<'Explore' | 'Purchases'>('Explore');
+  const [purchases, setPurchases] = useState<any[]>([]);
+  const [loadingPurchases, setLoadingPurchases] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+  }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -141,6 +152,32 @@ export default function MarketplacePage() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'Purchases') {
+      if (!user) return;
+      const fetchPurchases = async () => {
+        setLoadingPurchases(true);
+        // Assuming 'orders' table links buyer_id to product_id
+        const { data, error } = await supabase
+          .from('orders')
+          .select(`
+            *,
+            product:product_id (
+              *,
+              seller:seller_id ( id, full_name, avatar_url )
+            )
+          `)
+          .eq('buyer_id', user.id);
+          
+        if (!error && data) {
+          setPurchases(data.map(o => o.product).filter(Boolean));
+        }
+        setLoadingPurchases(false);
+      };
+      fetchPurchases();
+    }
+  }, [activeTab, user]);
 
   // Active deals — re-evaluated each tick to auto-remove expired ones
   const activeDeals = useMemo(() => {
@@ -246,8 +283,8 @@ export default function MarketplacePage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-10">
         
-        {/* FILTER SIDEBAR */}
-        {(loading || products.length > 0) ? <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
+        {/* FILTER SIDEBAR (Only visible in Explore) */}
+        {(activeTab === 'Explore' && (loading || products.length > 0)) ? <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="font-black text-[#222222] dark:text-white uppercase tracking-tight flex items-center gap-2">
               <Filter className="w-5 h-5" /> Filters
@@ -354,26 +391,27 @@ export default function MarketplacePage() {
           </div>
         </aside> : null}
 
-        {/* PRODUCT GRID */}
+        {/* MAIN CONTENT AREA */}
         <div className="flex-1">
-          {(loading || products.length > 0) ? <div className="mb-6 flex flex-wrap gap-2">
-            {[
-              ['All', 'All'],
-              ['software', 'Software'],
-              ['freelance', 'Freelance'],
-              ['job', 'Jobs'],
-            ].map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setListingTab(value as any)}
-                className={`rounded-full border px-4 py-2 text-xs font-black ${listingTab === value ? 'border-[#222222] bg-[#222222] text-white dark:border-white dark:bg-white dark:text-[#222222]' : 'border-[#e5e5e5] bg-white text-[#222222] dark:border-[#333333] dark:bg-[#1a1a1a] dark:text-white'}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div> : null}
-          {loading ? (
+          {/* TABS */}
+          <div className="mb-6 flex gap-2 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4">
+            <button
+              onClick={() => setActiveTab('Explore')}
+              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Explore' ? 'border-[#222222] text-[#222222] dark:border-white dark:text-white' : 'border-transparent text-[#888888] hover:text-[#222222] dark:hover:text-white'}`}
+            >
+              Explore
+            </button>
+            <button
+              onClick={() => setActiveTab('Purchases')}
+              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Purchases' ? 'border-[#222222] text-[#222222] dark:border-white dark:text-white' : 'border-transparent text-[#888888] hover:text-[#222222] dark:hover:text-white'}`}
+            >
+              My Purchases
+            </button>
+          </div>
+
+          {activeTab === 'Explore' ? (
+            <>
+              {loading ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
             </div>
@@ -510,6 +548,60 @@ export default function MarketplacePage() {
                 })}
               </div>
             </>
+          ) : (
+            /* PURCHASES TAB */
+            <div>
+              {!user ? (
+                <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                  <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">Sign in to view your purchases</h3>
+                  <Link href="/login" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
+                    Sign In
+                  </Link>
+                </div>
+              ) : loadingPurchases ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+                </div>
+              ) : purchases.length === 0 ? (
+                <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                  <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">No purchases yet</h3>
+                  <p className="text-[#888888]">When you buy products on Ventex, they will appear here.</p>
+                  <button onClick={() => setActiveTab('Explore')} className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
+                    Explore Marketplace
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {purchases.map(product => (
+                    <div key={product.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+                      <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
+                        {product.images_urls?.[0] ? (
+                          <img src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[#cccccc] dark:text-[#444444]">
+                            <ShoppingBag className="w-10 h-10" />
+                          </div>
+                        )}
+                      </Link>
+
+                      <div className="p-5 flex flex-col flex-grow">
+                        <Link href={`/marketplace/${product.id}`}>
+                          <h3 className="font-bold text-[#222222] dark:text-white text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
+                        </Link>
+                        
+                        <div className="mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-end">
+                          <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors shadow-md">
+                            Access Product
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -22,24 +22,32 @@ export default function Discover() {
   const [query, setQuery] = useState('');
   const [industries, setIndustries] = useState<string[]>([]);
   const [stages, setStages] = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
   const [raisingOnly, setRaisingOnly] = useState(false);
-  const [sortBy, setSortBy] = useState('latest');
+  const [sortBy, setSortBy] = useState('recent');
+  const [error, setError] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
+      setError(null);
       let request = supabase
         .from('pitches')
-        .select('*')
-        .in('status', ['live', 'published'])
-        .order('created_at', { ascending: false });
+        .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at, views, likes')
+        .eq('status', 'live');
 
-      if (sortBy === 'most_viewed') request = request.order('views', { ascending: false });
-      if (sortBy === 'funding_high') request = request.order('amount_seeking', { ascending: false });
+      if (sortBy === 'trending') {
+        request = request.order('likes', { ascending: false }).order('created_at', { ascending: false });
+      } else {
+        request = request.order('created_at', { ascending: false });
+      }
 
-      const { data, error } = await request;
-      if (error) console.error('[Discover] pitch fetch failed:', error);
+      const { data, error: fetchError } = await request;
+      if (fetchError) {
+        console.error('[Discover] pitch fetch failed:', fetchError);
+        setError('Failed to load startups. Please try again later.');
+      }
       setPitches(data || []);
       setLoading(false);
     };
@@ -49,16 +57,17 @@ export default function Discover() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return pitches.filter((pitch) => {
-      const queryMatch = !q || [pitch.title, pitch.tagline, pitch.industry, pitch.company_stage, pitch.state, pitch.country]
+      const queryMatch = !q || [pitch.title, pitch.tagline, pitch.short_description, pitch.industry, pitch.company_stage, pitch.state, pitch.country]
         .join(' ')
         .toLowerCase()
         .includes(q);
       const industryMatch = industries.length === 0 || industries.includes(pitch.industry);
       const stageMatch = stages.length === 0 || stages.includes(pitch.company_stage);
+      const countryMatch = countries.length === 0 || countries.includes(pitch.country);
       const raisingMatch = !raisingOnly || pitch.is_raising;
-      return queryMatch && industryMatch && stageMatch && raisingMatch;
+      return queryMatch && industryMatch && stageMatch && countryMatch && raisingMatch;
     });
-  }, [pitches, query, industries, stages, raisingOnly]);
+  }, [pitches, query, industries, stages, countries, raisingOnly]);
 
   const toggle = (value: string, list: string[], setList: (items: string[]) => void) => {
     setList(list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
@@ -67,6 +76,7 @@ export default function Discover() {
   const resetFilters = () => {
     setIndustries([]);
     setStages([]);
+    setCountries([]);
     setRaisingOnly(false);
     setQuery('');
   };
@@ -75,6 +85,7 @@ export default function Discover() {
     <div className="space-y-8">
       <FilterGroup title="Industry" values={INDUSTRIES} selected={industries} onToggle={(v) => toggle(v, industries, setIndustries)} />
       <FilterGroup title="Stage" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
+      <FilterGroup title="Country" values={['United States', 'United Kingdom', 'Germany', 'India']} selected={countries} onToggle={(v) => toggle(v, countries, setCountries)} />
       <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-[var(--text)]">
         <input type="checkbox" checked={raisingOnly} onChange={(e) => setRaisingOnly(e.target.checked)} />
         Actively raising only
@@ -142,16 +153,25 @@ export default function Discover() {
             <div className="mb-6 flex items-center justify-between gap-4">
               <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text)] outline-none" style={{ borderColor: 'var(--border)' }}>
-                <option value="latest">Latest</option>
-                <option value="most_viewed">Most viewed</option>
-                <option value="funding_high">Funding: High to low</option>
+                <option value="recent">Recent</option>
+                <option value="trending">Trending</option>
               </select>
             </div>
           ) : null}
 
           {loading ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-[300px] animate-pulse bg-[var(--bg3)]" />)}
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="h-[300px] animate-pulse bg-[var(--bg3)] border rounded-[16px]" style={{ borderColor: 'var(--border)' }} />
+              ))}
+            </div>
+          ) : error ? (
+            <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>
+              <div className="max-w-md px-6">
+                <div className="mono text-xs uppercase tracking-[.12em] text-red-500">{'//'} error</div>
+                <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{error}</p>
+                <button type="button" onClick={() => window.location.reload()} className="btn-secondary mt-6 inline-flex">Retry</button>
+              </div>
             </div>
           ) : filtered.length === 0 ? (
             <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>

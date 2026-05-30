@@ -16,6 +16,18 @@ import {
 } from '@/lib/runway';
 import { getDealEnforcementState } from '@/lib/deal-enforcement';
 
+const QUESTIONS = [
+  { id: 'q1', text: "What does your company do?" },
+  { id: 'q2', text: "What problem do you solve?" },
+  { id: 'q3', text: "How does your product/service work? List main features." },
+  { id: 'q4', text: "What is the development stage and roadmap?" },
+  { id: 'q5', text: "What is your go-to-market strategy?" },
+  { id: 'q6', text: "What is your business and revenue model?" },
+  { id: 'q7', text: "What traction have you achieved?", premium: true },
+  { id: 'q8', text: "What is your competitive advantage and moat?" },
+  { id: 'q9', text: "Why is now the right time?" }
+];
+
 // Fire-and-forget email helper
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   try {
@@ -53,8 +65,8 @@ function formatAmount(amount: number) {
   return amount.toLocaleString('en-IN');
 }
 
-export default function PitchDetail() {
-  const { id } = useParams();
+export default function PitchDetail({ params }: { params: { id: string } }) {
+  const { id } = params;
   const router = useRouter();
   const [pitch, setPitch] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
@@ -1036,7 +1048,77 @@ via Ventex`;
                 </div>
               </div>
             )}
+            
+            {pitch.additional_docs && pitch.additional_docs.length > 0 && (
+              <div className={`mt-4 space-y-3 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+                {pitch.additional_docs.map((doc: any, idx: number) => (
+                  <div key={idx} className="flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-[#F2F2F0] dark:bg-[#333333] rounded-md flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-[#888888]" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-[#222222] dark:text-white text-sm">{doc.name}</h4>
+                        <p className="text-[#888888] text-xs">Additional Document</p>
+                      </div>
+                    </div>
+                    <a
+                      href={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '#' : doc.url}
+                      target={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '_self' : '_blank'}
+                      rel="noopener noreferrer"
+                      className="bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
+                      onClick={(e) => {
+                        if (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      Download
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Q&A Section */}
+          {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
+            <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+              <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Founder Q&A</h2>
+              <div className="space-y-6">
+                {QUESTIONS.map((q) => {
+                  const answer = pitch.qa_data?.[q.id];
+                  if (!answer) return null;
+                  
+                  const isGated = q.premium && (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned);
+
+                  return (
+                    <div key={q.id}>
+                      <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2 flex items-center gap-2">
+                        {q.text}
+                        {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><Lock className="w-2.5 h-2.5" /> Premium</span>}
+                      </h3>
+                      <div className={`text-[#888888] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
+                        {isGated ? 'This content is hidden to non-investors. A premium account is required to view the detailed traction and analytics provided by the founders. Upgrade your account today.' : answer}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {pitch.custom_qa?.map((qa: any, idx: number) => {
+                  if (!qa.question || !qa.answer) return null;
+                  return (
+                    <div key={idx}>
+                      <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">{qa.question}</h3>
+                      <div className="text-[#888888] text-sm leading-relaxed whitespace-pre-wrap">
+                        {qa.answer}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* COMMUNITY COMMENTS */}

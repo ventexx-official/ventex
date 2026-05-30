@@ -114,7 +114,7 @@ export default function Navbar() {
     { href: '/discover', label: 'Discover' },
     { href: '/marketplace', label: 'Marketplace' },
     { href: '/catalyst', label: 'Catalyst' },
-    { href: '/arena', label: 'The Arena' },
+    { href: '/pricing', label: 'Pricing' },
   ];
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
@@ -411,7 +411,7 @@ export default function Navbar() {
                     onClick={() => setIsOpen(false)}
                     className="block w-full text-center btn-primary"
                   >
-                    Get Started
+                    Get Started →
                   </Link>
                 </>
               )}

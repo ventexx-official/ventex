@@ -22,7 +22,7 @@ const features = [
 const benefits = [
   {
     title: "Curated deal flow",
-    description: "Access a growing pipeline of India-first startups with stage, sector, and traction context.",
+    description: "Access a growing pipeline of global startups with stage, sector, and traction context.",
   },
   {
     title: "Confidential diligence",

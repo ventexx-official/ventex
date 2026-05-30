@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Discover Startups Raising Now - Ventex",
-  description: "Browse investor-ready startups raising now. Filter by sector, stage, and traction signals.",
-  alternates: { canonical: "/discover" },
+  title: "Discover Startups — Ventex",
+  description: "Find and invest in the top 1% of emerging startups.",
+  alternates: { canonical: "https://ventex-eight.vercel.app/discover" },
   openGraph: {
-    title: "Discover Startups Raising Now - Ventex",
-    description: "Browse investor-ready startups raising now. Filter by sector, stage, and traction signals.",
-    url: "/discover",
+    title: "Discover Startups — Ventex",
+    description: "Find and invest in the top 1% of emerging startups.",
+    url: "https://ventex-eight.vercel.app/discover",
     type: "website",
     images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Discover Startups Raising Now - Ventex",
-    description: "Browse investor-ready startups raising now. Filter by sector, stage, and traction signals.",
+    title: "Discover Startups — Ventex",
+    description: "Find and invest in the top 1% of emerging startups.",
     images: [OG_IMAGE_URL],
   },
 };

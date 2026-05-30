@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         <div className="mono mt-10 border-t pt-6 text-xs text-[var(--text3)]" style={{ borderColor: 'var(--border)' }}>
-          &copy; {currentYear} Ventex. Built for the world&apos;s builders.
+          &copy; 2026 Ventex. Built for the world&apos;s builders.
         </div>
       </div>
     </footer>

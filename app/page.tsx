@@ -56,10 +56,10 @@ export default async function Home() {
     { count: investorsCount },
     { count: productsCount },
   ] = await Promise.all([
-    supabase.from('pitches').select('*').eq('status', 'live').limit(3),
-    supabase.from('pitches').select('*', { count: 'exact', head: true }),
+    supabase.from('pitches').select('id, title, industry, company_stage, is_raising, tagline, ai_summary, short_description, amount_seeking, equity_pct, state, country').eq('status', 'live').limit(3),
+    supabase.from('pitches').select('*', { count: 'exact', head: true }).eq('status', 'live'),
     supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'investor'),
-    supabase.from('products').select('*', { count: 'exact', head: true }),
+    supabase.from('products').select('*', { count: 'exact', head: true }).in('status', ['live', 'published']),
   ]);
 
   const { data: featuredFlag } = await supabase
@@ -77,10 +77,10 @@ export default async function Home() {
     : { data: [] as any[] };
 
   const stats = [
-    ['Total startups listed', startupsCount ?? 0],
-    ['Total registered investors', investorsCount ?? 0],
-    ['Total marketplace products', productsCount ?? 0],
-  ];
+    { label: 'Startups listed', value: startupsCount ?? 0 },
+    { label: 'Registered investors', value: investorsCount ?? 0 },
+    { label: 'Marketplace products', value: productsCount ?? 0 },
+  ].filter(s => s.value > 0);
 
   return (
     <>
@@ -103,7 +103,7 @@ export default async function Home() {
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
-            <Link href="/founder/create-pitch" className="btn-primary inline-flex">Submit your pitch</Link>
+            <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2">Submit your pitch <span aria-hidden="true">→</span></Link>
             <Link href="/discover" className="btn-secondary">Browse startups</Link>
           </div>
 
@@ -205,17 +205,19 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
-        <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
-          {stats.map(([label, value]) => (
-            <div key={label} className="reveal py-8 text-center">
-              <div className="mono text-4xl font-bold text-[var(--text)]">{value}</div>
-              <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
-              <div className="mt-2 text-xs font-semibold text-[var(--text2)]">and growing</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {stats.length > 0 && (
+        <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
+          <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
+            {stats.map(({ label, value }) => (
+              <div key={label} className="reveal py-8 text-center">
+                <div className="mono text-4xl font-bold text-[var(--text)]">{value.toLocaleString()}</div>
+                <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
+                <div className="mt-2 text-xs font-semibold text-[var(--text2)]">and growing</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="how-it-works" className="bg-[var(--bg)] py-20">
         <div className="mx-auto max-w-6xl px-4">

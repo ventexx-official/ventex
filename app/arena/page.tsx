@@ -6,14 +6,20 @@ import ArenaNotifyModal from "@/components/ArenaNotifyModal";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "The Arena - Live Startup Pitch Events | Ventex",
-  description: "The Arena by Ventex is a monthly live pitch event where India's boldest founders pitch to real investors.",
-  alternates: { canonical: "/arena" },
+  title: "The Arena — Live Startup Pitch Battle | Ventex",
+  description: "Monthly live pitch event where India's boldest founders pitch to real investors. Apply to pitch or watch live.",
+  alternates: { canonical: "https://ventex-eight.vercel.app/arena" },
   openGraph: {
-    title: "The Arena - Live Startup Pitch Events | Ventex",
+    title: "The Arena — Live Startup Pitch Battle | Ventex",
     description: "Where founders face the fire.",
-    url: "/arena",
+    url: "https://ventex-eight.vercel.app/arena",
     type: "website",
+    images: [OG_IMAGE_URL],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Arena — Live Startup Pitch Battle | Ventex",
+    description: "Monthly live pitch event where India's boldest founders pitch to real investors.",
     images: [OG_IMAGE_URL],
   },
 };

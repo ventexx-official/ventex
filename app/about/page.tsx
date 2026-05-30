@@ -16,7 +16,7 @@ export default function AboutPage() {
               About Ventex
             </h1>
             <p className="max-w-3xl text-base leading-7 text-[var(--text2)] sm:text-lg">
-              Ventex is an India-first platform where startups can pitch investors, sell software products,
+              Ventex is a global platform where startups can pitch investors, sell software products,
               offer freelance services, and create job opportunities in one focused workspace.
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function AboutPage() {
           <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
             <h2 className="text-2xl font-black tracking-[-.03em]">Our Mission</h2>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text2)]">
-              To build the most trusted startup infrastructure in India - where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
+              To build the most trusted startup infrastructure globally — where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
             </p>
           </section>
 
@@ -41,7 +41,7 @@ export default function AboutPage() {
                 list useful products or services, and be discovered by people who can actually help.
               </p>
               <p>
-                The result is a platform built for India&apos;s builders: part pitch network, part marketplace,
+                The result is a platform built for the world&apos;s builders: part pitch network, part marketplace,
                 part operating layer for early momentum.
               </p>
             </div>

@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
+  title: "Weekly Pitch Battle — Vote for the Best Startup | Ventex",
   description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
-  alternates: { canonical: "/battle" },
+  alternates: { canonical: "https://ventex-eight.vercel.app/battle" },
   openGraph: {
-    title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
+    title: "Weekly Pitch Battle — Vote for the Best Startup | Ventex",
     description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
-    url: "/battle",
+    url: "https://ventex-eight.vercel.app/battle",
     type: "website",
     images: [OG_IMAGE_URL],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Weekly Pitch Battle - Vote for the Best Startup - Ventex",
+    title: "Weekly Pitch Battle — Vote for the Best Startup | Ventex",
     description: "Vote weekly for the strongest startup pitch. Winners get featured across the Ventex network.",
     images: [OG_IMAGE_URL],
   },
