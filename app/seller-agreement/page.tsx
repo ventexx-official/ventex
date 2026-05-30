@@ -3,7 +3,7 @@ import { Handshake, Landmark, Ban, ShieldAlert, BadgeCent } from "lucide-react";
 import { BASE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Seller Agreement | Ventex — Startup Platform",
+  title: "Seller Agreement — Startup Platform",
   description: "Seller Terms and conditions regulating digital product listings, fee structures, escrow processing, and strict anti-bypass rules on the Ventex marketplace.",
   alternates: {
     canonical: "/seller-agreement",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Seller Agreement | Ventex — Startup Platform",
+    title: "Seller Agreement — Startup Platform",
     description: "Seller Terms and conditions regulating digital product listings, fee structures, escrow processing, and strict anti-bypass rules on the Ventex marketplace.",
     url: `${BASE_URL}/seller-agreement`,
     type: "website",

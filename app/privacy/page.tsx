@@ -3,7 +3,7 @@ import { Eye, ShieldCheck, Lock, Landmark, Mail } from "lucide-react";
 import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Ventex — Startup Platform",
+  title: "Privacy Policy — Startup Platform",
   description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
   alternates: {
     canonical: "/privacy",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Privacy Policy | Ventex — Startup Platform",
+    title: "Privacy Policy — Startup Platform",
     description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
     url: `${BASE_URL}/privacy`,
     type: "website",

@@ -3,7 +3,7 @@ import { FileText, ShieldAlert, Gavel, Scale, AlertTriangle } from "lucide-react
 import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Ventex — Startup Platform",
+  title: "Terms of Service — Startup Platform",
   description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventex.",
   alternates: {
     canonical: "/terms",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Terms of Service | Ventex — Startup Platform",
+    title: "Terms of Service — Startup Platform",
     description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventex.",
     url: `${BASE_URL}/terms`,
     type: "website",

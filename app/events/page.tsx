@@ -5,11 +5,11 @@ import ArenaWaitlistForm from "@/components/ArenaWaitlistForm";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Events - Ventex",
+  title: "Events",
   description: "Upcoming Ventex events, including The Arena live startup pitch series.",
   alternates: { canonical: "/events" },
   openGraph: {
-    title: "Events - Ventex",
+    title: "Events",
     description: "Upcoming Ventex events, including The Arena live startup pitch series.",
     url: "/events",
     type: "website",
