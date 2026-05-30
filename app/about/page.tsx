@@ -54,7 +54,7 @@ export default function AboutPage() {
                 <div className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[var(--text)] text-sm font-black text-[var(--bg)]">V</div>
                 <div>
                   <h3 className="font-black">Founder & CEO, Ventex</h3>
-                  <p className="mt-2 text-sm text-[var(--text2)]">Building India&apos;s startup graph from day one.</p>
+                  <p className="mt-2 text-sm text-[var(--text2)]">Building the global startup graph from day one.</p>
                   <p className="mt-4 text-xs font-bold uppercase tracking-[.12em] text-[var(--text3)]">More team members coming soon as we grow.</p>
                 </div>
               </article>

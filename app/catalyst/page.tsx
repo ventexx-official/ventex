@@ -8,35 +8,6 @@ import { emailFor } from '@/lib/site';
 
 const SECTORS = ['Fintech', 'SaaS', 'AI/ML', 'Healthtech', 'Edtech', 'AgriTech', 'Consumer', 'Logistics', 'Other'];
 
-const PLACEHOLDER_PROFILES = [
-  {
-    id: '1',
-    name: 'Sarah Chen',
-    role: 'Mentor + Investor',
-    sectors: ['SaaS', 'AI/ML'],
-    bio: 'Former VP of Eng at Stripe. Angel investor in 14 startups. Can help with architecture and hiring early engineers.',
-    offer: 'Review technical architecture and provide intros to seed funds.',
-    avatar: 'https://i.pravatar.cc/150?u=sarah'
-  },
-  {
-    id: '2',
-    name: 'David Kumar',
-    role: 'Advisor',
-    sectors: ['Healthtech', 'Consumer'],
-    bio: '3x Founder (2 exits). Specialized in Go-to-Market strategy and B2B sales motion.',
-    offer: '1-on-1 sparring on pricing strategy and sales playbook.',
-    avatar: 'https://i.pravatar.cc/150?u=david'
-  },
-  {
-    id: '3',
-    name: 'Elena Rodriguez',
-    role: 'Investor',
-    sectors: ['Fintech', 'Logistics'],
-    bio: 'Partner at early-stage syndicate. Looking for hard tech and fintech infrastructure.',
-    offer: 'Can lead pre-seed rounds up to $250k.',
-    avatar: 'https://i.pravatar.cc/150?u=elena'
-  }
-];
 
 export default function CatalystPage() {
   const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor('support');
@@ -146,38 +117,17 @@ export default function CatalystPage() {
 
         <section className="py-12">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-black tracking-tight text-[#222222] dark:text-white">Featured Catalysts</h2>
+            <h2 className="text-2xl font-black tracking-tight text-[#222222] dark:text-white">Join the Catalyst Network</h2>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {PLACEHOLDER_PROFILES.map((profile) => (
-              <div key={profile.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 flex flex-col hover:shadow-xl transition-all">
-                <div className="flex items-start gap-4 mb-4">
-                  <img src={profile.avatar} alt={profile.name} className="w-16 h-16 rounded-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333]" />
-                  <div>
-                    <h3 className="font-bold text-[#222222] dark:text-white text-lg flex items-center gap-1">
-                      {profile.name} <Shield className="w-4 h-4 text-emerald-500" />
-                    </h3>
-                    <p className="text-[#888888] text-sm font-bold">{profile.role}</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {profile.sectors.map(sector => (
-                    <span key={sector} className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider">
-                      {sector}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-[#666666] dark:text-[#a0a0a0] text-sm leading-relaxed mb-4 flex-grow">
-                  {profile.bio}
-                </p>
-                <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-4 mt-auto">
-                  <p className="text-[#222222] dark:text-white text-xs font-bold mb-1 flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> Offers:
-                  </p>
-                  <p className="text-[#888888] text-xs leading-relaxed">{profile.offer}</p>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-10 flex flex-col items-center text-center">
+            <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-4">Are you an experienced operator, founder, or investor?</h3>
+            <p className="text-[#888888] mb-6 max-w-xl">We are currently onboarding the first cohort of Ventex Catalysts. Apply now to get early access and start mentoring the next generation of startups.</p>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold transition-all hover:scale-105"
+            >
+              Submit Application
+            </button>
           </div>
         </section>
 

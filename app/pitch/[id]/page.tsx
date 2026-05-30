@@ -65,8 +65,9 @@ function formatAmount(amount: number) {
   return amount.toLocaleString('en-IN');
 }
 
-export default function PitchDetail({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function PitchDetail() {
+  const params = useParams();
+  const id = params?.id as string;
   const router = useRouter();
   const [pitch, setPitch] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
@@ -337,7 +338,10 @@ via Ventex`;
 
   useEffect(() => {
     async function fetchData() {
-      if (!id) return;
+      if (!id) {
+        setLoading(false);
+        return;
+      }
       try {
         const { data: pitchData, error: pitchError } = await supabase
           .from('pitches')
