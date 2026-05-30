@@ -34,8 +34,7 @@ export default function Discover() {
       setError(null);
       let request = supabase
         .from('pitches')
-        .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at, views, likes')
-        .in('status', ['live', 'published']);
+        .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at, views, likes');
 
       if (sortBy === 'trending') {
         request = request.order('likes', { ascending: false }).order('created_at', { ascending: false });

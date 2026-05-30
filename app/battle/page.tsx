@@ -45,9 +45,7 @@ export default function BattlePage() {
     let { data: pitches } = await supabase
       .from('pitches')
       .select('id, title, tagline, logo_url, industry, company_stage, pitch_score, created_at, is_raising')
-      .in('status', ['live', 'published'])
-      .eq('is_raising', true)
-      .gte('created_at', fourteenDaysAgo)
+      .or(`status.eq.raising,created_at.gte.${fourteenDaysAgo}`)
       .order('pitch_score', { ascending: false })
       .limit(8);
 
@@ -55,7 +53,6 @@ export default function BattlePage() {
       const fallback = await supabase
         .from('pitches')
         .select('id, title, tagline, logo_url, industry, company_stage, pitch_score, created_at, is_raising')
-        .in('status', ['live', 'published'])
         .order('created_at', { ascending: false })
         .limit(8);
       pitches = fallback.data || [];
