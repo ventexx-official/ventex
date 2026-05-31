@@ -548,9 +548,11 @@ export default function MarketplacePage() {
                 })}
               </div>
             </>
-          ) : (
-            /* PURCHASES TAB */
-            <div>
+          )}
+          </>
+        ) : (
+          /* PURCHASES TAB */
+          <div>
               {!user ? (
                 <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />

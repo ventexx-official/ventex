@@ -208,6 +208,5 @@ export default function CatalystPage() {
           </div>
         )}
       </div>
-    </main>
   );
 }
