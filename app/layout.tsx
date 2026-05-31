@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { BASE_URL, OG_IMAGE_URL } from "@/lib/site";
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,7 +54,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              const t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+              const t=localStorage.getItem('theme')||'light';
               document.documentElement.classList.add('js');
               document.documentElement.setAttribute('data-theme',t);
             `,
@@ -64,6 +65,7 @@ export default function RootLayout({
         <Layout>
           {children}
         </Layout>
+        <Analytics />
       </body>
     </html>
   );
