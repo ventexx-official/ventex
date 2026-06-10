@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     openGraph: {
       title,
       description,
-      images: ['https://ventex-eight.vercel.app/og-image.png'],
-      url: `https://ventex-eight.vercel.app/marketplace/${params.id}`,
+      images: ['https://ventexx.com/og-image.png'],
+      url: `https://ventexx.com/marketplace/${params.id}`,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ['https://ventex-eight.vercel.app/og-image.png'],
+      images: ['https://ventexx.com/og-image.png'],
     }
   };
 }

@@ -4,11 +4,11 @@ import { OG_IMAGE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Discover Startups — Ventex",
   description: "Find and invest in the top 1% of emerging startups.",
-  alternates: { canonical: "https://ventex-eight.vercel.app/discover" },
+  alternates: { canonical: "https://ventexx.com/discover" },
   openGraph: {
     title: "Discover Startups — Ventex",
     description: "Find and invest in the top 1% of emerging startups.",
-    url: "https://ventex-eight.vercel.app/discover",
+    url: "https://ventexx.com/discover",
     type: "website",
     images: [OG_IMAGE_URL],
   },

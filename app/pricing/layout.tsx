@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Pricing — Ventex Plans for Founders and Investors",
   description: "Simple, transparent pricing for founders, investors, and marketplace buyers. Free tiers available.",
   alternates: {
-    canonical: "https://ventex-eight.vercel.app/pricing",
+    canonical: "https://ventexx.com/pricing",
   },
   openGraph: {
     title: "Pricing — Ventex Plans for Founders and Investors",
     description: "Simple, transparent pricing for founders, investors, and marketplace buyers. Free tiers available.",
-    url: "https://ventex-eight.vercel.app/pricing",
+    url: "https://ventexx.com/pricing",
     type: "website",
     images: [OG_IMAGE_URL],
   },

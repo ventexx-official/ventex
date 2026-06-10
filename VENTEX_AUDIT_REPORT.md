@@ -1,7 +1,7 @@
 # Ventex Production Audit Report
 
 Audit date: 2026-05-26  
-Target: https://ventex-eight.vercel.app/  
+Target: https://ventexx.com/  
 Repo: `C:\Users\HP\Ventex`
 
 ## Executive Summary
@@ -32,7 +32,7 @@ The legal pages exist and are crawlable, and the site has HTTPS/HSTS via Vercel.
 
 ### Lighthouse Homepage
 
-Run against `https://ventex-eight.vercel.app/`.
+Run against `https://ventexx.com/`.
 
 - Performance: 87
 - Accessibility: 95

@@ -8,11 +8,11 @@ import { OG_IMAGE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "The Arena — Live Startup Pitch Battle",
   description: "Monthly live pitch event where India's boldest founders pitch to real investors. Apply to pitch or watch live.",
-  alternates: { canonical: "https://ventex-eight.vercel.app/arena" },
+  alternates: { canonical: "https://ventexx.com/arena" },
   openGraph: {
     title: "The Arena — Live Startup Pitch Battle",
     description: "Where founders face the fire.",
-    url: "https://ventex-eight.vercel.app/arena",
+    url: "https://ventexx.com/arena",
     type: "website",
     images: [OG_IMAGE_URL],
   },

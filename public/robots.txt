@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /founder/
 Disallow: /settings/
-Sitemap: https://ventex-eight.vercel.app/sitemap.xml
+Sitemap: https://ventexx.com/sitemap.xml

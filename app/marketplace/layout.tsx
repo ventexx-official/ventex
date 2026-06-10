@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Marketplace — Premium Startup Assets",
   description: "Buy and sell premium tools, documents, and resources built by founders.",
   alternates: {
-    canonical: "https://ventex-eight.vercel.app/marketplace",
+    canonical: "https://ventexx.com/marketplace",
   },
   openGraph: {
     title: "Marketplace — Premium Startup Assets",
     description: "Buy and sell premium tools, documents, and resources built by founders.",
-    url: "https://ventex-eight.vercel.app/marketplace",
+    url: "https://ventexx.com/marketplace",
     type: "website",
     images: [OG_IMAGE_URL],
   },

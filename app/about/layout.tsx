@@ -4,11 +4,11 @@ import { OG_IMAGE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About Ventex — The Global Startup Platform",
   description: "Ventex is the platform where startups pitch investors, sell products, and find the right supporters worldwide.",
-  alternates: { canonical: "https://ventex-eight.vercel.app/about" },
+  alternates: { canonical: "https://ventexx.com/about" },
   openGraph: {
     title: "About Ventex — The Global Startup Platform",
     description: "Ventex is the platform where startups pitch investors, sell products, and find the right supporters worldwide.",
-    url: "https://ventex-eight.vercel.app/about",
+    url: "https://ventexx.com/about",
     type: "website",
     images: [OG_IMAGE_URL],
   },

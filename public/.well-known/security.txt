@@ -1,3 +1,3 @@
-Contact: security@ventex-eight.vercel.app
+Contact: security@ventexx.com
 Preferred-Languages: en
-Policy: https://ventex-eight.vercel.app/privacy
+Policy: https://ventexx.com/privacy

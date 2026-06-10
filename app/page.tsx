@@ -91,7 +91,7 @@ export default async function Home() {
             "@context": "https://schema.org",
             "@type": "Organization",
             name: "Ventex",
-            url: "https://ventex-eight.vercel.app",
+            url: "https://ventexx.com",
             description: "Where startups pitch, fund and sell. The global platform for founders, investors, and startup builders."
           })
         }}
