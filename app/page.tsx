@@ -2,6 +2,7 @@ import { Globe, Megaphone, Shield, TrendingUp, Users, Zap } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import SectionIndicator from '@/components/SectionIndicator';
+import Testimonials from '@/components/Testimonials';
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
@@ -107,11 +108,11 @@ export default async function Home() {
           </div>
 
           <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
-            Where startups pitch, fund and sell.
+            The platform where startups get funded, backed, and scaled.
           </h1>
 
-          <p className="reveal mt-6 max-w-[440px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            The platform for founders, investors, and startup builders - worldwide.
+          <p className="reveal mt-6 max-w-[520px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
+            Ventex is where serious founders meet verified investors. Pitch with structure, protect your data room, sell your products — all in one ecosystem built for the way startups actually work.
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
@@ -120,7 +121,7 @@ export default async function Home() {
           </div>
 
           <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
-            {'//'} A growing global network of founders, investors, and builders.
+            {'//'} Trusted by founders raising from ₹10L to ₹5Cr — worldwide.
           </div>
 
           <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
@@ -216,6 +217,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       {stats.length > 0 && (
         <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>

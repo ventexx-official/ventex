@@ -1,13 +1,16 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "react/no-unescaped-entities": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@next/next/no-img-element": "off",
-    "no-empty": "off",
-    "prefer-const": "off",
-    "jsx-a11y/alt-text": "off"
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@next/next/no-img-element": "warn",
+    "no-empty": ["warn", { "allowEmptyCatch": true }],
+    "prefer-const": "warn",
+    "jsx-a11y/alt-text": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error"
   }
 }

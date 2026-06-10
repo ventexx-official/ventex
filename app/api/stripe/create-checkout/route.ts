@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
+import { rateLimit } from '@/lib/rate-limit';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -24,6 +25,14 @@ async function getAuthenticatedUser(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const { success, remaining } = rateLimit(req, 8, 60_000);
+  if (!success) {
+    return new NextResponse('Too many requests. Please try again later.', {
+      status: 429,
+      headers: { 'Retry-After': '60', 'X-RateLimit-Remaining': String(remaining) },
+    });
+  }
+
   try {
     const { plan } = await req.json();
 
