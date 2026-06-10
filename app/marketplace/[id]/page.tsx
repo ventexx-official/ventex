@@ -659,6 +659,24 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
+      {product && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: product.name,
+              description: product.description || product.name,
+              offers: {
+                "@type": "Offer",
+                price: product.discount_price || product.price,
+                priceCurrency: "INR"
+              }
+            })
+          }}
+        />
+      )}
       <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-6xl">
           Ventex Premium is for marketplace access — buying software, hiring, and custom build requests. For investment features, see <Link href="/pricing" className="underline underline-offset-4">Investor Accounts</Link>.

@@ -256,7 +256,7 @@ export default function MarketplacePage() {
                   </span>
                   <div className="aspect-video bg-[#222222] rounded-xl overflow-hidden mb-4 relative">
                     {deal.images_urls?.[0] ? (
-                      <img src={deal.images_urls[0]} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img loading="lazy" src={deal.images_urls[0]} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-[#555555]">
                         <ShoppingBag className="w-8 h-8 opacity-50" />
@@ -470,7 +470,7 @@ export default function MarketplacePage() {
                       
                       <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
                         {product.images_urls?.[0] ? (
-                          <img src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[#cccccc] dark:text-[#444444]">
                             <ShoppingBag className="w-10 h-10" />
@@ -580,7 +580,7 @@ export default function MarketplacePage() {
                     <div key={product.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
                       <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
                         {product.images_urls?.[0] ? (
-                          <img src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-[#cccccc] dark:text-[#444444]">
                             <ShoppingBag className="w-10 h-10" />

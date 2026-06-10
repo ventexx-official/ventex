@@ -646,6 +646,24 @@ via Ventex`;
 
   return (
     <div className="bg-[#F2F2F0] dark:bg-[#111111] min-h-screen pb-28 md:pb-24">
+      {pitch && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "InvestmentOrGrant",
+              name: pitch.title,
+              description: pitch.tagline || pitch.short_description,
+              amount: pitch.amount_seeking ? {
+                "@type": "MonetaryAmount",
+                currency: "INR",
+                value: pitch.amount_seeking
+              } : undefined
+            })
+          }}
+        />
+      )}
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
         
         {/* HERO CARD */}
