@@ -84,6 +84,18 @@ export default async function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Ventex",
+            url: "https://ventex-eight.vercel.app",
+            description: "Where startups pitch, fund and sell. The global platform for founders, investors, and startup builders."
+          })
+        }}
+      />
       <SectionIndicator />
 
       <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
