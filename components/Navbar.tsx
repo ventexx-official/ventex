@@ -142,123 +142,123 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-4 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled ? 'translate-y-1' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-3 items-center h-14">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-14 gap-4">
           {/* Left Pill - Logo */}
           <div className="flex justify-start">
-            <div className="pointer-events-auto flex w-max items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
-            <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
-              Ventex
-            </Link>
+            <div className="pointer-events-auto flex items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+              <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
+                Ventex
+              </Link>
+            </div>
           </div>
 
           {/* Center Pill - Desktop Nav Links */}
           <div className="hidden md:flex justify-center">
-            <div className="pointer-events-auto flex w-max items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
-            {navLinks.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-[13px] font-bold rounded-full transition-all duration-300 hover:-translate-y-0.5 ${
-                  isActive(link.href)
-                    ? 'bg-[var(--text)] text-[var(--bg)] shadow-md'
-                    : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)]'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-              </div>
-            </div>
-
-          {/* Right Pill - Actions */}
-          <div className="flex justify-end gap-2">
-            <div className="pointer-events-auto flex w-max items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
-            {user ? (
-              <>
+            <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+              {navLinks.map(link => (
                 <Link
-                  href="/messages"
-                  className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] rounded-full transition-all duration-300"
-                  aria-label="Messages"
+                  key={link.href}
+                  href={link.href}
+                  className={`px-4 py-2 text-[13px] font-bold rounded-full transition-all duration-300 hover:-translate-y-0.5 ${
+                    isActive(link.href)
+                      ? 'bg-[var(--text)] text-[var(--bg)] shadow-md'
+                      : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)]'
+                  }`}
                 >
-                  <MessageSquare className="w-5 h-5" />
-                  {unreadMessages > 0 && (
-                    <span className="absolute top-0.5 right-0.5 min-w-4 h-4 rounded-full bg-red-500 px-1 text-[10px] font-bold text-white flex items-center justify-center shadow-sm">
-                      {unreadMessages}
-                    </span>
-                  )}
+                  {link.label}
                 </Link>
-                <Link
-                  href="/cart"
-                  className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] rounded-full transition-all duration-300"
-                >
-                  <ShoppingBag className="w-5 h-5" />
-                  {cartCount > 0 && (
-                    <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full shadow-sm">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-                <div className="relative ml-1" ref={avatarMenuRef}>
-                  <button
-                    type="button"
-                    onClick={() => setAvatarMenuOpen((v) => !v)}
-                    className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-[var(--text)] text-[var(--bg)] hover:scale-105 transition-all shadow-md"
-                    aria-label="Open profile menu"
-                  >
-                    {userProfile?.avatar_url ? (
-                      <img src={userProfile.avatar_url} alt={displayName} className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-xs font-bold">{initial}</span>
-                    )}
-                  </button>
-
-                  {avatarMenuOpen && (
-                    <div className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border bg-[var(--bg)] shadow-2xl backdrop-blur-[24px] transition-all" style={{ borderColor: 'var(--border)' }}>
-                      <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                        <div className="text-sm font-semibold text-[var(--text)] truncate">{displayName}</div>
-                        <div className="text-[11px] text-[var(--text3)] truncate">{user?.email}</div>
-                      </div>
-
-                      <div className="py-2">
-                        <Link href={`/profile/${user.id}`} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
-                          <User className="w-4 h-4 text-[var(--text3)]" /> My Profile
-                        </Link>
-                        <Link href="/dashboard" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
-                          <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> My Dashboard
-                        </Link>
-                        <Link href="/my-purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
-                          <Package className="w-4 h-4 text-[var(--text3)]" /> My Purchases
-                        </Link>
-                        <Link href="/settings" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
-                          <Settings className="w-4 h-4 text-[var(--text3)]" /> Settings
-                        </Link>
-                      </div>
-
-                      <div className="border-t" style={{ borderColor: 'var(--border)' }} />
-
-                      <div className="py-1">
-                        <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors">
-                          <LogOut className="w-4 h-4" /> Logout
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="px-4 py-2 text-sm font-bold text-[var(--text)] hover:text-[var(--text2)] transition-colors">Login</Link>
-                <Link href="/signup" className="btn-primary ml-2 hidden sm:flex">Get Started →</Link>
-              </>
-            )}
+              ))}
             </div>
           </div>
 
+          {/* Right Pill - Actions */}
+          <div className="flex justify-end gap-2">
+            <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+              {user ? (
+                <>
+                  <Link
+                    href="/messages"
+                    className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] rounded-full transition-all duration-300"
+                    aria-label="Messages"
+                  >
+                    <MessageSquare className="w-5 h-5" />
+                    {unreadMessages > 0 && (
+                      <span className="absolute top-0.5 right-0.5 min-w-4 h-4 rounded-full bg-red-500 px-1 text-[10px] font-bold text-white flex items-center justify-center shadow-sm">
+                        {unreadMessages}
+                      </span>
+                    )}
+                  </Link>
+                  <Link
+                    href="/cart"
+                    className="relative p-2 text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] rounded-full transition-all duration-300"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    {cartCount > 0 && (
+                      <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full shadow-sm">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                  <div className="relative ml-1" ref={avatarMenuRef}>
+                    <button
+                      type="button"
+                      onClick={() => setAvatarMenuOpen((v) => !v)}
+                      className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-[var(--text)] text-[var(--bg)] hover:scale-105 transition-all shadow-md"
+                      aria-label="Open profile menu"
+                    >
+                      {userProfile?.avatar_url ? (
+                        <img src={userProfile.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs font-bold">{initial}</span>
+                      )}
+                    </button>
+
+                    {avatarMenuOpen && (
+                      <div className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border bg-[var(--bg)] shadow-2xl backdrop-blur-[24px] transition-all" style={{ borderColor: 'var(--border)' }}>
+                        <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+                          <div className="text-sm font-semibold text-[var(--text)] truncate">{displayName}</div>
+                          <div className="text-[11px] text-[var(--text3)] truncate">{user?.email}</div>
+                        </div>
+
+                        <div className="py-2">
+                          <Link href={`/profile/${user.id}`} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+                            <User className="w-4 h-4 text-[var(--text3)]" /> My Profile
+                          </Link>
+                          <Link href="/dashboard" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+                            <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> My Dashboard
+                          </Link>
+                          <Link href="/my-purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+                            <Package className="w-4 h-4 text-[var(--text3)]" /> My Purchases
+                          </Link>
+                          <Link href="/settings" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+                            <Settings className="w-4 h-4 text-[var(--text3)]" /> Settings
+                          </Link>
+                        </div>
+
+                        <div className="border-t" style={{ borderColor: 'var(--border)' }} />
+
+                        <div className="py-1">
+                          <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors">
+                            <LogOut className="w-4 h-4" /> Logout
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="px-4 py-2 text-sm font-bold text-[var(--text)] hover:text-[var(--text2)] transition-colors">Login</Link>
+                  <Link href="/signup" className="btn-primary ml-2 hidden sm:flex">Get Started →</Link>
+                </>
+              )}
+            </div>
+            
             {/* Mobile Hamburger */}
             <div className="md:hidden pointer-events-auto flex items-center justify-center h-14 w-14 rounded-full border shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
+                className="inline-flex h-full w-full items-center justify-center rounded-full text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
