@@ -1,7 +1,6 @@
 import { Globe, Megaphone, Shield, TrendingUp, Users, Zap } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
-import SectionIndicator from '@/components/SectionIndicator';
 import Testimonials from '@/components/Testimonials';
 import JsonLd from '@/components/JsonLd';
 
@@ -100,7 +99,6 @@ export default async function Home() {
           "https://youtube.com/@ventexx"
         ]
       }} />
-      <SectionIndicator />
 
       <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
         <div className="absolute inset-0 bg-[var(--bg)]/60" />
