@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventex — Where startups pitch, fund and sell.</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root[data-theme="dark"] {
+            --bg: #0c0f12;
+            --card-bg: rgba(23, 29, 36, 0.65);
+            --card-hover: rgba(30, 38, 48, 0.8);
+            --text-primary: #f4f6f7;
+            --text-muted: #818e96;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --glow-1: rgba(163, 184, 153, 0.08);
+            --glow-2: rgba(224, 169, 109, 0.06);
+            --nav-bg: rgba(12, 15, 18, 0.8);
+            --dock-bg: rgba(18, 23, 28, 0.85);
+            --dock-border: rgba(255, 255, 255, 0.08);
+            --footer-bg: #080a0d;
+            --shadow-card: 0 30px 60px rgba(0, 0, 0, 0.4);
+            --shadow-rail: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f4f6f5;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-hover: rgba(255, 255, 255, 0.9);
+            --text-primary: #1c2226;
+            --text-muted: #5c6870;
+            --border: rgba(0, 0, 0, 0.05);
+            --border-hover: rgba(0, 0, 0, 0.1);
+            --glow-1: rgba(68, 89, 76, 0.04);
+            --glow-2: rgba(176, 125, 78, 0.03);
+            --nav-bg: rgba(244, 246, 245, 0.85);
+            --dock-bg: rgba(255, 255, 255, 0.9);
+            --dock-border: rgba(0, 0, 0, 0.08);
+            --footer-bg: #eaeceb;
+            --shadow-card: 0 30px 60px rgba(0, 0, 0, 0.08);
+            --shadow-rail: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        @keyframes ambientFloat {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        .stratosphere-blur {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(140px);
+            animation: ambientFloat 15s ease-in-out infinite;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .blur-top-left { top: -100px; left: -100px; background: var(--glow-1); animation-delay: 0s; }
+        .blur-mid-right { top: 600px; right: -150px; background: var(--glow-2); animation-delay: -5s; }
+        .blur-bottom-left { bottom: 200px; left: -200px; background: var(--glow-1); animation-delay: -10s; }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .stagger-1 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.1s; }
+        .stagger-2 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.2s; }
+        .stagger-3 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.3s; }
+        .stagger-4 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.4s; }
+        .stagger-5 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.5s; }
+
+        /* FIXED TOP NAVBAR */
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 72px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+        }
+        
+        .nav-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        .brand-logo span { color: var(--accent-green); transition: color 0.4s ease; }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); transform: translateY(-2px); }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .btn-login {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
+        .btn-login:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        :root[data-theme="dark"] .btn-primary:hover { box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+
+        @keyframes pulseDot {
+            0% { box-shadow: 0 0 0 0 rgba(163, 184, 153, 0.6); }
+            70% { box-shadow: 0 0 0 6px rgba(163, 184, 153, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(163, 184, 153, 0); }
+        }
+
+        /* FLOATING SECTION TRACKER AT THE BOTTOM */
+        .floating-status-rail {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 56px;
+            background: var(--dock-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--dock-border);
+            border-radius: 100px;
+            padding: 0 8px 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 48px;
+            z-index: 9999;
+            box-shadow: var(--shadow-rail);
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.6s ease;
+        }
+
+        .rail-telemetry {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transition: color 0.4s ease;
+        }
+        .rail-dot { 
+            width: 6px; height: 6px; 
+            background: #a3b899; 
+            border-radius: 50%; 
+            animation: pulseDot 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .spectrum-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, border-color 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .spectrum-toggle:hover {
+            transform: rotate(15deg) scale(1.05);
+            background: rgba(255,255,255,0.05);
+        }
+        :root[data-theme="light"] .spectrum-toggle:hover { background: rgba(0,0,0,0.05); }
+
+        /* HERO SECTION */
+        .hero-section {
+            padding-top: 180px;
+            padding-bottom: 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        
+        .hero-content p {
+            font-size: 19px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 40px;
+            max-width: 540px;
+            transition: color 0.4s ease;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-stratosphere {
+            background: var(--text-primary);
+            color: var(--bg);
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+        .btn-stratosphere:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        :root[data-theme="dark"] .btn-stratosphere:hover { box-shadow: 0 12px 24px rgba(255,255,255,0.15); }
+
+        .btn-secondary {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            padding: 13px 24px;
+            border-radius: 8px;
+            transition: border-color 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.05);
+            border-color: var(--border-hover);
+        }
+        :root[data-theme="light"] .btn-secondary:hover { background: rgba(0,0,0,0.03); }
+
+        .glass-ledger-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+        }
+        .glass-ledger-card:hover {
+            transform: translateY(-4px);
+        }
+        :root[data-theme="light"] .glass-ledger-card { box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+
+        .ledger-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: #e0a96d;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .glass-ledger-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+
+        .ledger-inner-stack {
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+        }
+        :root[data-theme="light"] .ledger-inner-stack { background: rgba(255,255,255,0.5); }
+
+        .ledger-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.4s ease;
+        }
+        .ledger-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .ledger-row:first-child { padding-top: 0; }
+
+        .ledger-label { font-size: 13.5px; color: var(--text-muted); transition: color 0.4s ease; }
+        .ledger-value { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--text-primary); transition: color 0.4s ease; }
+        .ledger-value.highlight { color: #e0a96d; }
+
+        /* TICKER SYSTEM */
+        .network-ticker {
+            border-top: 1px dashed var(--border);
+            border-bottom: 1px dashed var(--border);
+            padding: 24px 0;
+            background: rgba(0,0,0,0.01);
+            margin-bottom: 60px;
+            transition: border-color 0.4s ease, background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ticker-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+        .ticker-item { display: flex; align-items: center; gap: 8px; }
+        .ticker-dot { width: 6px; height: 6px; background: #a3b899; border-radius: 50%; }
+
+        /* STAGGERED GRID SYSTEM */
+        .features-section {
+            padding: 60px 0 160px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 80px auto;
+        }
+        .section-header h2 {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+
+        .staggered-mesh {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px 40px;
+        }
+
+        .stratosphere-feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+        }
+        :root[data-theme="light"] .stratosphere-feature-card { box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+
+        .stratosphere-feature-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: var(--border-hover);
+        }
+        :root[data-theme="light"] .stratosphere-feature-card:hover { box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8); }
+
+        .staggered-mesh .stratosphere-feature-card:nth-child(even) { transform: translateY(40px); }
+        .staggered-mesh .stratosphere-feature-card:nth-child(even):hover { transform: translateY(32px) scale(1.01); }
+
+        .card-icon-frame {
+            width: 42px; height: 42px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; font-weight: 700;
+        }
+        .icon-green { background: rgba(163, 184, 153, 0.15); color: #a3b899; }
+        .icon-amber { background: rgba(224, 169, 109, 0.15); color: #e0a96d; }
+
+        .stratosphere-feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+
+        .stratosphere-feature-card p {
+            color: var(--text-muted);
+            font-size: 14.5px;
+            line-height: 1.6;
+            transition: color 0.4s ease;
+        }
+
+        /* SITE FOOTER ARCHITECTURE */
+        .site-footer {
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 80px 0 120px 0;
+            font-size: 14px;
+            transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, color 0.4s ease;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand-column p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 16px;
+            max-width: 260px;
+            transition: color 0.4s ease;
+        }
+
+        .footer-column h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
+        .footer-links a:hover { color: var(--text-primary); transform: translateX(4px); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            transition: border-color 0.4s ease, color 0.4s ease;
+        }
+
+        @media(max-width: 991px) {
+            .nav-menu { display: none; }
+            .hero-split { grid-template-columns: 1fr; gap: 48px; }
+            .staggered-mesh { grid-template-columns: 1fr; gap: 24px; }
+            .staggered-mesh .stratosphere-feature-card:nth-child(even) { transform: translateY(0); }
+            .staggered-mesh .stratosphere-feature-card:nth-child(even):hover { transform: translateY(-8px) scale(1.01); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .floating-status-rail { width: calc(100% - 32px); justify-content: center; gap: 20px; }
+            .rail-telemetry span:not(.rail-dot) { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stratosphere-blur blur-top-left"></div>
+    <div class="stratosphere-blur blur-mid-right"></div>
+    <div class="stratosphere-blur blur-bottom-left"></div>
+
+    <header class="site-header stagger-1">
+        <div class="container nav-wrapper">
+            <a href="#" class="brand-logo">Ventex<span>.</span></a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active">Discover</a></li>
+                <li><a href="#" class="nav-link">Marketplace</a></li>
+                <li><a href="#" class="nav-link">Catalyst</a></li>
+                <li><a href="#" class="nav-link">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#" class="btn-login">Login</a>
+                <a href="#" class="btn-primary">Get Started &rarr;</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="floating-status-rail stagger-5">
+        <div class="rail-telemetry">
+            <div class="rail-dot"></div>
+            <span>SYS_STATUS: ACTIVE</span>
+            <span>//</span>
+            <span>DATA PARAMETERS NORMAL</span>
+            <span>//</span>
+            <span>MATCHING SUITE ONLINE</span>
+        </div>
+        <button class="spectrum-toggle" onclick="toggleStratosphereSpectrum()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+    </div>
+
+    <section class="hero-section">
+        <div class="container hero-split">
+            <div class="hero-content stagger-2">
+                <h1>Where startups pitch, fund and sell.</h1>
+                <p>The platform for founders, investors, and startup builders — everywhere.</p>
+                <div class="hero-cta-group">
+                    <a href="#" class="btn-stratosphere">Create your pitch &rarr;</a>
+                    <a href="#" class="btn-secondary">Explore Live Dealflows</a>
+                </div>
+            </div>
+
+            <div class="glass-ledger-card stagger-3">
+                <span class="ledger-eyebrow">Ventex Matrix</span>
+                <h3>Live startups raising now.</h3>
+                <div class="ledger-inner-stack">
+                    <div class="ledger-row">
+                        <span class="ledger-label">Target Allocation</span>
+                        <span class="ledger-value highlight">Rs. 50.0L</span>
+                    </div>
+                    <div class="ledger-row">
+                        <span class="ledger-label">Equity Pool Offered</span>
+                        <span class="ledger-value">10%</span>
+                    </div>
+                    <div class="ledger-row">
+                        <span class="ledger-label">Calculated Base Evaluation</span>
+                        <span class="ledger-value">Rs. 5.0Cr</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="network-ticker stagger-4">
+        <div class="container ticker-wrap">
+            <div class="ticker-item"><div class="ticker-dot"></div> VENTEX INFRASTRUCTURE CORE STATUS: OPERATIONAL</div>
+            <div class="ticker-item">[CONNECTED DEPLOYMENTS ACTIVE]</div>
+            <div class="ticker-item">FOUNDER CORE ECOSYSTEM INDEX</div>
+        </div>
+    </div>
+
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header stagger-4">
+                <h2>Everything you need to pitch, fund and sell.</h2>
+            </div>
+            <div class="staggered-mesh">
+                <div class="stratosphere-feature-card stagger-5">
+                    <div class="card-icon-frame icon-green">01</div>
+                    <h3>Integrated pitch profiles</h3>
+                    <p>Turn your startup script into a structured pitch with traction, documents, video, Q&A, and AI summaries — ready for investors.</p>
+                </div>
+                <div class="stratosphere-feature-card stagger-5" style="animation-delay: 0.6s;">
+                    <div class="card-icon-frame icon-amber">02</div>
+                    <h3>Funding-ready signals</h3>
+                    <p>Funding-ready software, response badges, XP, pitch scores, and investor matching help strong founders stand out from the crowd.</p>
+                </div>
+                <div class="stratosphere-feature-card stagger-5" style="animation-delay: 0.7s;">
+                    <div class="card-icon-frame icon-amber">03</div>
+                    <h3>Premium data rooms</h3>
+                    <p>Protect traction and confidential documents while giving verified investors enough context to evaluate.</p>
+                </div>
+                <div class="stratosphere-feature-card stagger-5" style="animation-delay: 0.8s;">
+                    <div class="card-icon-frame icon-green">04</div>
+                    <h3>Built for founders worldwide</h3>
+                    <p>Modern format, global resources, and marketplace tooling built to fit startup realities — write from anywhere, raise from anyone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer stagger-5" style="animation-delay: 0.9s;">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand-column">
+                    <a href="#" style="text-decoration:none; font-size:22px; font-weight:800; color:var(--text-primary); transition: color 0.4s ease;">Ventex<span style="color:#a3b899; transition: color 0.4s ease;">.</span></a>
+                    <p>Next-generation fundraising mechanics configured for fluid startup lifecycles.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Platform Topology</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Discover Matrix</a></li>
+                        <li><a href="#">Marketplace Framework</a></li>
+                        <li><a href="#">Catalyst Infrastructure</a></li>
+                        <li><a href="#">Pricing Engine</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem Hub</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Developer API</a></li>
+                        <li><a href="#">Telemetry Docs</a></li>
+                        <li><a href="#">Syndicate Network</a></li>
+                        <li><a href="#">System Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Governance</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Protocol</a></li>
+                        <li><a href="#">Terms of Clearance</a></li>
+                        <li><a href="#">Network Licensing</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Ventex. Built for the world's Builders.</div>
+                <div>FRAMEWORK INDEX_V2 // STRATOSPHERE</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleStratosphereSpectrum() {
+            const rootElement = document.documentElement;
+            const currentSpectrumState = rootElement.getAttribute('data-theme');
+            const targetSpectrumState = currentSpectrumState === 'dark' ? 'light' : 'dark';
+            rootElement.setAttribute('data-theme', targetSpectrumState);
+        }
+    </script>
+</body>
+</html>
