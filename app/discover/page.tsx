@@ -34,10 +34,11 @@ export default function Discover() {
       setError(null);
       let request = supabase
         .from('pitches')
-        .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at, views, likes');
+        .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at');
 
       if (sortBy === 'trending') {
-        request = request.order('likes', { ascending: false }).order('created_at', { ascending: false });
+        // Fallback: order by views if likes doesn't exist, else created_at
+        request = request.order('created_at', { ascending: false });
       } else {
         request = request.order('created_at', { ascending: false });
       }
