@@ -320,9 +320,9 @@ export default function AdminFlagged() {
                     </div>
                     <div className="flex gap-4 text-[10px] text-neutral-600 font-mono flex-wrap">
                       <span>Flag ID: {item.id}</span>
-                      <span>Ã‚Â·</span>
+                      <span>·</span>
                       <span>User ID: {item.user_id}</span>
-                      <span>Ã‚Â·</span>
+                      <span>·</span>
                       <span>Type: {item.content_type}</span>
                     </div>
                   </div>

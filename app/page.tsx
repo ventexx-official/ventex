@@ -108,7 +108,7 @@ export default async function Home() {
             <div className="text-left stagger-2">
               <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8" style={{ borderColor: 'var(--border2)' }}>
                 <span className="h-1.5 w-1.5 animate-[pulseDot_2s_infinite] rounded-full bg-emerald-500" />
-                v1.0 Ã‚Â· Early Access Now Open
+                v1.0 · Early Access Now Open
               </div>
 
               <h1 className="max-w-2xl text-balance text-[clamp(32px,6vw,64px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
@@ -120,7 +120,7 @@ export default async function Home() {
               </p>
 
               <div className="flex flex-wrap items-center gap-5">
-                <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">Ã¢â€ â€™</span></Link>
+                <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">→</span></Link>
                 <Link href="/discover" className="btn-secondary transition-colors">Explore pitches</Link>
               </div>
 
@@ -277,9 +277,9 @@ export default async function Home() {
           <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
           <div className="mt-5 h-5 overflow-hidden">
             <div className="mono flex w-max whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
-              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
-              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
-              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
             </div>
           </div>
           <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>

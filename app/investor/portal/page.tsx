@@ -260,7 +260,7 @@ export default function InvestorPortal() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="font-bold text-[#222222] group-hover:text-black truncate">{pitch.title}</h3>
-                            <p className="text-xs text-[#888888] truncate">{pitch.industry || 'Tech'} Ã¢â‚¬Â¢ {pitch.company_stage || 'Seed'}</p>
+                            <p className="text-xs text-[#888888] truncate">{pitch.industry || 'Tech'} Â¢ {pitch.company_stage || 'Seed'}</p>
                           </div>
                         </div>
                         <p className="text-sm text-[#888888] line-clamp-2 mb-4 flex-grow">{pitch.short_description || pitch.tagline}</p>
@@ -327,7 +327,7 @@ export default function InvestorPortal() {
                          </div>
                          <div>
                            <p className="font-bold text-[#222222] text-sm group-hover:text-black">{pitch.title}</p>
-                           <p className="text-xs text-[#888888]">{pitch.industry} Ã¢â‚¬Â¢ {pitch.company_stage}</p>
+                           <p className="text-xs text-[#888888]">{pitch.industry} Â¢ {pitch.company_stage}</p>
                          </div>
                       </div>
                       <div className="text-right">

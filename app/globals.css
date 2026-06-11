@@ -341,8 +341,11 @@ button {
 .floating-status-rail {
   position: fixed;
   bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  max-width: calc(100vw - 48px);
   background: var(--dock-bg);
   border: 1px solid var(--dock-border);
   border-radius: 100px;

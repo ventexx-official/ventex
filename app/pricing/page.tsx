@@ -11,23 +11,23 @@ const groups = [
   {
     heading: 'For Founders',
     tiers: [
-      { name: 'Free', inr: 'Ã¢â€šÂ¹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
-      { name: 'Builder', inr: 'Ã¢â€šÂ¹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
-      { name: 'Pro', inr: 'Ã¢â€šÂ¹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena - priority application'] },
+      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
+      { name: 'Builder', inr: '₹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
+      { name: 'Pro', inr: '₹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena - priority application'] },
     ],
   },
   {
     heading: 'For Investors',
     tiers: [
-      { name: 'Free', inr: 'Ã¢â€šÂ¹0/month', usd: '$0/month', features: ['View 5 pitches/month', 'Basic search'] },
-      { name: 'Basic', inr: 'Ã¢â€šÂ¹499/month', usd: '$6/month', features: ['Unlimited pitch views', 'Save pitches', 'Contact founders'] },
-      { name: 'Pro', inr: 'Ã¢â€šÂ¹1499/month', usd: '$18/month', features: ['All Basic features', 'Data rooms', 'Investor badge', 'Priority matching', 'Portfolio tracking', 'Analytics'] },
+      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['View 5 pitches/month', 'Basic search'] },
+      { name: 'Basic', inr: '₹499/month', usd: '$6/month', features: ['Unlimited pitch views', 'Save pitches', 'Contact founders'] },
+      { name: 'Pro', inr: '₹1499/month', usd: '$18/month', features: ['All Basic features', 'Data rooms', 'Investor badge', 'Priority matching', 'Portfolio tracking', 'Analytics'] },
     ],
   },
   {
     heading: 'Marketplace Buyers (Premium)',
     tiers: [
-      { name: 'Premium', inr: 'Ã¢â€šÂ¹199/month', usd: '$3/month', features: ['Buy software products', 'Post job applications', 'Request custom builds from founders'] },
+      { name: 'Premium', inr: '₹199/month', usd: '$3/month', features: ['Buy software products', 'Post job applications', 'Request custom builds from founders'] },
     ],
   },
 ];
@@ -43,7 +43,7 @@ const faqs = [
 function displayPrice(tier: { inr: string; usd: string }, mode: PriceMode) {
   if (mode === 'inr') return tier.inr;
   if (mode === 'usd') return tier.usd;
-  return `${tier.inr} Ã‚Â· ${tier.usd}`;
+  return `${tier.inr} · ${tier.usd}`;
 }
 
 export default function PricingPage() {
@@ -78,8 +78,8 @@ export default function PricingPage() {
           </div>
           <div className="inline-flex rounded-full border border-black/10 bg-[var(--card-bg)] p-1 dark:border-white/10 dark:bg-[#1a1a1a]">
             {[
-              ['both', 'Ã¢â€šÂ¹ INR / $ USD'],
-              ['inr', 'Ã¢â€šÂ¹ INR'],
+              ['both', '₹ INR / $ USD'],
+              ['inr', '₹ INR'],
               ['usd', '$ USD'],
             ].map(([value, label]) => (
               <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[#222222] text-white dark:bg-[var(--card-bg)] dark:text-[#222222]' : 'text-[#666666] dark:text-gray-300'}`}>
@@ -111,7 +111,7 @@ export default function PricingPage() {
                       ))}
                     </ul>
                     <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-[var(--card-bg)] dark:text-[#222222]">
-                      {tier.name === 'Free' ? 'Get started Ã¢â€ â€™' : 'Join free Ã¢â€ â€™'}
+                      {tier.name === 'Free' ? 'Get started →' : 'Join free →'}
                     </Link>
                   </article>
                 ))}

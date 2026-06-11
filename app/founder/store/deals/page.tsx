@@ -413,8 +413,8 @@ export default function FounderDealsPage() {
                               <p className="font-bold text-[#222222] text-sm">{product.name}</p>
                               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                                 <span className="bg-red-100 text-red-600 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">{pct}% OFF</span>
-                                <span className="text-sm font-black text-emerald-600">Ã¢â€šÂ¹{(product.discount_price! / 100).toLocaleString()}</span>
-                                <span className="text-xs text-[#888888] line-through">Ã¢â€šÂ¹{(product.price / 100).toLocaleString()}</span>
+                                <span className="text-sm font-black text-emerald-600">₹{(product.discount_price! / 100).toLocaleString()}</span>
+                                <span className="text-xs text-[#888888] line-through">₹{(product.price / 100).toLocaleString()}</span>
                                 {product.deal_end_date && <CountdownBadge endDate={product.deal_end_date} />}
                               </div>
                             </div>
@@ -469,7 +469,7 @@ export default function FounderDealsPage() {
                               </div>
                               <div>
                                 <p className="font-bold text-[#222222] text-sm">{product.name}</p>
-                                <p className="text-xs text-[#888888] mt-0.5">Original price: Ã¢â€šÂ¹{(product.price / 100).toLocaleString()}</p>
+                                <p className="text-xs text-[#888888] mt-0.5">Original price: ₹{(product.price / 100).toLocaleString()}</p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
@@ -483,15 +483,15 @@ export default function FounderDealsPage() {
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                   <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
-                                    Deal Price (Ã¢â€šÂ¹)
+                                    Deal Price (₹)
                                   </label>
                                   <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888888] font-bold text-sm">Ã¢â€šÂ¹</span>
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888888] font-bold text-sm">₹</span>
                                     <input
                                       type="number"
                                       min="0"
                                       step="0.01"
-                                      placeholder={`Max: Ã¢â€šÂ¹${(product.price / 100 - 0.01).toFixed(2)}`}
+                                      placeholder={`Max: ₹${(product.price / 100 - 0.01).toFixed(2)}`}
                                       value={form.price}
                                       onChange={(e) =>
                                         setDealForms((prev) => ({ ...prev, [product.id]: { ...prev[product.id], price: e.target.value } }))

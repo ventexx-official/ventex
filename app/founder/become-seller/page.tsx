@@ -336,7 +336,7 @@ function BecomeSellerInner() {
                     className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {phoneLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> SendingÃ¢â‚¬Â¦</>
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
                     ) : (
                       <><Phone className="w-4 h-4" /> Send OTP Code</>
                     )}
@@ -394,7 +394,7 @@ function BecomeSellerInner() {
                     className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {verifyLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> VerifyingÃ¢â‚¬Â¦</>
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Verifying...</>
                     ) : (
                       <><Shield className="w-4 h-4" /> Verify Code</>
                     )}
@@ -494,7 +494,7 @@ function BecomeSellerInner() {
                 className="w-full py-4 bg-[#635BFF] hover:bg-[#5249e5] text-white rounded-2xl font-black text-sm active:scale-95 transition-all disabled:opacity-60 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-[#635BFF]/20"
               >
                 {stripeLoading ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to StripeÃ¢â‚¬Â¦</>
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Stripe...</>
                 ) : (
                   <><CreditCard className="w-4 h-4" /> Connect with Stripe <ArrowRight className="w-4 h-4" /></>
                 )}
@@ -527,9 +527,9 @@ function BecomeSellerInner() {
               {/* Checklist */}
               <div className="space-y-3 text-left">
                 {[
-                  "Phone number verified Ã¢Å“â€œ",
-                  "Stripe Connect account linked Ã¢Å“â€œ",
-                  "Seller status activated Ã¢Å“â€œ",
+                  "Phone number verified ✓",
+                  "Stripe Connect account linked ✓",
+                  "Seller status activated ✓",
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl">
                     <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -551,7 +551,7 @@ function BecomeSellerInner() {
                 href="/marketplace/sell/create"
                 className="block w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all text-center shadow-lg shadow-black/10"
               >
-                List your first product Ã¢â€ â€™
+                List your first product →
               </Link>
 
               <Link

@@ -52,7 +52,7 @@ function buildEmail({
             <p style="margin:0;font-size:12px;color:#999999;">
               You're receiving this because you have an account on 
               <a href="${VENTEX_URL}" style="color:#666666;">ventex.co</a>.
-              &nbsp;Ã‚Â·&nbsp;
+              &nbsp;·&nbsp;
               <a href="${VENTEX_URL}/unsubscribe" style="color:#666666;text-decoration:underline;">Unsubscribe</a>
             </p>
           </td>
@@ -87,7 +87,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
     case 'welcome':
       return {
-        subject: `Welcome to Ventex, ${data.name || 'there'}! Ã°Å¸Å¡â‚¬`,
+        subject: `Welcome to Ventex, ${data.name || 'there'}! 🚀`,
         html: buildEmail({
           heading: `Welcome to Ventex, ${data.name || 'there'}!`,
           body: `<p>You're in. Ventex is where serious startups meet serious investors  -  and you've just become part of it.</p>
@@ -99,7 +99,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'new_comment':
       return {
-        subject: `Ã°Å¸â€™Â¬ New comment on your pitch "${data.pitchName}"`,
+        subject: `💬 New comment on your pitch "${data.pitchName}"`,
         html: buildEmail({
           heading: `Someone commented on "${data.pitchName}"`,
           body: `<p><strong>${data.commenterName || 'A visitor'}</strong> left a comment on your pitch:</p>
@@ -125,7 +125,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'interest_accepted':
       return {
-        subject: `Ã¢Å“â€¦ ${data.startupName} accepted your interest`,
+        subject: `✅ ${data.startupName} accepted your interest`,
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
           body: `<p>Great news  -  the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
@@ -137,7 +137,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'product_sold':
       return {
-        subject: `Ã°Å¸Å½â€° You sold "${data.productName}"! Order details inside.`,
+        subject: `🎉 You sold "${data.productName}"! Order details inside.`,
         html: buildEmail({
           heading: `You sold "${data.productName}"!`,
           body: `<p>Congratulations! A buyer just purchased your product on Ventex Marketplace.</p>
@@ -146,7 +146,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Your Payout</td><td style="font-weight:700;font-size:13px;padding-top:8px;color:#22c55e;">$${((data.payout || 0) / 100).toFixed(2)}</td></tr>
                  </table>
-                 <p>Payouts are processed to your connected Stripe account within 2Ã¢â‚¬â€œ5 business days.</p>`,
+                 <p>Payouts are processed to your connected Stripe account within 2–5 business days.</p>`,
           ctaText: 'View Order',
           ctaUrl: `${VENTEX_URL}/founder/dashboard`,
         }),
@@ -154,7 +154,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'order_confirmation':
       return {
-        subject: `Ã°Å¸â€œÂ¦ Your order for "${data.productName}" is confirmed`,
+        subject: `📦 Your order for "${data.productName}" is confirmed`,
         html: buildEmail({
           heading: `Your order is confirmed!`,
           body: `<p>Thanks for your purchase on Ventex Marketplace. Here are your order details:</p>
@@ -171,7 +171,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'ai_summary_ready':
       return {
-        subject: `Ã°Å¸Â¤â€“ Your pitch "${data.pitchName}" is live with an AI briefing`,
+        subject: `🤖 Your pitch "${data.pitchName}" is live with an AI briefing`,
         html: buildEmail({
           heading: `Your pitch is live on Ventex!`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> has been published and an AI-generated briefing is now attached to it.</p>

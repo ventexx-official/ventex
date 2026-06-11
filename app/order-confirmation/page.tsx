@@ -208,7 +208,7 @@ function OrderConfirmationDetails() {
                 </div>
                 <div className="text-left">
                   <span className="text-[10px] font-black uppercase text-[#888888] tracking-widest block">Total Paid</span>
-                  <span className="text-sm font-black text-[#222222] dark:text-white">Ã¢â€šÂ¹{orderTotal.toLocaleString()}</span>
+                  <span className="text-sm font-black text-[#222222] dark:text-white">₹{orderTotal.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -240,10 +240,10 @@ function OrderConfirmationDetails() {
                             {product.name}
                           </h3>
                           <p className="text-xs text-[#888888] mt-0.5">
-                            By {order.seller?.full_name || 'Anonymous'} Ã‚Â· <span className="font-semibold text-emerald-500 uppercase tracking-widest text-[9px] bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded">{product.category}</span>
+                            By {order.seller?.full_name || 'Anonymous'} · <span className="font-semibold text-emerald-500 uppercase tracking-widest text-[9px] bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded">{product.category}</span>
                           </p>
                           <p className="text-xs font-black text-[#222222] dark:text-white mt-2">
-                            Ã¢â€šÂ¹{order.amount_paid.toLocaleString()}
+                            ₹{order.amount_paid.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -264,7 +264,7 @@ function OrderConfirmationDetails() {
                         {/* Review System */}
                         {hasSubmitted ? (
                           <span className="text-xs text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-950/20 px-4 py-2.5 rounded-xl border border-emerald-200 dark:border-emerald-900/40 flex items-center gap-1.5">
-                            <Star className="w-3.5 h-3.5 fill-emerald-500 text-emerald-500" /> Reviewed Ã¢Å“â€œ
+                            <Star className="w-3.5 h-3.5 fill-emerald-500 text-emerald-500" /> Reviewed ✓
                           </span>
                         ) : (
                           <button 

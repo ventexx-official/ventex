@@ -180,7 +180,7 @@ export default function Discover() {
                 <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
                   {pitches.length === 0 ? 'No startups yet. Be the first to pitch.' : 'No startups match your filters yet. Try loosening the filters or search query.'}
                 </p>
-                <Link href="/founder/create-pitch" className="btn-primary mt-6 inline-flex">Submit your pitch Ã¢â€ â€™</Link>
+                <Link href="/founder/create-pitch" className="btn-primary mt-6 inline-flex">Submit your pitch →</Link>
               </div>
             </div>
           ) : (

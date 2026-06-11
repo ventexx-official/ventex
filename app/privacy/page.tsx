@@ -59,7 +59,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
-            Last Updated: May 2026 Ã‚Â· India DPDP Act 2023 Compliant
+            Last Updated: May 2026 · India DPDP Act 2023 Compliant
           </p>
         </div>
 

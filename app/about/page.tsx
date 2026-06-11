@@ -74,7 +74,7 @@ export default function AboutPage() {
           </section>
 
           <Link href="/signup" className="btn-primary inline-flex">
-            Join the platform Ã¢â€ â€™
+            Join the platform →
           </Link>
         </div>
       </section>

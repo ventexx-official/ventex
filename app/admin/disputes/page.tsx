@@ -140,7 +140,7 @@ export default function AdminDisputes() {
         <div>
           <h2 className="text-xl font-bold text-white tracking-tight">Disputes Resolution Center</h2>
           <p className="text-sm text-neutral-400 mt-1">
-            Review buyerÃ¢â‚¬â€œseller disputes and issue rulings: refund the buyer or release payment to the seller.
+            Review buyer–seller disputes and issue rulings: refund the buyer or release payment to the seller.
           </p>
         </div>
         <button
@@ -309,7 +309,7 @@ export default function AdminDisputes() {
                     </div>
                     <div className="flex gap-3 text-[10px] text-neutral-600 font-mono">
                       <span>Dispute ID: {dispute.id}</span>
-                      <span>Ã‚Â·</span>
+                      <span>·</span>
                       <span>Order ID: {dispute.order_id}</span>
                     </div>
                   </div>

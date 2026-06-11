@@ -164,7 +164,7 @@ export default function BattlePage() {
                   <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#F2F2F0]">
                     <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <div className="mt-2 text-xs font-black text-[#888888]">{entry.votes || 0} votes Ã‚Â· {pct}%</div>
+                  <div className="mt-2 text-xs font-black text-[#888888]">{entry.votes || 0} votes · {pct}%</div>
                   <button
                     onClick={() => vote(entry)}
                     disabled={!!votedId}

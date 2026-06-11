@@ -273,7 +273,7 @@ export default function FounderBoostPage() {
                       className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
                     >
                       {pitches.map(p => (
-                        <option key={p.id} value={p.id}>{p.title} {p.featured ? "Ã°Å¸Å’Å¸ (Boosted)" : ""}</option>
+                        <option key={p.id} value={p.id}>{p.title} {p.featured ? "🌟 (Boosted)" : ""}</option>
                       ))}
                     </select>
                   </div>

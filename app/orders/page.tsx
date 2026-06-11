@@ -355,7 +355,7 @@ export default function OrdersDashboard() {
                           </div>
                           <div className="space-y-0.5">
                             <span className="text-[9px] font-medium block text-neutral-400">Total Paid</span>
-                            <span className="text-xs font-black text-[#222222] dark:text-white">Ã¢â€šÂ¹{order.amount_paid.toLocaleString()}</span>
+                            <span className="text-xs font-black text-[#222222] dark:text-white">₹{order.amount_paid.toLocaleString()}</span>
                           </div>
                         </div>
                       </div>
@@ -377,7 +377,7 @@ export default function OrdersDashboard() {
                           {order.status === 'paid' && (
                             isReviewed ? (
                               <span className="inline-flex items-center gap-1 text-[10px] text-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 px-3 py-2 rounded-xl border border-emerald-100 dark:border-emerald-900/30 font-bold">
-                                <Star className="w-3 h-3 fill-emerald-500 text-emerald-500" /> Reviewed Ã¢Å“â€œ
+                                <Star className="w-3 h-3 fill-emerald-500 text-emerald-500" /> Reviewed ✓
                               </span>
                             ) : (
                               <button

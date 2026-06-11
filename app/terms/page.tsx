@@ -99,7 +99,7 @@ export default function TermsPage() {
             Terms of Service
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
-            Last Updated: May 2026 Ã‚Â· Version 1.2
+            Last Updated: May 2026 · Version 1.2
           </p>
         </div>
 

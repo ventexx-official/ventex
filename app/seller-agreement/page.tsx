@@ -68,7 +68,7 @@ export default function SellerAgreementPage() {
             Seller Agreement
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
-            Last Updated: May 2026 Ã‚Â· Flat 5% Commission Escrow Standard
+            Last Updated: May 2026 · Flat 5% Commission Escrow Standard
           </p>
         </div>
 

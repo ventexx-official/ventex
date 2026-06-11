@@ -264,7 +264,7 @@ export default function FounderStorePage() {
   // Quick stats card data
   const statCards = [
     { label: "Total Sales", value: stats.totalSales, icon: ShoppingBag, desc: "Units sold", color: "text-blue-500 bg-blue-50" },
-    { label: "Total Revenue", value: `Ã¢â€šÂ¹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
+    { label: "Total Revenue", value: `₹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
     { label: "Active Listings", value: stats.activeListings, icon: Package, desc: "Live in store", color: "text-indigo-500 bg-indigo-50" },
     { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} Ã¢Ëœâ€¦` : " - ", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
   ];
@@ -429,7 +429,7 @@ export default function FounderStorePage() {
                                 {isCustom ? (
                                   <span className="text-[#888888] text-xs">Custom Work</span>
                                 ) : (
-                                  `Ã¢â€šÂ¹${(product.price / 100).toLocaleString()}`
+                                  `₹${(product.price / 100).toLocaleString()}`
                                 )}
                               </td>
 
@@ -449,7 +449,7 @@ export default function FounderStorePage() {
                               <td className="px-6 py-4 text-center">
                                 <p className="font-bold text-[#222222]">{product.sales_count || 0}</p>
                                 <p className="text-[10px] text-[#888888] font-medium mt-0.5">
-                                  Ã¢â€šÂ¹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
+                                  ₹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
                                 </p>
                               </td>
 
@@ -521,7 +521,7 @@ export default function FounderStorePage() {
                 <div>
                   <p className="text-[10px] font-black uppercase text-[#888888] tracking-widest mb-2">Payout balance</p>
                   <h3 className="text-3xl font-black text-[#222222]">
-                    Ã¢â€šÂ¹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
+                    ₹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
                   </h3>
                   <div className="flex items-center gap-1.5 text-xs text-[#888888] mt-2 font-medium">
                     <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
@@ -533,7 +533,7 @@ export default function FounderStorePage() {
                   <div className="flex justify-between items-center text-xs font-bold">
                     <span className="text-[#888888]">Earnings (This Month)</span>
                     <span className="text-[#222222]">
-                      Ã¢â€šÂ¹{(orders.reduce((acc, o) => {
+                      ₹{(orders.reduce((acc, o) => {
                         const orderMonth = new Date(o.created_at).getMonth();
                         const currMonth = new Date().getMonth();
                         return orderMonth === currMonth ? acc + (o.seller_payout || 0) : acc;
@@ -560,7 +560,7 @@ export default function FounderStorePage() {
                   target="_blank"
                   className="block w-full text-center py-3.5 border-[0.5px] border-[#e5e5e5] rounded-2xl text-xs font-black text-[#222222] hover:bg-[#F2F2F0] active:scale-95 transition-all"
                 >
-                  Manage payout account Ã¢â€ â€™
+                  Manage payout account →
                 </Link>
               </div>
             </div>
@@ -615,7 +615,7 @@ export default function FounderStorePage() {
                             </td>
                             <td className="px-6 py-4 text-[#888888] font-medium">{formattedDate}</td>
                             <td className="px-6 py-4 font-bold text-emerald-600">
-                              Ã¢â€šÂ¹{(order.seller_payout / 100).toLocaleString()}
+                              ₹{(order.seller_payout / 100).toLocaleString()}
                             </td>
                             <td className="px-6 py-4">
                               <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${

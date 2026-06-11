@@ -1069,7 +1069,7 @@ export default function CreatePitch() {
                     </label>
                     <div className="border-[0.5px] border-[#e5e5e5] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
                       <div className="flex items-center gap-2 px-3 py-2 bg-[var(--bg2)] border-b-[0.5px] border-[#e5e5e5]">
-                        {['B', 'I', 'U', 'Ã¢â‚¬Â¢', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#888888] hover:bg-[var(--card-bg)] rounded-md">{tool}</button>)}
+                        {['B', 'I', 'U', 'Â¢', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#888888] hover:bg-[var(--card-bg)] rounded-md">{tool}</button>)}
                         <div className="flex-grow"></div>
                         <button className="p-1.5 hover:bg-[var(--card-bg)] rounded-md"><Globe className="w-3.5 h-3.5 text-[#888888]" /></button>
                       </div>

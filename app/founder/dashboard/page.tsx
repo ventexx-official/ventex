@@ -622,7 +622,7 @@ export default function FounderDashboard() {
                           <div className="min-w-0">
                             <h4 className="font-bold text-[#222222] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
                             <p className="text-[10px] text-[#888888] font-semibold mt-0.5">
-                              Order ID: <span className="font-mono">{dispute.order_id}</span> Ã¢â‚¬Â¢ Net Sale: Ã¢â€šÂ¹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
+                              Order ID: <span className="font-mono">{dispute.order_id}</span> Â¢ Net Sale: ₹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
                             </p>
                           </div>
                         </div>
@@ -724,7 +724,7 @@ export default function FounderDashboard() {
                       onClick={() => router.push('/founder/create-pitch')}
                       className="mt-4 text-sm font-bold text-[#222222] underline decoration-[0.5px] underline-offset-4 hover:no-underline"
                     >
-                      Create your first pitch Ã¢â€ â€™
+                      Create your first pitch →
                     </button>
                   </div>
                 ) : (
@@ -790,7 +790,7 @@ export default function FounderDashboard() {
                 )}
                 {pitches.length > 5 && (
                   <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors">
-                    + {pitches.length - 5} more pitches  -  View all Ã¢â€ â€™
+                    + {pitches.length - 5} more pitches  -  View all →
                   </Link>
                 )}
               </div>

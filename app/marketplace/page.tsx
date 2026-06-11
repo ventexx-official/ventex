@@ -265,8 +265,8 @@ export default function MarketplacePage() {
                   </div>
                   <h3 className="font-bold text-white text-sm truncate">{deal.name}</h3>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xl font-black text-emerald-400">Ã¢â€šÂ¹{deal.discount_price?.toLocaleString()}</span>
-                    <span className="text-xs text-[#888888] line-through font-medium">Ã¢â€šÂ¹{deal.price?.toLocaleString()}</span>
+                    <span className="text-xl font-black text-emerald-400">₹{deal.discount_price?.toLocaleString()}</span>
+                    <span className="text-xs text-[#888888] line-through font-medium">₹{deal.price?.toLocaleString()}</span>
                   </div>
                   <div className="mt-3 pt-3 border-t-[0.5px] border-[#444444] flex items-center justify-between">
                     {deal.deal_end_date && <BannerCountdown endDate={deal.deal_end_date} />}
@@ -356,7 +356,7 @@ export default function MarketplacePage() {
 
             {/* Price Range */}
             <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (Ã¢â€šÂ¹)</label>
+              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (₹)</label>
               <div className="flex items-center gap-3">
                 <input 
                   type="number" placeholder="Min" value={priceMin}
@@ -520,10 +520,10 @@ export default function MarketplacePage() {
                             ) : null}
                             <div className="flex items-baseline gap-2">
                               <span className="text-lg font-black text-[#222222] dark:text-white">
-                                Ã¢â€šÂ¹{(product.discount_price || product.price).toLocaleString()}
+                                ₹{(product.discount_price || product.price).toLocaleString()}
                               </span>
                               {isDeal && !isCustom && (
-                                <span className="text-xs text-[#888888] line-through font-medium">Ã¢â€šÂ¹{product.price.toLocaleString()}</span>
+                                <span className="text-xs text-[#888888] line-through font-medium">₹{product.price.toLocaleString()}</span>
                               )}
                             </div>
                           </div>

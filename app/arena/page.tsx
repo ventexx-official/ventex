@@ -37,7 +37,7 @@ export default function ArenaPage() {
             A monthly live pitch event. India&apos;s boldest founders. Real investors. Live and on record.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch Ã¢â€ â€™</Link>
+            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch →</Link>
             <ArenaNotifyModal />
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function ArenaPage() {
           <div>
             <h2 className="text-3xl font-black tracking-[-.03em]">Think you&apos;re ready for The Arena?</h2>
             <p className="mt-4 text-sm leading-7 text-orange-50/75">Applications open for Season 1. Free to apply. Limited spots.</p>
-            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now Ã¢â€ â€™</Link>
+            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now →</Link>
           </div>
           <ArenaWaitlistForm />
         </div>
