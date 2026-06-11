@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ArenaEvents from "@/components/ArenaEvents";
 import ArenaWaitlistForm from "@/components/ArenaWaitlistForm";
+import JsonLd from "@/components/JsonLd";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,6 +21,24 @@ export const metadata: Metadata = {
 export default function EventsPage() {
   return (
     <main className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "The Arena - Season 1",
+        "description": "A monthly live pitch event where India's boldest founders pitch to real investors - live, raw, and on record.",
+        "startDate": "2026-06-15T18:00:00+05:30",
+        "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "VirtualLocation",
+          "url": "https://ventexx.com/arena"
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Ventex",
+          "url": "https://ventexx.com"
+        }
+      }} />
       <section className="mx-auto max-w-6xl px-4 py-16">
         <p className="mono text-xs font-black uppercase tracking-[.16em] text-[var(--text3)]">Events</p>
         <h1 className="mt-3 text-4xl font-black tracking-[-.04em] md:text-6xl">Ventex Events.</h1>

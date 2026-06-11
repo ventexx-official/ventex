@@ -25,6 +25,19 @@ const nextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(self)" },
+          { key: "X-Robots-Tag", value: "index, follow" },
+        ],
+      },
+      {
+        source: "/admin/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
+      {
+        source: "/dashboard/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
     ];

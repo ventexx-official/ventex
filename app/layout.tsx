@@ -18,28 +18,23 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "Ventex — Where Startups Pitch, Fund and Sell",
-    template: "%s | Ventex",
-  },
-  description: "The global platform where startups pitch to investors, sell products, and hire developers.",
+  metadataBase: new URL('https://ventexx.com'),
+  title: "Ventex — Where Startups Pitch, Fund and Sell",
+  description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
+  robots: "index, follow",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Ventex — Where Startups Pitch, Fund and Sell",
-    description: "The global platform where startups pitch to investors, sell products, and hire developers.",
-    url: "/",
+    description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
+    url: "https://ventexx.com",
     siteName: "Ventex",
     type: "website",
-    images: [OG_IMAGE_URL],
+    images: ["/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ventex — Where Startups Pitch, Fund and Sell",
-    description: "The global platform where startups pitch to investors, sell products, and hire developers.",
-    images: [OG_IMAGE_URL],
   },
 };
 

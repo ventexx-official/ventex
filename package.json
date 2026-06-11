@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "jest --passWithNoTests",
     "test:unit": "jest --testPathPatterns=tests/unit --passWithNoTests",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.96.0",
@@ -19,6 +20,7 @@
     "@vercel/analytics": "^2.0.1",
     "lucide-react": "^1.14.0",
     "next": "14.2.35",
+    "next-sitemap": "^4.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-simple-maps": "^3.0.0",

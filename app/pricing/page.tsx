@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, Check } from 'lucide-react';
+import JsonLd from '@/components/JsonLd';
 
 type PriceMode = 'both' | 'inr' | 'usd';
 
@@ -51,6 +52,18 @@ export default function PricingPage() {
 
   return (
     <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222] dark:bg-[#111111] dark:text-white">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(([q, a]) => ({
+          "@type": "Question",
+          "name": q,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": a
+          }
+        }))
+      }} />
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 rounded-lg border border-emerald-200 bg-emerald-50 p-5 text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">
           <p className="text-lg font-black">Everything is free during early access.</p>

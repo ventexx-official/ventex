@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "ventex-eight.vercel.app"
+        }
+      ],
+      "destination": "https://ventexx.com/$1",
+      "permanent": true
+    }
+  ]
+}

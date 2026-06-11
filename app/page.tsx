@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import SectionIndicator from '@/components/SectionIndicator';
 import Testimonials from '@/components/Testimonials';
+import JsonLd from '@/components/JsonLd';
 
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
@@ -85,18 +86,20 @@ export default async function Home() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Ventex",
-            url: "https://ventexx.com",
-            description: "Where startups pitch, fund and sell. The global platform for founders, investors, and startup builders."
-          })
-        }}
-      />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Ventex",
+        "url": "https://ventexx.com",
+        "description": "Where startups pitch, fund and sell.",
+        "logo": "https://ventexx.com/logo.png",
+        "sameAs": [
+          "https://twitter.com/ventexx",
+          "https://linkedin.com/company/ventexx",
+          "https://instagram.com/ventexx",
+          "https://youtube.com/@ventexx"
+        ]
+      }} />
       <SectionIndicator />
 
       <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">

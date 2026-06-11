@@ -1,0 +1,28 @@
+Ventex is a global startup platform where founders pitch investors, sell digital products, and access startup tools. Built for the world's builders.
+
+# Public Pages
+- / : Ventex Homepage. The premier ecosystem for startup liquidity.
+- /discover : Startup Directory. Browse investor-ready startups.
+- /marketplace : Product Marketplace. Buy and sell digital products and startup tools.
+- /pricing : Pricing. Transparent pricing for founders and investors.
+- /about : About Us. Learn about the Ventex mission.
+- /catalyst : Catalyst Network. Verified investor network details.
+- /events : Events & Battles. Live pitch battles and ecosystem events.
+- /contact : Contact Us. Get in touch with the Ventex team.
+- /investors : Investors Hub. Access verified deal flow.
+- /terms : Terms of Service.
+- /privacy : Privacy Policy.
+- /seller-agreement : Seller Agreement.
+- /refunds : Refund Policy.
+- /delivery : Delivery Policy.
+
+# Private/Blocked Paths
+The following paths are restricted to authenticated users or administrators:
+- /admin
+- /dashboard
+- /settings
+- /my-pitches
+- /my-store
+- /messages
+- /api
+- /booster-packs
