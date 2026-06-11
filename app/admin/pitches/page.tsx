@@ -107,7 +107,7 @@ export default function PitchesQueue() {
         );
       default:
         return (
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-neutral-500/10 text-neutral-400 border border-neutral-800">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-neutral-500/10 text-[var(--text2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
             <FileText size={12} /> Draft
           </span>
         );
@@ -119,14 +119,14 @@ export default function PitchesQueue() {
       {/* Title section */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Pitch deck review queue</h2>
-          <p className="text-sm text-neutral-400 mt-1">
+          <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">Pitch deck review queue</h2>
+          <p className="text-sm text-[var(--text2)] mt-1">
             Moderate new startup pitches before publishing them to the public discover feed.
           </p>
         </div>
         <button
           onClick={fetchPitches}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -134,7 +134,7 @@ export default function PitchesQueue() {
 
       {/* Tabs and search */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div className="flex bg-[#0F0F13] p-1 border border-neutral-900 rounded-xl w-full md:w-auto">
+        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] w-full md:w-auto">
           {(["pending", "live", "rejected", "draft"] as const).map((tab) => {
             const count = pitches.filter((p) => p.status === tab).length;
             return (
@@ -143,8 +143,8 @@ export default function PitchesQueue() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-2 text-xs font-bold rounded-lg transition-all capitalize flex items-center gap-2 ${
                   activeTab === tab
-                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/10"
-                    : "text-neutral-400 hover:text-white"
+                    ? "bg-violet-600 text-[var(--text)] shadow-lg shadow-violet-600/10"
+                    : "text-[var(--text2)] hover:text-[var(--text)]"
                 }`}
               >
                 {tab}
@@ -152,7 +152,7 @@ export default function PitchesQueue() {
                   className={`px-1.5 py-0.5 rounded text-[10px] ${
                     activeTab === tab
                       ? "bg-violet-500 text-violet-100"
-                      : "bg-neutral-800 text-neutral-400"
+                      : "bg-[var(--bg2)] text-[var(--text2)]"
                   }`}
                 >
                   {count}
@@ -163,13 +163,13 @@ export default function PitchesQueue() {
         </div>
 
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 h-4 w-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text3)] h-4 w-4" />
           <input
             type="text"
             placeholder="Search by company, founder, industry..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#0F0F13] border border-neutral-900 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
       </div>
@@ -180,21 +180,21 @@ export default function PitchesQueue() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filteredPitches.length === 0 ? (
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-12 text-center">
-          <div className="h-12 w-12 rounded-full bg-neutral-800/40 border border-neutral-800 flex items-center justify-center text-neutral-500 mx-auto mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+          <div className="h-12 w-12 rounded-full bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-center text-[var(--text3)] mx-auto mb-4">
             <FileText size={20} />
           </div>
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">No pitches found</h3>
-          <p className="text-xs text-neutral-400 mt-1 max-w-sm mx-auto">
+          <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">No pitches found</h3>
+          <p className="text-xs text-[var(--text2)] mt-1 max-w-sm mx-auto">
             There are no pitches matching the filter criteria or search query in this tab.
           </p>
         </div>
       ) : (
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl overflow-hidden">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-neutral-900 bg-neutral-900/10 text-neutral-400 font-mono text-[10px] uppercase font-bold tracking-wider">
+                <tr className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg2)]/10 text-[var(--text2)] font-mono text-[10px] uppercase font-bold tracking-wider">
                   <th className="py-4 px-6">Company / Startup</th>
                   <th className="py-4 px-6">Founder</th>
                   <th className="py-4 px-6">Stage & Industry</th>
@@ -203,12 +203,12 @@ export default function PitchesQueue() {
                   <th className="py-4 px-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-900">
+              <tbody className="divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333]">
                 {filteredPitches.map((pitch) => (
-                  <tr key={pitch.id} className="hover:bg-neutral-900/20 transition-colors group">
+                  <tr key={pitch.id} className="hover:hover:bg-[var(--bg2)] transition-colors group">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-xl bg-neutral-800/50 border border-neutral-800 flex items-center justify-center text-neutral-400 font-bold overflow-hidden">
+                        <div className="h-10 w-10 rounded-[24px] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-center text-[var(--text2)] font-bold overflow-hidden">
                           {pitch.logo_url ? (
                             <img src={pitch.logo_url} alt={pitch.title} className="h-full w-full object-cover" />
                           ) : (
@@ -216,10 +216,10 @@ export default function PitchesQueue() {
                           )}
                         </div>
                         <div>
-                          <h4 className="font-bold text-white group-hover:text-violet-400 transition-colors text-sm">
+                          <h4 className="font-bold text-[var(--text)] group-hover:text-violet-400 transition-colors text-sm">
                             {pitch.title || "Untitled Startup"}
                           </h4>
-                          <p className="text-xs text-neutral-400 truncate max-w-xs mt-0.5">
+                          <p className="text-xs text-[var(--text2)] truncate max-w-xs mt-0.5">
                             {pitch.tagline || "No tagline provided."}
                           </p>
                         </div>
@@ -228,30 +228,30 @@ export default function PitchesQueue() {
                     <td className="py-4 px-6">
                       {pitch.users ? (
                         <div>
-                          <p className="text-sm font-semibold text-neutral-200">
+                          <p className="text-sm font-semibold text-[var(--text)]">
                             {pitch.users.full_name || "Unknown Founder"}
                           </p>
-                          <p className="text-xs text-neutral-500 font-mono">
+                          <p className="text-xs text-[var(--text3)] font-mono">
                             {pitch.users.email}
                           </p>
                         </div>
                       ) : (
-                        <span className="text-xs text-neutral-500 italic">No founder associated</span>
+                        <span className="text-xs text-[var(--text3)] italic">No founder associated</span>
                       )}
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <span className="inline-block text-[11px] font-bold text-neutral-300 bg-neutral-900 border border-neutral-800 px-2 py-0.5 rounded capitalize">
+                        <span className="inline-block text-[11px] font-bold text-[var(--text2)] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-2 py-0.5 rounded capitalize">
                           {pitch.company_stage || "N/A"}
                         </span>
-                        <p className="text-xs text-neutral-400 mt-1">
+                        <p className="text-xs text-[var(--text2)] mt-1">
                           {pitch.industry || "General"}
                         </p>
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-sm text-neutral-400 font-mono">
+                    <td className="py-4 px-6 text-sm text-[var(--text2)] font-mono">
                       <div className="flex items-center gap-1.5">
-                        <Calendar size={13} className="text-neutral-500" />
+                        <Calendar size={13} className="text-[var(--text3)]" />
                         {new Date(pitch.created_at).toLocaleDateString()}
                       </div>
                     </td>
@@ -261,10 +261,10 @@ export default function PitchesQueue() {
                     <td className="py-4 px-6 text-right">
                       <Link
                         href={`/admin/pitches/${pitch.id}`}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors group/btn"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors group/btn"
                       >
                         Review
-                        <ArrowRight size={12} className="text-neutral-400 group-hover/btn:translate-x-0.5 transition-transform" />
+                        <ArrowRight size={12} className="text-[var(--text2)] group-hover/btn:translate-x-0.5 transition-transform" />
                       </Link>
                     </td>
                   </tr>

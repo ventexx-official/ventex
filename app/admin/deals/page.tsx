@@ -86,9 +86,9 @@ export default function AdminDealsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[.18em] text-neutral-500">Deal Flow</p>
-        <h2 className="mt-2 text-3xl font-black text-white">Deals</h2>
-        <p className="mt-3 text-sm text-neutral-400">Fee collection activates post early access.</p>
+        <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--text3)]">Deal Flow</p>
+        <h2 className="mt-2 text-3xl font-black text-[var(--text)]">Deals</h2>
+        <p className="mt-3 text-sm text-[var(--text2)]">Fee collection activates post early access.</p>
       </div>
 
       <section className="grid gap-4 md:grid-cols-3">
@@ -97,14 +97,14 @@ export default function AdminDealsPage() {
           ["Overdue deals", overdue.length],
           ["Banned accounts", blacklist.length],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-xl border border-neutral-800 bg-neutral-950 p-5">
-            <p className="text-xs uppercase tracking-[.14em] text-neutral-500">{label}</p>
-            <p className="mt-3 text-3xl font-black text-white">{value}</p>
+          <div key={label} className="rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)] p-5">
+            <p className="text-xs uppercase tracking-[.14em] text-[var(--text3)]">{label}</p>
+            <p className="mt-3 text-3xl font-black text-[var(--text)]">{value}</p>
           </div>
         ))}
       </section>
 
-      <section className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-5">
+      <section className="rounded-[24px] border border-amber-900/40 bg-amber-950/20 p-5">
         <h3 className="font-black text-amber-200">Post early access enforcement</h3>
         <div className="mt-3 grid gap-3 text-sm text-amber-100/80 md:grid-cols-3">
           <p>7 day overdue: conversation locked, pitch hidden from Discover, data room access revoked, and founder cannot create new pitches.</p>
@@ -116,35 +116,35 @@ export default function AdminDealsPage() {
         </p>
       </section>
 
-      <section className="overflow-x-auto rounded-xl border border-neutral-800 bg-neutral-950">
-        <div className="border-b border-neutral-800 p-4">
-          <h3 className="font-black text-white">All deals</h3>
+      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)]">
+        <div className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-4">
+          <h3 className="font-black text-[var(--text)]">All deals</h3>
         </div>
         <table className="w-full min-w-[900px] text-left text-sm">
-          <thead className="text-xs uppercase text-neutral-500">
+          <thead className="text-xs uppercase text-[var(--text3)]">
             <tr>{["Pitch", "Founder", "Investor", "Amount", "Fee", "Status", "Due", "Actions"].map((head) => <th key={head} className="p-4">{head}</th>)}</tr>
           </thead>
           <tbody>
             {deals.map((deal) => {
               const enforcement = getDealEnforcementState(deal);
               return (
-                <tr key={deal.id} className="border-t border-neutral-900">
-                  <td className="p-4 font-bold text-white">{deal.pitch?.title || "-"}</td>
-                  <td className="p-4 text-neutral-300">{deal.founder?.full_name || deal.founder?.email || "-"}</td>
-                  <td className="p-4 text-neutral-300">{deal.investor?.full_name || deal.investor?.email || "-"}</td>
-                  <td className="p-4 text-neutral-300">{money(Number(deal.agreed_amount || 0))}</td>
+                <tr key={deal.id} className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                  <td className="p-4 font-bold text-[var(--text)]">{deal.pitch?.title || "-"}</td>
+                  <td className="p-4 text-[var(--text2)]">{deal.founder?.full_name || deal.founder?.email || "-"}</td>
+                  <td className="p-4 text-[var(--text2)]">{deal.investor?.full_name || deal.investor?.email || "-"}</td>
+                  <td className="p-4 text-[var(--text2)]">{money(Number(deal.agreed_amount || 0))}</td>
                   <td className="p-4 text-amber-300">{money(Number(deal.fee_amount || 0))}</td>
                   <td className="p-4">
-                    <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-black text-neutral-200">{deal.status}</span>
+                    <span className="rounded-full bg-[var(--bg2)] px-3 py-1 text-xs font-black text-[var(--text)]">{deal.status}</span>
                     {enforcement.overdueDays > 0 ? <p className="mt-2 text-[10px] font-bold text-red-300">{enforcement.overdueDays} days overdue</p> : null}
                   </td>
-                  <td className="p-4 text-neutral-300">{deal.due_date ? new Date(deal.due_date).toLocaleDateString() : "-"}</td>
+                  <td className="p-4 text-[var(--text2)]">{deal.due_date ? new Date(deal.due_date).toLocaleDateString() : "-"}</td>
                   <td className="p-4">
                     <div className="flex flex-col items-start gap-2">
                       {deal.pitch_id ? <Link href={`/pitch/${deal.pitch_id}`} className="text-violet-300 underline">View pitch</Link> : "-"}
-                      <button onClick={() => applySevenDayLock(deal)} className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-black text-white">Apply 7-day lock</button>
-                      <button onClick={() => markPartialPayment(deal)} className="rounded-lg bg-neutral-800 px-3 py-2 text-xs font-black text-neutral-200">50% partial unlock</button>
-                      <button onClick={() => applyFounderBan(deal)} className="rounded-lg bg-red-600 px-3 py-2 text-xs font-black text-white">Ban + investor credit</button>
+                      <button onClick={() => applySevenDayLock(deal)} className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-black text-[var(--text)]">Apply 7-day lock</button>
+                      <button onClick={() => markPartialPayment(deal)} className="rounded-lg bg-[var(--bg2)] px-3 py-2 text-xs font-black text-[var(--text)]">50% partial unlock</button>
+                      <button onClick={() => applyFounderBan(deal)} className="rounded-lg bg-red-600 px-3 py-2 text-xs font-black text-[var(--text)]">Ban + investor credit</button>
                     </div>
                   </td>
                 </tr>
@@ -154,22 +154,22 @@ export default function AdminDealsPage() {
         </table>
       </section>
 
-      <section className="overflow-x-auto rounded-xl border border-neutral-800 bg-neutral-950">
-        <div className="border-b border-neutral-800 p-4">
-          <h3 className="font-black text-white">Banned accounts</h3>
+      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)]">
+        <div className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-4">
+          <h3 className="font-black text-[var(--text)]">Banned accounts</h3>
         </div>
         <table className="w-full min-w-[700px] text-left text-sm">
-          <thead className="text-xs uppercase text-neutral-500">
+          <thead className="text-xs uppercase text-[var(--text3)]">
             <tr>{["Email", "PAN", "Reason", "Banned", "Actions"].map((head) => <th key={head} className="p-4">{head}</th>)}</tr>
           </thead>
           <tbody>
             {blacklist.map((row) => (
-              <tr key={row.id} className="border-t border-neutral-900">
-                <td className="p-4 text-neutral-300">{row.email || "-"}</td>
-                <td className="p-4 text-neutral-300">{row.pan_number || "-"}</td>
-                <td className="p-4 text-neutral-300">{row.reason || "-"}</td>
-                <td className="p-4 text-neutral-300">{row.banned_at ? new Date(row.banned_at).toLocaleDateString() : "-"}</td>
-                <td className="p-4"><button onClick={() => unban(row)} className="rounded-lg bg-violet-600 px-3 py-2 text-xs font-black text-white">Manual unban</button></td>
+              <tr key={row.id} className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                <td className="p-4 text-[var(--text2)]">{row.email || "-"}</td>
+                <td className="p-4 text-[var(--text2)]">{row.pan_number || "-"}</td>
+                <td className="p-4 text-[var(--text2)]">{row.reason || "-"}</td>
+                <td className="p-4 text-[var(--text2)]">{row.banned_at ? new Date(row.banned_at).toLocaleDateString() : "-"}</td>
+                <td className="p-4"><button onClick={() => unban(row)} className="rounded-lg bg-violet-600 px-3 py-2 text-xs font-black text-[var(--text)]">Manual unban</button></td>
               </tr>
             ))}
           </tbody>

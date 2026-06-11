@@ -105,7 +105,7 @@ export default function AdminUsers() {
       admin: "bg-violet-500/15 text-violet-400 border-violet-500/30",
       founder: "bg-blue-500/15 text-blue-400 border-blue-500/30",
       seller: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-      visitor: "bg-neutral-500/15 text-neutral-400 border-neutral-700",
+      visitor: "bg-neutral-500/15 text-[var(--text2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333]",
     };
     return (
       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${styles[role] || styles.visitor}`}>
@@ -119,14 +119,14 @@ export default function AdminUsers() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">User Management Console</h2>
-          <p className="text-sm text-neutral-400 mt-1">
+          <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">User Management Console</h2>
+          <p className="text-sm text-[var(--text2)] mt-1">
             Search, inspect, ban, change roles, and verify founder badges for all registered accounts.
           </p>
         </div>
         <button
           onClick={fetchUsers}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -135,19 +135,19 @@ export default function AdminUsers() {
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 h-4 w-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text3)] h-4 w-4" />
           <input
             type="text"
             placeholder="Search by name or user ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[#0F0F13] border border-neutral-900 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="px-4 py-2.5 bg-[#0F0F13] border border-neutral-900 rounded-xl text-sm text-white focus:outline-none focus:border-violet-500 transition-all appearance-none cursor-pointer"
+          className="px-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] focus:outline-none focus:border-violet-500 transition-all appearance-none cursor-pointer"
         >
           <option value="all">All Roles</option>
           <option value="admin">Admin</option>
@@ -162,16 +162,16 @@ export default function AdminUsers() {
       {/* Stats bar */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {[
-          { label: "Total Users", val: users.length, color: "text-white" },
+          { label: "Total Users", val: users.length, color: "text-[var(--text)]" },
           { label: "Investors", val: users.filter((u) => u.role === "investor").length, color: "text-amber-400" },
           { label: "Founders", val: users.filter((u) => u.role === "founder").length, color: "text-blue-400" },
           { label: "Buyers", val: users.filter((u) => u.role === "buyer" || u.role === "explorer").length, color: "text-violet-400" },
           { label: "Verified", val: users.filter((u) => u.verified_founder).length, color: "text-emerald-400" },
           { label: "Banned", val: users.filter((u) => u.banned).length, color: "text-red-400" },
         ].map(({ label, val, color }) => (
-          <div key={label} className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-4 text-center">
+          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 text-center">
             <p className={`text-2xl font-black font-mono ${color}`}>{val}</p>
-            <p className="text-[11px] text-neutral-500 mt-1 uppercase tracking-wider font-bold">{label}</p>
+            <p className="text-[11px] text-[var(--text3)] mt-1 uppercase tracking-wider font-bold">{label}</p>
           </div>
         ))}
       </div>
@@ -182,25 +182,25 @@ export default function AdminUsers() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-12 text-center">
-          <Users className="h-10 w-10 text-neutral-600 mx-auto mb-3" />
-          <h3 className="text-sm font-bold text-white">No users found</h3>
-          <p className="text-xs text-neutral-500 mt-1">Try adjusting your search or filter.</p>
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+          <Users className="h-10 w-10 text-[var(--text3)] mx-auto mb-3" />
+          <h3 className="text-sm font-bold text-[var(--text)]">No users found</h3>
+          <p className="text-xs text-[var(--text3)] mt-1">Try adjusting your search or filter.</p>
         </div>
       ) : (
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl overflow-hidden divide-y divide-neutral-900">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333]">
           {filtered.map((user) => {
             const isLoading = actionLoadingId === user.id;
             return (
               <div key={user.id} className={`transition-colors ${user.banned ? "bg-red-950/5" : ""}`}>
                 {/* Row */}
                 <div
-                  className="flex items-center gap-4 px-6 py-4 cursor-pointer hover:bg-neutral-900/20 transition-colors"
+                  className="flex items-center gap-4 px-6 py-4 cursor-pointer hover:hover:bg-[var(--bg2)] transition-colors"
                   onClick={() => toggleExpand(user.id)}
                 >
                   {/* Avatar */}
                   <div className={`h-10 w-10 rounded-full shrink-0 border flex items-center justify-center font-bold text-sm overflow-hidden ${
-                    user.banned ? "border-red-900 bg-red-950/20 text-red-400" : "border-neutral-800 bg-neutral-800/50 text-neutral-300"
+                    user.banned ? "border-red-900 bg-red-950/20 text-red-400" : "border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg2)] text-[var(--text2)]"
                   }`}>
                     {user.avatar_url ? (
                       <img src={user.avatar_url} alt={user.full_name} className="h-full w-full object-cover" />
@@ -212,7 +212,7 @@ export default function AdminUsers() {
                   {/* Name / ID */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-bold text-white">
+                      <span className="text-sm font-bold text-[var(--text)]">
                         {user.full_name || "Unnamed User"}
                       </span>
                       {user.verified_founder && (
@@ -224,7 +224,7 @@ export default function AdminUsers() {
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-neutral-500 font-mono truncate mt-0.5">{user.id}</p>
+                    <p className="text-[11px] text-[var(--text3)] font-mono truncate mt-0.5">{user.id}</p>
                   </div>
 
                   {/* Role + chips */}
@@ -243,46 +243,46 @@ export default function AdminUsers() {
                   </div>
 
                   {/* Expand toggle */}
-                  <div className="text-neutral-500">
+                  <div className="text-[var(--text3)]">
                     {user.expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </div>
                 </div>
 
                 {/* Expanded Details */}
                 {user.expanded && (
-                  <div className="px-6 pb-5 bg-neutral-950/20 border-t border-neutral-900">
+                  <div className="px-6 pb-5 bg-[var(--bg2)] border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-4">
                       {/* Account Info */}
                       <div className="space-y-3">
-                        <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Account Details</h4>
+                        <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Account Details</h4>
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Joined</span>
-                            <span className="text-neutral-200 font-mono">{new Date(user.created_at).toLocaleDateString()}</span>
+                            <span className="text-[var(--text3)]">Joined</span>
+                            <span className="text-[var(--text)] font-mono">{new Date(user.created_at).toLocaleDateString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Pitches</span>
-                            <span className="text-neutral-200 font-mono">{user.pitchCount}</span>
+                            <span className="text-[var(--text3)]">Pitches</span>
+                            <span className="text-[var(--text)] font-mono">{user.pitchCount}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Products</span>
-                            <span className="text-neutral-200 font-mono">{user.productCount}</span>
+                            <span className="text-[var(--text3)]">Products</span>
+                            <span className="text-[var(--text)] font-mono">{user.productCount}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Seller Account</span>
-                            <span className={user.is_seller ? "text-emerald-400 font-bold" : "text-neutral-500"}>
+                            <span className="text-[var(--text3)]">Seller Account</span>
+                            <span className={user.is_seller ? "text-emerald-400 font-bold" : "text-[var(--text3)]"}>
                               {user.is_seller ? "Yes" : "No"}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Ventex Access</span>
-                            <span className={user.ventex_access ? "text-violet-400 font-bold" : "text-neutral-500"}>
+                            <span className="text-[var(--text3)]">Ventex Access</span>
+                            <span className={user.ventex_access ? "text-violet-400 font-bold" : "text-[var(--text3)]"}>
                               {user.ventex_access ? "Active" : "None"}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-neutral-500">Investor Premium</span>
-                            <span className={user.investor_premium ? "text-amber-400 font-bold" : "text-neutral-500"}>
+                            <span className="text-[var(--text3)]">Investor Premium</span>
+                            <span className={user.investor_premium ? "text-amber-400 font-bold" : "text-[var(--text3)]"}>
                               {user.investor_premium ? "Active" : "None"}
                             </span>
                           </div>
@@ -291,7 +291,7 @@ export default function AdminUsers() {
 
                       {/* Ban / Verify */}
                       <div className="space-y-3">
-                        <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Moderation Actions</h4>
+                        <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Moderation Actions</h4>
                         <div className="space-y-2">
                           <button
                             onClick={() => updateUser(user.id, { banned: !user.banned })}
@@ -311,7 +311,7 @@ export default function AdminUsers() {
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.verified_founder
-                                ? "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-emerald-950/20 border-emerald-900/40 text-emerald-400 hover:bg-emerald-950/40"
                             }`}
                           >
@@ -323,14 +323,14 @@ export default function AdminUsers() {
 
                       {/* Premium Access */}
                       <div className="space-y-3">
-                        <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Premium Access</h4>
+                        <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Premium Access</h4>
                         <div className="space-y-2">
                           <button
                             onClick={() => updateUser(user.id, { ventex_access: !user.ventex_access })}
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.ventex_access
-                                ? "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-violet-950/20 border-violet-900/40 text-violet-400 hover:bg-violet-950/40"
                             }`}
                           >
@@ -343,7 +343,7 @@ export default function AdminUsers() {
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.investor_premium
-                                ? "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-amber-950/20 border-amber-900/40 text-amber-400 hover:bg-amber-950/40"
                             }`}
                           >
@@ -355,7 +355,7 @@ export default function AdminUsers() {
 
                       {/* Role Change */}
                       <div className="space-y-3">
-                        <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Role Assignment</h4>
+                        <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Role Assignment</h4>
                         <div className="grid grid-cols-2 gap-2">
                           {["visitor", "founder", "seller", "admin"].map((r) => (
                             <button
@@ -364,8 +364,8 @@ export default function AdminUsers() {
                               disabled={isLoading || user.role === r}
                               className={`px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-40 capitalize ${
                                 user.role === r
-                                  ? "bg-violet-600 border-violet-500 text-white"
-                                  : "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800 hover:text-white"
+                                  ? "bg-violet-600 border-violet-500 text-[var(--text)]"
+                                  : "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)]"
                               }`}
                             >
                               {isLoading && user.role !== r ? (
@@ -376,8 +376,8 @@ export default function AdminUsers() {
                             </button>
                           ))}
                         </div>
-                        <p className="text-[10px] text-neutral-600 leading-relaxed">
-                          Changing to <strong className="text-neutral-500">admin</strong> grants full platform access. Use carefully.
+                        <p className="text-[10px] text-[var(--text3)] leading-relaxed">
+                          Changing to <strong className="text-[var(--text3)]">admin</strong> grants full platform access. Use carefully.
                         </p>
                       </div>
                     </div>

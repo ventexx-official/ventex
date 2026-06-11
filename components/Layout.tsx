@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
   // List of routes that should not display the Navbar and Footer
-  const noNavRoutes = ['/onboarding', '/login', '/signup', '/forgot-password', '/auth/callback'];
+  const noNavRoutes = ['/onboarding', '/login', '/signup', '/forgot-password', '/auth/callback', '/admin'];
   const hideNav = noNavRoutes.some(route => pathname.startsWith(route));
 
   return (

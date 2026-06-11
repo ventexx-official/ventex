@@ -111,14 +111,14 @@ export default function AdminIndustries() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Industry Sector Manager</h2>
-          <p className="text-sm text-neutral-400 mt-1">
+          <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">Industry Sector Manager</h2>
+          <p className="text-sm text-[var(--text2)] mt-1">
             Manage the official list of industry sectors available on Ventex. Approve custom suggestions from founders.
           </p>
         </div>
         <button
           onClick={fetchData}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -136,20 +136,20 @@ export default function AdminIndustries() {
             {/* Search + Add */}
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 h-4 w-4" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text3)] h-4 w-4" />
                 <input
                   type="text"
                   placeholder="Search sectors..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#0F0F13] border border-neutral-900 rounded-xl text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
                 />
               </div>
             </div>
 
             {/* Add New Sector Form */}
-            <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-5">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono mb-3 flex items-center gap-2">
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5">
+              <h3 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider font-mono mb-3 flex items-center gap-2">
                 <Plus size={14} className="text-violet-400" /> Add Sector Manually
               </h3>
               <div className="flex gap-3">
@@ -159,12 +159,12 @@ export default function AdminIndustries() {
                   value={newSectorName}
                   onChange={(e) => setNewSectorName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addSector(newSectorName)}
-                  className="flex-1 px-4 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="flex-1 px-4 py-2.5 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-neutral-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
                 />
                 <button
                   onClick={() => addSector(newSectorName)}
                   disabled={addLoading || !newSectorName.trim()}
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-violet-600 hover:bg-violet-500 text-xs font-bold text-white rounded-xl transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-violet-600 hover:bg-violet-500 text-xs font-bold text-[var(--text)] rounded-[24px] transition-colors disabled:opacity-50"
                 >
                   {addLoading ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
                   Add Sector
@@ -173,27 +173,27 @@ export default function AdminIndustries() {
             </div>
 
             {/* Official List */}
-            <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-neutral-900 flex items-center justify-between">
-                <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden">
+              <div className="px-6 py-4 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-between">
+                <h3 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider font-mono flex items-center gap-2">
                   <Tag size={14} className="text-violet-400" /> Official Sectors
                 </h3>
-                <span className="text-xs text-neutral-500 font-mono">
+                <span className="text-xs text-[var(--text3)] font-mono">
                   {filteredSectors.length} of {officialSectors.length}
                 </span>
               </div>
-              <div className="divide-y divide-neutral-900 max-h-[480px] overflow-y-auto">
+              <div className="divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333] max-h-[480px] overflow-y-auto">
                 {filteredSectors.map((sector) => {
                   const isLoading = actionLoading === sector.name;
                   return (
                     <div
                       key={sector.name}
-                      className="flex items-center justify-between px-6 py-3 hover:bg-neutral-900/20 transition-colors group"
+                      className="flex items-center justify-between px-6 py-3 hover:hover:bg-[var(--bg2)] transition-colors group"
                     >
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-violet-500/60" />
-                        <span className="text-sm text-neutral-200 font-medium">{sector.name}</span>
-                        <span className="text-[10px] text-neutral-600 font-mono">
+                        <span className="text-sm text-[var(--text)] font-medium">{sector.name}</span>
+                        <span className="text-[10px] text-[var(--text3)] font-mono">
                           {new Date(sector.created_at).toLocaleDateString()}
                         </span>
                       </div>
@@ -209,7 +209,7 @@ export default function AdminIndustries() {
                   );
                 })}
                 {filteredSectors.length === 0 && (
-                  <div className="px-6 py-8 text-center text-xs text-neutral-500 italic">
+                  <div className="px-6 py-8 text-center text-xs text-[var(--text3)] italic">
                     No sectors match your search.
                   </div>
                 )}
@@ -219,18 +219,18 @@ export default function AdminIndustries() {
 
           {/* Right: Proposed Sectors */}
           <div className="space-y-4">
-            <div className="bg-[#0F0F13] border border-amber-900/30 rounded-2xl overflow-hidden">
+            <div className="bg-[var(--card-bg)] border border-amber-900/30 rounded-[24px] overflow-hidden">
               <div className="px-5 py-4 border-b border-amber-900/30 bg-amber-950/10">
                 <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono flex items-center gap-2">
                   <Lightbulb size={14} /> Proposed by Founders
                 </h3>
-                <p className="text-[11px] text-neutral-500 mt-1">
+                <p className="text-[11px] text-[var(--text3)] mt-1">
                   Custom industries entered by founders not yet in the official list.
                 </p>
               </div>
-              <div className="divide-y divide-neutral-900">
+              <div className="divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333]">
                 {proposedSectors.length === 0 ? (
-                  <div className="px-5 py-8 text-center text-xs text-neutral-500 italic">
+                  <div className="px-5 py-8 text-center text-xs text-[var(--text3)] italic">
                     No custom sectors proposed yet.
                   </div>
                 ) : (
@@ -239,11 +239,11 @@ export default function AdminIndustries() {
                     return (
                       <div
                         key={name}
-                        className="flex items-center justify-between px-5 py-3 hover:bg-neutral-900/20 transition-colors"
+                        className="flex items-center justify-between px-5 py-3 hover:hover:bg-[var(--bg2)] transition-colors"
                       >
                         <div className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-amber-500/60" />
-                          <span className="text-sm text-neutral-300 font-medium">{name}</span>
+                          <span className="text-sm text-[var(--text2)] font-medium">{name}</span>
                         </div>
                         <button
                           onClick={() => approveSector(name)}
@@ -261,15 +261,15 @@ export default function AdminIndustries() {
             </div>
 
             {/* Summary card */}
-            <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-5 space-y-3">
-              <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider font-mono">Quick Stats</h3>
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 space-y-3">
+              <h3 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono">Quick Stats</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Official Sectors</span>
-                  <span className="font-bold text-white font-mono">{officialSectors.length}</span>
+                  <span className="text-[var(--text3)]">Official Sectors</span>
+                  <span className="font-bold text-[var(--text)] font-mono">{officialSectors.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Pending Proposals</span>
+                  <span className="text-[var(--text3)]">Pending Proposals</span>
                   <span className="font-bold text-amber-400 font-mono">{proposedSectors.length}</span>
                 </div>
               </div>

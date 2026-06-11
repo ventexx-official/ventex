@@ -63,9 +63,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0F0F11] flex flex-col items-center justify-center text-white">
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center text-[var(--text)]">
         <Loader2 className="h-8 w-8 text-violet-500 animate-spin mb-4" />
-        <p className="text-sm text-neutral-400 font-medium tracking-wide">
+        <p className="text-sm text-[var(--text2)] font-medium tracking-wide">
           Verifying Admin Credentials...
         </p>
       </div>
@@ -91,27 +91,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] text-neutral-200 flex">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] flex">
       {/* Sidebar */}
       <aside
-        className={`bg-[#0F0F13] border-r border-neutral-900 transition-all duration-300 flex flex-col justify-between shrink-0 ${
+        className={`bg-[var(--card-bg)] border-r border-[0.5px] border-[#e5e5e5] dark:border-[#333333] transition-all duration-300 flex flex-col justify-between shrink-0 ${
           collapsed ? "w-20" : "w-64"
         }`}
       >
         <div>
           {/* Header */}
-          <div className={`h-16 flex items-center border-b border-neutral-900 px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
+          <div className={`h-16 flex items-center border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
             {!collapsed && (
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-6 w-6 text-violet-500 shrink-0" />
-                <span className="font-extrabold tracking-tighter text-white text-lg font-mono">
+                <span className="font-extrabold tracking-tighter text-[var(--text)] text-lg font-mono">
                   VENTEX <span className="text-violet-500">ADMIN</span>
                 </span>
               </div>
             )}
             <button
               onClick={() => setCollapsed(!collapsed)}
-              className="text-neutral-500 hover:text-white p-1.5 rounded-lg hover:bg-neutral-800 transition-colors shrink-0"
+              className="text-[var(--text3)] hover:text-[var(--text)] p-1.5 rounded-lg hover:bg-[var(--bg2)] transition-colors shrink-0"
             >
               {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
             </button>
@@ -130,12 +130,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
                     active
                       ? "bg-violet-600/15 text-violet-400 border border-violet-500/20"
-                      : "text-neutral-400 hover:text-white hover:bg-neutral-900/60 border border-transparent"
+                      : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)]/60 border border-transparent"
                   }`}
                 >
                   <Icon
                     className={`h-5 w-5 shrink-0 transition-colors ${
-                      active ? "text-violet-400" : "text-neutral-500 group-hover:text-violet-400"
+                      active ? "text-violet-400" : "text-[var(--text3)] group-hover:text-violet-400"
                     }`}
                   />
                   {!collapsed && (
@@ -153,7 +153,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Footer info & exit */}
-        <div className="p-4 border-t border-neutral-900 space-y-3">
+        <div className="p-4 border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333] space-y-3">
           <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
             <div className="h-9 w-9 rounded-full bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 shrink-0 overflow-hidden">
               {adminUser.avatar_url ? (
@@ -168,7 +168,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             {!collapsed && (
               <div className="overflow-hidden">
-                <p className="text-xs font-bold text-white truncate">
+                <p className="text-xs font-bold text-[var(--text)] truncate">
                   {adminUser.full_name || "Admin Account"}
                 </p>
                 <p className="text-[10px] text-violet-400 font-mono uppercase truncate">
@@ -190,19 +190,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
-        <header className="h-16 border-b border-neutral-900 bg-[#0F0F13]/40 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-10">
+        <header className="h-16 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)]/40 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-10">
           <div>
-            <h1 className="text-base font-bold text-white">
+            <h1 className="text-base font-bold text-[var(--text)]">
               {menuItems.find(m => isActive(m.path))?.name || "Management Console"}
             </h1>
-            <p className="text-[10px] text-neutral-500 font-mono">Ventex Admin Console</p>
+            <p className="text-[10px] text-[var(--text3)] font-mono">Ventex Admin Console</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               System Live
             </span>
-            <span className="text-xs text-neutral-500 font-mono">{new Date().toLocaleDateString()}</span>
+            <span className="text-xs text-[var(--text3)] font-mono">{new Date().toLocaleDateString()}</span>
           </div>
         </header>
 

@@ -140,15 +140,15 @@ export default function AdminOverview() {
 
   return (
     <div className="space-y-8">
-      <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-6">
+      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
         <div className="mb-5">
-          <h2 className="text-xl font-bold text-white tracking-tight">Feature Flags</h2>
-          <p className="text-sm text-neutral-400 mt-1">Admin-controlled launches. Every new feature defaults to OFF until explicitly enabled.</p>
+          <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">Feature Flags</h2>
+          <p className="text-sm text-[var(--text2)] mt-1">Admin-controlled launches. Every new feature defaults to OFF until explicitly enabled.</p>
         </div>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {FEATURE_FLAGS.map(([key, label]) => (
-            <label key={key} className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-neutral-900 bg-black/20 p-4">
-              <span className="text-sm font-semibold text-white">{label}</span>
+            <label key={key} className="flex cursor-pointer items-center justify-between gap-4 rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-black/20 p-4">
+              <span className="text-sm font-semibold text-[var(--text)]">{label}</span>
               <input type="checkbox" checked={!!flags[key]} onChange={(e) => updateFlag(key, e.target.checked)} className="h-4 w-4 accent-violet-500" />
             </label>
           ))}
@@ -156,16 +156,16 @@ export default function AdminOverview() {
       </div>
 
       {/* Top Welcome Panel */}
-      <div className="bg-[#0F0F13] border border-neutral-900 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight">System Summary</h2>
-          <p className="text-sm text-neutral-400 mt-1">
+          <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">System Summary</h2>
+          <p className="text-sm text-[var(--text2)] mt-1">
             Real-time metric updates and status queue audits.
           </p>
         </div>
         <button
           onClick={fetchStats}
-          className="px-4 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors"
+          className="px-4 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           Refresh Overview
         </button>
@@ -174,11 +174,11 @@ export default function AdminOverview() {
       {/* Main Metric Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* GMV */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-bold text-neutral-400 tracking-wider uppercase">Gross Merchandise Value</p>
-              <h3 className="text-2xl font-black text-white mt-2 font-mono">${stats.gmv.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
+              <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Gross Merchandise Value</p>
+              <h3 className="text-2xl font-black text-[var(--text)] mt-2 font-mono">${stats.gmv.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
             </div>
             <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
               <TrendingUp size={20} />
@@ -190,27 +190,27 @@ export default function AdminOverview() {
         </div>
 
         {/* Total Platform Fees */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-bold text-neutral-400 tracking-wider uppercase">Total Platform Commission</p>
-              <h3 className="text-2xl font-black text-white mt-2 font-mono">${stats.totalFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
+              <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Total Platform Commission</p>
+              <h3 className="text-2xl font-black text-[var(--text)] mt-2 font-mono">${stats.totalFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
             </div>
             <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400">
               <DollarSign size={20} />
             </div>
           </div>
-          <p className="text-xs text-neutral-400 mt-4 font-semibold">
+          <p className="text-xs text-[var(--text2)] mt-4 font-semibold">
             All-time fee logs (5% splits)
           </p>
         </div>
 
         {/* Revenue This Month */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-bold text-neutral-400 tracking-wider uppercase">Revenue This Month</p>
-              <h3 className="text-2xl font-black text-white mt-2 font-mono">${stats.thisMonthRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
+              <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Revenue This Month</p>
+              <h3 className="text-2xl font-black text-[var(--text)] mt-2 font-mono">${stats.thisMonthRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
             </div>
             <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400">
               <Calendar size={20} />
@@ -222,10 +222,10 @@ export default function AdminOverview() {
         </div>
 
         {/* Critical Flags/Bans */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs font-bold text-neutral-400 tracking-wider uppercase">Banned Accounts</p>
+              <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Banned Accounts</p>
               <h3 className="text-2xl font-black text-red-500 mt-2 font-mono">{stats.userBreakdown.banned}</h3>
             </div>
             <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400">
@@ -241,75 +241,75 @@ export default function AdminOverview() {
       {/* Breakdowns Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Breakdown */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-6">
-          <div className="flex items-center gap-3 border-b border-neutral-900 pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
             <Users className="text-violet-400 h-5 w-5" />
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider">User Directory Accounts</h4>
+            <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">User Directory Accounts</h4>
           </div>
           <div className="space-y-4">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Total Registered Users</span>
-              <span className="font-bold text-white font-mono">{stats.userBreakdown.total}</span>
+              <span className="text-[var(--text2)]">Total Registered Users</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.userBreakdown.total}</span>
             </div>
-            <div className="h-px bg-neutral-900" />
+            <div className="h-px bg-[var(--bg2)]" />
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Administrators</span>
-              <span className="font-bold text-white font-mono">{stats.userBreakdown.admins}</span>
-            </div>
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Founders</span>
-              <span className="font-bold text-white font-mono">{stats.userBreakdown.founders}</span>
+              <span className="text-[var(--text2)]">Administrators</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.userBreakdown.admins}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Investors</span>
+              <span className="text-[var(--text2)]">Founders</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.userBreakdown.founders}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-[var(--text2)]">Investors</span>
               <span className="font-bold text-amber-400 font-mono">{stats.userBreakdown.investors}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Buyers / Explorers</span>
+              <span className="text-[var(--text2)]">Buyers / Explorers</span>
               <span className="font-bold text-violet-400 font-mono">{stats.userBreakdown.buyers}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Standard Visitors</span>
-              <span className="font-bold text-white font-mono">{stats.userBreakdown.visitors}</span>
+              <span className="text-[var(--text2)]">Standard Visitors</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.userBreakdown.visitors}</span>
             </div>
           </div>
         </div>
 
         {/* Pitch Breakdown */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-6">
-          <div className="flex items-center gap-3 border-b border-neutral-900 pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
             <FileText className="text-violet-400 h-5 w-5" />
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Pitch Deck Queue</h4>
+            <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">Pitch Deck Queue</h4>
           </div>
           <div className="space-y-4">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Total Pitches Created</span>
-              <span className="font-bold text-white font-mono">{stats.pitchBreakdown.total}</span>
+              <span className="text-[var(--text2)]">Total Pitches Created</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.pitchBreakdown.total}</span>
             </div>
-            <div className="h-px bg-neutral-900" />
+            <div className="h-px bg-[var(--bg2)]" />
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-amber-500" />
                 Pending Review
               </span>
               <span className="font-bold text-amber-500 font-mono">{stats.pitchBreakdown.pending}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 Live on Platform
               </span>
               <span className="font-bold text-emerald-500 font-mono">{stats.pitchBreakdown.live}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-neutral-500" />
                 Drafts
               </span>
-              <span className="font-bold text-neutral-400 font-mono">{stats.pitchBreakdown.draft}</span>
+              <span className="font-bold text-[var(--text2)] font-mono">{stats.pitchBreakdown.draft}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-500" />
                 Rejected / Flagged
               </span>
@@ -319,33 +319,33 @@ export default function AdminOverview() {
         </div>
 
         {/* Product Breakdown */}
-        <div className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-6">
-          <div className="flex items-center gap-3 border-b border-neutral-900 pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
             <ShoppingBag className="text-violet-400 h-5 w-5" />
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Product Inventory</h4>
+            <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">Product Inventory</h4>
           </div>
           <div className="space-y-4">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Total Listings</span>
-              <span className="font-bold text-white font-mono">{stats.productBreakdown.total}</span>
+              <span className="text-[var(--text2)]">Total Listings</span>
+              <span className="font-bold text-[var(--text)] font-mono">{stats.productBreakdown.total}</span>
             </div>
-            <div className="h-px bg-neutral-900" />
+            <div className="h-px bg-[var(--bg2)]" />
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-amber-500" />
                 Pending Review
               </span>
               <span className="font-bold text-amber-500 font-mono">{stats.productBreakdown.pending}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 Live on Marketplace
               </span>
               <span className="font-bold text-emerald-500 font-mono">{stats.productBreakdown.live}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400 flex items-center gap-1.5">
+              <span className="text-[var(--text2)] flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-500" />
                 Banned / Disallowed
               </span>
