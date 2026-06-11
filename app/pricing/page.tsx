@@ -51,7 +51,7 @@ export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222] dark:bg-[#111111] dark:text-white">
+    <main className="min-h-screen bg-[var(--bg)] px-4 py-16 text-[var(--text)]  ">
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -76,13 +76,13 @@ export default function PricingPage() {
             <h1 className="max-w-3xl text-4xl font-black uppercase tracking-tight md:text-6xl">Plans for founders, investors, and marketplace buyers.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#666666] dark:text-gray-300">Ventex Premium is marketplace access only. Investor Accounts are separate and built for pitch discovery, deal flow, and founder contact.</p>
           </div>
-          <div className="inline-flex rounded-full border border-black/10 bg-[var(--card-bg)] p-1 dark:border-white/10 dark:bg-[#1a1a1a]">
+          <div className="inline-flex rounded-full border border-black/10 bg-[var(--card-bg)] p-1 dark:border-white/10 bg-[var(--card-bg)]">
             {[
               ['both', '₹ INR / $ USD'],
               ['inr', '₹ INR'],
               ['usd', '$ USD'],
             ].map(([value, label]) => (
-              <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[#222222] text-white dark:bg-[var(--card-bg)] dark:text-[#222222]' : 'text-[#666666] dark:text-gray-300'}`}>
+              <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[var(--text)] text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]' : 'text-[#666666] dark:text-gray-300'}`}>
                 {label}
               </button>
             ))}
@@ -91,7 +91,7 @@ export default function PricingPage() {
 
         <div className="grid gap-5 lg:grid-cols-3">
           {groups.map((group) => (
-            <section key={group.heading} id={group.heading === 'For Founders' ? 'founders' : group.heading === 'For Investors' ? 'investors' : 'marketplace'} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section key={group.heading} id={group.heading === 'For Founders' ? 'founders' : group.heading === 'For Investors' ? 'investors' : 'marketplace'} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 bg-[var(--card-bg)]">
               <h2 className="mb-5 text-xl font-black">{group.heading}</h2>
               <div className="space-y-4">
                 {group.tiers.map((tier) => (
@@ -110,7 +110,7 @@ export default function PricingPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-[var(--card-bg)] dark:text-[#222222]">
+                    <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[var(--text)] px-4 py-3 text-sm font-black text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
                       {tier.name === 'Free' ? 'Get started →' : 'Join free →'}
                     </Link>
                   </article>
@@ -120,14 +120,14 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
           <h2 className="text-2xl font-black">When you raise, we take 2%.</h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-[#666666] dark:text-gray-300">
             No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee  -  only on success. Free during early access.
           </p>
         </section>
 
-        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 bg-[var(--card-bg)]">
           <h2 className="mb-4 text-2xl font-black">FAQ</h2>
           <div className="divide-y divide-black/10 dark:divide-white/10">
             {faqs.map(([question, answer], index) => (

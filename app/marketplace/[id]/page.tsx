@@ -589,7 +589,7 @@ export default function ProductDetailPage() {
 
   if (loading || !product) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] py-8 px-4">
+      <div className="min-h-screen bg-[var(--bg)]  py-8 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Breadcrumb skeleton */}
           <div className="h-4 w-48 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-full mb-8 animate-pulse" />
@@ -606,7 +606,7 @@ export default function ProductDetailPage() {
                 ))}
               </div>
               {/* Tab bar skeleton */}
-              <div className="flex gap-3 border-b border-[#e5e5e5] dark:border-[#2a2a2a] pb-4">
+              <div className="flex gap-3 border-b border-[var(--border)] dark:border-[#2a2a2a] pb-4">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="h-8 w-24 bg-[#e5e5e5] dark:bg-[#2a2a2a] rounded-xl animate-pulse" style={{ animationDelay: `${i * 80}ms` }} />
                 ))}
@@ -658,7 +658,7 @@ export default function ProductDetailPage() {
   const productQa = Array.isArray(product.qa_data) ? product.qa_data : [];
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
+    <div className="min-h-screen bg-[var(--bg)]  pb-24">
       {product && (
         <script
           type="application/ld+json"
@@ -677,7 +677,7 @@ export default function ProductDetailPage() {
           }}
         />
       )}
-      <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
+      <div className="border-b-[0.5px] border-[var(--border)] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800  dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-6xl">
           Ventex Premium is for marketplace access â€” buying software, hiring, and custom build requests. For investment features, see <Link href="/pricing" className="underline underline-offset-4">Investor Accounts</Link>.
         </div>
@@ -689,9 +689,9 @@ export default function ProductDetailPage() {
           
           {/* Left: Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-video bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden flex items-center justify-center relative">
+            <div className="aspect-video bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)]  overflow-hidden flex items-center justify-center relative">
               {isDeal && (
-                <span className="absolute top-4 left-4 bg-[#222222] text-white text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
+                <span className="absolute top-4 left-4 bg-[var(--text)] text-[var(--text)] text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
                   <Tag className="w-3.5 h-3.5" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
                 </span>
               )}
@@ -720,33 +720,33 @@ export default function ProductDetailPage() {
           {/* Right: Details & Actions */}
           <div className="flex flex-col">
             <div className="mb-2 flex items-center gap-2">
-              <span className="text-[11px] font-black uppercase tracking-widest text-[#888888]">{product.category}</span>
+              <span className="text-[11px] font-black uppercase tracking-widest text-[var(--text2)]">{product.category}</span>
               <span className="w-1 h-1 rounded-full bg-[#cccccc]"></span>
-              <span className="text-[11px] font-black uppercase tracking-widest text-[#888888]">{product.sector}</span>
+              <span className="text-[11px] font-black uppercase tracking-widest text-[var(--text2)]">{product.sector}</span>
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-black text-[#222222] dark:text-white tracking-tight mb-6">
+            <h1 className="text-3xl md:text-4xl font-black text-[var(--text)]  tracking-tight mb-6">
               {product.name}
             </h1>
 
             {/* Seller Row */}
-            <div className="flex items-center gap-4 bg-[var(--card-bg)] dark:bg-[#1a1a1a] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] mb-8">
-              <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="flex items-center gap-4 bg-[var(--card-bg)] bg-[var(--card-bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)]  mb-8">
+              <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
                 {product.seller?.avatar_url ? (
                   <img src={product.seller.avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-5 h-5 text-[#888888]" />
+                  <User className="w-5 h-5 text-[var(--text2)]" />
                 )}
               </div>
               <div className="flex-grow">
-                <p className="text-sm font-bold text-[#222222] dark:text-white flex items-center gap-1.5">
+                <p className="text-sm font-bold text-[var(--text)]  flex items-center gap-1.5">
                   {product.seller?.full_name || 'Anonymous'}
                   <ShieldCheck className="w-4 h-4 text-emerald-500" />
                 </p>
-                <p className="text-xs text-[#888888]">Verified Founder</p>
+                <p className="text-xs text-[var(--text2)]">Verified Founder</p>
               </div>
               {product.pitch && (
-                <Link href={`/pitch/${product.pitch.id}`} className="text-xs font-bold text-[#222222] dark:text-white hover:underline flex items-center gap-1">
+                <Link href={`/pitch/${product.pitch.id}`} className="text-xs font-bold text-[var(--text)]  hover:underline flex items-center gap-1">
                   View their startup <ArrowRight className="w-3 h-3" />
                 </Link>
               )}
@@ -756,16 +756,16 @@ export default function ProductDetailPage() {
             <div className="mb-8">
               {isCustom ? (
                 <div>
-                  <p className="text-[#888888] text-[11px] font-bold uppercase tracking-widest mb-1">Custom Project Starts From</p>
-                  <span className="text-4xl font-black text-[#222222] dark:text-white">â‚¹{product.price?.toLocaleString()}</span>
+                  <p className="text-[var(--text2)] text-[11px] font-bold uppercase tracking-widest mb-1">Custom Project Starts From</p>
+                  <span className="text-4xl font-black text-[var(--text)] ">â‚¹{product.price?.toLocaleString()}</span>
                 </div>
               ) : (
                 <div className="flex items-end gap-3">
-                  <span className="text-4xl font-black text-[#222222] dark:text-white">
+                  <span className="text-4xl font-black text-[var(--text)] ">
                     â‚¹{(product.discount_price || product.price)?.toLocaleString()}
                   </span>
                   {isDeal && (
-                    <span className="text-lg text-[#888888] line-through font-medium mb-1">
+                    <span className="text-lg text-[var(--text2)] line-through font-medium mb-1">
                       â‚¹{product.price?.toLocaleString()}
                     </span>
                   )}
@@ -783,24 +783,24 @@ export default function ProductDetailPage() {
             <div className="mt-auto space-y-3">
               {isCustom ? (
                 <>
-                  <button onClick={handleRequestWork} className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
+                  <button onClick={handleRequestWork} className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
                     Request Work
                   </button>
-                  <p className="text-xs text-center text-[#888888] font-medium">Ventex Premium required to discuss marketplace requirements.</p>
+                  <p className="text-xs text-center text-[var(--text2)] font-medium">Ventex Premium required to discuss marketplace requirements.</p>
                 </>
               ) : (
                 <div className="flex gap-3">
                   <button 
                     onClick={handleAddToCart}
                     disabled={isAddingToCart || addedToCart}
-                    className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors disabled:opacity-50"
+                    className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[var(--text)]  py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors disabled:opacity-50"
                   >
                     {addedToCart ? 'Added âœ“' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </button>
                   <button 
                     onClick={handleBuyNow}
                     disabled={isAddingToCart || addedToCart || isCheckingOut}
-                    className="flex-1 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                    className="flex-1 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
                   >
                     {isCheckingOut ? 'Checking out...' : 'Buy Now'}
                   </button>
@@ -811,13 +811,13 @@ export default function ProductDetailPage() {
         </div>
 
         {/* TABS */}
-        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
-          <div className="flex border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-x-auto hide-scrollbar">
+        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)]  overflow-hidden">
+          <div className="flex border-b-[0.5px] border-[var(--border)]  overflow-x-auto hide-scrollbar">
             {['description', 'reviews', 'qa'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
-                className={`px-8 py-5 text-sm font-bold capitalize whitespace-nowrap transition-colors border-b-2 ${activeTab === tab ? 'border-[#222222] dark:border-white text-[#222222] dark:text-white' : 'border-transparent text-[#888888] hover:text-[#222222] dark:hover:text-white'}`}
+                className={`px-8 py-5 text-sm font-bold capitalize whitespace-nowrap transition-colors border-b-2 ${activeTab === tab ? 'border-[#222222] dark:border-white text-[var(--text)] ' : 'border-transparent text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)]'}`}
               >
                 {tab === 'qa' ? 'Q&A' : tab} 
                 {tab === 'reviews' && reviews.length > 0 && ` (${reviews.length})`}
@@ -833,12 +833,12 @@ export default function ProductDetailPage() {
                   {product.description || 'No description provided.'}
                 </div>
                 {product.category === 'Software' && (
-                  <div className="mt-8 pt-8 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
-                    <h3 className="font-bold text-[#222222] dark:text-white mb-4">Tech Stack</h3>
+                  <div className="mt-8 pt-8 border-t-[0.5px] border-[var(--border)] ">
+                    <h3 className="font-bold text-[var(--text)]  mb-4">Tech Stack</h3>
                     <div className="flex gap-2 flex-wrap">
-                      <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Next.js</span>
-                      <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Supabase</span>
-                      <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Tailwind CSS</span>
+                      <span className="bg-[var(--bg)] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Next.js</span>
+                      <span className="bg-[var(--bg)] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Supabase</span>
+                      <span className="bg-[var(--bg)] dark:bg-[#333333] text-[#555555] dark:text-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold">Tailwind CSS</span>
                     </div>
                   </div>
                 )}
@@ -862,18 +862,18 @@ export default function ProductDetailPage() {
                     onClick={() => toggleDemoMode()}
                     className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0 ${
                       isDemoMode 
-                        ? 'bg-amber-600 text-white hover:bg-amber-700' 
-                        : 'bg-[var(--card-bg)] dark:bg-[#222222] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
+                        ? 'bg-amber-600 text-[var(--text)] hover:bg-amber-700' 
+                        : 'bg-[var(--card-bg)] dark:bg-[var(--text)] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
                     }`}
                   >
                     {isDemoMode ? 'Deactivate Demo' : 'Activate Demo'}
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] items-center">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b-[0.5px] border-[var(--border)]  items-center">
                   {/* Big Rating Summary */}
-                  <div className="text-center md:border-r-[0.5px] border-[#e5e5e5] dark:border-[#333333] py-2">
-                    <p className="text-6xl font-black text-[#222222] dark:text-white">
+                  <div className="text-center md:border-r-[0.5px] border-[var(--border)]  py-2">
+                    <p className="text-6xl font-black text-[var(--text)] ">
                       {product.average_rating > 0 ? product.average_rating.toFixed(1) : '0'}
                     </p>
                     <div className="flex items-center justify-center gap-1 my-2 text-amber-400">
@@ -881,7 +881,7 @@ export default function ProductDetailPage() {
                         <Star key={star} className={`w-5 h-5 ${star <= Math.round(product.average_rating || 0) ? 'fill-current' : 'text-gray-200 dark:text-[#333333]'}`} />
                       ))}
                     </div>
-                    <p className="text-xs text-[#888888] font-bold uppercase tracking-wider">
+                    <p className="text-xs text-[var(--text2)] font-bold uppercase tracking-wider">
                       {product.review_count || 0} reviews
                     </p>
                   </div>
@@ -893,7 +893,7 @@ export default function ProductDetailPage() {
                       return (
                         <div key={stars} className="flex items-center gap-3 text-xs">
                           <span className="w-8 text-right font-bold text-[var(--text3)] dark:text-gray-400">{stars}â˜…</span>
-                          <div className="flex-grow h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
+                          <div className="flex-grow h-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full overflow-hidden">
                             <div 
                               className="h-full bg-amber-400 rounded-full transition-all duration-500" 
                               style={{ width: `${pct}%` }}
@@ -915,7 +915,7 @@ export default function ProductDetailPage() {
                             setReviewComment('');
                             setIsReviewModalOpen(true);
                           }}
-                          className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+                          className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
                         >
                           Write a Review
                         </button>
@@ -925,7 +925,7 @@ export default function ProductDetailPage() {
                       </div>
                     ) : (
                       <div className="text-center space-y-1.5 max-w-[200px]">
-                        <p className="text-xs text-[#888888] font-bold">
+                        <p className="text-xs text-[var(--text2)] font-bold">
                           Only customers with a fulfilled order for this product can write a review.
                         </p>
                         {currentUser && (
@@ -940,23 +940,23 @@ export default function ProductDetailPage() {
 
                 <div className="space-y-6">
                   {reviews.length === 0 ? (
-                    <p className="text-[#888888] text-center py-8">No reviews yet.</p>
+                    <p className="text-[var(--text2)] text-center py-8">No reviews yet.</p>
                   ) : (
                     reviews.map(review => (
-                      <div key={review.id} className="space-y-3 p-4 bg-[var(--card-bg)] dark:bg-[#1f1f1f] rounded-2xl border border-[#e5e5e5]/40 dark:border-[#333333]/40 shadow-sm">
+                      <div key={review.id} className="space-y-3 p-4 bg-[var(--card-bg)] dark:bg-[#1f1f1f] rounded-2xl border border-[var(--border)]/40 /40 shadow-sm">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-[#F2F2F0] rounded-full flex items-center justify-center overflow-hidden">
-                              {review.buyer?.avatar_url ? <img src={review.buyer.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+                            <div className="w-10 h-10 bg-[var(--bg)] rounded-full flex items-center justify-center overflow-hidden">
+                              {review.buyer?.avatar_url ? <img src={review.buyer.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-[#222222] dark:text-white flex items-center gap-2">
+                              <p className="text-sm font-bold text-[var(--text)]  flex items-center gap-2">
                                 {review.buyer?.full_name || 'Anonymous'}
                                 <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded flex items-center gap-1">
                                   <CheckCircle2 className="w-3 h-3" /> Verified Purchase âœ“
                                 </span>
                               </p>
-                              <p className="text-xs text-[#888888]">{new Date(review.created_at).toLocaleDateString()}</p>
+                              <p className="text-xs text-[var(--text2)]">{new Date(review.created_at).toLocaleDateString()}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-0.5 text-amber-400">
@@ -966,8 +966,8 @@ export default function ProductDetailPage() {
                         <p className="text-sm text-[#555555] dark:text-gray-300">{review.comment}</p>
                         
                         {review.seller_reply && (
-                          <div className="ml-8 mt-3 bg-[#F2F2F0] dark:bg-[#222222] p-4 rounded-xl border-l-2 border-[#222222] dark:border-white">
-                            <p className="text-xs font-bold text-[#222222] dark:text-white mb-1">Reply from Founder</p>
+                          <div className="ml-8 mt-3 bg-[var(--bg)] dark:bg-[var(--text)] p-4 rounded-xl border-l-2 border-[#222222] dark:border-white">
+                            <p className="text-xs font-bold text-[var(--text)]  mb-1">Reply from Founder</p>
                             <p className="text-sm text-[#555555] dark:text-gray-300">{review.seller_reply}</p>
                           </div>
                         )}
@@ -983,29 +983,29 @@ export default function ProductDetailPage() {
             {activeTab === 'qa' && (
               <div className="space-y-8">
                 {currentUser ? (
-                  <div className="bg-[#F2F2F0] dark:bg-[#222222] p-6 rounded-2xl">
-                    <h3 className="font-bold text-[#222222] dark:text-white mb-4">Ask a question</h3>
+                  <div className="bg-[var(--bg)] dark:bg-[var(--text)] p-6 rounded-2xl">
+                    <h3 className="font-bold text-[var(--text)]  mb-4">Ask a question</h3>
                     <div className="flex gap-3">
                       <input 
                         type="text" 
                         value={newQuestion}
                         onChange={(e) => setNewQuestion(e.target.value)}
                         placeholder="What would you like to know about this product?" 
-                        className="flex-grow px-4 py-2.5 rounded-xl border-[0.5px] border-[#e5e5e5] dark:border-[#444444] text-sm bg-[var(--card-bg)] dark:bg-[#111111] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:text-white"
+                        className="flex-grow px-4 py-2.5 rounded-xl border-[0.5px] border-[var(--border)] dark:border-[#444444] text-sm bg-[var(--card-bg)]  focus:outline-none focus:ring-1 focus:ring-[#222222] "
                       />
                       <button 
                         onClick={submitQuestion}
                         disabled={!newQuestion.trim() || submittingQuestion}
-                        className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
+                        className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
                       >
                         {submittingQuestion ? 'Posting...' : 'Ask'}
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-[#F2F2F0] dark:bg-[#222222] p-6 rounded-2xl text-center">
-                    <p className="text-sm text-[#888888] mb-3">Please log in to ask a question.</p>
-                    <Link href="/login" className="inline-block bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] px-6 py-2 rounded-xl text-sm font-bold text-[#222222] dark:text-white">
+                  <div className="bg-[var(--bg)] dark:bg-[var(--text)] p-6 rounded-2xl text-center">
+                    <p className="text-sm text-[var(--text2)] mb-3">Please log in to ask a question.</p>
+                    <Link href="/login" className="inline-block bg-[var(--card-bg)]  border-[0.5px] border-[var(--border)] dark:border-[#444444] px-6 py-2 rounded-xl text-sm font-bold text-[var(--text)] ">
                       Login
                     </Link>
                   </div>
@@ -1013,15 +1013,15 @@ export default function ProductDetailPage() {
 
                 <div className="space-y-6">
                   {productQa.length === 0 ? (
-                    <p className="text-[#888888] text-center py-8">No questions asked yet. Be the first!</p>
+                    <p className="text-[var(--text2)] text-center py-8">No questions asked yet. Be the first!</p>
                   ) : (
                     productQa.map((qa: any, idx: number) => (
-                      <div key={idx} className="border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-6 last:border-0 last:pb-0">
+                      <div key={idx} className="border-b-[0.5px] border-[var(--border)]  pb-6 last:border-0 last:pb-0">
                         <div className="flex gap-3 mb-3">
                           <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">Q</div>
                           <div>
-                            <p className="text-sm font-bold text-[#222222] dark:text-white">{qa.question}</p>
-                            <p className="text-xs text-[#888888] mt-0.5">Asked by {qa.user_name} on {new Date(qa.date).toLocaleDateString()}</p>
+                            <p className="text-sm font-bold text-[var(--text)] ">{qa.question}</p>
+                            <p className="text-xs text-[var(--text2)] mt-0.5">Asked by {qa.user_name} on {new Date(qa.date).toLocaleDateString()}</p>
                           </div>
                         </div>
                         {qa.answer && (
@@ -1029,7 +1029,7 @@ export default function ProductDetailPage() {
                             <div className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">A</div>
                             <div>
                               <p className="text-sm text-[#555555] dark:text-gray-300">{qa.answer}</p>
-                              <p className="text-xs text-[#888888] mt-0.5">Founder Reply</p>
+                              <p className="text-xs text-[var(--text2)] mt-0.5">Founder Reply</p>
                             </div>
                           </div>
                         )}
@@ -1045,11 +1045,11 @@ export default function ProductDetailPage() {
         {/* RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-6">More in {product.category}</h2>
+            <h2 className="text-xl font-black text-[var(--text)]  uppercase tracking-tight mb-6">More in {product.category}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {relatedProducts.map(rel => (
-                <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
-                  <div className="aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
+                <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
+                  <div className="aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
                     {rel.images_urls?.[0] ? (
                       <img src={rel.images_urls[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
@@ -1059,10 +1059,10 @@ export default function ProductDetailPage() {
                     )}
                   </div>
                   <div className="p-4 flex flex-col flex-grow">
-                    <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-1 line-clamp-1">{rel.name}</h3>
-                    <p className="text-xs text-[#888888] mb-3 line-clamp-1">By {rel.seller?.full_name}</p>
+                    <h3 className="font-bold text-[var(--text)]  text-sm mb-1 line-clamp-1">{rel.name}</h3>
+                    <p className="text-xs text-[var(--text2)] mb-3 line-clamp-1">By {rel.seller?.full_name}</p>
                     <div className="mt-auto flex items-baseline gap-2">
-                      <span className="font-black text-[#222222] dark:text-white">â‚¹{(rel.discount_price || rel.price).toLocaleString()}</span>
+                      <span className="font-black text-[var(--text)] ">â‚¹{(rel.discount_price || rel.price).toLocaleString()}</span>
                     </div>
                   </div>
                 </Link>
@@ -1076,30 +1076,30 @@ export default function ProductDetailPage() {
       {/* REQUEST MODAL */}
       {isRequestModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-            <button onClick={() => setIsRequestModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
-              <X className="w-4 h-4 text-[#888888]" />
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+            <button onClick={() => setIsRequestModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
+              <X className="w-4 h-4 text-[var(--text2)]" />
             </button>
             <div className="p-8">
-              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-2">Request Custom Build</h2>
-              <p className="text-sm text-[#888888] mb-6">This is a product inquiry, not an investment discussion. The founder will respond to your project request.</p>
-              <input value={requestName} onChange={(e) => setRequestName(e.target.value)} placeholder="Your name" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
+              <h2 className="text-xl font-black text-[var(--text)]  uppercase tracking-tight mb-2">Request Custom Build</h2>
+              <p className="text-sm text-[var(--text2)] mb-6">This is a product inquiry, not an investment discussion. The founder will respond to your project request.</p>
+              <input value={requestName} onChange={(e) => setRequestName(e.target.value)} placeholder="Your name" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none   " />
               
               <textarea 
                 rows={5}
                 value={requirements}
                 onChange={e => setRequirements(e.target.value)}
                 placeholder="Project description"
-                className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white mb-3 resize-none"
+                className="w-full px-4 py-3 bg-[var(--bg)]  border-[0.5px] border-[var(--border)]  rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[var(--text)]  mb-3 resize-none"
               ></textarea>
-              <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (â‚¹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
-              <input value={requestTimeline} onChange={(e) => setRequestTimeline(e.target.value)} placeholder="Timeline needed" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
-              <input value={requestEmail} onChange={(e) => setRequestEmail(e.target.value)} placeholder="Contact email" type="email" className="mb-6 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
+              <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (â‚¹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none   " />
+              <input value={requestTimeline} onChange={(e) => setRequestTimeline(e.target.value)} placeholder="Timeline needed" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none   " />
+              <input value={requestEmail} onChange={(e) => setRequestEmail(e.target.value)} placeholder="Contact email" type="email" className="mb-6 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none   " />
               
               <button 
                 onClick={submitRequest}
                 disabled={submittingRequest || !requirements.trim()}
-                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingRequest ? 'Sending...' : 'Send Request'}
               </button>
@@ -1111,17 +1111,17 @@ export default function ProductDetailPage() {
       {/* REVIEW MODAL */}
       {isReviewModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[#e5e5e5] dark:border-[#333333] animate-in fade-in zoom-in-95 duration-200">
-            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
-              <X className="w-4 h-4 text-[#888888]" />
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[var(--border)]  animate-in fade-in zoom-in-95 duration-200">
+            <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
+              <X className="w-4 h-4 text-[var(--text2)]" />
             </button>
             <div className="p-8">
-              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-2">Write a Review</h2>
-              <p className="text-sm text-[#888888] mb-6">Share your experience with <strong>{product.name}</strong>. Your feedback helps other buyers make informed decisions.</p>
+              <h2 className="text-xl font-black text-[var(--text)]  uppercase tracking-tight mb-2">Write a Review</h2>
+              <p className="text-sm text-[var(--text2)] mb-6">Share your experience with <strong>{product.name}</strong>. Your feedback helps other buyers make informed decisions.</p>
               
               {/* Star Selector */}
               <div className="mb-6 text-center">
-                <p className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-2">Your Rating</p>
+                <p className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-2">Your Rating</p>
                 <div className="flex justify-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -1147,7 +1147,7 @@ export default function ProductDetailPage() {
               {/* Text Area */}
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="text-xs font-bold text-[#888888] uppercase tracking-widest">Review Comments</label>
+                  <label className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest">Review Comments</label>
                   <span className={`text-xs font-medium ${
                     reviewComment.trim().length < 10 || reviewComment.length > 500
                       ? 'text-amber-500' 
@@ -1161,14 +1161,14 @@ export default function ProductDetailPage() {
                   value={reviewComment}
                   onChange={e => setReviewComment(e.target.value)}
                   placeholder="Tell us what you liked or disliked about the product... (10-500 characters)"
-                  className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white resize-none"
+                  className="w-full px-4 py-3 bg-[var(--bg)]  border-[0.5px] border-[var(--border)]  rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[var(--text)]  resize-none"
                 ></textarea>
               </div>
               
               <button 
                 onClick={submitReview}
                 disabled={submittingReview || reviewRating === 0 || reviewComment.trim().length < 10 || reviewComment.length > 500}
-                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingReview ? 'Submitting...' : 'Submit Review'}
               </button>

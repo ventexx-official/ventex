@@ -94,13 +94,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] flex">
       {/* Sidebar */}
       <aside
-        className={`bg-[var(--card-bg)] border-r border-[0.5px] border-[#e5e5e5] dark:border-[#333333] transition-all duration-300 flex flex-col justify-between shrink-0 ${
+        className={`bg-[var(--card-bg)] border-r border-[0.5px] border-[var(--border)]  transition-all duration-300 flex flex-col justify-between shrink-0 ${
           collapsed ? "w-20" : "w-64"
         }`}
       >
         <div>
           {/* Header */}
-          <div className={`h-16 flex items-center border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
+          <div className={`h-16 flex items-center border-b border-[0.5px] border-[var(--border)]  px-4 ${collapsed ? "justify-center" : "justify-between"}`}>
             {!collapsed && (
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-6 w-6 text-violet-500 shrink-0" />
@@ -153,7 +153,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Footer info & exit */}
-        <div className="p-4 border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333] space-y-3">
+        <div className="p-4 border-t border-[0.5px] border-[var(--border)]  space-y-3">
           <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
             <div className="h-9 w-9 rounded-full bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-400 shrink-0 overflow-hidden">
               {adminUser.avatar_url ? (
@@ -190,7 +190,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
-        <header className="h-16 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)]/40 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-10">
+        <header className="h-16 border-b border-[0.5px] border-[var(--border)]  bg-[var(--card-bg)]/40 backdrop-blur flex items-center justify-between px-8 sticky top-0 z-10">
           <div>
             <h1 className="text-base font-bold text-[var(--text)]">
               {menuItems.find(m => isActive(m.path))?.name || "Management Console"}

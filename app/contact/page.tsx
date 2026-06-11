@@ -42,7 +42,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222] dark:bg-[#111111] dark:text-white">
+    <main className="min-h-screen bg-[var(--bg)] px-4 py-16 text-[var(--text)]  ">
       <div className="mx-auto max-w-5xl">
         <div className="mb-10 border-b border-black/10 pb-8 dark:border-white/10">
           <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[#666666] dark:text-gray-400">Support</p>
@@ -54,19 +54,19 @@ export default function ContactPage() {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
-            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
               <Mail className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Support Email</h2>
               <a className="text-sm font-bold underline underline-offset-4" href={`mailto:${supportEmail}`}>{supportEmail}</a>
               <p className="mt-3 text-xs leading-5 text-[#666666] dark:text-gray-400">Target response time: 2 business days.</p>
             </section>
-            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
               <ShieldCheck className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Grievance Officer</h2>
               <p className="text-sm font-bold">Ventex Support Desk</p>
               <p className="mt-3 text-xs leading-5 text-[#666666] dark:text-gray-400">Use the form for escalation, privacy, and compliance requests.</p>
             </section>
-            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
               <MapPin className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Business Address</h2>
               <p className="text-sm font-bold">Ventex, Global Remote</p>
@@ -74,17 +74,17 @@ export default function ContactPage() {
             </section>
           </div>
 
-          <form onSubmit={submit} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a] space-y-4">
+          <form onSubmit={submit} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)] space-y-4">
             <h2 className="text-xl font-black">Send a message</h2>
             {success ? <div className="rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-700">{success}</div> : null}
             {error ? <div className="rounded-xl bg-red-50 p-3 text-sm font-bold text-red-700">{error}</div> : null}
-            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Name" className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[#222222] outline-none" />
-            <input required type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} placeholder="Email" className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[#222222] outline-none" />
-            <select value={form.subject} onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))} className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[#222222] outline-none">
+            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Name" className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[var(--text)] outline-none" />
+            <input required type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} placeholder="Email" className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[var(--text)] outline-none" />
+            <select value={form.subject} onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))} className="w-full rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[var(--text)] outline-none">
               {['General', 'Bug Report', 'Partnership', 'Press', 'Other'].map((subject) => <option key={subject}>{subject}</option>)}
             </select>
-            <textarea required value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} placeholder="Message" rows={6} className="w-full resize-none rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[#222222] outline-none" />
-            <button disabled={submitting} className="w-full rounded-xl bg-[#222222] py-3 text-sm font-black text-white disabled:opacity-50">
+            <textarea required value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} placeholder="Message" rows={6} className="w-full resize-none rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[var(--text)] outline-none" />
+            <button disabled={submitting} className="w-full rounded-xl bg-[var(--text)] py-3 text-sm font-black text-[var(--text)] disabled:opacity-50">
               {submitting ? 'Sending...' : 'Send message'}
             </button>
           </form>

@@ -145,7 +145,7 @@ export default function AdminDisputes() {
         </div>
         <button
           onClick={fetchDisputes}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -159,7 +159,7 @@ export default function AdminDisputes() {
           { label: "Refunded", val: counts.resolved_refunded, color: "text-blue-400" },
           { label: "Released", val: counts.resolved_released, color: "text-emerald-400" },
         ].map(({ label, val, color }) => (
-          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 text-center">
+          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-4 text-center">
             <p className={`text-2xl font-black font-mono ${color}`}>{val}</p>
             <p className="text-[11px] text-[var(--text3)] mt-1 uppercase tracking-wider font-bold">{label}</p>
           </div>
@@ -175,10 +175,10 @@ export default function AdminDisputes() {
             placeholder="Search by reason, buyer, seller, product..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
-        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
           {["all", "open", "resolved_refunded", "resolved_released"].map((s) => {
             const labels: Record<string, string> = {
               all: "All",
@@ -207,7 +207,7 @@ export default function AdminDisputes() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
           <AlertTriangle className="h-10 w-10 text-[var(--text3)] mx-auto mb-3" />
           <h3 className="text-sm font-bold text-[var(--text)]">No disputes found</h3>
           <p className="text-xs text-[var(--text3)] mt-1">No open disputes match the current filters.</p>
@@ -223,7 +223,7 @@ export default function AdminDisputes() {
               <div
                 key={dispute.id}
                 className={`bg-[var(--card-bg)] border rounded-[24px] overflow-hidden transition-all ${
-                  isOpen ? "border-amber-900/30" : "border-[0.5px] border-[#e5e5e5] dark:border-[#333333]"
+                  isOpen ? "border-amber-900/30" : "border-[0.5px] border-[var(--border)] "
                 }`}
               >
                 {/* Summary Row */}
@@ -288,13 +288,13 @@ export default function AdminDisputes() {
 
                 {/* Expanded Details */}
                 {isExpanded && (
-                  <div className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-5 pb-5 pt-4 space-y-4 bg-[var(--bg2)]">
+                  <div className="border-t border-[0.5px] border-[var(--border)]  px-5 pb-5 pt-4 space-y-4 bg-[var(--bg2)]">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <p className="text-[10px] font-bold text-[var(--text3)] uppercase tracking-wider font-mono mb-1.5 flex items-center gap-1.5">
                           <MessageSquare size={11} /> Buyer's Claim
                         </p>
-                        <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs text-[var(--text2)] leading-relaxed">
+                        <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs text-[var(--text2)] leading-relaxed">
                           {dispute.description || "No detailed description provided."}
                         </div>
                       </div>
@@ -302,7 +302,7 @@ export default function AdminDisputes() {
                         <p className="text-[10px] font-bold text-[var(--text3)] uppercase tracking-wider font-mono mb-1.5 flex items-center gap-1.5">
                           <MessageSquare size={11} /> Seller's Response
                         </p>
-                        <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs text-[var(--text2)] leading-relaxed">
+                        <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs text-[var(--text2)] leading-relaxed">
                           {dispute.seller_response || <span className="italic text-[var(--text3)]">No response from seller yet.</span>}
                         </div>
                       </div>

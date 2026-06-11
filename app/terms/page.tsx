@@ -88,14 +88,14 @@ export default function TermsPage() {
   ];
 
   return (
-    <div className="bg-[#0A0A0C] text-neutral-300 min-h-screen py-16 md:py-24">
+    <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
         {/* Header */}
         <div className="space-y-4 border-b border-neutral-900 pb-10">
           <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
             Legal Agreement
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">
+          <h1 className="text-4xl md:text-5xl font-black text-[var(--text)] tracking-tight uppercase">
             Terms of Service
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
@@ -104,13 +104,13 @@ export default function TermsPage() {
         </div>
 
         {/* Introduction */}
-        <div className="p-6 rounded-xl bg-[#0F0F12] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+        <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
           Welcome to Ventex. Please read these Terms of Service carefully before utilizing our marketplace or pitching services. These terms establish a legally binding contract between you and Ventex regarding platform access, commissions, security standards, and dispute handling.
         </div>
 
         {/* Table of Contents Quicklinks */}
-        <div className="p-6 rounded-xl bg-[#0A0A0C] border border-neutral-900">
-          <h2 className="text-xs font-bold text-white uppercase tracking-wider mb-4 font-mono">
+        <div className="p-6 rounded-xl bg-[var(--bg)] border border-neutral-900">
+          <h2 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-4 font-mono">
             Table of Contents
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -134,13 +134,13 @@ export default function TermsPage() {
               <article
                 key={sec.id}
                 id={sec.id}
-                className="p-8 rounded-xl bg-[#0F0F12] border border-neutral-900 hover:border-neutral-800/80 transition-all duration-300 space-y-4 scroll-mt-20 group"
+                className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800/80 transition-all duration-300 space-y-4 scroll-mt-20 group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:bg-violet-600/20 transition-all duration-300">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h2 className="text-xl font-bold text-white font-mono tracking-wide">
+                  <h2 className="text-xl font-bold text-[var(--text)] font-mono tracking-wide">
                     {sec.title}
                   </h2>
                 </div>

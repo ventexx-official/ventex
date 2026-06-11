@@ -48,14 +48,14 @@ export default function PrivacyPage() {
   ];
 
   return (
-    <div className="bg-[#0A0A0C] text-neutral-300 min-h-screen py-16 md:py-24">
+    <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
         {/* Header */}
         <div className="space-y-4 border-b border-neutral-900 pb-10">
           <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
             Data Governance
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">
+          <h1 className="text-4xl md:text-5xl font-black text-[var(--text)] tracking-tight uppercase">
             Privacy Policy
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Introduction */}
-        <div className="p-6 rounded-xl bg-[#0F0F12] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+        <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
           At Ventex, we are committed to safeguarding your personal information, financial data, and intellectual property. This Privacy Policy details what information we collect, how it is processed by our secure infrastructure, and the complete privacy rights you possess under modern Indian data protection frameworks.
         </div>
 
@@ -75,13 +75,13 @@ export default function PrivacyPage() {
             return (
               <div
                 key={index}
-                className="p-8 rounded-xl bg-[#0F0F12] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
+                className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
               >
                 <div className="w-12 h-12 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0 group-hover:bg-violet-600/20 transition-all duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-lg font-bold text-white tracking-wide uppercase font-mono">
+                  <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
                     {point.title}
                   </h2>
                   <p className="text-neutral-400 text-sm leading-relaxed">
@@ -94,10 +94,10 @@ export default function PrivacyPage() {
         </div>
 
         {/* Grievance Officer Section */}
-        <div className="p-8 rounded-xl bg-[#0F0F12]/60 border border-neutral-900 space-y-6">
+        <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-neutral-900 space-y-6">
           <div className="flex items-center gap-3">
             <Landmark className="w-5 h-5 text-violet-400" />
-            <h2 className="text-lg font-bold text-white tracking-wide uppercase font-mono">
+            <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
               Grievance Redressal
             </h2>
           </div>
@@ -121,7 +121,7 @@ export default function PrivacyPage() {
         {/* Contact Block */}
         <div className="p-6 rounded-xl border border-neutral-900 bg-gradient-to-r from-violet-950/10 to-neutral-900/20 flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="space-y-1 text-center sm:text-left">
-            <h3 className="font-bold text-white text-sm uppercase font-mono tracking-wide">
+            <h3 className="font-bold text-[var(--text)] text-sm uppercase font-mono tracking-wide">
               Have Questions?
             </h3>
             <p className="text-xs text-neutral-500">
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
           </div>
           <a
             href={`mailto:${privacyEmail}`}
-            className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2"
+            className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-[var(--text)] rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2"
           >
             <Mail className="w-4 h-4" /> Contact {privacyEmail}
           </a>

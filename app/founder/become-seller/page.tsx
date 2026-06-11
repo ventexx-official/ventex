@@ -198,8 +198,8 @@ function BecomeSellerInner() {
   /* Ã¢â€â‚¬Ã¢â€â‚¬ Loading skeleton Ã¢â€â‚¬Ã¢â€â‚¬ */
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     );
   }
@@ -211,14 +211,14 @@ function BecomeSellerInner() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0]">
+    <div className="min-h-screen bg-[var(--bg)]">
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ Top nav Ã¢â€â‚¬Ã¢â€â‚¬ */}
-      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between">
-        <Link href="/founder/dashboard" className="flex items-center gap-2 text-[#888888] hover:text-[#222222] transition-colors text-sm font-bold">
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] px-6 py-4 flex items-center justify-between">
+        <Link href="/founder/dashboard" className="flex items-center gap-2 text-[var(--text2)] hover:text-[var(--text)] transition-colors text-sm font-bold">
           <ChevronLeft className="w-4 h-4" />
           Back to Dashboard
         </Link>
-        <span className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</span>
+        <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</span>
         <div className="w-32" />
       </header>
 
@@ -226,14 +226,14 @@ function BecomeSellerInner() {
 
         {/* Ã¢â€â‚¬Ã¢â€â‚¬ Hero Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-[#222222] text-white text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-5">
+          <div className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--text)] text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-5">
             <Sparkles className="w-3.5 h-3.5" />
             Seller Onboarding
           </div>
-          <h1 className="text-4xl font-black text-[#222222] tracking-tighter mb-3">
+          <h1 className="text-4xl font-black text-[var(--text)] tracking-tighter mb-3">
             Start selling on Ventex
           </h1>
-          <p className="text-[#888888] font-medium text-base leading-relaxed">
+          <p className="text-[var(--text2)] font-medium text-base leading-relaxed">
             Complete two quick steps to list products and get paid directly.
           </p>
         </div>
@@ -248,14 +248,14 @@ function BecomeSellerInner() {
                 <div className="flex flex-col items-center gap-1.5">
                   <div className={`
                     w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 font-black text-sm
-                    ${done ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" :
-                      active ? "bg-[#222222] text-white shadow-lg shadow-black/20 scale-110" :
-                      "bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] text-[#cccccc]"}
+                    ${done ? "bg-emerald-500 text-[var(--text)] shadow-lg shadow-emerald-500/20" :
+                      active ? "bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/20 scale-110" :
+                      "bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] text-[#cccccc]"}
                   `}>
                     {done ? <CheckCircle className="w-5 h-5" /> : <s.icon className="w-4 h-4" />}
                   </div>
                   <span className={`text-[10px] font-black uppercase tracking-wider whitespace-nowrap
-                    ${active ? "text-[#222222]" : done ? "text-emerald-500" : "text-[#cccccc]"}`}>
+                    ${active ? "text-[var(--text)]" : done ? "text-emerald-500" : "text-[#cccccc]"}`}>
                     {s.label}
                   </span>
                 </div>
@@ -273,19 +273,19 @@ function BecomeSellerInner() {
             STEP 1  -  Phone Verification
         Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 1 && (
-          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
             {/* Card header */}
-            <div className="bg-gradient-to-br from-[#222222] to-[#444444] p-8 text-white">
+            <div className="bg-gradient-to-br from-[#222222] to-[#444444] p-8 text-[var(--text)]">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-[var(--card-bg)]/10 rounded-2xl flex items-center justify-center">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Step 1 of 2</p>
+                  <p className="text-[var(--text)]/60 text-xs font-bold uppercase tracking-widest">Step 1 of 2</p>
                   <h2 className="text-xl font-black">Verify your phone</h2>
                 </div>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-[var(--text)]/60 text-sm leading-relaxed">
                 We use your phone number to protect buyers and sellers on Ventex. Standard SMS rates may apply.
               </p>
             </div>
@@ -295,11 +295,11 @@ function BecomeSellerInner() {
                 /* Phone input */
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
+                    <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">
                       Phone Number
                     </label>
                     <div className="flex gap-3">
-                      <div className="flex items-center gap-2 px-4 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] flex-shrink-0">
+                      <div className="flex items-center gap-2 px-4 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] flex-shrink-0">
                         <span className="text-base">🌐</span>
                         <span>+1</span>
                       </div>
@@ -310,7 +310,7 @@ function BecomeSellerInner() {
                         onChange={e => setPhone(e.target.value)}
                         onKeyDown={e => e.key === "Enter" && handleSendOtp()}
                         placeholder="(555) 000-0000"
-                        className="flex-1 px-4 py-3.5 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] placeholder:text-[#cccccc] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                        className="flex-1 px-4 py-3.5 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] placeholder:text-[#cccccc] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                   </div>
@@ -333,7 +333,7 @@ function BecomeSellerInner() {
                     id="send-otp-btn"
                     onClick={handleSendOtp}
                     disabled={phoneLoading || !phone}
-                    className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
+                    className="w-full py-4 bg-[var(--text)] text-[var(--text)] rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {phoneLoading ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
@@ -346,16 +346,16 @@ function BecomeSellerInner() {
                 /* OTP input */
                 <div className="space-y-6">
                   <div>
-                    <p className="text-sm font-bold text-[#222222] mb-1">
-                      Code sent to <span className="text-[#888888]">{phone}</span>
+                    <p className="text-sm font-bold text-[var(--text)] mb-1">
+                      Code sent to <span className="text-[var(--text2)]">{phone}</span>
                     </p>
-                    <p className="text-xs text-[#888888] font-medium">
+                    <p className="text-xs text-[var(--text2)] font-medium">
                       Enter the 6-digit code below.
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-3">
+                    <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-3">
                       Verification Code
                     </label>
                     <div className="flex gap-3 justify-center" onPaste={handleOtpPaste}>
@@ -373,7 +373,7 @@ function BecomeSellerInner() {
                           className={`
                             w-12 h-14 text-center text-xl font-black rounded-2xl border-[0.5px] transition-all
                             focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] focus:scale-105 focus:shadow-lg
-                            ${digit ? "border-[#222222] bg-[#222222] text-white scale-105" : "border-[#e5e5e5] bg-[#F2F2F0] text-[#222222]"}
+                            ${digit ? "border-[#222222] bg-[var(--text)] text-[var(--text)] scale-105" : "border-[var(--border)] bg-[var(--bg)] text-[var(--text)]"}
                           `}
                         />
                       ))}
@@ -391,7 +391,7 @@ function BecomeSellerInner() {
                     id="verify-otp-btn"
                     onClick={handleVerifyOtp}
                     disabled={verifyLoading || otp.join("").length < 6}
-                    className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
+                    className="w-full py-4 bg-[var(--text)] text-[var(--text)] rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {verifyLoading ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Verifying...</>
@@ -402,13 +402,13 @@ function BecomeSellerInner() {
 
                   <div className="text-center">
                     {countdown > 0 ? (
-                      <p className="text-xs text-[#888888] font-medium">
-                        Resend in <span className="font-black text-[#222222]">{countdown}s</span>
+                      <p className="text-xs text-[var(--text2)] font-medium">
+                        Resend in <span className="font-black text-[var(--text)]">{countdown}s</span>
                       </p>
                     ) : (
                       <button
                         onClick={() => { setOtp(["","","","","",""]); handleSendOtp(); }}
-                        className="text-xs font-bold text-[#222222] underline decoration-[0.5px] underline-offset-4 hover:no-underline flex items-center gap-1 mx-auto"
+                        className="text-xs font-bold text-[var(--text)] underline decoration-[0.5px] underline-offset-4 hover:no-underline flex items-center gap-1 mx-auto"
                       >
                         <RefreshCw className="w-3 h-3" /> Resend code
                       </button>
@@ -417,7 +417,7 @@ function BecomeSellerInner() {
 
                   <button
                     onClick={() => { setOtpSent(false); setOtp(["","","","","",""]); setPhoneError(""); }}
-                    className="w-full text-xs font-bold text-[#888888] hover:text-[#222222] transition-colors"
+                    className="w-full text-xs font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors"
                   >
                     Ã¢â€ Â Change phone number
                   </button>
@@ -431,18 +431,18 @@ function BecomeSellerInner() {
             STEP 2  -  Stripe Connect
         Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 2 && (
-          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
-            <div className="bg-gradient-to-br from-[#635BFF] to-[#8B5CF6] p-8 text-white">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-br from-[#635BFF] to-[#8B5CF6] p-8 text-[var(--text)]">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 bg-[var(--card-bg)]/10 rounded-2xl flex items-center justify-center">
                   <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Step 2 of 2</p>
+                  <p className="text-[var(--text)]/60 text-xs font-bold uppercase tracking-widest">Step 2 of 2</p>
                   <h2 className="text-xl font-black">Connect with Stripe</h2>
                 </div>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-[var(--text)]/60 text-sm leading-relaxed">
                 Stripe handles payouts securely. Ventex never stores your bank details.
               </p>
             </div>
@@ -455,24 +455,24 @@ function BecomeSellerInner() {
                   { icon: Shield, label: "PCI DSS compliant" },
                   { icon: CheckCircle, label: "Trusted by millions" },
                 ].map((item, idx) => (
-                  <div key={idx} className="flex flex-col items-center gap-2 bg-[#F2F2F0] rounded-2xl p-4 text-center">
+                  <div key={idx} className="flex flex-col items-center gap-2 bg-[var(--bg)] rounded-2xl p-4 text-center">
                     <item.icon className="w-5 h-5 text-[#635BFF]" />
-                    <span className="text-[10px] font-black text-[#888888] uppercase tracking-wide leading-tight">{item.label}</span>
+                    <span className="text-[10px] font-black text-[var(--text2)] uppercase tracking-wide leading-tight">{item.label}</span>
                   </div>
                 ))}
               </div>
 
               {/* How it works */}
               <div className="space-y-3">
-                <p className="text-xs font-black text-[#888888] uppercase tracking-widest">How payouts work</p>
+                <p className="text-xs font-black text-[var(--text2)] uppercase tracking-widest">How payouts work</p>
                 {[
                   { step: "01", text: "Buyer pays through Ventex checkout" },
                   { step: "02", text: "Ventex deducts 5% platform fee" },
                   { step: "03", text: "95% transferred to your Stripe account" },
                 ].map(item => (
-                  <div key={item.step} className="flex items-center gap-4 p-4 bg-[#F2F2F0] rounded-2xl">
+                  <div key={item.step} className="flex items-center gap-4 p-4 bg-[var(--bg)] rounded-2xl">
                     <span className="text-xs font-black text-[#cccccc] w-6 flex-shrink-0">{item.step}</span>
-                    <p className="text-sm font-bold text-[#222222]">{item.text}</p>
+                    <p className="text-sm font-bold text-[var(--text)]">{item.text}</p>
                   </div>
                 ))}
               </div>
@@ -491,7 +491,7 @@ function BecomeSellerInner() {
                 id="connect-stripe-btn"
                 onClick={handleConnectStripe}
                 disabled={stripeLoading}
-                className="w-full py-4 bg-[#635BFF] hover:bg-[#5249e5] text-white rounded-2xl font-black text-sm active:scale-95 transition-all disabled:opacity-60 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-[#635BFF]/20"
+                className="w-full py-4 bg-[#635BFF] hover:bg-[#5249e5] text-[var(--text)] rounded-2xl font-black text-sm active:scale-95 transition-all disabled:opacity-60 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-[#635BFF]/20"
               >
                 {stripeLoading ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Stripe...</>
@@ -512,13 +512,13 @@ function BecomeSellerInner() {
             STEP 3  -  Complete!
         Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 3 && (
-          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden text-center">
-            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-10 text-white">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden text-center">
+            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-10 text-[var(--text)]">
               <div className="w-20 h-20 bg-[var(--card-bg)]/20 rounded-full flex items-center justify-center mx-auto mb-5 animate-pulse">
                 <CheckCircle className="w-10 h-10" />
               </div>
               <h2 className="text-3xl font-black mb-2">You're ready to sell!</h2>
-              <p className="text-white/70 text-sm font-medium">
+              <p className="text-[var(--text)]/70 text-sm font-medium">
                 Your seller account is active. Start listing products now.
               </p>
             </div>
@@ -539,9 +539,9 @@ function BecomeSellerInner() {
               </div>
 
               {/* What's next */}
-              <div className="bg-[#F2F2F0] rounded-2xl p-5 text-left space-y-2">
-                <p className="text-xs font-black text-[#888888] uppercase tracking-widest mb-3">What's next</p>
-                <p className="text-sm font-medium text-[#888888] leading-relaxed">
+              <div className="bg-[var(--bg)] rounded-2xl p-5 text-left space-y-2">
+                <p className="text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-3">What's next</p>
+                <p className="text-sm font-medium text-[var(--text2)] leading-relaxed">
                   List products (digital or physical), set your price, and buyers can purchase instantly. Payouts hit your Stripe account after each sale.
                 </p>
               </div>
@@ -549,14 +549,14 @@ function BecomeSellerInner() {
               <Link
                 id="list-product-btn"
                 href="/marketplace/sell/create"
-                className="block w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all text-center shadow-lg shadow-black/10"
+                className="block w-full py-4 bg-[var(--text)] text-[var(--text)] rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all text-center shadow-lg shadow-black/10"
               >
                 List your first product →
               </Link>
 
               <Link
                 href="/founder/dashboard"
-                className="block w-full py-3 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
+                className="block w-full py-3 text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors"
               >
                 Back to Dashboard
               </Link>
@@ -568,7 +568,7 @@ function BecomeSellerInner() {
         {step < 3 && (
           <p className="text-center text-xs text-[#cccccc] font-medium mt-8">
             Need help?{" "}
-            <a href="mailto:support@ventex.io" className="underline decoration-[0.5px] underline-offset-4 hover:text-[#888888] transition-colors">
+            <a href="mailto:support@ventex.io" className="underline decoration-[0.5px] underline-offset-4 hover:text-[var(--text2)] transition-colors">
               Contact support
             </a>
           </p>
@@ -584,8 +584,8 @@ function BecomeSellerInner() {
 export default function BecomeSellerPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     }>
       <BecomeSellerInner />

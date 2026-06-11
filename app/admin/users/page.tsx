@@ -105,7 +105,7 @@ export default function AdminUsers() {
       admin: "bg-violet-500/15 text-violet-400 border-violet-500/30",
       founder: "bg-blue-500/15 text-blue-400 border-blue-500/30",
       seller: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-      visitor: "bg-neutral-500/15 text-[var(--text2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333]",
+      visitor: "bg-neutral-500/15 text-[var(--text2)] border-[0.5px] border-[var(--border)] ",
     };
     return (
       <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${styles[role] || styles.visitor}`}>
@@ -126,7 +126,7 @@ export default function AdminUsers() {
         </div>
         <button
           onClick={fetchUsers}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -141,13 +141,13 @@ export default function AdminUsers() {
             placeholder="Search by name or user ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="px-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] focus:outline-none focus:border-violet-500 transition-all appearance-none cursor-pointer"
+          className="px-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] focus:outline-none focus:border-violet-500 transition-all appearance-none cursor-pointer"
         >
           <option value="all">All Roles</option>
           <option value="admin">Admin</option>
@@ -169,7 +169,7 @@ export default function AdminUsers() {
           { label: "Verified", val: users.filter((u) => u.verified_founder).length, color: "text-emerald-400" },
           { label: "Banned", val: users.filter((u) => u.banned).length, color: "text-red-400" },
         ].map(({ label, val, color }) => (
-          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 text-center">
+          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-4 text-center">
             <p className={`text-2xl font-black font-mono ${color}`}>{val}</p>
             <p className="text-[11px] text-[var(--text3)] mt-1 uppercase tracking-wider font-bold">{label}</p>
           </div>
@@ -182,13 +182,13 @@ export default function AdminUsers() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
           <Users className="h-10 w-10 text-[var(--text3)] mx-auto mb-3" />
           <h3 className="text-sm font-bold text-[var(--text)]">No users found</h3>
           <p className="text-xs text-[var(--text3)] mt-1">Try adjusting your search or filter.</p>
         </div>
       ) : (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333]">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden divide-y divide-y divide-[#e5e5e5] dark:divide-[#333333]">
           {filtered.map((user) => {
             const isLoading = actionLoadingId === user.id;
             return (
@@ -200,7 +200,7 @@ export default function AdminUsers() {
                 >
                   {/* Avatar */}
                   <div className={`h-10 w-10 rounded-full shrink-0 border flex items-center justify-center font-bold text-sm overflow-hidden ${
-                    user.banned ? "border-red-900 bg-red-950/20 text-red-400" : "border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg2)] text-[var(--text2)]"
+                    user.banned ? "border-red-900 bg-red-950/20 text-red-400" : "border-[0.5px] border-[var(--border)]  bg-[var(--bg2)] text-[var(--text2)]"
                   }`}>
                     {user.avatar_url ? (
                       <img src={user.avatar_url} alt={user.full_name} className="h-full w-full object-cover" />
@@ -250,7 +250,7 @@ export default function AdminUsers() {
 
                 {/* Expanded Details */}
                 {user.expanded && (
-                  <div className="px-6 pb-5 bg-[var(--bg2)] border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                  <div className="px-6 pb-5 bg-[var(--bg2)] border-t border-[0.5px] border-[var(--border)] ">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-4">
                       {/* Account Info */}
                       <div className="space-y-3">
@@ -311,7 +311,7 @@ export default function AdminUsers() {
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.verified_founder
-                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[var(--border)]  text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-emerald-950/20 border-emerald-900/40 text-emerald-400 hover:bg-emerald-950/40"
                             }`}
                           >
@@ -330,7 +330,7 @@ export default function AdminUsers() {
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.ventex_access
-                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[var(--border)]  text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-violet-950/20 border-violet-900/40 text-violet-400 hover:bg-violet-950/40"
                             }`}
                           >
@@ -343,7 +343,7 @@ export default function AdminUsers() {
                             disabled={isLoading}
                             className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
                               user.investor_premium
-                                ? "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)]"
+                                ? "bg-[var(--bg2)] border-[0.5px] border-[var(--border)]  text-[var(--text2)] hover:bg-[var(--bg2)]"
                                 : "bg-amber-950/20 border-amber-900/40 text-amber-400 hover:bg-amber-950/40"
                             }`}
                           >
@@ -365,7 +365,7 @@ export default function AdminUsers() {
                               className={`px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-40 capitalize ${
                                 user.role === r
                                   ? "bg-violet-600 border-violet-500 text-[var(--text)]"
-                                  : "bg-[var(--bg2)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)]"
+                                  : "bg-[var(--bg2)] border-[0.5px] border-[var(--border)]  text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)]"
                               }`}
                             >
                               {isLoading && user.role !== r ? (

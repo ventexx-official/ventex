@@ -140,14 +140,14 @@ export default function AdminOverview() {
 
   return (
     <div className="space-y-8">
-      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
+      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6">
         <div className="mb-5">
           <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">Feature Flags</h2>
           <p className="text-sm text-[var(--text2)] mt-1">Admin-controlled launches. Every new feature defaults to OFF until explicitly enabled.</p>
         </div>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           {FEATURE_FLAGS.map(([key, label]) => (
-            <label key={key} className="flex cursor-pointer items-center justify-between gap-4 rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-black/20 p-4">
+            <label key={key} className="flex cursor-pointer items-center justify-between gap-4 rounded-[24px] border border-[0.5px] border-[var(--border)]  bg-black/20 p-4">
               <span className="text-sm font-semibold text-[var(--text)]">{label}</span>
               <input type="checkbox" checked={!!flags[key]} onChange={(e) => updateFlag(key, e.target.checked)} className="h-4 w-4 accent-violet-500" />
             </label>
@@ -156,7 +156,7 @@ export default function AdminOverview() {
       </div>
 
       {/* Top Welcome Panel */}
-      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">System Summary</h2>
           <p className="text-sm text-[var(--text2)] mt-1">
@@ -165,7 +165,7 @@ export default function AdminOverview() {
         </div>
         <button
           onClick={fetchStats}
-          className="px-4 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="px-4 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           Refresh Overview
         </button>
@@ -174,7 +174,7 @@ export default function AdminOverview() {
       {/* Main Metric Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* GMV */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Gross Merchandise Value</p>
@@ -190,7 +190,7 @@ export default function AdminOverview() {
         </div>
 
         {/* Total Platform Fees */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Total Platform Commission</p>
@@ -206,7 +206,7 @@ export default function AdminOverview() {
         </div>
 
         {/* Revenue This Month */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Revenue This Month</p>
@@ -222,7 +222,7 @@ export default function AdminOverview() {
         </div>
 
         {/* Critical Flags/Bans */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 relative overflow-hidden group">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5 relative overflow-hidden group">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Banned Accounts</p>
@@ -241,8 +241,8 @@ export default function AdminOverview() {
       {/* Breakdowns Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* User Breakdown */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
-          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[var(--border)]  pb-4 mb-4">
             <Users className="text-violet-400 h-5 w-5" />
             <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">User Directory Accounts</h4>
           </div>
@@ -276,8 +276,8 @@ export default function AdminOverview() {
         </div>
 
         {/* Pitch Breakdown */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
-          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[var(--border)]  pb-4 mb-4">
             <FileText className="text-violet-400 h-5 w-5" />
             <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">Pitch Deck Queue</h4>
           </div>
@@ -319,8 +319,8 @@ export default function AdminOverview() {
         </div>
 
         {/* Product Breakdown */}
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6">
-          <div className="flex items-center gap-3 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4 mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6">
+          <div className="flex items-center gap-3 border-b border-[0.5px] border-[var(--border)]  pb-4 mb-4">
             <ShoppingBag className="text-violet-400 h-5 w-5" />
             <h4 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">Product Inventory</h4>
           </div>

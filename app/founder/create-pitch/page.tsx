@@ -417,19 +417,19 @@ export default function CreatePitch() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-8 h-8 border-4 border-[#222222]/20 border-t-[#222222] rounded-full animate-spin"></div>
-          <span className="text-sm font-bold text-[#222222] uppercase tracking-widest">Loading Pitch...</span>
+          <span className="text-sm font-bold text-[var(--text)] uppercase tracking-widest">Loading Pitch...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] pb-20">
+    <div className="min-h-screen bg-[var(--bg)] pb-20">
       {/* Top Bar */}
-      <div className="sticky top-0 z-50 bg-[#222222] text-white px-6 py-4 shadow-lg">
+      <div className="sticky top-0 z-50 bg-[var(--text)] text-[var(--text)] px-6 py-4 shadow-lg">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-8">
           <div className="flex items-center gap-4 min-w-[150px]">
             <span className="text-sm font-medium whitespace-nowrap">Profile {completion}%</span>
@@ -443,11 +443,11 @@ export default function CreatePitch() {
           </div>
 
           <div className="flex items-center gap-3">
-            {saving && <span className="text-[10px] text-white/50 animate-pulse uppercase tracking-widest font-bold">Auto-saving...</span>}
+            {saving && <span className="text-[10px] text-[var(--text)]/50 animate-pulse uppercase tracking-widest font-bold">Auto-saving...</span>}
             <button className="px-5 py-2 text-sm font-bold bg-[var(--card-bg)]/10 hover:bg-[var(--card-bg)]/20 rounded-lg transition-colors">
               Preview profile
             </button>
-            <button className="px-5 py-2 text-sm font-bold bg-[var(--card-bg)] text-[#222222] rounded-lg hover:bg-gray-200 transition-colors">
+            <button className="px-5 py-2 text-sm font-bold bg-[var(--card-bg)] text-[var(--text)] rounded-lg hover:bg-gray-200 transition-colors">
               Checklist
             </button>
           </div>
@@ -469,8 +469,8 @@ export default function CreatePitch() {
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
                 activeTab === tab 
-                ? 'bg-[#222222] text-white' 
-                : 'bg-[var(--card-bg)] text-[#888888] border-[0.5px] border-[#e5e5e5] hover:border-[#222222] hover:text-[#222222]'
+                ? 'bg-[var(--text)] text-[var(--text)]' 
+                : 'bg-[var(--card-bg)] text-[var(--text2)] border-[0.5px] border-[var(--border)] hover:border-[#222222] hover:text-[var(--text)]'
               }`}
             >
               {tab}
@@ -480,25 +480,25 @@ export default function CreatePitch() {
 
         {activeTab === 'Overview' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Company Overview</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Company Overview</h2>
               <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
                 <div className="flex flex-col gap-3">
-                  <label className="text-sm font-bold text-[#222222]">Logo</label>
+                  <label className="text-sm font-bold text-[var(--text)]">Logo</label>
                   <div 
-                    className="w-[200px] h-[200px] bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
+                    className="w-[200px] h-[200px] bg-[var(--bg)] rounded-xl border-2 border-dashed border-[var(--border)] flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
                     onClick={() => document.getElementById('logo-input')?.click()}
                   >
                     {logoPreview ? (
                       <img src={logoPreview} alt="Logo preview" className="w-full h-full object-cover" />
                     ) : (
                       <>
-                        <Upload className="w-8 h-8 text-[#888888] mb-2" />
-                        <span className="text-[10px] text-[#888888] font-bold uppercase tracking-wider">Drag & drop</span>
+                        <Upload className="w-8 h-8 text-[var(--text2)] mb-2" />
+                        <span className="text-[10px] text-[var(--text2)] font-bold uppercase tracking-wider">Drag & drop</span>
                       </>
                     )}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">Change Logo</span>
+                      <span className="text-[var(--text)] text-xs font-bold">Change Logo</span>
                     </div>
                   </div>
                   <input id="logo-input" type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
@@ -506,44 +506,44 @@ export default function CreatePitch() {
 
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-bold text-[#222222] mb-2">Startup title</label>
+                    <label className="block text-sm font-bold text-[var(--text)] mb-2">Startup title</label>
                     <input 
                       type="text"
                       placeholder="e.g. Ventex"
-                      className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                      className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                       value={formData.title}
                       onChange={(e) => handleChange('title', e.target.value)}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-bold text-[#222222] mb-2">Short description</label>
+                    <label className="block text-sm font-bold text-[var(--text)] mb-2">Short description</label>
                     <div className="relative">
                       <textarea 
                         maxLength={200}
                         rows={3}
                         placeholder="What problem are you solving? (Max 200 chars)"
-                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none"
                         value={formData.short_description}
                         onChange={(e) => handleChange('short_description', e.target.value)}
                       />
-                      <span className="absolute bottom-3 right-4 text-[10px] font-bold text-[#888888]">
+                      <span className="absolute bottom-3 right-4 text-[10px] font-bold text-[var(--text2)]">
                         {formData.short_description.length}/200
                       </span>
                     </div>
-                    <p className="mt-2 text-xs text-[#888888] italic">
+                    <p className="mt-2 text-xs text-[var(--text2)] italic">
                       Note: Our AI will also auto-generate a separate briefing when you submit.
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-bold text-[#222222] mb-2">Website URL</label>
+                    <label className="block text-sm font-bold text-[var(--text)] mb-2">Website URL</label>
                     <div className="relative">
-                      <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
+                      <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text2)]" />
                       <input 
                         type="url"
                         placeholder="https://example.com"
-                        className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                        className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                         value={formData.website_url}
                         onChange={(e) => handleChange('website_url', e.target.value)}
                       />
@@ -552,9 +552,9 @@ export default function CreatePitch() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-[#222222] mb-2">Country</label>
+                      <label className="block text-sm font-bold text-[var(--text)] mb-2">Country</label>
                       <select 
-                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                         value={formData.country}
                         onChange={(e) => handleChange('country', e.target.value)}
                       >
@@ -566,21 +566,21 @@ export default function CreatePitch() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-[#222222] mb-2">State</label>
+                      <label className="block text-sm font-bold text-[var(--text)] mb-2">State</label>
                       <input
                         type="text"
                         placeholder="e.g. Kerala"
-                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                         value={formData.state}
                         onChange={(e) => handleChange('state', e.target.value)}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-[#222222] mb-2">City</label>
+                      <label className="block text-sm font-bold text-[var(--text)] mb-2">City</label>
                       <input 
                         type="text"
                         placeholder="e.g. San Francisco"
-                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                         value={formData.city}
                         onChange={(e) => handleChange('city', e.target.value)}
                       />
@@ -589,12 +589,12 @@ export default function CreatePitch() {
                 </div>
               </div>
 
-              <div className="mt-10 pt-10 border-t-[0.5px] border-[#e5e5e5]">
+              <div className="mt-10 pt-10 border-t-[0.5px] border-[var(--border)]">
                 <div className="flex items-center justify-between mb-4">
-                  <label className="text-sm font-bold text-[#222222]">Sectors (Select up to 5)</label>
+                  <label className="text-sm font-bold text-[var(--text)]">Sectors (Select up to 5)</label>
                   <button 
                     onClick={() => setShowSectorModal(true)}
-                    className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"
+                    className="flex items-center gap-2 text-sm font-bold text-[var(--text)] hover:opacity-70"
                   >
                     <Plus className="w-4 h-4" /> Add sector
                   </button>
@@ -604,23 +604,23 @@ export default function CreatePitch() {
                   {formData.tags.map(sector => (
                     <span 
                       key={sector} 
-                      className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#222222] text-white text-xs font-bold rounded-full"
+                      className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--text)] text-[var(--text)] text-xs font-bold rounded-full"
                     >
                       {sector}
                       <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSector(sector)} />
                     </span>
                   ))}
                   {formData.tags.length === 0 && (
-                    <span className="text-sm text-[#888888]">No sectors selected yet.</span>
+                    <span className="text-sm text-[var(--text2)]">No sectors selected yet.</span>
                   )}
                 </div>
 
                 <div className="mt-6">
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Propose a custom sector</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Propose a custom sector</label>
                   <input 
                     type="text"
                     placeholder="Enter custom sector name..."
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.custom_industry}
                     onChange={(e) => handleChange('custom_industry', e.target.value)}
                   />
@@ -628,11 +628,11 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Details</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Business type</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Business type</label>
                   <div className="grid grid-cols-2 gap-2">
                     {['B2B', 'B2C', 'B2B2C', 'Marketplace'].map(type => (
                       <button
@@ -640,8 +640,8 @@ export default function CreatePitch() {
                         onClick={() => handleChange('business_type', type)}
                         className={`py-3 rounded-xl border-[0.5px] text-xs font-bold transition-all ${
                           formData.business_type === type 
-                          ? 'bg-[#222222] text-white border-[#222222]' 
-                          : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
+                          ? 'bg-[var(--text)] text-[var(--text)] border-[#222222]' 
+                          : 'bg-[var(--card-bg)] text-[var(--text)] border-[var(--border)] hover:border-[#222222]'
                         }`}
                       >
                         {type}
@@ -651,7 +651,7 @@ export default function CreatePitch() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Product type</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Product type</label>
                   <div className="grid grid-cols-2 gap-2">
                     {['SaaS', 'App', 'Hardware', 'Service', 'Other'].map(type => (
                       <button
@@ -659,8 +659,8 @@ export default function CreatePitch() {
                         onClick={() => handleChange('product_type', type)}
                         className={`py-3 rounded-xl border-[0.5px] text-xs font-bold transition-all ${
                           formData.product_type === type 
-                          ? 'bg-[#222222] text-white border-[#222222]' 
-                          : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
+                          ? 'bg-[var(--text)] text-[var(--text)] border-[#222222]' 
+                          : 'bg-[var(--card-bg)] text-[var(--text)] border-[var(--border)] hover:border-[#222222]'
                         }`}
                       >
                         {type}
@@ -670,9 +670,9 @@ export default function CreatePitch() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Company stage</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Company stage</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.company_stage}
                     onChange={(e) => handleChange('company_stage', e.target.value)}
                   >
@@ -684,33 +684,33 @@ export default function CreatePitch() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Annual revenue (USD)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Annual revenue (USD)</label>
                   <input 
                     type="number"
                     placeholder="e.g. 500000"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.annual_revenue}
                     onChange={(e) => handleChange('annual_revenue', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">MRR (USD)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">MRR (USD)</label>
                   <input 
                     type="number"
                     placeholder="e.g. 40000"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.mrr}
                     onChange={(e) => handleChange('mrr', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Employees count</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Employees count</label>
                   <input 
                     type="number"
                     placeholder="e.g. 10"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.employees_count}
                     onChange={(e) => handleChange('employees_count', e.target.value)}
                   />
@@ -718,8 +718,8 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Social Media Links</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Social Media Links</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
                   { name: 'LinkedIn', icon: Globe, field: 'linkedin_url' },
@@ -728,13 +728,13 @@ export default function CreatePitch() {
                   { name: 'Instagram', icon: Globe, field: 'instagram_url' }
                 ].map(social => (
                   <div key={social.name}>
-                    <label className="block text-sm font-bold text-[#222222] mb-2">{social.name}</label>
+                    <label className="block text-sm font-bold text-[var(--text)] mb-2">{social.name}</label>
                     <div className="relative">
-                      <social.icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
+                      <social.icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text2)]" />
                       <input 
                         type="url"
                         placeholder={`${social.name} profile URL`}
-                        className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                        className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                         value={(formData[social.field as keyof typeof formData] as string) || ''}
                         onChange={(e) => handleChange(social.field, e.target.value)}
                       />
@@ -744,13 +744,13 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Funding Rounds</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Funding Rounds</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Round type</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Round type</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.round_type}
                     onChange={(e) => handleChange('round_type', e.target.value)}
                   >
@@ -762,43 +762,43 @@ export default function CreatePitch() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Amount seeking (USD)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Amount seeking (USD)</label>
                   <input 
                     type="number"
                     placeholder="e.g. 1000000"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.amount_seeking}
                     onChange={(e) => handleChange('amount_seeking', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Equity %</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Equity %</label>
                   <input 
                     type="number"
                     step="0.01"
                     placeholder="e.g. 10"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.equity_pct}
                     onChange={(e) => handleChange('equity_pct', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Already committed (USD)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Already committed (USD)</label>
                   <input 
                     type="number"
                     placeholder="e.g. 250000"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.already_committed}
                     onChange={(e) => handleChange('already_committed', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Security type</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Security type</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.security_type}
                     onChange={(e) => handleChange('security_type', e.target.value)}
                   >
@@ -810,44 +810,44 @@ export default function CreatePitch() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Committed investors</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Committed investors</label>
                   <input 
                     type="text"
                     placeholder="e.g. Sequoia, Accel"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.committed_investors}
                     onChange={(e) => handleChange('committed_investors', e.target.value)}
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Use of funds</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Use of funds</label>
                   <textarea 
                     rows={3}
                     placeholder="How will you spend the capital?"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none"
                     value={formData.use_of_funds}
                     onChange={(e) => handleChange('use_of_funds', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-bold text-[#222222] mb-2 cursor-pointer">
+                  <label className="flex items-center gap-2 text-sm font-bold text-[var(--text)] mb-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.is_raising}
                       onChange={(e) => handleChange('is_raising', e.target.checked)}
-                      className="rounded border-[#e5e5e5]"
+                      className="rounded border-[var(--border)]"
                     />
                     Actively raising
                   </label>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Round closing date (optional)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Round closing date (optional)</label>
                   <input
                     type="date"
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                     value={formData.round_closes_at}
                     onChange={(e) => handleChange('round_closes_at', e.target.value)}
                   />
@@ -855,13 +855,13 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm mb-12">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Founding Year</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm mb-12">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Founding Year</h2>
               <div className="max-w-xs">
                 <input 
                   type="number"
                   placeholder="e.g. 2024"
-                  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+                  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
                   value={formData.founding_year}
                   onChange={(e) => handleChange('founding_year', e.target.value)}
                 />
@@ -872,23 +872,23 @@ export default function CreatePitch() {
 
         {activeTab === 'Pitch Deck' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-2">Pitch Deck</h2>
-              <p className="text-sm text-[#888888] mb-6 italic">Visible to Premium Investors only</p>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-2">Pitch Deck</h2>
+              <p className="text-sm text-[var(--text2)] mb-6 italic">Visible to Premium Investors only</p>
               <div 
-                className="w-full h-48 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
+                className="w-full h-48 bg-[var(--bg)] rounded-xl border-2 border-dashed border-[var(--border)] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
                 onClick={() => document.getElementById('deck-input')?.click()}
               >
                 {formData.pitch_deck_url ? (
                   <div className="flex flex-col items-center">
-                    <FileText className="w-10 h-10 text-[#222222] mb-2" />
-                    <span className="text-sm font-bold text-[#222222]">Pitch Deck Uploaded</span>
-                    <span className="text-xs text-[#888888] mt-1">Click to replace PDF</span>
+                    <FileText className="w-10 h-10 text-[var(--text)] mb-2" />
+                    <span className="text-sm font-bold text-[var(--text)]">Pitch Deck Uploaded</span>
+                    <span className="text-xs text-[var(--text2)] mt-1">Click to replace PDF</span>
                   </div>
                 ) : (
                   <>
-                    <Upload className="w-8 h-8 text-[#888888] mb-2" />
-                    <span className="text-sm font-bold text-[#222222]">Upload Pitch Deck (PDF)</span>
+                    <Upload className="w-8 h-8 text-[var(--text2)] mb-2" />
+                    <span className="text-sm font-bold text-[var(--text)]">Upload Pitch Deck (PDF)</span>
                   </>
                 )}
                 <input id="deck-input" type="file" className="hidden" accept=".pdf" onChange={(e) => {
@@ -910,10 +910,10 @@ export default function CreatePitch() {
               </div>
             </section>
  
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#222222]">Additional Documents</h2>
-                <button onClick={() => document.getElementById('doc-input')?.click()} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Upload other document</button>
+                <h2 className="text-xl font-bold text-[var(--text)]">Additional Documents</h2>
+                <button onClick={() => document.getElementById('doc-input')?.click()} className="flex items-center gap-2 text-sm font-bold text-[var(--text)] hover:opacity-70"><Plus className="w-4 h-4" /> Upload other document</button>
                 <input id="doc-input" type="file" className="hidden" onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file && pitchId) {
@@ -930,10 +930,10 @@ export default function CreatePitch() {
               </div>
               <div className="space-y-3">
                 {formData.additional_docs.map((doc: any, idx: number) => (
-                  <div key={idx} className="flex items-center justify-between p-4 bg-[#F2F2F0] rounded-xl">
+                  <div key={idx} className="flex items-center justify-between p-4 bg-[var(--bg)] rounded-xl">
                     <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-[#888888]" />
-                      <span className="text-sm font-medium text-[#222222]">{doc.name}</span>
+                      <FileText className="w-5 h-5 text-[var(--text2)]" />
+                      <span className="text-sm font-medium text-[var(--text)]">{doc.name}</span>
                     </div>
                     <button onClick={() => {
                       const newDocs = formData.additional_docs.filter((_: any, i: number) => i !== idx);
@@ -941,7 +941,7 @@ export default function CreatePitch() {
                     }} className="p-2 hover:text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 ))}
-                {formData.additional_docs.length === 0 && <p className="text-sm text-[#888888]">No additional documents yet.</p>}
+                {formData.additional_docs.length === 0 && <p className="text-sm text-[var(--text2)]">No additional documents yet.</p>}
               </div>
             </section>
           </div>
@@ -949,27 +949,27 @@ export default function CreatePitch() {
  
         {activeTab === 'Video' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Pitch Video</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Pitch Video</h2>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-bold text-[#222222] mb-2">Video URL (YouTube/Loom)</label>
+                  <label className="block text-sm font-bold text-[var(--text)] mb-2">Video URL (YouTube/Loom)</label>
                   <div className="relative">
-                    <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
-                    <input type="url" placeholder="https://youtube.com/..." className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all" value={formData.video_url} onChange={(e) => handleChange('video_url', e.target.value)} />
+                    <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text2)]" />
+                    <input type="url" placeholder="https://youtube.com/..." className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all" value={formData.video_url} onChange={(e) => handleChange('video_url', e.target.value)} />
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex-grow border-t-[0.5px] border-[#e5e5e5]"></div>
-                  <span className="text-xs font-bold text-[#888888] uppercase tracking-widest">or upload MP4</span>
-                  <div className="flex-grow border-t-[0.5px] border-[#e5e5e5]"></div>
+                  <div className="flex-grow border-t-[0.5px] border-[var(--border)]"></div>
+                  <span className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest">or upload MP4</span>
+                  <div className="flex-grow border-t-[0.5px] border-[var(--border)]"></div>
                 </div>
                 <div 
-                  className="w-full h-32 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
+                  className="w-full h-32 bg-[var(--bg)] rounded-xl border-2 border-dashed border-[var(--border)] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
                   onClick={() => document.getElementById('video-input')?.click()}
                 >
-                  <Upload className="w-6 h-6 text-[#888888] mb-2" />
-                  <span className="text-sm font-bold text-[#222222]">Upload MP4 (Max 500MB)</span>
+                  <Upload className="w-6 h-6 text-[var(--text2)] mb-2" />
+                  <span className="text-sm font-bold text-[var(--text)]">Upload MP4 (Max 500MB)</span>
                   <input id="video-input" type="file" className="hidden" accept="video/mp4" onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file && pitchId) {
@@ -986,11 +986,11 @@ export default function CreatePitch() {
                 </div>
               </div>
             </section>
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
-              <h2 className="text-xl font-bold text-[#222222] mb-6">Product Demo Video (Optional)</h2>
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
+              <h2 className="text-xl font-bold text-[var(--text)] mb-6">Product Demo Video (Optional)</h2>
               <div className="relative">
-                <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
-                <input type="url" placeholder="Link to product walkthrough" className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all" value={formData.demo_video_url} onChange={(e) => handleChange('demo_video_url', e.target.value)} />
+                <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text2)]" />
+                <input type="url" placeholder="Link to product walkthrough" className="w-full pl-11 pr-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all" value={formData.demo_video_url} onChange={(e) => handleChange('demo_video_url', e.target.value)} />
               </div>
             </section>
           </div>
@@ -998,20 +998,20 @@ export default function CreatePitch() {
  
         {activeTab === 'Team' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#222222]">Core Team</h2>
-                <button onClick={() => { setDrawerType('member'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Add member</button>
+                <h2 className="text-xl font-bold text-[var(--text)]">Core Team</h2>
+                <button onClick={() => { setDrawerType('member'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[var(--text)] hover:opacity-70"><Plus className="w-4 h-4" /> Add member</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {formData.team_data.filter((m: any) => m.type === 'member').map((member: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 bg-[#F2F2F0] rounded-2xl relative group">
+                  <div key={idx} className="flex items-center gap-4 p-4 bg-[var(--bg)] rounded-2xl relative group">
                     <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
-                      {member.photo_url ? <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" /> : <Users className="w-full h-full p-4 text-[#888888]" />}
+                      {member.photo_url ? <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" /> : <Users className="w-full h-full p-4 text-[var(--text2)]" />}
                     </div>
                     <div>
-                      <h4 className="font-bold text-[#222222]">{member.name}</h4>
-                      <p className="text-xs text-[#888888] font-medium">{member.role}</p>
+                      <h4 className="font-bold text-[var(--text)]">{member.name}</h4>
+                      <p className="text-xs text-[var(--text2)] font-medium">{member.role}</p>
                     </div>
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => { setDrawerType('member'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
@@ -1020,27 +1020,27 @@ export default function CreatePitch() {
                   </div>
                 ))}
                 {formData.team_data.filter((m: any) => m.type === 'member').length === 0 && (
-                  <div className="md:col-span-2 py-12 flex flex-col items-center border-2 border-dashed border-[#e5e5e5] rounded-2xl">
-                    <Users className="w-10 h-10 text-[#888888] mb-3" />
-                    <p className="text-sm text-[#888888] font-bold">No team members added yet.</p>
+                  <div className="md:col-span-2 py-12 flex flex-col items-center border-2 border-dashed border-[var(--border)] rounded-2xl">
+                    <Users className="w-10 h-10 text-[var(--text2)] mb-3" />
+                    <p className="text-sm text-[var(--text2)] font-bold">No team members added yet.</p>
                   </div>
                 )}
               </div>
             </section>
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-[#222222]">Advisors</h2>
-                <button onClick={() => { setDrawerType('advisor'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Add advisor</button>
+                <h2 className="text-xl font-bold text-[var(--text)]">Advisors</h2>
+                <button onClick={() => { setDrawerType('advisor'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[var(--text)] hover:opacity-70"><Plus className="w-4 h-4" /> Add advisor</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {formData.team_data.filter((m: any) => m.type === 'advisor').map((member: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-4 p-4 bg-[#F2F2F0] rounded-2xl relative group">
+                  <div key={idx} className="flex items-center gap-4 p-4 bg-[var(--bg)] rounded-2xl relative group">
                     <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
-                      {member.photo_url ? <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" /> : <Users className="w-full h-full p-3 text-[#888888]" />}
+                      {member.photo_url ? <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" /> : <Users className="w-full h-full p-3 text-[var(--text2)]" />}
                     </div>
                     <div>
-                      <h4 className="font-bold text-[#222222] text-sm">{member.name}</h4>
-                      <p className="text-[10px] text-[#888888] font-bold uppercase tracking-wider">{member.role}</p>
+                      <h4 className="font-bold text-[var(--text)] text-sm">{member.name}</h4>
+                      <p className="text-[10px] text-[var(--text2)] font-bold uppercase tracking-wider">{member.role}</p>
                     </div>
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => { setDrawerType('advisor'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
@@ -1048,7 +1048,7 @@ export default function CreatePitch() {
                     </div>
                   </div>
                 ))}
-                {formData.team_data.filter((m: any) => m.type === 'advisor').length === 0 && <p className="text-sm text-[#888888]">No advisors listed yet.</p>}
+                {formData.team_data.filter((m: any) => m.type === 'advisor').length === 0 && <p className="text-sm text-[var(--text2)]">No advisors listed yet.</p>}
               </div>
             </section>
           </div>
@@ -1057,21 +1057,21 @@ export default function CreatePitch() {
         {activeTab === 'Q&A' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-emerald-50 border-[0.5px] border-emerald-200 rounded-xl p-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">!</div>
+              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-[var(--text)] font-bold text-sm">!</div>
               <p className="text-sm text-emerald-800 font-medium">Investors love this section  -  we recommend filling it.</p>
             </div>
-            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
               <div className="space-y-10">
                 {QUESTIONS.map((q: any) => (
                   <div key={q.id}>
-                    <label className="text-sm font-bold text-[#222222] flex items-center gap-2 mb-3">
+                    <label className="text-sm font-bold text-[var(--text)] flex items-center gap-2 mb-3">
                       {q.text} {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase"><Lock className="w-2.5 h-2.5" /> Premium</span>}
                     </label>
-                    <div className="border-[0.5px] border-[#e5e5e5] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
-                      <div className="flex items-center gap-2 px-3 py-2 bg-[var(--bg2)] border-b-[0.5px] border-[#e5e5e5]">
-                        {['B', 'I', 'U', 'Â¢', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#888888] hover:bg-[var(--card-bg)] rounded-md">{tool}</button>)}
+                    <div className="border-[0.5px] border-[var(--border)] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
+                      <div className="flex items-center gap-2 px-3 py-2 bg-[var(--bg2)] border-b-[0.5px] border-[var(--border)]">
+                        {['B', 'I', 'U', 'Â¢', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[var(--text2)] hover:bg-[var(--card-bg)] rounded-md">{tool}</button>)}
                         <div className="flex-grow"></div>
-                        <button className="p-1.5 hover:bg-[var(--card-bg)] rounded-md"><Globe className="w-3.5 h-3.5 text-[#888888]" /></button>
+                        <button className="p-1.5 hover:bg-[var(--card-bg)] rounded-md"><Globe className="w-3.5 h-3.5 text-[var(--text2)]" /></button>
                       </div>
                       <textarea rows={4} className="w-full px-4 py-3 text-sm focus:outline-none resize-none" placeholder="Write your answer..." value={formData.qa_data[q.id] || ''} onChange={(e) => handleChange('qa_data', { ...formData.qa_data, [q.id]: e.target.value })} />
                     </div>
@@ -1080,26 +1080,26 @@ export default function CreatePitch() {
                 {formData.custom_qa.map((qa: any, idx: number) => (
                   <div key={idx} className="relative group">
                     <div className="flex items-center justify-between mb-3">
-                      <input type="text" className="text-sm font-bold text-[#222222] bg-transparent border-none focus:outline-none w-full" placeholder="Custom Question Title" value={qa.question} onChange={(e) => {
+                      <input type="text" className="text-sm font-bold text-[var(--text)] bg-transparent border-none focus:outline-none w-full" placeholder="Custom Question Title" value={qa.question} onChange={(e) => {
                         const newCustom = [...formData.custom_qa]; newCustom[idx].question = e.target.value; handleChange('custom_qa', newCustom);
                       }} />
                       <button onClick={() => handleChange('custom_qa', formData.custom_qa.filter((_: any, i: number) => i !== idx))} className="p-2 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
                     </div>
-                    <div className="border-[0.5px] border-[#e5e5e5] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
+                    <div className="border-[0.5px] border-[var(--border)] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
                       <textarea rows={4} className="w-full px-4 py-3 text-sm focus:outline-none resize-none" placeholder="Write your answer..." value={qa.answer} onChange={(e) => {
                         const newCustom = [...formData.custom_qa]; newCustom[idx].answer = e.target.value; handleChange('custom_qa', newCustom);
                       }} />
                     </div>
                   </div>
                 ))}
-                <button onClick={() => handleChange('custom_qa', [...formData.custom_qa, { question: '', answer: '' }])} className="w-full py-4 border-2 border-dashed border-[#e5e5e5] rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-[#888888] hover:border-[#222222] hover:text-[#222222] transition-all"><Plus className="w-4 h-4" /> Add section</button>
+                <button onClick={() => handleChange('custom_qa', [...formData.custom_qa, { question: '', answer: '' }])} className="w-full py-4 border-2 border-dashed border-[var(--border)] rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-[var(--text2)] hover:border-[#222222] hover:text-[var(--text)] transition-all"><Plus className="w-4 h-4" /> Add section</button>
               </div>
             </section>
           </div>
         )}
  
         <div className="mt-12 pb-12">
-          <button onClick={handleSubmit} disabled={submitting} className="w-full py-5 bg-[#222222] text-white rounded-2xl font-black text-lg hover:bg-black transition-all flex items-center justify-center gap-3 disabled:opacity-50">
+          <button onClick={handleSubmit} disabled={submitting} className="w-full py-5 bg-[var(--text)] text-[var(--text)] rounded-2xl font-black text-lg hover:bg-black transition-all flex items-center justify-center gap-3 disabled:opacity-50">
             {submitting ? <><div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div> Submitting...</> : <>Submit Pitch <ArrowRight className="w-5 h-5" /></>}
           </button>
         </div>
@@ -1134,18 +1134,18 @@ function SectorModal({ formData, toggleSector, onClose }: any) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="bg-[var(--card-bg)] rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl">
-        <div className="px-8 py-6 border-b-[0.5px] border-[#e5e5e5] flex items-center justify-between">
-          <div><h3 className="text-xl font-bold text-[#222222]">Select Sectors</h3><p className="text-xs text-[#888888] font-bold uppercase tracking-wider mt-1">{formData.tags.length}/5 selected</p></div>
-          <button onClick={onClose} className="p-2 hover:bg-[#F2F2F0] rounded-full transition-colors"><X className="w-6 h-6" /></button>
+        <div className="px-8 py-6 border-b-[0.5px] border-[var(--border)] flex items-center justify-between">
+          <div><h3 className="text-xl font-bold text-[var(--text)]">Select Sectors</h3><p className="text-xs text-[var(--text2)] font-bold uppercase tracking-wider mt-1">{formData.tags.length}/5 selected</p></div>
+          <button onClick={onClose} className="p-2 hover:bg-[var(--bg)] rounded-full transition-colors"><X className="w-6 h-6" /></button>
         </div>
         <div className="flex-grow overflow-y-auto p-8 grid grid-cols-2 md:grid-cols-3 gap-3">
           {SECTORS.map(sector => (
-            <button key={sector} onClick={() => toggleSector(sector)} disabled={!formData.tags.includes(sector) && formData.tags.length >= 5} className={`flex items-center justify-between px-4 py-2.5 rounded-xl border-[0.5px] text-xs font-bold transition-all ${formData.tags.includes(sector) ? 'bg-[#222222] text-white border-[#222222]' : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222] disabled:opacity-30'}`}>
+            <button key={sector} onClick={() => toggleSector(sector)} disabled={!formData.tags.includes(sector) && formData.tags.length >= 5} className={`flex items-center justify-between px-4 py-2.5 rounded-xl border-[0.5px] text-xs font-bold transition-all ${formData.tags.includes(sector) ? 'bg-[var(--text)] text-[var(--text)] border-[#222222]' : 'bg-[var(--card-bg)] text-[var(--text)] border-[var(--border)] hover:border-[#222222] disabled:opacity-30'}`}>
               {sector} {formData.tags.includes(sector) && <CheckCircle2 className="w-3 h-3" />}
             </button>
           ))}
         </div>
-        <div className="px-8 py-6 border-t-[0.5px] border-[#e5e5e5] flex justify-end"><button onClick={onClose} className="px-8 py-3 bg-[#222222] text-white rounded-xl text-sm font-bold hover:bg-black transition-colors">Done</button></div>
+        <div className="px-8 py-6 border-t-[0.5px] border-[var(--border)] flex justify-end"><button onClick={onClose} className="px-8 py-3 bg-[var(--text)] text-[var(--text)] rounded-xl text-sm font-bold hover:bg-black transition-colors">Done</button></div>
       </div>
     </div>
   );
@@ -1157,21 +1157,21 @@ function MemberDrawer({ member, type, onClose, onSave }: any) {
     <div className="fixed inset-0 z-[100] flex justify-end bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-300">
       <div className="w-full max-w-md bg-[var(--card-bg)] h-full shadow-2xl animate-in slide-in-from-right duration-500 overflow-y-auto p-8">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xl font-bold text-[#222222]">{member ? 'Edit' : 'Add'} {type === 'member' ? 'Team Member' : 'Advisor'}</h3>
+          <h3 className="text-xl font-bold text-[var(--text)]">{member ? 'Edit' : 'Add'} {type === 'member' ? 'Team Member' : 'Advisor'}</h3>
           <button onClick={onClose} className="p-2 hover:bg-[var(--bg3)] rounded-full"><X className="w-6 h-6" /></button>
         </div>
         <div className="space-y-6">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-24 h-24 rounded-full bg-[var(--bg3)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden mb-2">
-              {data.photo_url ? <img src={data.photo_url} className="w-full h-full object-cover" /> : <Users className="w-8 h-8 text-[#888888]" />}
+            <div className="w-24 h-24 rounded-full bg-[var(--bg3)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden mb-2">
+              {data.photo_url ? <img src={data.photo_url} className="w-full h-full object-cover" /> : <Users className="w-8 h-8 text-[var(--text2)]" />}
             </div>
-            <button className="text-[10px] font-black uppercase tracking-widest text-[#888888] hover:text-[#222222]">Upload photo</button>
+            <button className="text-[10px] font-black uppercase tracking-widest text-[var(--text2)] hover:text-[var(--text)]">Upload photo</button>
           </div>
-          <div><label className="block text-sm font-bold text-[#222222] mb-2">Full Name</label><input type="text" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:ring-1 focus:ring-black outline-none" value={data.name} onChange={e => setData({...data, name: e.target.value})} /></div>
-          <div><label className="block text-sm font-bold text-[#222222] mb-2">Role / Title</label><input type="text" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:ring-1 focus:ring-black outline-none" value={data.role} onChange={e => setData({...data, role: e.target.value})} /></div>
-          <div><label className="block text-sm font-bold text-[#222222] mb-2">LinkedIn URL</label><input type="url" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:ring-1 focus:ring-black outline-none" value={data.linkedin} onChange={e => setData({...data, linkedin: e.target.value})} /></div>
-          <div><label className="block text-sm font-bold text-[#222222] mb-2">Background</label><textarea rows={4} className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] focus:ring-1 focus:ring-black outline-none resize-none" value={data.bio} onChange={e => setData({...data, bio: e.target.value})} /></div>
-          <button onClick={() => onSave(data)} className="w-full py-4 bg-[#222222] text-white rounded-xl font-bold hover:bg-black transition-all">Save {type === 'member' ? 'Member' : 'Advisor'}</button>
+          <div><label className="block text-sm font-bold text-[var(--text)] mb-2">Full Name</label><input type="text" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:ring-1 focus:ring-black outline-none" value={data.name} onChange={e => setData({...data, name: e.target.value})} /></div>
+          <div><label className="block text-sm font-bold text-[var(--text)] mb-2">Role / Title</label><input type="text" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:ring-1 focus:ring-black outline-none" value={data.role} onChange={e => setData({...data, role: e.target.value})} /></div>
+          <div><label className="block text-sm font-bold text-[var(--text)] mb-2">LinkedIn URL</label><input type="url" className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:ring-1 focus:ring-black outline-none" value={data.linkedin} onChange={e => setData({...data, linkedin: e.target.value})} /></div>
+          <div><label className="block text-sm font-bold text-[var(--text)] mb-2">Background</label><textarea rows={4} className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:ring-1 focus:ring-black outline-none resize-none" value={data.bio} onChange={e => setData({...data, bio: e.target.value})} /></div>
+          <button onClick={() => onSave(data)} className="w-full py-4 bg-[var(--text)] text-[var(--text)] rounded-xl font-bold hover:bg-black transition-all">Save {type === 'member' ? 'Member' : 'Advisor'}</button>
         </div>
       </div>
     </div>

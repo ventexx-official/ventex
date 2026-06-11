@@ -118,7 +118,7 @@ export default function AdminIndustries() {
         </div>
         <button
           onClick={fetchData}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -142,13 +142,13 @@ export default function AdminIndustries() {
                   placeholder="Search sectors..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
                 />
               </div>
             </div>
 
             {/* Add New Sector Form */}
-            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5">
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5">
               <h3 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider font-mono mb-3 flex items-center gap-2">
                 <Plus size={14} className="text-violet-400" /> Add Sector Manually
               </h3>
@@ -159,7 +159,7 @@ export default function AdminIndustries() {
                   value={newSectorName}
                   onChange={(e) => setNewSectorName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addSector(newSectorName)}
-                  className="flex-1 px-4 py-2.5 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-neutral-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+                  className="flex-1 px-4 py-2.5 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-neutral-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
                 />
                 <button
                   onClick={() => addSector(newSectorName)}
@@ -173,8 +173,8 @@ export default function AdminIndustries() {
             </div>
 
             {/* Official List */}
-            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden">
-              <div className="px-6 py-4 border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-between">
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden">
+              <div className="px-6 py-4 border-b border-[0.5px] border-[var(--border)]  flex items-center justify-between">
                 <h3 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider font-mono flex items-center gap-2">
                   <Tag size={14} className="text-violet-400" /> Official Sectors
                 </h3>
@@ -261,7 +261,7 @@ export default function AdminIndustries() {
             </div>
 
             {/* Summary card */}
-            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-5 space-y-3">
+            <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-5 space-y-3">
               <h3 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono">Quick Stats</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">

@@ -59,23 +59,23 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center p-4">
-      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+    <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center p-4">
+      <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-black italic tracking-tighter text-[#222222] dark:text-white uppercase">
+          <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)]  uppercase">
             Ventex
           </Link>
-          <h1 className="text-xl font-bold mt-4 text-[#222222] dark:text-white">Create an account</h1>
-          <p className="text-sm text-[#888888] mt-2">Join Ventex to discover, fund, or sell startups.</p>
-          <div className="mt-4 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] p-3 text-left text-xs leading-5 text-[#666666] dark:border-[#333333] dark:bg-[#222222] dark:text-gray-300">
-            <strong className="text-[#222222] dark:text-white">Investor verification:</strong> Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
+          <h1 className="text-xl font-bold mt-4 text-[var(--text)] ">Create an account</h1>
+          <p className="text-sm text-[var(--text2)] mt-2">Join Ventex to discover, fund, or sell startups.</p>
+          <div className="mt-4 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-3 text-left text-xs leading-5 text-[#666666]  dark:bg-[var(--text)] dark:text-gray-300">
+            <strong className="text-[var(--text)] ">Investor verification:</strong> Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
           </div>
         </div>
 
         {success ? (
-          <div className="bg-[#F2F2F0] dark:bg-[#333333] p-4 rounded-xl text-center">
-            <h3 className="font-bold text-[#222222] dark:text-white mb-2">Check your email</h3>
-            <p className="text-sm text-[#888888]">We've sent a verification link to {email}. Please verify your account to continue.</p>
+          <div className="bg-[var(--bg)] dark:bg-[#333333] p-4 rounded-xl text-center">
+            <h3 className="font-bold text-[var(--text)]  mb-2">Check your email</h3>
+            <p className="text-sm text-[var(--text2)]">We've sent a verification link to {email}. Please verify your account to continue.</p>
           </div>
         ) : (
           <form onSubmit={handleSignup} className="space-y-4">
@@ -86,40 +86,40 @@ export default function Signup() {
             )}
             
             <div>
-              <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Full Name</label>
+              <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Full Name</label>
               <input
                 type="text"
-                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Email address</label>
+              <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Email address</label>
               <input
                 type="email"
-                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Password</label>
+              <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Password</label>
               <input
                 type="password"
-                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Confirm Password</label>
+              <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Confirm Password</label>
               <input
                 type="password"
-                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
@@ -128,7 +128,7 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
+              className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
             >
               {loading ? 'Creating account...' : 'Create account'}
             </button>
@@ -138,14 +138,14 @@ export default function Signup() {
         {!success && (
           <>
             <div className="flex items-center my-6">
-              <div className="flex-grow border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333]"></div>
-              <span className="px-3 text-xs text-[#888888] uppercase tracking-wider font-medium">or</span>
-              <div className="flex-grow border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333]"></div>
+              <div className="flex-grow border-t-[0.5px] border-[var(--border)] "></div>
+              <span className="px-3 text-xs text-[var(--text2)] uppercase tracking-wider font-medium">or</span>
+              <div className="flex-grow border-t-[0.5px] border-[var(--border)] "></div>
             </div>
 
             <button
               onClick={handleGoogleAuth}
-              className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white py-2.5 rounded-md text-sm font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors"
+              className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[var(--border)]  bg-[var(--card-bg)]  text-[var(--text)]  py-2.5 rounded-md text-sm font-bold hover:bg-[var(--bg)] dark:hover:bg-[#333333] transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -159,7 +159,7 @@ export default function Signup() {
         )}
 
         <div className="text-center mt-6">
-          <Link href="/login" className="text-sm text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors">
+          <Link href="/login" className="text-sm text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors">
             Already have an account? <span className="font-bold underline decoration-[0.5px] underline-offset-4">Login &rarr;</span>
           </Link>
         </div>

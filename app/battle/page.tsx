@@ -135,18 +135,18 @@ export default function BattlePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] px-4 py-10">
+    <div className="min-h-screen bg-[var(--bg)] px-4 py-10">
       <main className="mx-auto max-w-6xl space-y-8">
         <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-4xl font-black tracking-tighter text-[#222222]">Weekly pitch battle</h1>
+            <h1 className="text-4xl font-black tracking-tighter text-[var(--text)]">Weekly pitch battle</h1>
             <p className="mt-2 text-sm font-medium text-[#666666]">Vote for the strongest startup of the week. Ends in {endOfWeekLabel()}.</p>
           </div>
-          <div className="rounded-full bg-[var(--card-bg)] px-4 py-2 text-sm font-black text-[#222222]">{totalVotes} votes</div>
+          <div className="rounded-full bg-[var(--card-bg)] px-4 py-2 text-sm font-black text-[var(--text)]">{totalVotes} votes</div>
         </header>
 
         {entries.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-[var(--card-bg)] p-10 text-center text-sm font-bold text-[#888888]">
+          <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-[var(--card-bg)] p-10 text-center text-sm font-bold text-[var(--text2)]">
             Battle entries are being prepared. Submit a pitch to be considered this week.
           </div>
         ) : (
@@ -155,24 +155,24 @@ export default function BattlePage() {
               const pitch = entry.pitch || {};
               const pct = totalVotes ? Math.round(((entry.votes || 0) / totalVotes) * 100) : 0;
               return (
-                <article key={entry.pitch_id} className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-5">
-                  <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[#222222] text-xl font-black text-white">
+                <article key={entry.pitch_id} className="rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
+                  <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[var(--text)] text-xl font-black text-[var(--text)]">
                     {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="h-full w-full object-cover" /> : (pitch.title || 'P')[0]}
                   </div>
-                  <h2 className="mt-4 line-clamp-2 min-h-[3rem] text-lg font-black leading-tight text-[#222222]">{pitch.title || 'Untitled pitch'}</h2>
+                  <h2 className="mt-4 line-clamp-2 min-h-[3rem] text-lg font-black leading-tight text-[var(--text)]">{pitch.title || 'Untitled pitch'}</h2>
                   <p className="mt-2 line-clamp-3 min-h-[4rem] text-sm font-medium text-[#666666]">{pitch.tagline || 'No tagline yet.'}</p>
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#F2F2F0]">
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--bg)]">
                     <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <div className="mt-2 text-xs font-black text-[#888888]">{entry.votes || 0} votes · {pct}%</div>
+                  <div className="mt-2 text-xs font-black text-[var(--text2)]">{entry.votes || 0} votes · {pct}%</div>
                   <button
                     onClick={() => vote(entry)}
                     disabled={!!votedId}
-                    className="mt-4 w-full rounded-2xl bg-[#222222] py-3 text-sm font-black text-white disabled:bg-[#d4d4d4]"
+                    className="mt-4 w-full rounded-2xl bg-[var(--text)] py-3 text-sm font-black text-[var(--text)] disabled:bg-[#d4d4d4]"
                   >
                     {votedId === entry.pitch_id ? 'Voted' : votedId ? 'Vote locked' : 'Vote'}
                   </button>
-                  <Link href={`/pitch/${entry.pitch_id}`} className="mt-3 block text-center text-xs font-black text-[#222222] underline underline-offset-4">
+                  <Link href={`/pitch/${entry.pitch_id}`} className="mt-3 block text-center text-xs font-black text-[var(--text)] underline underline-offset-4">
                     View pitch
                   </Link>
                 </article>

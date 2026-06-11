@@ -91,80 +91,80 @@ export default function Onboarding() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] dark:border-[#333333] border-t-[#222222] dark:border-t-white rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)]  border-t-[#222222] dark:border-t-white rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--bg)]  flex flex-col items-center justify-center p-4">
       {/* Progress Indicators */}
       <div className="flex gap-2 mb-12">
-        <div className={`h-1 w-12 rounded-full ${step >= 1 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
-        <div className={`h-1 w-12 rounded-full ${step >= 2 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
-        <div className={`h-1 w-12 rounded-full ${step >= 3 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 1 ? 'bg-[var(--text)] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 2 ? 'bg-[var(--text)] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 3 ? 'bg-[var(--text)] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
       </div>
 
       <div className="w-full max-w-[640px]">
         {/* STEP 1: Role Selection */}
         {step === 1 && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h1 className="text-3xl md:text-4xl font-bold text-center text-[#222222] dark:text-white mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-center text-[var(--text)]  mb-8">
               What brings you to Ventex?
             </h1>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <button 
                 onClick={() => setRole('founder')}
-                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
                   role === 'founder' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
-                    : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
+                    : 'border-[0.5px] border-[var(--border)]  hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
-                <Rocket className={`w-8 h-8 mb-4 ${role === 'founder' ? 'text-[#222222] dark:text-white' : 'text-[#888888]'}`} />
-                <h3 className="font-bold text-lg text-[#222222] dark:text-white mb-1">I'm a founder</h3>
-                <p className="text-sm text-[#888888]">I want to pitch my startup and find investors</p>
+                <Rocket className={`w-8 h-8 mb-4 ${role === 'founder' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
+                <h3 className="font-bold text-lg text-[var(--text)]  mb-1">I'm a founder</h3>
+                <p className="text-sm text-[var(--text2)]">I want to pitch my startup and find investors</p>
               </button>
 
               <button 
                 onClick={() => setRole('investor')}
-                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
                   role === 'investor' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
-                    : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
+                    : 'border-[0.5px] border-[var(--border)]  hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
-                <LineChart className={`w-8 h-8 mb-4 ${role === 'investor' ? 'text-[#222222] dark:text-white' : 'text-[#888888]'}`} />
-                <h3 className="font-bold text-lg text-[#222222] dark:text-white mb-1">I'm an investor</h3>
-                <p className="text-sm text-[#888888]">I want to discover and fund great startups</p>
+                <LineChart className={`w-8 h-8 mb-4 ${role === 'investor' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
+                <h3 className="font-bold text-lg text-[var(--text)]  mb-1">I'm an investor</h3>
+                <p className="text-sm text-[var(--text2)]">I want to discover and fund great startups</p>
               </button>
 
               <button 
                 onClick={() => setRole('buyer')}
-                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
                   role === 'buyer' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
-                    : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
+                    : 'border-[0.5px] border-[var(--border)]  hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
-                <ShoppingBag className={`w-8 h-8 mb-4 ${role === 'buyer' ? 'text-[#222222] dark:text-white' : 'text-[#888888]'}`} />
-                <h3 className="font-bold text-lg text-[#222222] dark:text-white mb-1">I'm a buyer</h3>
-                <p className="text-sm text-[#888888]">I want to buy products from startups</p>
+                <ShoppingBag className={`w-8 h-8 mb-4 ${role === 'buyer' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
+                <h3 className="font-bold text-lg text-[var(--text)]  mb-1">I'm a buyer</h3>
+                <p className="text-sm text-[var(--text2)]">I want to buy products from startups</p>
               </button>
 
               <button 
                 onClick={() => setRole('explorer')}
-                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
                   role === 'explorer' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
-                    : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
+                    : 'border-[0.5px] border-[var(--border)]  hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
-                <Compass className={`w-8 h-8 mb-4 ${role === 'explorer' ? 'text-[#222222] dark:text-white' : 'text-[#888888]'}`} />
-                <h3 className="font-bold text-lg text-[#222222] dark:text-white mb-1">Just exploring</h3>
-                <p className="text-sm text-[#888888]">I want to see what Ventex is about</p>
+                <Compass className={`w-8 h-8 mb-4 ${role === 'explorer' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
+                <h3 className="font-bold text-lg text-[var(--text)]  mb-1">Just exploring</h3>
+                <p className="text-sm text-[var(--text2)]">I want to see what Ventex is about</p>
               </button>
             </div>
 
@@ -172,7 +172,7 @@ export default function Onboarding() {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!role}
-                className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue &rarr;
               </button>
@@ -182,36 +182,36 @@ export default function Onboarding() {
 
         {/* STEP 2: Quick Profile */}
         {step === 2 && (
-          <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
-            <h1 className="text-2xl font-bold text-center text-[#222222] dark:text-white mb-2">
+          <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
+            <h1 className="text-2xl font-bold text-center text-[var(--text)]  mb-2">
               Setup your profile
             </h1>
-            <p className="text-center text-[#888888] text-sm mb-8">
+            <p className="text-center text-[var(--text2)] text-sm mb-8">
               Tell us a bit about yourself to complete your account.
             </p>
 
             <div className="flex flex-col items-center mb-8">
-              <div className="relative w-24 h-24 rounded-full border border-[#e5e5e5] dark:border-[#333333] bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center overflow-hidden mb-4 group cursor-pointer">
+              <div className="relative w-24 h-24 rounded-full border border-[var(--border)]  bg-[var(--bg)]  flex items-center justify-center overflow-hidden mb-4 group cursor-pointer">
                 {avatarPreview ? (
                   <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-[#888888] font-bold text-2xl">{fullName ? fullName.charAt(0).toUpperCase() : '?'}</span>
+                  <span className="text-[var(--text2)] font-bold text-2xl">{fullName ? fullName.charAt(0).toUpperCase() : '?'}</span>
                 )}
                 
                 <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <Upload className="w-6 h-6 text-white" />
+                  <Upload className="w-6 h-6 text-[var(--text)]" />
                   <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                 </label>
               </div>
-              <span className="text-xs text-[#888888]">Upload photo (optional)</span>
+              <span className="text-xs text-[var(--text2)]">Upload photo (optional)</span>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Full Name</label>
+                <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Full Name</label>
                 <input
                   type="text"
-                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2.5 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                  className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2.5 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
@@ -221,14 +221,14 @@ export default function Onboarding() {
               <div className="flex justify-between pt-4">
                 <button 
                   onClick={() => setStep(1)}
-                  className="text-sm font-bold text-[#888888] hover:text-[#222222] dark:hover:text-white"
+                  className="text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)]"
                 >
                   &larr; Back
                 </button>
                 <button 
                   onClick={handleComplete}
                   disabled={!fullName || submitting}
-                  className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                  className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
                 >
                   {submitting ? 'Saving...' : 'Complete setup'}
                 </button>

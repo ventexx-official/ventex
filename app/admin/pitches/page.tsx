@@ -107,7 +107,7 @@ export default function PitchesQueue() {
         );
       default:
         return (
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-neutral-500/10 text-[var(--text2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-neutral-500/10 text-[var(--text2)] border border-[0.5px] border-[var(--border)] ">
             <FileText size={12} /> Draft
           </span>
         );
@@ -126,7 +126,7 @@ export default function PitchesQueue() {
         </div>
         <button
           onClick={fetchPitches}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -134,7 +134,7 @@ export default function PitchesQueue() {
 
       {/* Tabs and search */}
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] w-full md:w-auto">
+        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[var(--border)]  rounded-[24px] w-full md:w-auto">
           {(["pending", "live", "rejected", "draft"] as const).map((tab) => {
             const count = pitches.filter((p) => p.status === tab).length;
             return (
@@ -169,7 +169,7 @@ export default function PitchesQueue() {
             placeholder="Search by company, founder, industry..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
       </div>
@@ -180,8 +180,8 @@ export default function PitchesQueue() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filteredPitches.length === 0 ? (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
-          <div className="h-12 w-12 rounded-full bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-center text-[var(--text3)] mx-auto mb-4">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
+          <div className="h-12 w-12 rounded-full bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  flex items-center justify-center text-[var(--text3)] mx-auto mb-4">
             <FileText size={20} />
           </div>
           <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider">No pitches found</h3>
@@ -190,11 +190,11 @@ export default function PitchesQueue() {
           </p>
         </div>
       ) : (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg2)]/10 text-[var(--text2)] font-mono text-[10px] uppercase font-bold tracking-wider">
+                <tr className="border-b border-[0.5px] border-[var(--border)]  bg-[var(--bg2)]/10 text-[var(--text2)] font-mono text-[10px] uppercase font-bold tracking-wider">
                   <th className="py-4 px-6">Company / Startup</th>
                   <th className="py-4 px-6">Founder</th>
                   <th className="py-4 px-6">Stage & Industry</th>
@@ -208,7 +208,7 @@ export default function PitchesQueue() {
                   <tr key={pitch.id} className="hover:hover:bg-[var(--bg2)] transition-colors group">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-[24px] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-center text-[var(--text2)] font-bold overflow-hidden">
+                        <div className="h-10 w-10 rounded-[24px] bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  flex items-center justify-center text-[var(--text2)] font-bold overflow-hidden">
                           {pitch.logo_url ? (
                             <img src={pitch.logo_url} alt={pitch.title} className="h-full w-full object-cover" />
                           ) : (
@@ -241,7 +241,7 @@ export default function PitchesQueue() {
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <span className="inline-block text-[11px] font-bold text-[var(--text2)] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-2 py-0.5 rounded capitalize">
+                        <span className="inline-block text-[11px] font-bold text-[var(--text2)] bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  px-2 py-0.5 rounded capitalize">
                           {pitch.company_stage || "N/A"}
                         </span>
                         <p className="text-xs text-[var(--text2)] mt-1">
@@ -261,7 +261,7 @@ export default function PitchesQueue() {
                     <td className="py-4 px-6 text-right">
                       <Link
                         href={`/admin/pitches/${pitch.id}`}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors group/btn"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors group/btn"
                       >
                         Review
                         <ArrowRight size={12} className="text-[var(--text2)] group-hover/btn:translate-x-0.5 transition-transform" />

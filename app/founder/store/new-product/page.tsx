@@ -300,29 +300,29 @@ export default function NewProductPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] pb-24">
+    <div className="min-h-screen bg-[var(--bg)] pb-24">
       {/* Top Header Nav */}
-      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <Link href="/founder/store" className="flex items-center gap-2 text-[#888888] hover:text-[#222222] transition-colors text-sm font-bold">
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+        <Link href="/founder/store" className="flex items-center gap-2 text-[var(--text2)] hover:text-[var(--text)] transition-colors text-sm font-bold">
           <ChevronLeft className="w-4 h-4" />
           Back to Store
         </Link>
-        <span className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</span>
+        <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</span>
         <div className="w-32" />
       </header>
 
       <main className="max-w-3xl mx-auto px-4 mt-12">
         <div className="space-y-8">
           <div>
-            <h1 className="text-3xl font-black text-[#222222] tracking-tighter uppercase">List a New Product</h1>
-            <p className="text-[#888888] font-medium text-sm mt-1">Create an interactive product or custom contract page for the Ventex Marketplace.</p>
+            <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter uppercase">List a New Product</h1>
+            <p className="text-[var(--text2)] font-medium text-sm mt-1">Create an interactive product or custom contract page for the Ventex Marketplace.</p>
           </div>
 
           {errorMsg && (
@@ -339,13 +339,13 @@ export default function NewProductPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 md:p-8 shadow-sm">
             {/* 1. Basic details */}
             <section className="space-y-4">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">01. Listing Type & Name</h3>
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">01. Listing Type & Name</h3>
               
               <div className="space-y-2">
-                <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Marketplace Listing Type</label>
+                <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Marketplace Listing Type</label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
                     { id: "software", label: "Software" },
@@ -356,7 +356,7 @@ export default function NewProductPage() {
                       key={option.id}
                       type="button"
                       onClick={() => setListingType(option.id as any)}
-                      className={`rounded-2xl border p-3 text-sm font-black ${listingType === option.id ? "border-[#222222] bg-[#222222] text-white" : "border-[#e5e5e5] bg-[#F2F2F0] text-[#222222]"}`}
+                      className={`rounded-2xl border p-3 text-sm font-black ${listingType === option.id ? "border-[#222222] bg-[var(--text)] text-[var(--text)]" : "border-[var(--border)] bg-[var(--bg)] text-[var(--text)]"}`}
                     >
                       {option.label}
                     </button>
@@ -366,7 +366,7 @@ export default function NewProductPage() {
               
               {/* Type toggle */}
               {listingType === "software" && <div className="space-y-2">
-                <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Pricing Type</label>
+                <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Pricing Type</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { id: "fixed_price", label: "Fixed Price License", desc: "Sell templates, software licenses, SaaS access, etc." },
@@ -378,12 +378,12 @@ export default function NewProductPage() {
                       onClick={() => setType(option.id as any)}
                       className={`p-4 rounded-2xl border text-left transition-all ${
                         type === option.id 
-                          ? "border-[#222222] bg-[#222222] text-white shadow-lg" 
-                          : "border-[#e5e5e5] bg-[#F2F2F0] hover:bg-[#e5e5e5] text-[#222222]"
+                          ? "border-[#222222] bg-[var(--text)] text-[var(--text)] shadow-lg" 
+                          : "border-[var(--border)] bg-[var(--bg)] hover:bg-[#e5e5e5] text-[var(--text)]"
                       }`}
                     >
                       <span className="block font-black text-sm">{option.label}</span>
-                      <span className={`block text-[11px] mt-1 leading-normal ${type === option.id ? "text-white/60" : "text-[#888888]"}`}>
+                      <span className={`block text-[11px] mt-1 leading-normal ${type === option.id ? "text-[var(--text)]/60" : "text-[var(--text2)]"}`}>
                         {option.desc}
                       </span>
                     </button>
@@ -393,28 +393,28 @@ export default function NewProductPage() {
 
               {/* Product Name */}
               <div className="space-y-2 pt-2">
-                <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Product / Service Name</label>
+                <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Product / Service Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Ventex SaaS Starter Kit"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                  className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                 />
               </div>
             </section>
 
             {/* 2. Categorization */}
             <section className="space-y-4 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">02. Classification</h3>
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">02. Classification</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Category</label>
+                  <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Category</label>
                   <select
                     value={category}
                     onChange={e => setCategory(e.target.value)}
-                    className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
+                    className="w-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl px-4 py-3 text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222]"
                   >
                     <option value="Software">Software</option>
                     <option value="SaaS">SaaS License</option>
@@ -427,11 +427,11 @@ export default function NewProductPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Target Sector</label>
+                  <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Target Sector</label>
                   <select
                     value={sector}
                     onChange={e => setSector(e.target.value)}
-                    className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
+                    className="w-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl px-4 py-3 text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222]"
                   >
                     {[
                       "3D Printing", "Advanced Materials", "Aerospace", "AI", "Agriculture", "Alt Protein", 
@@ -451,13 +451,13 @@ export default function NewProductPage() {
 
             {/* 3. Description & Markdown Tools */}
             <section className="space-y-4 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">03. Description & Tech Details</h3>
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">03. Description & Tech Details</h3>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Rich Description</label>
+                  <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Rich Description</label>
                   
                   {/* Editor tools */}
-                  <div className="flex gap-1.5 bg-[#F2F2F0] p-1 rounded-lg border-[0.5px] border-[#e5e5e5]">
+                  <div className="flex gap-1.5 bg-[var(--bg)] p-1 rounded-lg border-[0.5px] border-[var(--border)]">
                     {[
                       { id: "bold", label: "B", title: "Bold Text" },
                       { id: "italic", label: "I", title: "Italic Text" },
@@ -469,7 +469,7 @@ export default function NewProductPage() {
                         type="button"
                         onClick={() => insertMarkdown(btn.id)}
                         title={btn.title}
-                        className="px-2 py-0.5 bg-[var(--card-bg)] hover:bg-black hover:text-white rounded text-[10px] font-black border-[0.5px] border-[#e5e5e5] transition-all"
+                        className="px-2 py-0.5 bg-[var(--card-bg)] hover:bg-black hover:text-[var(--text)] rounded text-[10px] font-black border-[0.5px] border-[var(--border)] transition-all"
                       >
                         {btn.label}
                       </button>
@@ -484,16 +484,16 @@ export default function NewProductPage() {
                   placeholder="Summarize your product, tech stack, libraries used and what problem it resolves..."
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-semibold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all whitespace-pre-wrap leading-relaxed"
+                  className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-semibold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all whitespace-pre-wrap leading-relaxed"
                 />
               </div>
             </section>
 
             {/* 4. Feature Checklist */}
             <section className="space-y-4 pt-2">
-              <div className="flex justify-between items-center border-b-[0.5px] border-[#e5e5e5] pb-2">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest">04. Features Checklist (Max 10)</h3>
-                <span className="text-[10px] font-black text-[#888888]">{features.filter(f => f.trim() !== "").length} / 10 added</span>
+              <div className="flex justify-between items-center border-b-[0.5px] border-[var(--border)] pb-2">
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest">04. Features Checklist (Max 10)</h3>
+                <span className="text-[10px] font-black text-[var(--text2)]">{features.filter(f => f.trim() !== "").length} / 10 added</span>
               </div>
 
               <div className="space-y-2.5">
@@ -504,7 +504,7 @@ export default function NewProductPage() {
                       placeholder={`e.g. Fully responsive desktop + mobile layouts`}
                       value={feature}
                       onChange={e => handleFeatureChange(idx, e.target.value)}
-                      className="flex-grow px-4 py-2.5 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
+                      className="flex-grow px-4 py-2.5 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-xs font-bold text-[var(--text)] focus:outline-none focus:border-[#222222]"
                     />
                     <button
                       type="button"
@@ -521,7 +521,7 @@ export default function NewProductPage() {
                 <button
                   type="button"
                   onClick={addFeature}
-                  className="flex items-center gap-1.5 text-xs font-black text-[#222222] bg-[#F2F2F0] hover:bg-[#e5e5e5] px-4 py-2.5 rounded-xl transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-black text-[var(--text)] bg-[var(--bg)] hover:bg-[#e5e5e5] px-4 py-2.5 rounded-xl transition-colors"
                 >
                   <Plus className="w-4 h-4" /> Add Feature Line
                 </button>
@@ -530,11 +530,11 @@ export default function NewProductPage() {
 
             {/* 5. Images Upload Section */}
             <section className="space-y-4 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">05. Image Gallery (Max 5)</h3>
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">05. Image Gallery (Max 5)</h3>
               
               <div className="grid grid-cols-5 gap-3">
                 {imagePreviews.map((preview, idx) => (
-                  <div key={idx} className="aspect-square bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl relative overflow-hidden group shadow-inner">
+                  <div key={idx} className="aspect-square bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl relative overflow-hidden group shadow-inner">
                     <img src={preview} alt="" className="w-full h-full object-cover" />
                     
                     {/* Controls overlay */}
@@ -543,7 +543,7 @@ export default function NewProductPage() {
                         type="button"
                         onClick={() => moveImage(idx, "up")}
                         disabled={idx === 0}
-                        className="p-1 bg-[var(--card-bg)] hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
+                        className="p-1 bg-[var(--card-bg)] hover:bg-[var(--bg)] rounded text-xs text-[var(--text)] font-black disabled:opacity-40"
                       >
                         ↑
                       </button>
@@ -551,14 +551,14 @@ export default function NewProductPage() {
                         type="button"
                         onClick={() => moveImage(idx, "down")}
                         disabled={idx === imagePreviews.length - 1}
-                        className="p-1 bg-[var(--card-bg)] hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
+                        className="p-1 bg-[var(--card-bg)] hover:bg-[var(--bg)] rounded text-xs text-[var(--text)] font-black disabled:opacity-40"
                       >
                         →
                       </button>
                       <button
                         type="button"
                         onClick={() => removeImage(idx)}
-                        className="p-1 bg-red-500 hover:bg-red-600 rounded text-xs text-white"
+                        className="p-1 bg-red-500 hover:bg-red-600 rounded text-xs text-[var(--text)]"
                       >
                         ✖
                       </button>
@@ -567,9 +567,9 @@ export default function NewProductPage() {
                 ))}
 
                 {imagePreviews.length < 5 && (
-                  <label className="aspect-square bg-[#F2F2F0] border-dashed border-2 border-[#e5e5e5] hover:border-[#222222] rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-[var(--card-bg)]">
-                    <Upload className="w-6 h-6 text-[#888888]" />
-                    <span className="text-[10px] font-black text-[#888888] uppercase tracking-widest mt-1">Upload</span>
+                  <label className="aspect-square bg-[var(--bg)] border-dashed border-2 border-[var(--border)] hover:border-[#222222] rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-[var(--card-bg)]">
+                    <Upload className="w-6 h-6 text-[var(--text2)]" />
+                    <span className="text-[10px] font-black text-[var(--text2)] uppercase tracking-widest mt-1">Upload</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -584,67 +584,67 @@ export default function NewProductPage() {
 
             {listingType === "freelance" && (
               <section className="space-y-4 pt-2">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">Freelance Service Details</h3>
-                <select value={rateType} onChange={(e) => setRateType(e.target.value)} className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222]"><option>Hourly</option><option>Fixed price</option></select>
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">Freelance Service Details</h3>
+                <select value={rateType} onChange={(e) => setRateType(e.target.value)} className="w-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl px-4 py-3 text-sm font-bold text-[var(--text)]"><option>Hourly</option><option>Fixed price</option></select>
                 <div className="grid grid-cols-2 gap-3">
-                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Rate amount ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
-                  <input value={rateUsd} onChange={(e) => setRateUsd(e.target.value)} placeholder="Rate amount $" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Rate amount ₹" className="px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
+                  <input value={rateUsd} onChange={(e) => setRateUsd(e.target.value)} placeholder="Rate amount $" className="px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
                 </div>
-                <select value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">
+                <select value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} className="w-full bg-[var(--bg)] border rounded-2xl px-4 py-3 text-sm font-bold">
                   {["1 day", "3 days", "1 week", "2 weeks", "Custom"].map((item) => <option key={item}>{item}</option>)}
                 </select>
-                <input value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="Skills tags, comma-separated: React, Node.js, Python" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
-                <input value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} placeholder="Portfolio link (optional)" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                <input value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="Skills tags, comma-separated: React, Node.js, Python" className="w-full px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
+                <input value={portfolioLink} onChange={(e) => setPortfolioLink(e.target.value)} placeholder="Portfolio link (optional)" className="w-full px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
               </section>
             )}
 
             {listingType === "job" && (
               <section className="space-y-4 pt-2">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">Job Post Details</h3>
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">Job Post Details</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  <select value={jobType} onChange={(e) => setJobType(e.target.value)} className="bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Full-time", "Part-time", "Contract", "Internship"].map((item) => <option key={item}>{item}</option>)}</select>
-                  <select value={workMode} onChange={(e) => setWorkMode(e.target.value)} className="bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Remote", "Hybrid", "On-site"].map((item) => <option key={item}>{item}</option>)}</select>
+                  <select value={jobType} onChange={(e) => setJobType(e.target.value)} className="bg-[var(--bg)] border rounded-2xl px-4 py-3 text-sm font-bold">{["Full-time", "Part-time", "Contract", "Internship"].map((item) => <option key={item}>{item}</option>)}</select>
+                  <select value={workMode} onChange={(e) => setWorkMode(e.target.value)} className="bg-[var(--bg)] border rounded-2xl px-4 py-3 text-sm font-bold">{["Remote", "Hybrid", "On-site"].map((item) => <option key={item}>{item}</option>)}</select>
                 </div>
-                {workMode !== "Remote" && <input value={jobLocation} onChange={(e) => setJobLocation(e.target.value)} placeholder="Location" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />}
-                <select value={compensationType} onChange={(e) => setCompensationType(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Salary", "Equity", "Salary + Equity"].map((item) => <option key={item}>{item}</option>)}</select>
+                {workMode !== "Remote" && <input value={jobLocation} onChange={(e) => setJobLocation(e.target.value)} placeholder="Location" className="w-full px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />}
+                <select value={compensationType} onChange={(e) => setCompensationType(e.target.value)} className="w-full bg-[var(--bg)] border rounded-2xl px-4 py-3 text-sm font-bold">{["Salary", "Equity", "Salary + Equity"].map((item) => <option key={item}>{item}</option>)}</select>
                 <div className="grid grid-cols-3 gap-3">
-                  <input value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} placeholder="Salary min ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
-                  <input value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} placeholder="Salary max ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
-                  <input value={equityPct} onChange={(e) => setEquityPct(e.target.value)} placeholder="Equity %" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} placeholder="Salary min ₹" className="px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
+                  <input value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} placeholder="Salary max ₹" className="px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
+                  <input value={equityPct} onChange={(e) => setEquityPct(e.target.value)} placeholder="Equity %" className="px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
                 </div>
-                <input value={applyTarget} onChange={(e) => setApplyTarget(e.target.value)} placeholder="Apply link or email" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                <input value={applyTarget} onChange={(e) => setApplyTarget(e.target.value)} placeholder="Apply link or email" className="w-full px-4 py-3 bg-[var(--bg)] border rounded-2xl text-sm font-bold" />
               </section>
             )}
 
             {/* 6. Pricing, Digital Goods, Custom Contracts */}
             {listingType === "software" && (
             <section className="space-y-4 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">06. Pricing & Delivery</h3>
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">06. Pricing & Delivery</h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Fixed price inputs */}
                 {type === "fixed_price" ? (
                   <>
                     <div className="space-y-2">
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Base Price (₹)</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Base Price (₹)</label>
                       <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">₹</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[var(--text2)]">₹</span>
                         <input
                           type="number"
                           required={type === "fixed_price"}
                           placeholder="9,999"
                           value={price}
                           onChange={e => setPrice(e.target.value)}
-                          className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                          className="w-full pl-8 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Digital Product File</label>
-                      <label className="flex items-center gap-3 px-4 py-2.5 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl cursor-pointer hover:bg-[#e5e5e5] transition-all">
-                        <FileCode className="w-5 h-5 text-[#888888]" />
-                        <span className="text-xs font-bold text-[#888888] truncate">
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Digital Product File</label>
+                      <label className="flex items-center gap-3 px-4 py-2.5 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl cursor-pointer hover:bg-[#e5e5e5] transition-all">
+                        <FileCode className="w-5 h-5 text-[var(--text2)]" />
+                        <span className="text-xs font-bold text-[var(--text2)] truncate">
                           {digitalFileName || "Upload package file (.zip, .pdf, etc.)"}
                         </span>
                         <input
@@ -662,11 +662,11 @@ export default function NewProductPage() {
                     </div>
                   </>
                 ) : (
-                  <div className="col-span-2 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl p-5 flex items-start gap-3">
-                    <Info className="w-5 h-5 text-[#888888] flex-shrink-0 mt-0.5" />
+                  <div className="col-span-2 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl p-5 flex items-start gap-3">
+                    <Info className="w-5 h-5 text-[var(--text2)] flex-shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="text-xs font-black text-[#222222] uppercase tracking-wider">Custom Work Pricing Model</h4>
-                      <p className="text-xs text-[#888888] leading-relaxed mt-1">
+                      <h4 className="text-xs font-black text-[var(--text)] uppercase tracking-wider">Custom Work Pricing Model</h4>
+                      <p className="text-xs text-[var(--text2)] leading-relaxed mt-1">
                         When buyers choose "Request Work", they will enter specific software/system requirements. You will review requirements and submit a custom contract quote manually. No prepayment pricing needed.
                       </p>
                     </div>
@@ -676,11 +676,11 @@ export default function NewProductPage() {
 
               {/* Deal toggle */}
               {type === "fixed_price" && (
-                <div className="border-[0.5px] border-[#e5e5e5] rounded-2xl p-5 space-y-4">
+                <div className="border-[0.5px] border-[var(--border)] rounded-2xl p-5 space-y-4">
                   <label className="flex items-center justify-between cursor-pointer">
                     <div>
-                      <span className="block text-xs font-black text-[#222222] uppercase tracking-wider">Set a Promotional Deal</span>
-                      <span className="block text-[11px] text-[#888888] mt-0.5">Activate a temporary discounted rate with a countdown timer.</span>
+                      <span className="block text-xs font-black text-[var(--text)] uppercase tracking-wider">Set a Promotional Deal</span>
+                      <span className="block text-[11px] text-[var(--text2)] mt-0.5">Activate a temporary discounted rate with a countdown timer.</span>
                     </div>
                     <input
                       type="checkbox"
@@ -691,34 +691,34 @@ export default function NewProductPage() {
                   </label>
 
                   {hasDeal && (
-                    <div className="grid grid-cols-2 gap-4 pt-3 border-t-[0.5px] border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t-[0.5px] border-[var(--border)] animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="space-y-2">
-                        <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Deal Discount Price (₹)</label>
+                        <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Deal Discount Price (₹)</label>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">₹</span>
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[var(--text2)]">₹</span>
                           <input
                             type="number"
                             required={hasDeal}
                             placeholder="6,999"
                             value={dealPrice}
                             onChange={e => setDealPrice(e.target.value)}
-                            className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                            className="w-full pl-8 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Deal End Date</label>
+                        <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Deal End Date</label>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">
-                            <Calendar className="w-4 h-4 text-[#888888]" />
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[var(--text2)]">
+                            <Calendar className="w-4 h-4 text-[var(--text2)]" />
                           </span>
                           <input
                             type="datetime-local"
                             required={hasDeal}
                             value={dealEndDate}
                             onChange={e => setDealEndDate(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                            className="w-full pl-10 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                           />
                         </div>
                       </div>
@@ -744,14 +744,14 @@ export default function NewProductPage() {
             <div className="flex gap-4">
               <Link
                 href="/founder/store"
-                className="flex-1 py-4 border-[0.5px] border-[#e5e5e5] hover:bg-[#F2F2F0] text-[#222222] rounded-2xl text-center font-black text-sm transition-all"
+                className="flex-1 py-4 border-[0.5px] border-[var(--border)] hover:bg-[var(--bg)] text-[var(--text)] rounded-2xl text-center font-black text-sm transition-all"
               >
                 Cancel
               </Link>
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 py-4 bg-[#222222] hover:bg-black text-white rounded-2xl font-black text-sm active:scale-95 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
+                className="flex-1 py-4 bg-[var(--text)] hover:bg-black text-[var(--text)] rounded-2xl font-black text-sm active:scale-95 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Submitting listing...</>

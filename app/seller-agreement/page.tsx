@@ -57,14 +57,14 @@ export default function SellerAgreementPage() {
   ];
 
   return (
-    <div className="bg-[#0A0A0C] text-neutral-300 min-h-screen py-16 md:py-24">
+    <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
         {/* Header */}
         <div className="space-y-4 border-b border-neutral-900 pb-10">
           <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
             Marketplace Charter
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">
+          <h1 className="text-4xl md:text-5xl font-black text-[var(--text)] tracking-tight uppercase">
             Seller Agreement
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
@@ -84,7 +84,7 @@ export default function SellerAgreementPage() {
         </div>
 
         {/* Introduction */}
-        <div className="p-6 rounded-xl bg-[#0F0F12] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+        <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
           This Seller Agreement governs your participation as a merchant on the Ventex digital marketplace. By listing any product, template, or code package, you agree to comply with our commissions policy, file verification processes, and anti-fraud holds.
         </div>
 
@@ -95,13 +95,13 @@ export default function SellerAgreementPage() {
             return (
               <div
                 key={index}
-                className="p-8 rounded-xl bg-[#0F0F12] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
+                className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
               >
                 <div className="w-12 h-12 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0 group-hover:bg-violet-600/20 transition-all duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-lg font-bold text-white tracking-wide uppercase font-mono">
+                  <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
                     {clause.title}
                   </h2>
                   <p className="text-neutral-400 text-sm leading-relaxed">
@@ -114,9 +114,9 @@ export default function SellerAgreementPage() {
         </div>
 
         {/* Escrow Banner */}
-        <div className="p-8 rounded-xl bg-[#0F0F12]/60 border border-neutral-900 text-center space-y-4">
+        <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-neutral-900 text-center space-y-4">
           <Landmark className="w-8 h-8 text-violet-500 mx-auto" />
-          <h3 className="text-base font-bold text-white tracking-wider uppercase font-mono">
+          <h3 className="text-base font-bold text-[var(--text)] tracking-wider uppercase font-mono">
             Secure Escrow Integration
           </h3>
           <p className="text-xs text-neutral-500 max-w-md mx-auto leading-relaxed">

@@ -209,32 +209,32 @@ export default function MarketplacePage() {
   }, [products, searchQuery, selectedCategory, selectedSector, selectedType, dealsOnly, minRating, priceMin, priceMax, listingTab, tick]);
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
+    <div className="min-h-screen bg-[var(--bg)]  pb-24">
       {/* HEADER */}
-      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
+      <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)]  pt-12 pb-8 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
+            <h1 className="text-3xl font-black text-[var(--text)]  uppercase tracking-tighter flex items-center gap-3">
               <ShoppingBag className="w-8 h-8" />
               Marketplace
             </h1>
-            <p className="text-[#888888] mt-2">Discover premium startup tools, services, and assets.</p>
+            <p className="text-[var(--text2)] mt-2">Discover premium startup tools, services, and assets.</p>
           </div>
           
           <div className="relative w-full md:w-96 flex-shrink-0">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#888888]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text2)]" />
             <input 
               type="text" 
               placeholder="Search products..." 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-medium focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
+              className="w-full pl-12 pr-4 py-3.5 bg-[var(--bg)]  border-[0.5px] border-transparent rounded-2xl text-sm font-medium focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[var(--text)] focus:border-[#222222] dark:focus:border-white transition-all text-[var(--text)]  placeholder-[#888888]"
             />
           </div>
         </div>
       </div>
 
-      <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
+      <div className="border-b-[0.5px] border-[var(--border)] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800  dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-7xl">
           Ventex Premium is for marketplace access  -  buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
         </div>
@@ -242,7 +242,7 @@ export default function MarketplacePage() {
 
       {/* DEALS BANNER with countdown */}
       {activeDeals.length > 0 && !dealsOnly && (
-        <div className="bg-[#222222] text-white py-8 px-6 overflow-hidden relative">
+        <div className="bg-[var(--text)] text-[var(--text)] py-8 px-6 overflow-hidden relative">
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="max-w-7xl mx-auto relative z-10">
             <h2 className="text-lg font-black uppercase tracking-tight flex items-center gap-2 mb-6 text-emerald-400">
@@ -251,10 +251,10 @@ export default function MarketplacePage() {
             <div className="flex gap-4 overflow-x-auto pb-4 snap-x" style={{ scrollbarWidth: 'none' }}>
               {activeDeals.map(deal => (
                 <div key={deal.id} className="min-w-[300px] max-w-[300px] bg-[#333333] rounded-2xl p-4 snap-start border-[0.5px] border-[#444444] shadow-xl relative group flex-shrink-0">
-                  <span className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-black uppercase px-2 py-1 rounded-full z-10 shadow-lg">
+                  <span className="absolute top-3 left-3 bg-red-500 text-[var(--text)] text-[10px] font-black uppercase px-2 py-1 rounded-full z-10 shadow-lg">
                     {Math.round((1 - deal.discount_price / deal.price) * 100)}% OFF
                   </span>
-                  <div className="aspect-video bg-[#222222] rounded-xl overflow-hidden mb-4 relative">
+                  <div className="aspect-video bg-[var(--text)] rounded-xl overflow-hidden mb-4 relative">
                     {deal.images_urls?.[0] ? (
                       <img loading="lazy" src={deal.images_urls[0]} alt={deal.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
@@ -263,14 +263,14 @@ export default function MarketplacePage() {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-bold text-white text-sm truncate">{deal.name}</h3>
+                  <h3 className="font-bold text-[var(--text)] text-sm truncate">{deal.name}</h3>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-xl font-black text-emerald-400">₹{deal.discount_price?.toLocaleString()}</span>
-                    <span className="text-xs text-[#888888] line-through font-medium">₹{deal.price?.toLocaleString()}</span>
+                    <span className="text-xs text-[var(--text2)] line-through font-medium">₹{deal.price?.toLocaleString()}</span>
                   </div>
                   <div className="mt-3 pt-3 border-t-[0.5px] border-[#444444] flex items-center justify-between">
                     {deal.deal_end_date && <BannerCountdown endDate={deal.deal_end_date} />}
-                    <Link href={`/marketplace/${deal.id}`} className="text-white hover:text-emerald-400 flex items-center gap-1 text-xs font-bold transition-colors ml-auto">
+                    <Link href={`/marketplace/${deal.id}`} className="text-[var(--text)] hover:text-emerald-400 flex items-center gap-1 text-xs font-bold transition-colors ml-auto">
                       View <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
@@ -286,7 +286,7 @@ export default function MarketplacePage() {
         {/* FILTER SIDEBAR (Only visible in Explore) */}
         {(activeTab === 'Explore' && (loading || products.length > 0)) ? <aside className="w-full lg:w-64 flex-shrink-0 space-y-8">
           <div className="flex items-center justify-between">
-            <h2 className="font-black text-[#222222] dark:text-white uppercase tracking-tight flex items-center gap-2">
+            <h2 className="font-black text-[var(--text)]  uppercase tracking-tight flex items-center gap-2">
               <Filter className="w-5 h-5" /> Filters
             </h2>
             {(selectedCategory !== 'All' || selectedSector !== 'All' || selectedType !== 'All' || dealsOnly || minRating > 0 || priceMin || priceMax) && (
@@ -305,7 +305,7 @@ export default function MarketplacePage() {
           <div className="space-y-6">
             {/* Category */}
             <div>
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Category</label>
+              <label className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-3 block">Category</label>
               <div className="space-y-2">
                 {CATEGORIES.map(cat => (
                   <label key={cat} className="flex items-center gap-3 cursor-pointer group">
@@ -314,9 +314,9 @@ export default function MarketplacePage() {
                       name="category"
                       checked={selectedCategory === cat} 
                       onChange={() => setSelectedCategory(cat)}
-                      className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" 
+                      className="w-4 h-4 text-[var(--text)] border-gray-300 focus:ring-[#222222]" 
                     />
-                    <span className={`text-sm font-medium transition-colors ${selectedCategory === cat ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888] group-hover:text-[#222222] dark:group-hover:text-gray-300'}`}>
+                    <span className={`text-sm font-medium transition-colors ${selectedCategory === cat ? 'text-[var(--text)]  font-bold' : 'text-[var(--text2)] group-hover:text-[var(--text)] dark:group-hover:text-gray-300'}`}>
                       {cat}
                     </span>
                   </label>
@@ -325,8 +325,8 @@ export default function MarketplacePage() {
             </div>
 
             {/* Type */}
-            <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Type</label>
+            <div className="border-t-[0.5px] border-[var(--border)]  pt-6">
+              <label className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-3 block">Type</label>
               <div className="space-y-2">
                 {[
                   { value: 'All', label: 'All' },
@@ -334,52 +334,52 @@ export default function MarketplacePage() {
                   { value: 'custom_work', label: 'Custom Work' },
                 ].map(({ value, label }) => (
                   <label key={value} className="flex items-center gap-3 cursor-pointer group">
-                    <input type="radio" checked={selectedType === value} onChange={() => setSelectedType(value)} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
-                    <span className={`text-sm font-medium ${selectedType === value ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>{label}</span>
+                    <input type="radio" checked={selectedType === value} onChange={() => setSelectedType(value)} className="w-4 h-4 text-[var(--text)] border-gray-300 focus:ring-[#222222]" />
+                    <span className={`text-sm font-medium ${selectedType === value ? 'text-[var(--text)]  font-bold' : 'text-[var(--text2)]'}`}>{label}</span>
                   </label>
                 ))}
               </div>
             </div>
 
             {/* Deals Only Toggle */}
-            <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
+            <div className="border-t-[0.5px] border-[var(--border)]  pt-6">
               <label className="flex items-center justify-between cursor-pointer group">
-                <span className="text-sm font-bold text-[#222222] dark:text-white flex items-center gap-2">
+                <span className="text-sm font-bold text-[var(--text)]  flex items-center gap-2">
                   <Tag className="w-4 h-4 text-emerald-500" /> Deals Only
                 </span>
                 <div className="relative">
                   <input type="checkbox" className="sr-only peer" checked={dealsOnly} onChange={(e) => setDealsOnly(e.target.checked)} />
-                  <div className="w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-[#333333] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--card-bg)] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#222222] dark:peer-checked:bg-emerald-500"></div>
+                  <div className="w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-[#333333] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--card-bg)] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[var(--text)] dark:peer-checked:bg-emerald-500"></div>
                 </div>
               </label>
             </div>
 
             {/* Price Range */}
-            <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (₹)</label>
+            <div className="border-t-[0.5px] border-[var(--border)]  pt-6">
+              <label className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-3 block">Price Range (₹)</label>
               <div className="flex items-center gap-3">
                 <input 
                   type="number" placeholder="Min" value={priceMin}
                   onChange={(e) => setPriceMin(e.target.value)}
-                  className="w-full px-3 py-2 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
+                  className="w-full px-3 py-2 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-lg text-sm text-[var(--text)]  focus:outline-none focus:border-[#222222]" 
                 />
-                <span className="text-[#888888]">-</span>
+                <span className="text-[var(--text2)]">-</span>
                 <input 
                   type="number" placeholder="Max" value={priceMax}
                   onChange={(e) => setPriceMax(e.target.value)}
-                  className="w-full px-3 py-2 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
+                  className="w-full px-3 py-2 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-lg text-sm text-[var(--text)]  focus:outline-none focus:border-[#222222]" 
                 />
               </div>
             </div>
 
             {/* Rating */}
-            <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Rating</label>
+            <div className="border-t-[0.5px] border-[var(--border)]  pt-6">
+              <label className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-3 block">Rating</label>
               <div className="space-y-2">
                 {[0, 4, 3].map(rating => (
                   <label key={rating} className="flex items-center gap-3 cursor-pointer group">
-                    <input type="radio" checked={minRating === rating} onChange={() => setMinRating(rating)} className="w-4 h-4 text-[#222222] border-gray-300 focus:ring-[#222222]" />
-                    <span className={`text-sm font-medium flex items-center gap-1 ${minRating === rating ? 'text-[#222222] dark:text-white font-bold' : 'text-[#888888]'}`}>
+                    <input type="radio" checked={minRating === rating} onChange={() => setMinRating(rating)} className="w-4 h-4 text-[var(--text)] border-gray-300 focus:ring-[#222222]" />
+                    <span className={`text-sm font-medium flex items-center gap-1 ${minRating === rating ? 'text-[var(--text)]  font-bold' : 'text-[var(--text2)]'}`}>
                       {rating === 0 ? 'All Ratings' : (
                         <>{rating} <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> & Up</>
                       )}
@@ -394,16 +394,16 @@ export default function MarketplacePage() {
         {/* MAIN CONTENT AREA */}
         <div className="flex-1">
           {/* TABS */}
-          <div className="mb-6 flex gap-2 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4">
+          <div className="mb-6 flex gap-2 border-b-[0.5px] border-[var(--border)]  pb-4">
             <button
               onClick={() => setActiveTab('Explore')}
-              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Explore' ? 'border-[#222222] text-[#222222] dark:border-white dark:text-white' : 'border-transparent text-[#888888] hover:text-[#222222] dark:hover:text-white'}`}
+              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Explore' ? 'border-[#222222] text-[var(--text)] dark:border-white ' : 'border-transparent text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)]'}`}
             >
               Explore
             </button>
             <button
               onClick={() => setActiveTab('Purchases')}
-              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Purchases' ? 'border-[#222222] text-[#222222] dark:border-white dark:text-white' : 'border-transparent text-[#888888] hover:text-[#222222] dark:hover:text-white'}`}
+              className={`pb-2 text-sm font-bold border-b-2 transition-colors ${activeTab === 'Purchases' ? 'border-[#222222] text-[var(--text)] dark:border-white ' : 'border-transparent text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)]'}`}
             >
               My Purchases
             </button>
@@ -413,15 +413,15 @@ export default function MarketplacePage() {
             <>
               {loading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+              <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-3xl p-12 text-center">
+            <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-3xl p-12 text-center">
               <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">{products.length === 0 ? 'No products listed yet.' : 'No products found'}</h3>
-              <p className="text-[#888888] mb-6">{products.length === 0 ? 'Are you a founder with a product to sell?' : 'Try adjusting your filters or search query.'}</p>
+              <h3 className="text-xl font-bold text-[var(--text)]  mb-2">{products.length === 0 ? 'No products listed yet.' : 'No products found'}</h3>
+              <p className="text-[var(--text2)] mb-6">{products.length === 0 ? 'Are you a founder with a product to sell?' : 'Try adjusting your filters or search query.'}</p>
               {products.length === 0 ? (
-                <Link href="/founder/store/new-product" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
+                <Link href="/founder/store/new-product" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
                   List your product
                 </Link>
               ) : (
@@ -430,7 +430,7 @@ export default function MarketplacePage() {
                     setSearchQuery(''); setSelectedCategory('All'); setSelectedSector('All'); 
                     setSelectedType('All'); setDealsOnly(false); setMinRating(0); setPriceMin(''); setPriceMax('');
                   }}
-                  className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
+                  className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
                 >
                   Clear all filters
                 </button>
@@ -439,10 +439,10 @@ export default function MarketplacePage() {
           ) : (
             <>
               <div className="mb-6 flex items-center justify-between">
-                <p className="text-sm font-bold text-[#888888]">Showing {filteredProducts.length} results</p>
+                <p className="text-sm font-bold text-[var(--text2)]">Showing {filteredProducts.length} results</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-widest">Sort by:</span>
-                  <select className="bg-transparent text-sm font-bold text-[#888888] focus:outline-none cursor-pointer">
+                  <span className="text-xs font-bold text-[var(--text)]  uppercase tracking-widest">Sort by:</span>
+                  <select className="bg-transparent text-sm font-bold text-[var(--text2)] focus:outline-none cursor-pointer">
                     <option>Recommended</option>
                     <option>Newest</option>
                     <option>Price: Low to High</option>
@@ -461,14 +461,14 @@ export default function MarketplacePage() {
                   const isJob = listingType === 'job';
 
                   return (
-                    <div key={product.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+                    <div key={product.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
                       {isDeal && (
-                        <span className="absolute top-4 left-4 bg-[#222222] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
+                        <span className="absolute top-4 left-4 bg-[var(--text)] text-[var(--text)] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
                           <Tag className="w-3 h-3" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
                         </span>
                       )}
                       
-                      <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
+                      <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
                         {product.images_urls?.[0] ? (
                           <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
@@ -481,17 +481,17 @@ export default function MarketplacePage() {
                       <div className="p-5 flex flex-col flex-grow">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <Link href={`/marketplace/${product.id}`}>
-                            <h3 className="font-bold text-[#222222] dark:text-white text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
+                            <h3 className="font-bold text-[var(--text)]  text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
                           </Link>
                           {(isCustom || isFreelance || isJob) && (
-                            <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#888888] dark:text-gray-300 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded flex-shrink-0">
+                            <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text2)] dark:text-gray-300 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded flex-shrink-0">
                               {isJob ? 'Job' : isFreelance ? 'Freelance' : 'Request'}
                             </span>
                           )}
                         </div>
 
                         {product.pitch && (
-                          <Link href={`/pitch/${product.pitch.id}`} className="text-xs text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors mb-2 line-clamp-1">
+                          <Link href={`/pitch/${product.pitch.id}`} className="text-xs text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors mb-2 line-clamp-1">
                             By {product.seller?.full_name || 'Anonymous'} ({product.pitch.title})
                           </Link>
                         )}
@@ -499,10 +499,10 @@ export default function MarketplacePage() {
                         <div className="flex items-center gap-2 mb-3">
                           <div className="flex items-center gap-1">
                             <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-[#444444]'}`} />
-                            <span className="text-xs font-bold text-[#222222] dark:text-white">{product.average_rating > 0 ? product.average_rating.toFixed(1) : 'New'}</span>
+                            <span className="text-xs font-bold text-[var(--text)] ">{product.average_rating > 0 ? product.average_rating.toFixed(1) : 'New'}</span>
                           </div>
                           {product.review_count > 0 && (
-                            <span className="text-[10px] text-[#888888]">({product.review_count})</span>
+                            <span className="text-[10px] text-[var(--text2)]">({product.review_count})</span>
                           )}
                         </div>
 
@@ -511,33 +511,33 @@ export default function MarketplacePage() {
                           <DealCountdown endDate={product.deal_end_date} />
                         )}
 
-                        <div className="mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-end justify-between">
+                        <div className="mt-auto pt-4 border-t-[0.5px] border-[var(--border)]  flex items-end justify-between">
                           <div>
                             {isJob ? (
-                              <p className="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-0.5">{product.job_type || 'Role'}</p>
+                              <p className="text-[var(--text2)] text-[10px] font-bold uppercase tracking-widest mb-0.5">{product.job_type || 'Role'}</p>
                             ) : isCustom || isFreelance ? (
-                              <p className="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-0.5">Starts from</p>
+                              <p className="text-[var(--text2)] text-[10px] font-bold uppercase tracking-widest mb-0.5">Starts from</p>
                             ) : null}
                             <div className="flex items-baseline gap-2">
-                              <span className="text-lg font-black text-[#222222] dark:text-white">
+                              <span className="text-lg font-black text-[var(--text)] ">
                                 ₹{(product.discount_price || product.price).toLocaleString()}
                               </span>
                               {isDeal && !isCustom && (
-                                <span className="text-xs text-[#888888] line-through font-medium">₹{product.price.toLocaleString()}</span>
+                                <span className="text-xs text-[var(--text2)] line-through font-medium">₹{product.price.toLocaleString()}</span>
                               )}
                             </div>
                           </div>
                           
                           {isJob ? (
-                            <a href={product.apply_url || (product.apply_email ? `mailto:${product.apply_email}` : `/marketplace/${product.id}`)} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
+                            <a href={product.apply_url || (product.apply_email ? `mailto:${product.apply_email}` : `/marketplace/${product.id}`)} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)]  px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
                               Apply
                             </a>
                           ) : isCustom || isFreelance ? (
-                            <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
+                            <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)]  px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
                               Request
                             </Link>
                           ) : (
-                            <Link href={`/marketplace/${product.id}`} className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+                            <Link href={`/marketplace/${product.id}`} className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
                               Buy Now
                             </Link>
                           )}
@@ -554,31 +554,31 @@ export default function MarketplacePage() {
           /* PURCHASES TAB */
           <div>
               {!user ? (
-                <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">Sign in to view your purchases</h3>
-                  <Link href="/login" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
+                  <h3 className="text-xl font-bold text-[var(--text)]  mb-2">Sign in to view your purchases</h3>
+                  <Link href="/login" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
                     Sign In
                   </Link>
                 </div>
               ) : loadingPurchases ? (
                 <div className="flex justify-center items-center py-20">
-                  <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
                 </div>
               ) : purchases.length === 0 ? (
-                <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">No purchases yet</h3>
-                  <p className="text-[#888888]">When you buy products on Ventex, they will appear here.</p>
-                  <button onClick={() => setActiveTab('Explore')} className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
+                  <h3 className="text-xl font-bold text-[var(--text)]  mb-2">No purchases yet</h3>
+                  <p className="text-[var(--text2)]">When you buy products on Ventex, they will appear here.</p>
+                  <button onClick={() => setActiveTab('Explore')} className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
                     Explore Marketplace
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {purchases.map(product => (
-                    <div key={product.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
-                      <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
+                    <div key={product.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+                      <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
                         {product.images_urls?.[0] ? (
                           <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
@@ -590,11 +590,11 @@ export default function MarketplacePage() {
 
                       <div className="p-5 flex flex-col flex-grow">
                         <Link href={`/marketplace/${product.id}`}>
-                          <h3 className="font-bold text-[#222222] dark:text-white text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
+                          <h3 className="font-bold text-[var(--text)]  text-base leading-tight group-hover:underline decoration-2 underline-offset-2">{product.name}</h3>
                         </Link>
                         
-                        <div className="mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-end">
-                          <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors shadow-md">
+                        <div className="mt-auto pt-4 border-t-[0.5px] border-[var(--border)]  flex justify-end">
+                          <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)]  px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors shadow-md">
                             Access Product
                           </Link>
                         </div>

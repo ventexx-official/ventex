@@ -57,14 +57,14 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center p-4">
-      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+    <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center p-4">
+      <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-black italic tracking-tighter text-[#222222] dark:text-white uppercase">
+          <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)]  uppercase">
             Ventex
           </Link>
-          <h1 className="text-xl font-bold mt-4 text-[#222222] dark:text-white">Welcome back</h1>
-          <p className="text-sm text-[#888888] mt-2">Log in to your Ventex account.</p>
+          <h1 className="text-xl font-bold mt-4 text-[var(--text)] ">Welcome back</h1>
+          <p className="text-sm text-[var(--text2)] mt-2">Log in to your Ventex account.</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -75,10 +75,10 @@ export default function Login() {
           )}
           
           <div>
-            <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Email address</label>
+            <label className="block text-sm font-bold text-[var(--text)]  mb-1.5">Email address</label>
             <input
               type="email"
-              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+              className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -87,12 +87,12 @@ export default function Login() {
 
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label className="block text-sm font-bold text-[#222222] dark:text-white">Password</label>
-              <Link href="/forgot-password" className="text-xs text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors">Forgot password?</Link>
+              <label className="block text-sm font-bold text-[var(--text)] ">Password</label>
+              <Link href="/forgot-password" className="text-xs text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors">Forgot password?</Link>
             </div>
             <input
               type="password"
-              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+              className="w-full border-[0.5px] border-[var(--border)]  rounded-md px-3 py-2 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -102,21 +102,21 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
+            className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <div className="flex items-center my-6">
-          <div className="flex-grow border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333]"></div>
-          <span className="px-3 text-xs text-[#888888] uppercase tracking-wider font-medium">or</span>
-          <div className="flex-grow border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333]"></div>
+          <div className="flex-grow border-t-[0.5px] border-[var(--border)] "></div>
+          <span className="px-3 text-xs text-[var(--text2)] uppercase tracking-wider font-medium">or</span>
+          <div className="flex-grow border-t-[0.5px] border-[var(--border)] "></div>
         </div>
 
         <button
           onClick={handleGoogleAuth}
-          className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white py-2.5 rounded-md text-sm font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors"
+          className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[var(--border)]  bg-[var(--card-bg)]  text-[var(--text)]  py-2.5 rounded-md text-sm font-bold hover:bg-[var(--bg)] dark:hover:bg-[#333333] transition-colors"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -128,7 +128,7 @@ export default function Login() {
         </button>
 
         <div className="text-center mt-6">
-          <Link href="/signup" className="text-sm text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors">
+          <Link href="/signup" className="text-sm text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors">
             Don't have an account? <span className="font-bold underline decoration-[0.5px] underline-offset-4">Sign up &rarr;</span>
           </Link>
         </div>

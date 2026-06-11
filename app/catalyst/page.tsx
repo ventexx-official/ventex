@@ -119,7 +119,7 @@ export default function CatalystPage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-black tracking-tight text-[var(--text)]">Join the Catalyst Network</h2>
           </div>
-          <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-10 flex flex-col items-center text-center">
+          <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] p-10 flex flex-col items-center text-center">
             <h3 className="text-xl font-bold text-[var(--text)] mb-4">Are you an experienced operator, founder, or investor?</h3>
             <p className="text-[var(--text3)] mb-6 max-w-xl">We are currently onboarding the first cohort of Ventex Catalysts. Apply now to get early access and start mentoring the next generation of startups.</p>
             <button 
@@ -134,8 +134,8 @@ export default function CatalystPage() {
         {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-              <div className="p-5 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-between items-center bg-[var(--bg2)]">
+            <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+              <div className="p-5 border-b-[0.5px] border-[var(--border)]  flex justify-between items-center bg-[var(--bg2)]">
                 <h2 className="text-xl font-black tracking-tight text-[var(--text)]">Apply to Ventex Catalyst</h2>
                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-[var(--bg3)] rounded-full transition-colors">
                   <X className="w-5 h-5 text-[var(--text3)]" />

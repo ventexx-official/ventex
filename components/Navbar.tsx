@@ -7,6 +7,23 @@ import { supabase } from '@/lib/supabase';
 import { useRouter, usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 
+// Hook: detect scroll direction and return 'up' | 'down'
+function useScrollDirection() {
+  const [direction, setDirection] = useState<'up' | 'down'>('up');
+  const lastY = useRef(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      if (y < 60) { setDirection('up'); lastY.current = y; return; }
+      setDirection(y > lastY.current ? 'down' : 'up');
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  return direction;
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -18,6 +35,10 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const avatarMenuRef = useRef<HTMLDivElement | null>(null);
+  const scrollDirection = useScrollDirection();
+  const isHome = pathname === '/';
+  // On non-home pages collapse center + right pills when scrolling down
+  const pillsHidden = !isHome && scrollDirection === 'down';
 
   const fetchCartCount = async (userId: string) => {
     const { count } = await supabase
@@ -152,8 +173,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Center Pill - Desktop Nav Links */}
-          <div className="hidden md:flex justify-center">
+          {/* Center Pill - Desktop Nav Links - collapses on non-home scroll-down */}
+          <div className={`hidden md:flex justify-center transition-all duration-500 ${pillsHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'}`}>
             <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
               {navLinks.map(link => (
                 <Link
@@ -171,8 +192,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Right Pill - Actions */}
-          <div className="flex justify-end gap-2">
+          {/* Right Pill - Actions - collapses on non-home scroll-down */}
+          <div className={`flex justify-end gap-2 transition-all duration-500 ${pillsHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'}`}>
             <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
               {user ? (
                 <>

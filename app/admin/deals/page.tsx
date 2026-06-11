@@ -97,7 +97,7 @@ export default function AdminDealsPage() {
           ["Overdue deals", overdue.length],
           ["Banned accounts", blacklist.length],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)] p-5">
+          <div key={label} className="rounded-[24px] border border-[0.5px] border-[var(--border)]  bg-[var(--bg)] p-5">
             <p className="text-xs uppercase tracking-[.14em] text-[var(--text3)]">{label}</p>
             <p className="mt-3 text-3xl font-black text-[var(--text)]">{value}</p>
           </div>
@@ -116,8 +116,8 @@ export default function AdminDealsPage() {
         </p>
       </section>
 
-      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)]">
-        <div className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-4">
+      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[var(--border)]  bg-[var(--bg)]">
+        <div className="border-b border-[0.5px] border-[var(--border)]  p-4">
           <h3 className="font-black text-[var(--text)]">All deals</h3>
         </div>
         <table className="w-full min-w-[900px] text-left text-sm">
@@ -128,7 +128,7 @@ export default function AdminDealsPage() {
             {deals.map((deal) => {
               const enforcement = getDealEnforcementState(deal);
               return (
-                <tr key={deal.id} className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                <tr key={deal.id} className="border-t border-[0.5px] border-[var(--border)] ">
                   <td className="p-4 font-bold text-[var(--text)]">{deal.pitch?.title || "-"}</td>
                   <td className="p-4 text-[var(--text2)]">{deal.founder?.full_name || deal.founder?.email || "-"}</td>
                   <td className="p-4 text-[var(--text2)]">{deal.investor?.full_name || deal.investor?.email || "-"}</td>
@@ -154,8 +154,8 @@ export default function AdminDealsPage() {
         </table>
       </section>
 
-      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg)]">
-        <div className="border-b border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-4">
+      <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[var(--border)]  bg-[var(--bg)]">
+        <div className="border-b border-[0.5px] border-[var(--border)]  p-4">
           <h3 className="font-black text-[var(--text)]">Banned accounts</h3>
         </div>
         <table className="w-full min-w-[700px] text-left text-sm">
@@ -164,7 +164,7 @@ export default function AdminDealsPage() {
           </thead>
           <tbody>
             {blacklist.map((row) => (
-              <tr key={row.id} className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+              <tr key={row.id} className="border-t border-[0.5px] border-[var(--border)] ">
                 <td className="p-4 text-[var(--text2)]">{row.email || "-"}</td>
                 <td className="p-4 text-[var(--text2)]">{row.pan_number || "-"}</td>
                 <td className="p-4 text-[var(--text2)]">{row.reason || "-"}</td>

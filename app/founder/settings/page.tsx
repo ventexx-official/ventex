@@ -131,8 +131,8 @@ export default function FounderSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     );
   }
@@ -141,27 +141,27 @@ export default function FounderSettingsPage() {
   const mainML = sidebarCollapsed ? "md:ml-[72px]" : "md:ml-[240px]";
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
       {/* Sidebar */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
           {!sidebarCollapsed && (
-            <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
+            <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
           )}
-          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] transition-colors text-[#888888] hover:text-[#222222] ml-auto">
+          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto">
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
         </div>
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
-                {avatarUrl ? <img src={avatarUrl} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+            <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
+                {avatarUrl ? <img src={avatarUrl} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#222222] truncate">{fullName || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <p className="text-sm font-bold text-[var(--text)] truncate">{fullName || "Founder"}</p>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
               </div>
             </div>
           </div>
@@ -192,10 +192,10 @@ export default function FounderSettingsPage() {
         <div className="max-w-3xl mx-auto space-y-8">
           {/* Header */}
           <header>
-            <h1 className="text-3xl font-black text-[#222222] tracking-tighter uppercase flex items-center gap-2">
-              <Settings className="w-8 h-8 text-[#222222]" /> Settings
+            <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter uppercase flex items-center gap-2">
+              <Settings className="w-8 h-8 text-[var(--text)]" /> Settings
             </h1>
-            <p className="text-[#888888] font-medium text-sm mt-1">Configure your personal and merchant preferences for Ventex.</p>
+            <p className="text-[var(--text2)] font-medium text-sm mt-1">Configure your personal and merchant preferences for Ventex.</p>
           </header>
 
           {/* Messages */}
@@ -214,22 +214,22 @@ export default function FounderSettingsPage() {
           )}
 
           {/* Settings Form */}
-          <form onSubmit={handleSave} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
+          <form onSubmit={handleSave} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 md:p-8 shadow-sm">
             {/* Profile Information */}
             <section className="space-y-6">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2 flex items-center gap-2">
-                <User className="w-4 h-4 text-[#888888]" /> 01. Profile Details
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2 flex items-center gap-2">
+                <User className="w-4 h-4 text-[var(--text2)]" /> 01. Profile Details
               </h3>
 
               <div className="flex flex-col sm:flex-row gap-6 items-center">
                 <div className="relative group">
-                  <div className="w-24 h-24 rounded-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden">
-                    {avatarUrl ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-[#888888]" />}
+                  <div className="w-24 h-24 rounded-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden">
+                    {avatarUrl ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-[var(--text2)]" />}
                   </div>
                   <button
                     type="button"
                     onClick={generateRandomAvatar}
-                    className="absolute -bottom-1 -right-1 bg-[#222222] hover:bg-black text-white p-2 rounded-full shadow-lg transition-transform duration-200 active:scale-90"
+                    className="absolute -bottom-1 -right-1 bg-[var(--text)] hover:bg-black text-[var(--text)] p-2 rounded-full shadow-lg transition-transform duration-200 active:scale-90"
                     title="Generate Random Avatar"
                   >
                     <Camera className="w-3.5 h-3.5" />
@@ -238,25 +238,25 @@ export default function FounderSettingsPage() {
 
                 <div className="flex-1 w-full space-y-4">
                   <div className="space-y-2">
-                    <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Full Name</label>
+                    <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Full Name</label>
                     <input
                       type="text"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Enter your name"
-                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                      className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Avatar URL</label>
+                    <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Avatar URL</label>
                     <input
                       type="text"
                       value={avatarUrl}
                       onChange={(e) => setAvatarUrl(e.target.value)}
                       placeholder="https://api.dicebear.com/..."
-                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                      className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                     />
                   </div>
                 </div>
@@ -265,20 +265,20 @@ export default function FounderSettingsPage() {
 
             {/* Merchant / Seller Settings */}
             <section className="space-y-6 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2 flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-[#888888]" /> 02. Seller Configuration
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2 flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-[var(--text2)]" /> 02. Seller Configuration
               </h3>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-[#F2F2F0] rounded-2xl border-[0.5px] border-[#e5e5e5]">
+                <div className="flex items-center justify-between p-4 bg-[var(--bg)] rounded-2xl border-[0.5px] border-[var(--border)]">
                   <div>
-                    <h4 className="text-sm font-bold text-[#222222]">Register as Marketplace Seller</h4>
-                    <p className="text-[11px] text-[#888888] font-semibold mt-0.5">Toggle to list products and custom packages on Ventex.</p>
+                    <h4 className="text-sm font-bold text-[var(--text)]">Register as Marketplace Seller</h4>
+                    <p className="text-[11px] text-[var(--text2)] font-semibold mt-0.5">Toggle to list products and custom packages on Ventex.</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setIsSeller(!isSeller)}
-                    className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${isSeller ? "bg-[#222222]" : "bg-gray-300"}`}
+                    className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${isSeller ? "bg-[var(--text)]" : "bg-gray-300"}`}
                   >
                     <div className={`bg-[var(--card-bg)] w-4 h-4 rounded-full shadow-md transform duration-300 ${isSeller ? "translate-x-6" : ""}`} />
                   </button>
@@ -287,15 +287,15 @@ export default function FounderSettingsPage() {
                 {isSeller && (
                   <div className="space-y-4 pt-2 animate-fadeIn">
                     <div className="space-y-2">
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Stripe Connect Custom Account ID</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Stripe Connect Custom Account ID</label>
                       <input
                         type="text"
                         value={stripeConnectId}
                         onChange={(e) => setStripeConnectId(e.target.value)}
                         placeholder="acct_xxxxxxxxxxxx"
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                        className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
-                      <p className="text-[10px] text-[#888888] font-bold">
+                      <p className="text-[10px] text-[var(--text2)] font-bold">
                         Provide your Stripe Account ID to route checkout payments and payouts automatically.
                       </p>
                     </div>
@@ -306,22 +306,22 @@ export default function FounderSettingsPage() {
 
             {/* Notification and Security Placeholder */}
             <section className="space-y-6 pt-2">
-              <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#888888]" /> 03. Notification & Account Security
+              <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[var(--text2)]" /> 03. Notification & Account Security
               </h3>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-[#888888] text-xs font-bold bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5]">
+                <div className="flex items-center gap-3 text-[var(--text2)] text-xs font-bold bg-[var(--bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)]">
                   <Mail className="w-4 h-4" />
                   <span>Email notifications are enabled automatically for investor interests & product sales.</span>
                 </div>
-                <div className="flex flex-col gap-4 bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 bg-[var(--bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)] sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-[#222222]">Two-Factor Authentication</h4>
-                    <p className="mt-1 text-xs font-semibold text-[#888888]">Protect your account with an authenticator app.</p>
-                    <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[#888888]">Status: {twoFactorEnabled ? "Enabled" : "Not enabled"}</p>
+                    <h4 className="text-sm font-bold text-[var(--text)]">Two-Factor Authentication</h4>
+                    <p className="mt-1 text-xs font-semibold text-[var(--text2)]">Protect your account with an authenticator app.</p>
+                    <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[var(--text2)]">Status: {twoFactorEnabled ? "Enabled" : "Not enabled"}</p>
                   </div>
-                  <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[#222222] px-5 py-2.5 text-sm font-black text-white disabled:opacity-50">
+                  <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--text)] disabled:opacity-50">
                     {enrolling2fa ? "Starting..." : "Enable 2FA"}
                   </button>
                 </div>
@@ -329,11 +329,11 @@ export default function FounderSettingsPage() {
             </section>
 
             {/* Save Buttons */}
-            <div className="pt-4 border-t-[0.5px] border-[#e5e5e5] flex justify-end">
+            <div className="pt-4 border-t-[0.5px] border-[var(--border)] flex justify-end">
               <button
                 type="submit"
                 disabled={saving}
-                className="px-6 py-3 bg-[#222222] hover:bg-black text-white text-sm font-black rounded-2xl shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2"
+                className="px-6 py-3 bg-[var(--text)] hover:bg-black text-[var(--text)] text-sm font-black rounded-2xl shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2"
               >
                 {saving ? (
                   <>
@@ -354,8 +354,8 @@ export default function FounderSettingsPage() {
 function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
   return (
     <Link href={href} title={collapsed ? label : undefined}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? "bg-[#222222] text-white shadow-lg shadow-black/10" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"} ${collapsed ? "justify-center" : ""}`}>
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-white" : "text-[#888888] group-hover:text-[#222222]"}`} />
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? "bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"} ${collapsed ? "justify-center" : ""}`}>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--text)]" : "text-[var(--text2)] group-hover:text-[var(--text)]"}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -363,7 +363,7 @@ function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
 
 function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
   return (
-    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? "bg-[#222222] text-white" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"}`}>
+    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? "bg-[var(--text)] text-[var(--text)]" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"}`}>
       <Icon className="w-4 h-4" />
       <span className="text-[9px] font-bold">{label}</span>
     </Link>

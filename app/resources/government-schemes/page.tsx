@@ -26,28 +26,28 @@ export default function GovernmentSchemesPage() {
     <div className="max-w-3xl mx-auto px-4 py-16">
       <Link
         href="/"
-        className="text-sm text-[#888888] hover:text-[#222222] dark:hover:text-white mb-8 inline-block"
+        className="text-sm text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] mb-8 inline-block"
       >
         &larr; Back to home
       </Link>
-      <h1 className="text-3xl font-bold text-[#222222] dark:text-white mb-12">
+      <h1 className="text-3xl font-bold text-[var(--text)]  mb-12">
         Government Schemes for Indian Startups
       </h1>
       <div className="space-y-6">
         {schemes.map((scheme) => (
           <article
             key={scheme.name}
-            className="bg-[var(--card-bg)] dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444]"
+            className="bg-[var(--card-bg)] dark:bg-[var(--text)] p-6 rounded-[12px] border-[0.5px] border-[var(--border)] dark:border-[#444444]"
           >
-            <h2 className="font-bold text-[#222222] dark:text-white mb-2">{scheme.name}</h2>
-            <p className="text-[#888888] text-sm leading-relaxed mb-4 line-clamp-2">
+            <h2 className="font-bold text-[var(--text)]  mb-2">{scheme.name}</h2>
+            <p className="text-[var(--text2)] text-sm leading-relaxed mb-4 line-clamp-2">
               {scheme.description}
             </p>
             <a
               href={scheme.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-[#222222] dark:text-white hover:underline underline-offset-4"
+              className="text-sm font-medium text-[var(--text)]  hover:underline underline-offset-4"
             >
               Official website &rarr;
             </a>

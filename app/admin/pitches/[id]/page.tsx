@@ -237,9 +237,9 @@ export default function PitchReviewDetails() {
       </div>
 
       {/* Profile Header Header */}
-      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-[24px] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex items-center justify-center text-[var(--text2)] font-bold overflow-hidden">
+          <div className="h-16 w-16 rounded-[24px] bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  flex items-center justify-center text-[var(--text2)] font-bold overflow-hidden">
             {pitch.logo_url ? (
               <img src={pitch.logo_url} alt={pitch.title} className="h-full w-full object-cover" />
             ) : (
@@ -308,7 +308,7 @@ export default function PitchReviewDetails() {
           )}
           {pitch.status !== "pending" && (
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--bg2)]/30 rounded-[24px]">
+              <div className="px-4 py-2 border border-[0.5px] border-[var(--border)]  bg-[var(--bg2)]/30 rounded-[24px]">
                 <span className="text-xs text-[var(--text2)]">Current Status: </span>
                 <span className={`text-xs font-bold uppercase tracking-wider ${
                   pitch.status === "live" ? "text-emerald-400" : pitch.status === "rejected" ? "text-red-400" : "text-[var(--text)]"
@@ -325,7 +325,7 @@ export default function PitchReviewDetails() {
                   setActionLoading(false);
                 }}
                 disabled={actionLoading}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[var(--bg2)] hover:bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-bold text-[var(--text2)] rounded-[24px] transition-all"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[var(--bg2)] hover:bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-bold text-[var(--text2)] rounded-[24px] transition-all"
               >
                 Reset to Pending
               </button>
@@ -350,7 +350,7 @@ export default function PitchReviewDetails() {
             onChange={(e) => setRejectionReason(e.target.value)}
             placeholder="e.g. Please fill out the financial section with actual metrics, and upload a valid pitch deck PDF."
             rows={4}
-            className="w-full p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all resize-none"
+            className="w-full p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all resize-none"
           />
           <div className="flex justify-end gap-3">
             <button
@@ -359,7 +359,7 @@ export default function PitchReviewDetails() {
                 setRejectionReason("");
               }}
               disabled={actionLoading}
-              className="px-3.5 py-1.5 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-bold text-[var(--text2)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+              className="px-3.5 py-1.5 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-bold text-[var(--text2)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
             >
               Cancel
             </button>
@@ -379,10 +379,10 @@ export default function PitchReviewDetails() {
         {/* Left Column: Core Description & Q&A */}
         <div className="lg:col-span-2 space-y-6">
           {/* Deck & Video Attachments */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Attachments</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-[24px] bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-between items-center">
+              <div className="p-4 rounded-[24px] bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center">
                     <FileText size={18} />
@@ -406,7 +406,7 @@ export default function PitchReviewDetails() {
                 )}
               </div>
 
-              <div className="p-4 rounded-[24px] bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-between items-center">
+              <div className="p-4 rounded-[24px] bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 flex items-center justify-center">
                     <Globe size={18} />
@@ -433,43 +433,43 @@ export default function PitchReviewDetails() {
           </div>
 
           {/* Details Sections */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-6">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-6">
             <div>
               <h4 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono mb-2">Short Description</h4>
-              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 {pitch.short_description || "No short description provided."}
               </p>
             </div>
 
             <div>
               <h4 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono mb-2">Problem</h4>
-              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 {pitch.problem || "No problem statement provided."}
               </p>
             </div>
 
             <div>
               <h4 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono mb-2">Solution</h4>
-              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 {pitch.solution || "No solution statement provided."}
               </p>
             </div>
 
             <div>
               <h4 className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider font-mono mb-2">Unique Insight</h4>
-              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <p className="text-sm text-[var(--text)] leading-relaxed bg-[var(--bg)]/40 p-4 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 {pitch.unique_insight || "No unique insight statement provided."}
               </p>
             </div>
           </div>
 
           {/* Q&A Data */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Pitch Q&A</h3>
             {pitch.qa_data && Object.keys(pitch.qa_data).length > 0 ? (
               <div className="space-y-4">
                 {Object.entries(pitch.qa_data).map(([q, a]) => (
-                  <div key={q} className="p-4 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] space-y-2">
+                  <div key={q} className="p-4 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] space-y-2">
                     <p className="text-xs font-bold text-[var(--text)] flex items-start gap-1.5">
                       <HelpCircle size={14} className="text-violet-400 shrink-0 mt-0.5" />
                       {q}
@@ -484,12 +484,12 @@ export default function PitchReviewDetails() {
           </div>
 
           {/* Team Members */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Founding Team</h3>
             {pitch.team_data && pitch.team_data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {pitch.team_data.map((member: any, i: number) => (
-                  <div key={i} className="p-4 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] flex items-start gap-3">
+                  <div key={i} className="p-4 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] flex items-start gap-3">
                     <div className="h-10 w-10 rounded-full bg-violet-600/10 border border-violet-500/20 text-violet-400 flex items-center justify-center shrink-0">
                       {member.avatar_url ? (
                         <img src={member.avatar_url} alt={member.name} className="h-full w-full rounded-full object-cover" />
@@ -514,15 +514,15 @@ export default function PitchReviewDetails() {
         {/* Right Column: Key Details & Financial Metrics */}
         <div className="space-y-6">
           {/* Founder Profile Details */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Founder Profile</h3>
             {pitch.users ? (
               <div className="space-y-3">
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase font-bold tracking-wider">Full Name</p>
                   <p className="text-sm font-bold text-[var(--text)] mt-0.5">{pitch.users.full_name || "Unknown Founder"}</p>
                 </div>
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase font-bold tracking-wider">Email Address</p>
                   <p className="text-xs text-violet-400 font-semibold mt-0.5">{pitch.users.email}</p>
                 </div>
@@ -533,17 +533,17 @@ export default function PitchReviewDetails() {
           </div>
 
           {/* Funding Details */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Funding Details</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase">Seeking</p>
                   <p className="text-sm font-bold text-[var(--text)] mt-0.5">
                     {pitch.amount_seeking ? `$${Number(pitch.amount_seeking).toLocaleString()}` : "N/A"}
                   </p>
                 </div>
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase">Equity</p>
                   <p className="text-sm font-bold text-[var(--text)] mt-0.5">
                     {pitch.equity_pct ? `${pitch.equity_pct}%` : "N/A"}
@@ -552,24 +552,24 @@ export default function PitchReviewDetails() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase font-bold text-amber-500">Committed</p>
                   <p className="text-sm font-bold text-amber-500 mt-0.5">
                     {pitch.already_committed ? `$${Number(pitch.already_committed).toLocaleString()}` : "$0"}
                   </p>
                 </div>
-                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+                <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                   <p className="text-[10px] text-[var(--text3)] font-mono uppercase">Round Type</p>
                   <p className="text-sm font-bold text-[var(--text)] mt-0.5 capitalize">{pitch.round_type || "N/A"}</p>
                 </div>
               </div>
 
-              <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 <p className="text-[10px] text-[var(--text3)] font-mono uppercase">Use of Funds</p>
                 <p className="text-xs text-[var(--text2)] mt-1 leading-relaxed">{pitch.use_of_funds || "N/A"}</p>
               </div>
 
-              <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+              <div className="p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px]">
                 <p className="text-[10px] text-[var(--text3)] font-mono uppercase">Committed Investors</p>
                 <p className="text-xs text-[var(--text2)] mt-1 leading-relaxed">{pitch.committed_investors || "N/A"}</p>
               </div>
@@ -577,28 +577,28 @@ export default function PitchReviewDetails() {
           </div>
 
           {/* Financial Performance */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Financial Metrics</h3>
             <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">MRR</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.mrr ? `$${Number(pitch.mrr).toLocaleString()}` : "$0"}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">ARR</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.arr ? `$${Number(pitch.arr).toLocaleString()}` : "$0"}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">MoM Growth Rate</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.mom_growth || "0%"}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">LTV / CAC Ratio</span>
                 <span className="font-bold text-[var(--text)] font-mono">
                   {pitch.ltv || "â€”"} / {pitch.cac || "â€”"}
                 </span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">Active Users</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.users_count ? Number(pitch.users_count).toLocaleString() : "0"}</span>
               </div>
@@ -606,18 +606,18 @@ export default function PitchReviewDetails() {
           </div>
 
           {/* Market Focus */}
-          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-6 space-y-4">
+          <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-6 space-y-4">
             <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider font-mono">Market TAM / SAM / SOM</h3>
             <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">TAM (Total Addressable)</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.tam ? `$${Number(pitch.tam).toLocaleString()}` : "N/A"}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">SAM (Serviceable Addressable)</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.sam ? `$${Number(pitch.sam).toLocaleString()}` : "N/A"}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs">
+              <div className="flex justify-between items-center p-3 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs">
                 <span className="text-[var(--text2)]">SOM (Serviceable Obtainable)</span>
                 <span className="font-bold text-[var(--text)] font-mono">{pitch.som ? `$${Number(pitch.som).toLocaleString()}` : "N/A"}</span>
               </div>

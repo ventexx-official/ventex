@@ -221,8 +221,8 @@ export default function DealRoomChat() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -230,18 +230,18 @@ export default function DealRoomChat() {
   // Deal Room is not accepted state
   if (interest?.status !== 'accepted') {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center p-4">
-        <div className="bg-[var(--card-bg)] max-w-md w-full rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] shadow-2xl text-center space-y-6">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
+        <div className="bg-[var(--card-bg)] max-w-md w-full rounded-[32px] p-8 border-[0.5px] border-[var(--border)] shadow-2xl text-center space-y-6">
           <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto">
             <Lock className="w-8 h-8 text-amber-500" />
           </div>
-          <h2 className="text-xl font-black text-[#222222] uppercase tracking-tight">Deal Room Locked</h2>
-          <p className="text-sm text-[#888888] leading-relaxed">
+          <h2 className="text-xl font-black text-[var(--text)] uppercase tracking-tight">Deal Room Locked</h2>
+          <p className="text-sm text-[var(--text2)] leading-relaxed">
             The deal room for <strong>"{interest?.pitch?.title || 'this Pitch'}"</strong> has not been unlocked. The founder must Accept your interest request in their dashboard to unlock this secure messaging channel.
           </p>
           <button 
             onClick={() => router.push('/discover')}
-            className="w-full py-3 bg-[#222222] hover:bg-black text-white font-bold rounded-2xl text-sm transition-all"
+            className="w-full py-3 bg-[var(--text)] hover:bg-black text-[var(--text)] font-bold rounded-2xl text-sm transition-all"
           >
             Return to Discover
           </button>
@@ -255,31 +255,31 @@ export default function DealRoomChat() {
     : { name: interest.investor?.full_name || 'Investor', email: interest.investor?.email, avatar: interest.investor?.avatar_url };
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] flex flex-col">
+    <div className="min-h-screen bg-[var(--bg)] flex flex-col">
       {/* HEADER */}
-      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between flex-shrink-0 z-10">
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] px-6 py-4 flex items-center justify-between flex-shrink-0 z-10">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => router.back()}
-            className="p-2 hover:bg-[#F2F2F0] rounded-full text-[#888888] hover:text-[#222222] transition-colors"
+            className="p-2 hover:bg-[var(--bg)] rounded-full text-[var(--text2)] hover:text-[var(--text)] transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
               {otherUser.avatar ? (
                 <img src={otherUser.avatar} alt="" className="w-full h-full object-cover" />
               ) : (
-                <User className="w-5 h-5 text-[#888888]" />
+                <User className="w-5 h-5 text-[var(--text2)]" />
               )}
             </div>
             <div>
-              <h2 className="font-black text-sm text-[#222222] leading-tight uppercase tracking-tight flex items-center gap-1.5">
+              <h2 className="font-black text-sm text-[var(--text)] leading-tight uppercase tracking-tight flex items-center gap-1.5">
                 {otherUser.name} 
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               </h2>
-              <p className="text-[10px] text-[#888888] font-bold uppercase tracking-wider">
+              <p className="text-[10px] text-[var(--text2)] font-bold uppercase tracking-wider">
                 Secure Deal Room Chat
               </p>
             </div>
@@ -292,7 +292,7 @@ export default function DealRoomChat() {
           className={`flex items-center gap-1.5 px-4 py-2 border-[0.5px] rounded-full text-xs font-bold transition-all ${
             isReported 
               ? 'bg-red-50 text-red-500 border-red-200' 
-              : 'border-[#e5e5e5] text-[#888888] hover:text-red-500 hover:bg-red-50 hover:border-red-200'
+              : 'border-[var(--border)] text-[var(--text2)] hover:text-red-500 hover:bg-red-50 hover:border-red-200'
           }`}
         >
           <ShieldAlert className="w-4 h-4" />
@@ -304,11 +304,11 @@ export default function DealRoomChat() {
       <div className="flex-grow overflow-y-auto px-6 py-6 space-y-4">
         {messages.length === 0 ? (
           <div className="max-w-md mx-auto text-center space-y-3 py-12">
-            <div className="w-12 h-12 bg-[var(--card-bg)] rounded-full flex items-center justify-center mx-auto border-[0.5px] border-[#e5e5e5]">
-              <MessageSquare className="w-5 h-5 text-[#888888]" />
+            <div className="w-12 h-12 bg-[var(--card-bg)] rounded-full flex items-center justify-center mx-auto border-[0.5px] border-[var(--border)]">
+              <MessageSquare className="w-5 h-5 text-[var(--text2)]" />
             </div>
-            <h3 className="font-bold text-[#222222] text-sm uppercase tracking-tight">Deal Room Initialized</h3>
-            <p className="text-xs text-[#888888] leading-relaxed">
+            <h3 className="font-bold text-[var(--text)] text-sm uppercase tracking-tight">Deal Room Initialized</h3>
+            <p className="text-xs text-[var(--text2)] leading-relaxed">
               This is a secure, end-to-end moderated chat channel for sharing private discussions and deal queries. Keep your transactions and conversations strictly on Ventex.
             </p>
           </div>
@@ -322,23 +322,23 @@ export default function DealRoomChat() {
                 className={`flex gap-3 max-w-[80%] md:max-w-[60%] ${isMe ? 'ml-auto flex-row-reverse' : ''}`}
               >
                 {!isMe && (
-                  <div className="w-8 h-8 rounded-lg bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                     {message.sender?.avatar_url ? (
                       <img src={message.sender.avatar_url} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <User className="w-3.5 h-3.5 text-[#888888]" />
+                      <User className="w-3.5 h-3.5 text-[var(--text2)]" />
                     )}
                   </div>
                 )}
                 <div className="space-y-1">
                   <div className={`p-4 rounded-3xl text-sm leading-relaxed shadow-sm ${
                     isMe 
-                      ? 'bg-[#222222] text-white rounded-tr-none' 
-                      : 'bg-[var(--card-bg)] text-[#222222] border-[0.5px] border-[#e5e5e5] rounded-tl-none'
+                      ? 'bg-[var(--text)] text-[var(--text)] rounded-tr-none' 
+                      : 'bg-[var(--card-bg)] text-[var(--text)] border-[0.5px] border-[var(--border)] rounded-tl-none'
                   }`}>
                     <p className="whitespace-pre-wrap">{message.content}</p>
                   </div>
-                  <div className={`flex items-center gap-1.5 text-[10px] text-[#888888] px-1 ${isMe ? 'justify-end' : ''}`}>
+                  <div className={`flex items-center gap-1.5 text-[10px] text-[var(--text2)] px-1 ${isMe ? 'justify-end' : ''}`}>
                     <Clock className="w-3 h-3" />
                     <span>{timeStr}</span>
                     {isMe && <Check className="w-3 h-3 text-emerald-500" />}
@@ -352,7 +352,7 @@ export default function DealRoomChat() {
       </div>
 
       {/* CHAT INPUT AREA */}
-      <div className="bg-[var(--card-bg)] border-t-[0.5px] border-[#e5e5e5] p-4 flex-shrink-0">
+      <div className="bg-[var(--card-bg)] border-t-[0.5px] border-[var(--border)] p-4 flex-shrink-0">
         <div className="max-w-4xl mx-auto space-y-3">
           {moderationWarning && (
             <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex gap-3 items-center animate-in slide-in-from-bottom-2 duration-200">
@@ -372,18 +372,18 @@ export default function DealRoomChat() {
                 if (moderationWarning) validateMessage(e.target.value);
               }}
               placeholder="Send secure message..."
-              className="flex-grow px-5 py-3.5 rounded-2xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] text-sm text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
+              className="flex-grow px-5 py-3.5 rounded-2xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] text-sm text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
             />
             <button 
               type="submit"
               disabled={sending || !newMessage.trim()}
-              className="px-5 rounded-2xl bg-[#222222] text-white flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-5 rounded-2xl bg-[var(--text)] text-[var(--text)] flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="w-4 h-4" />
             </button>
           </form>
 
-          <p className="text-[10px] text-center text-[#888888] font-medium flex items-center justify-center gap-1.5">
+          <p className="text-[10px] text-center text-[var(--text2)] font-medium flex items-center justify-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             Messages are real-time, secured, and scanned by standard content safety.
           </p>

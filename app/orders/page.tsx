@@ -189,46 +189,46 @@ export default function OrdersDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--bg)]  py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Back Link */}
         <Link 
           href="/marketplace" 
-          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Return to Marketplace
         </Link>
 
         {/* Dashboard Header Header */}
-        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[var(--border)]  shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-600 to-indigo-600"></div>
           <div className="space-y-2">
-            <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
+            <h1 className="text-3xl font-black text-[var(--text)]  uppercase tracking-tighter flex items-center gap-3">
               <ShoppingBag className="w-8 h-8 text-violet-600" />
               My Purchases
             </h1>
-            <p className="text-[#888888] text-sm font-medium">
+            <p className="text-[var(--text2)] text-sm font-medium">
               Manage your purchases, download digital resources, and provide feedback on startup assets.
             </p>
           </div>
           
           {/* Dynamic Search Box */}
           <div className="relative w-full md:w-80 flex-shrink-0">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#888888]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--text2)]" />
             <input 
               type="text" 
               placeholder="Search products or sellers..." 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
+              className="w-full pl-11 pr-4 py-3 bg-[var(--bg)]  border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[var(--text)] focus:border-[#222222] dark:focus:border-white transition-all text-[var(--text)]  placeholder-[#888888]"
             />
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function OrdersDashboard() {
         <div className="flex flex-col md:flex-row gap-8 items-start">
           
           {/* Sidebar Navigation */}
-          <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-2xl md:rounded-3xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-x-auto md:overflow-x-visible">
+          <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-2xl md:rounded-3xl border-[0.5px] border-[var(--border)]  overflow-x-auto md:overflow-x-visible">
             {[
               { id: 'all', label: 'All Purchases', count: orders.length },
               { 
@@ -252,15 +252,15 @@ export default function OrdersDashboard() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 md:flex-none flex items-center justify-between px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'bg-violet-600 text-white shadow-md'
-                    : 'text-[#888888] hover:text-[#222222] dark:hover:text-white hover:bg-[#F2F2F0] dark:hover:bg-[#222222]'
+                    ? 'bg-violet-600 text-[var(--text)] shadow-md'
+                    : 'text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] hover:bg-[var(--bg)] dark:hover:bg-[var(--text)]'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span className={`ml-2 text-[10px] px-2 py-0.5 rounded-full font-bold ${
                   activeTab === tab.id 
-                    ? 'bg-[var(--card-bg)]/20 text-white' 
-                    : 'bg-[#F2F2F0] dark:bg-[#222222] text-[#888888]'
+                    ? 'bg-[var(--card-bg)]/20 text-[var(--text)]' 
+                    : 'bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--text2)]'
                 }`}>
                   {tab.count}
                 </span>
@@ -272,12 +272,12 @@ export default function OrdersDashboard() {
           <main className="flex-1 w-full space-y-6">
             {filteredOrders.length === 0 ? (
               /* Empty state card */
-              <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-12 text-center border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-md">
+              <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)]  shadow-md">
                 <ShoppingBag className="w-12 h-12 text-[#cccccc] dark:text-[#333333] mx-auto mb-4" />
-                <h3 className="text-lg font-black text-[#222222] dark:text-white uppercase tracking-tight mb-1">
+                <h3 className="text-lg font-black text-[var(--text)]  uppercase tracking-tight mb-1">
                   No purchases found
                 </h3>
-                <p className="text-xs text-[#888888] mb-6 max-w-xs mx-auto leading-relaxed">
+                <p className="text-xs text-[var(--text2)] mb-6 max-w-xs mx-auto leading-relaxed">
                   {searchQuery 
                     ? "Try adjusting your search query or check under another status category filter."
                     : "You haven't purchased any templates, software tools, or startup assets yet."}
@@ -285,7 +285,7 @@ export default function OrdersDashboard() {
                 {!searchQuery && (
                   <Link 
                     href="/marketplace" 
-                    className="inline-block bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+                    className="inline-block bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
                   >
                     Browse Marketplace
                   </Link>
@@ -318,13 +318,13 @@ export default function OrdersDashboard() {
                   return (
                     <div 
                       key={order.id} 
-                      className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
+                      className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)]  p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
                     >
                       {/* Top Row: Visual & Info */}
                       <div className="space-y-4">
                         <div className="flex gap-4">
                           {/* Image box */}
-                          <div className="w-16 h-16 bg-[#F2F2F0] dark:bg-[#222222] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center relative border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                          <div className="w-16 h-16 bg-[var(--bg)] dark:bg-[var(--text)] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center relative border-[0.5px] border-[var(--border)] ">
                             {product.images_urls?.[0] ? (
                               <img src={product.images_urls[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             ) : (
@@ -337,10 +337,10 @@ export default function OrdersDashboard() {
                             <span className={`inline-block text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border ${statusInfo.bg}`}>
                               {statusInfo.label}
                             </span>
-                            <h3 className="font-bold text-[#222222] dark:text-white text-sm leading-snug truncate max-w-[200px]">
+                            <h3 className="font-bold text-[var(--text)]  text-sm leading-snug truncate max-w-[200px]">
                               {product.name}
                             </h3>
-                            <p className="text-[10px] text-[#888888] font-medium flex items-center gap-1">
+                            <p className="text-[10px] text-[var(--text2)] font-medium flex items-center gap-1">
                               <User className="w-3 h-3" /> 
                               By {order.seller?.full_name || 'Anonymous'}
                             </p>
@@ -348,14 +348,14 @@ export default function OrdersDashboard() {
                         </div>
 
                         {/* Order Info Row */}
-                        <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#F2F2F0] dark:border-[#222222] text-[10px] text-[#888888] font-bold uppercase tracking-wider">
+                        <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#F2F2F0] dark:border-[#222222] text-[10px] text-[var(--text2)] font-bold uppercase tracking-wider">
                           <div className="space-y-0.5">
                             <span className="text-[9px] font-medium block text-neutral-400">Purchased On</span>
-                            <span className="text-[#222222] dark:text-white flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {dateStr}</span>
+                            <span className="text-[var(--text)]  flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {dateStr}</span>
                           </div>
                           <div className="space-y-0.5">
                             <span className="text-[9px] font-medium block text-neutral-400">Total Paid</span>
-                            <span className="text-xs font-black text-[#222222] dark:text-white">₹{order.amount_paid.toLocaleString()}</span>
+                            <span className="text-xs font-black text-[var(--text)] ">₹{order.amount_paid.toLocaleString()}</span>
                           </div>
                         </div>
                       </div>
@@ -367,7 +367,7 @@ export default function OrdersDashboard() {
                           {isDigital && order.download_url && order.status === 'paid' && (
                             <a 
                               href={order.download_url}
-                              className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl font-bold text-xs transition-colors shadow-sm"
+                              className="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-[var(--text)] px-3.5 py-2 rounded-xl font-bold text-xs transition-colors shadow-sm"
                             >
                               <Download className="w-3.5 h-3.5" /> Download
                             </a>
@@ -382,7 +382,7 @@ export default function OrdersDashboard() {
                             ) : (
                               <button
                                 onClick={() => setReviewOrder(order)}
-                                className="inline-flex items-center gap-1.5 border-[1px] border-[#222222] dark:border-white text-[#222222] dark:text-white px-3.5 py-2 rounded-xl font-bold text-xs hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors"
+                                className="inline-flex items-center gap-1.5 border-[1px] border-[#222222] dark:border-white text-[var(--text)]  px-3.5 py-2 rounded-xl font-bold text-xs hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors"
                               >
                                 <MessageSquare className="w-3.5 h-3.5" /> Review
                               </button>
@@ -394,7 +394,7 @@ export default function OrdersDashboard() {
                         {order.status === 'paid' && (
                           <Link 
                             href={`/orders/${order.id}/dispute`}
-                            className="text-[10px] font-black uppercase tracking-widest text-[#888888] hover:text-red-500 transition-colors ml-auto"
+                            className="text-[10px] font-black uppercase tracking-widest text-[var(--text2)] hover:text-red-500 transition-colors ml-auto"
                           >
                             File Dispute
                           </Link>
@@ -418,7 +418,7 @@ export default function OrdersDashboard() {
       {/* RATING & REVIEW MODAL */}
       {reviewOrder && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[var(--border)] ">
             
             <button 
               onClick={() => {
@@ -426,15 +426,15 @@ export default function OrdersDashboard() {
                 setComment('');
                 setRating(5);
               }} 
-              className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors"
+              className="absolute top-4 right-4 p-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors"
             >
-              <X className="w-4 h-4 text-[#888888]" />
+              <X className="w-4 h-4 text-[var(--text2)]" />
             </button>
 
             <div className="p-8">
-              <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] block mb-2">Verified Purchase</span>
-              <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-1">Leave a Product Review</h2>
-              <p className="text-xs text-[#888888] mb-6">Rate and review your experience with <strong>{reviewOrder.product?.name}</strong>.</p>
+              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] block mb-2">Verified Purchase</span>
+              <h2 className="text-xl font-black text-[var(--text)]  uppercase tracking-tight mb-1">Leave a Product Review</h2>
+              <p className="text-xs text-[var(--text2)] mb-6">Rate and review your experience with <strong>{reviewOrder.product?.name}</strong>.</p>
               
               {/* Star Rating Selector */}
               <div className="flex items-center gap-2 mb-6">
@@ -456,25 +456,25 @@ export default function OrdersDashboard() {
                     />
                   </button>
                 ))}
-                <span className="text-sm font-black text-[#222222] dark:text-white ml-2 bg-[#F2F2F0] dark:bg-[#333333] px-2.5 py-1 rounded-lg">
+                <span className="text-sm font-black text-[var(--text)]  ml-2 bg-[var(--bg)] dark:bg-[#333333] px-2.5 py-1 rounded-lg">
                   {rating} / 5
                 </span>
               </div>
 
               {/* Review Comment Textarea */}
-              <label className="block text-xs font-black uppercase text-[#222222] dark:text-white tracking-wider mb-2">Review Comment</label>
+              <label className="block text-xs font-black uppercase text-[var(--text)]  tracking-wider mb-2">Review Comment</label>
               <textarea 
                 rows={4}
                 value={comment}
                 onChange={e => setComment(e.target.value)}
                 placeholder="E.g. Outstanding software layout! Very clean code structure and incredibly fast load times. Highly recommend..."
-                className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white mb-6 resize-none"
+                className="w-full px-4 py-3 bg-[var(--bg)]  border-[0.5px] border-[var(--border)]  rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[var(--text)]  mb-6 resize-none"
               ></textarea>
               
               <button 
                 onClick={handleSubmitReview}
                 disabled={submittingReview || !comment.trim()}
-                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submittingReview ? 'Submitting Review...' : 'Submit Review'}
               </button>

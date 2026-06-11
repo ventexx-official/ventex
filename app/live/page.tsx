@@ -35,7 +35,7 @@ export default function LivePage() {
 
   if (!flags.ventex_live_enabled) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#0A0A0C] px-4 text-center text-white">
+      <main className="grid min-h-screen place-items-center bg-[var(--bg)] px-4 text-center text-[var(--text)]">
         <div>
           <p className="mono mb-3 text-xs uppercase tracking-[.16em] text-violet-300">Ventex Live</p>
           <h1 className="text-5xl font-black tracking-tight">Coming Soon</h1>
@@ -46,7 +46,7 @@ export default function LivePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222]">
+    <main className="min-h-screen bg-[var(--bg)] px-4 py-16 text-[var(--text)]">
       <div className="mx-auto max-w-6xl space-y-10">
         <header>
           <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventex Live  -  Monthly Pitch Night. Watch founders pitch to real investors.</h1>
@@ -64,7 +64,7 @@ export default function LivePage() {
             <input maxLength={150} placeholder="One-line pitch" value={founderForm.pitch} onChange={(e) => setFounderForm((p) => ({ ...p, pitch: e.target.value }))} className="w-full rounded-xl border p-3" />
             <textarea placeholder="Why should we pick you? (200 words max)" value={founderForm.why} onChange={(e) => setFounderForm((p) => ({ ...p, why: e.target.value }))} className="w-full rounded-xl border p-3" />
             <input placeholder="Ventex profile URL" value={founderForm.profileUrl} onChange={(e) => setFounderForm((p) => ({ ...p, profileUrl: e.target.value }))} className="w-full rounded-xl border p-3" />
-            <button disabled={!flags.live_founder_applications} className="w-full rounded-xl bg-[#222222] p-3 font-black text-white disabled:opacity-50">Submit founder application</button>
+            <button disabled={!flags.live_founder_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--text)] disabled:opacity-50">Submit founder application</button>
           </form>
 
           <form onSubmit={submitJudge} className="rounded-2xl bg-[var(--card-bg)] p-6 space-y-3">
@@ -74,7 +74,7 @@ export default function LivePage() {
             <select value={judgeForm.ticket} onChange={(e) => setJudgeForm((p) => ({ ...p, ticket: e.target.value }))} className="w-full rounded-xl border p-3">{["<₹10L", "₹10-50L", "₹50L-1Cr", ">₹1Cr", "Flexible"].map((s) => <option key={s}>{s}</option>)}</select>
             <select value={judgeForm.investedBefore} onChange={(e) => setJudgeForm((p) => ({ ...p, investedBefore: e.target.value }))} className="w-full rounded-xl border p-3"><option>Yes</option><option>No</option></select>
             <textarea placeholder="Why join as a judge?" value={judgeForm.why} onChange={(e) => setJudgeForm((p) => ({ ...p, why: e.target.value }))} className="w-full rounded-xl border p-3" />
-            <button disabled={!flags.live_investor_applications} className="w-full rounded-xl bg-[#222222] p-3 font-black text-white disabled:opacity-50">Submit judge application</button>
+            <button disabled={!flags.live_investor_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--text)] disabled:opacity-50">Submit judge application</button>
           </form>
         </div>
 

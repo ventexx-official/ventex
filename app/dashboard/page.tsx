@@ -34,8 +34,8 @@ export default function DashboardRedirectPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
     </div>
   );
 }

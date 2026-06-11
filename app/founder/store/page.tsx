@@ -196,11 +196,11 @@ export default function FounderStorePage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+      <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
         {/* Sidebar skeleton */}
-        <aside className="hidden md:flex md:flex-col md:fixed md:h-screen md:w-[240px] bg-[var(--card-bg)] border-r-[0.5px] border-[#e5e5e5] p-4 gap-3 z-10">
+        <aside className="hidden md:flex md:flex-col md:fixed md:h-screen md:w-[240px] bg-[var(--card-bg)] border-r-[0.5px] border-[var(--border)] p-4 gap-3 z-10">
           <div className="h-8 w-24 bg-[#e5e5e5] rounded-xl animate-pulse mb-4" />
-          <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl mb-4">
+          <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl mb-4">
             <div className="w-9 h-9 rounded-full bg-[#e5e5e5] animate-pulse flex-shrink-0" />
             <div className="space-y-1.5 flex-1">
               <div className="h-3 bg-[#e5e5e5] rounded-full animate-pulse" />
@@ -208,7 +208,7 @@ export default function FounderStorePage() {
             </div>
           </div>
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-10 bg-[#F2F2F0] rounded-xl animate-pulse" style={{ animationDelay: `${i * 60}ms` }} />
+            <div key={i} className="h-10 bg-[var(--bg)] rounded-xl animate-pulse" style={{ animationDelay: `${i * 60}ms` }} />
           ))}
         </aside>
         {/* Main skeleton */}
@@ -225,7 +225,7 @@ export default function FounderStorePage() {
             {/* Stat cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-[var(--card-bg)] rounded-3xl p-5 border-[0.5px] border-[#e5e5e5] space-y-3" style={{ animationDelay: `${i * 80}ms` }}>
+                <div key={i} className="bg-[var(--card-bg)] rounded-3xl p-5 border-[0.5px] border-[var(--border)] space-y-3" style={{ animationDelay: `${i * 80}ms` }}>
                   <div className="w-10 h-10 bg-[#e5e5e5] rounded-2xl animate-pulse" />
                   <div className="h-3 w-20 bg-[#e5e5e5] rounded-full animate-pulse" />
                   <div className="h-7 w-16 bg-[#e5e5e5] rounded-xl animate-pulse" />
@@ -233,8 +233,8 @@ export default function FounderStorePage() {
               ))}
             </div>
             {/* Product rows */}
-            <div className="bg-[var(--card-bg)] rounded-[32px] border-[0.5px] border-[#e5e5e5] overflow-hidden">
-              <div className="p-6 border-b border-[#e5e5e5] flex justify-between items-center">
+            <div className="bg-[var(--card-bg)] rounded-[32px] border-[0.5px] border-[var(--border)] overflow-hidden">
+              <div className="p-6 border-b border-[var(--border)] flex justify-between items-center">
                 <div className="h-5 w-28 bg-[#e5e5e5] rounded-xl animate-pulse" />
                 <div className="h-9 w-32 bg-[#e5e5e5] rounded-xl animate-pulse" />
               </div>
@@ -270,18 +270,18 @@ export default function FounderStorePage() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
           {!sidebarCollapsed && (
-            <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">
+            <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">
               Ventex
             </Link>
           )}
           <button
             onClick={() => setSidebarCollapsed(v => !v)}
-            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] transition-colors text-[#888888] hover:text-[#222222] ml-auto"
+            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto"
           >
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
@@ -289,17 +289,17 @@ export default function FounderStorePage() {
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? (
                   <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-4 h-4 text-[#888888]" />
+                  <User className="w-4 h-4 text-[var(--text2)]" />
                 )}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || "Founder"}</p>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
               </div>
             </div>
           </div>
@@ -333,12 +333,12 @@ export default function FounderStorePage() {
           {/* Header */}
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase">My Store</h1>
-              <p className="text-[#888888] font-medium text-sm mt-1">Manage listings, track sales, and fulfill custom/digital orders.</p>
+              <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase">My Store</h1>
+              <p className="text-[var(--text2)] font-medium text-sm mt-1">Manage listings, track sales, and fulfill custom/digital orders.</p>
             </div>
             <Link
               href="/founder/store/new-product"
-              className="bg-[#222222] text-white px-5 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black active:scale-95 transition-all shadow-xl shadow-black/5 w-full sm:w-auto text-center"
+              className="bg-[var(--text)] text-[var(--text)] px-5 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black active:scale-95 transition-all shadow-xl shadow-black/5 w-full sm:w-auto text-center"
             >
               <Plus className="w-5 h-5" /> Add New Product
             </Link>
@@ -347,15 +347,15 @@ export default function FounderStorePage() {
           {/* Stats grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {statCards.map((card, idx) => (
-              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-2.5 rounded-2xl ${card.color}`}>
                     <card.icon className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-black uppercase text-[#888888] tracking-widest">{card.desc}</span>
+                  <span className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest">{card.desc}</span>
                 </div>
-                <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">{card.label}</p>
-                <h3 className="text-2xl font-black text-[#222222]">{card.value}</h3>
+                <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">{card.label}</p>
+                <h3 className="text-2xl font-black text-[var(--text)]">{card.value}</h3>
               </div>
             ))}
           </div>
@@ -364,19 +364,19 @@ export default function FounderStorePage() {
             {/* Products Table (Col-span 2) */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">My Products</h2>
-                <span className="text-xs font-bold text-[#888888]">{products.length} listed</span>
+                <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">My Products</h2>
+                <span className="text-xs font-bold text-[var(--text2)]">{products.length} listed</span>
               </div>
 
-              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
+              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] overflow-hidden shadow-sm">
                 {products.length === 0 ? (
                   <div className="p-16 text-center">
                     <Store className="w-12 h-12 text-[#cccccc] mx-auto mb-4 animate-bounce" />
-                    <h3 className="text-base font-bold text-[#222222] mb-1">Your store is empty</h3>
-                    <p className="text-sm text-[#888888] mb-6">List digital products, SaaS licenses, or custom design work packages.</p>
+                    <h3 className="text-base font-bold text-[var(--text)] mb-1">Your store is empty</h3>
+                    <p className="text-sm text-[var(--text2)] mb-6">List digital products, SaaS licenses, or custom design work packages.</p>
                     <Link
                       href="/founder/store/new-product"
-                      className="inline-flex items-center gap-2 bg-[#222222] text-white px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-black transition-colors"
+                      className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--text)] px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-black transition-colors"
                     >
                       Create your first listing
                     </Link>
@@ -385,7 +385,7 @@ export default function FounderStorePage() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b-[0.5px] border-[#e5e5e5] bg-[#F9F9F8] text-[10px] font-black text-[#888888] uppercase tracking-widest">
+                        <tr className="border-b-[0.5px] border-[var(--border)] bg-[#F9F9F8] text-[10px] font-black text-[var(--text2)] uppercase tracking-widest">
                           <th className="px-6 py-4">Product Details</th>
                           <th className="px-6 py-4">Price</th>
                           <th className="px-6 py-4">Status</th>
@@ -408,16 +408,16 @@ export default function FounderStorePage() {
                               {/* Product Info */}
                               <td className="px-6 py-4">
                                 <div className="flex items-center gap-3">
-                                  <div className="w-12 h-12 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                  <div className="w-12 h-12 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] overflow-hidden flex-shrink-0 flex items-center justify-center">
                                     {product.images_urls?.[0] ? (
                                       <img src={mainImg} alt="" className="w-full h-full object-cover" />
                                     ) : (
-                                      <FileCode className="w-5 h-5 text-[#888888]" />
+                                      <FileCode className="w-5 h-5 text-[var(--text2)]" />
                                     )}
                                   </div>
                                   <div className="min-w-0">
-                                    <h4 className="font-bold text-[#222222] truncate max-w-[180px]">{product.name}</h4>
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-[#888888] bg-[#F2F2F0] px-1.5 py-0.5 rounded mt-1 inline-block">
+                                    <h4 className="font-bold text-[var(--text)] truncate max-w-[180px]">{product.name}</h4>
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text2)] bg-[var(--bg)] px-1.5 py-0.5 rounded mt-1 inline-block">
                                       {product.category || product.type}
                                     </span>
                                   </div>
@@ -425,9 +425,9 @@ export default function FounderStorePage() {
                               </td>
 
                               {/* Price */}
-                              <td className="px-6 py-4 font-bold text-[#222222]">
+                              <td className="px-6 py-4 font-bold text-[var(--text)]">
                                 {isCustom ? (
-                                  <span className="text-[#888888] text-xs">Custom Work</span>
+                                  <span className="text-[var(--text2)] text-xs">Custom Work</span>
                                 ) : (
                                   `₹${(product.price / 100).toLocaleString()}`
                                 )}
@@ -447,8 +447,8 @@ export default function FounderStorePage() {
 
                               {/* Sales / Rev */}
                               <td className="px-6 py-4 text-center">
-                                <p className="font-bold text-[#222222]">{product.sales_count || 0}</p>
-                                <p className="text-[10px] text-[#888888] font-medium mt-0.5">
+                                <p className="font-bold text-[var(--text)]">{product.sales_count || 0}</p>
+                                <p className="text-[10px] text-[var(--text2)] font-medium mt-0.5">
                                   ₹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
                                 </p>
                               </td>
@@ -458,7 +458,7 @@ export default function FounderStorePage() {
                                 <div className="flex items-center gap-2">
                                   <Link
                                     href={`/marketplace/${product.id}`}
-                                    className="px-2.5 py-1.5 border-[0.5px] border-[#e5e5e5] hover:bg-[#F2F2F0] rounded-lg text-xs font-bold transition-all text-[#222222]"
+                                    className="px-2.5 py-1.5 border-[0.5px] border-[var(--border)] hover:bg-[var(--bg)] rounded-lg text-xs font-bold transition-all text-[var(--text)]"
                                   >
                                     View
                                   </Link>
@@ -467,17 +467,17 @@ export default function FounderStorePage() {
                                   <div className="relative">
                                     <button
                                       onClick={() => setOpenMenuId(openMenuId === product.id ? null : product.id)}
-                                      className="p-1.5 hover:bg-[#F2F2F0] rounded-lg text-[#888888] hover:text-[#222222] transition-colors"
+                                      className="p-1.5 hover:bg-[var(--bg)] rounded-lg text-[var(--text2)] hover:text-[var(--text)] transition-colors"
                                     >
                                       <MoreVertical className="w-4 h-4" />
                                     </button>
 
                                     {openMenuId === product.id && (
-                                      <div className="absolute right-0 top-full mt-1 w-40 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl shadow-xl z-50 py-1 overflow-hidden">
+                                      <div className="absolute right-0 top-full mt-1 w-40 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-xl shadow-xl z-50 py-1 overflow-hidden">
                                         <button
                                           onClick={() => handleTogglePause(product.id, product.status)}
                                           disabled={updatingId === product.id || product.status === "pending"}
-                                          className="flex items-center gap-2 w-full px-3 py-2 text-left text-xs font-bold text-[#222222] hover:bg-[#F2F2F0] transition-colors disabled:opacity-40"
+                                          className="flex items-center gap-2 w-full px-3 py-2 text-left text-xs font-bold text-[var(--text)] hover:bg-[var(--bg)] transition-colors disabled:opacity-40"
                                         >
                                           {product.status === "live" ? (
                                             <><Pause className="w-3.5 h-3.5" /> Pause Listing</>
@@ -487,11 +487,11 @@ export default function FounderStorePage() {
                                         </button>
                                         <Link
                                           href={`/founder/store/edit-product?id=${product.id}`}
-                                          className="flex items-center gap-2 w-full px-3 py-2 text-xs font-bold text-[#222222] hover:bg-[#F2F2F0] transition-colors"
+                                          className="flex items-center gap-2 w-full px-3 py-2 text-xs font-bold text-[var(--text)] hover:bg-[var(--bg)] transition-colors"
                                         >
                                           <Edit className="w-3.5 h-3.5" /> Edit Details
                                         </Link>
-                                        <div className="border-t-[0.5px] border-[#e5e5e5] my-1" />
+                                        <div className="border-t-[0.5px] border-[var(--border)] my-1" />
                                         <button
                                           onClick={() => handleDeleteProduct(product.id)}
                                           disabled={deletingId === product.id}
@@ -516,23 +516,23 @@ export default function FounderStorePage() {
 
             {/* Payouts card + schedule */}
             <div className="space-y-6">
-              <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Payout Account</h2>
-              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-6 shadow-sm space-y-6">
+              <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Payout Account</h2>
+              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-6 shadow-sm space-y-6">
                 <div>
-                  <p className="text-[10px] font-black uppercase text-[#888888] tracking-widest mb-2">Payout balance</p>
-                  <h3 className="text-3xl font-black text-[#222222]">
+                  <p className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest mb-2">Payout balance</p>
+                  <h3 className="text-3xl font-black text-[var(--text)]">
                     ₹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
                   </h3>
-                  <div className="flex items-center gap-1.5 text-xs text-[#888888] mt-2 font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-[var(--text2)] mt-2 font-medium">
                     <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
                     <span>Calculated automatically (95% of total sales)</span>
                   </div>
                 </div>
 
-                <div className="border-t-[0.5px] border-[#e5e5e5] pt-4 space-y-3">
+                <div className="border-t-[0.5px] border-[var(--border)] pt-4 space-y-3">
                   <div className="flex justify-between items-center text-xs font-bold">
-                    <span className="text-[#888888]">Earnings (This Month)</span>
-                    <span className="text-[#222222]">
+                    <span className="text-[var(--text2)]">Earnings (This Month)</span>
+                    <span className="text-[var(--text)]">
                       ₹{(orders.reduce((acc, o) => {
                         const orderMonth = new Date(o.created_at).getMonth();
                         const currMonth = new Date().getMonth();
@@ -541,7 +541,7 @@ export default function FounderStorePage() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-xs font-bold">
-                    <span className="text-[#888888]">Stripe Connect Status</span>
+                    <span className="text-[var(--text2)]">Stripe Connect Status</span>
                     <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-[9px] uppercase font-black tracking-wider border-[0.5px] border-emerald-200">
                       Connected
                     </span>
@@ -558,7 +558,7 @@ export default function FounderStorePage() {
                 <Link
                   href="https://dashboard.stripe.com"
                   target="_blank"
-                  className="block w-full text-center py-3.5 border-[0.5px] border-[#e5e5e5] rounded-2xl text-xs font-black text-[#222222] hover:bg-[#F2F2F0] active:scale-95 transition-all"
+                  className="block w-full text-center py-3.5 border-[0.5px] border-[var(--border)] rounded-2xl text-xs font-black text-[var(--text)] hover:bg-[var(--bg)] active:scale-95 transition-all"
                 >
                   Manage payout account →
                 </Link>
@@ -568,20 +568,20 @@ export default function FounderStorePage() {
 
           {/* Orders Section */}
           <div className="space-y-4">
-            <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Recent Orders</h2>
+            <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Recent Orders</h2>
             
-            <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
+            <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] overflow-hidden shadow-sm">
               {orders.length === 0 ? (
                 <div className="p-16 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#cccccc] mx-auto mb-4" />
-                  <h3 className="text-base font-bold text-[#222222] mb-1">No orders yet</h3>
-                  <p className="text-sm text-[#888888]">Your sales and client contracts will populate here once active.</p>
+                  <h3 className="text-base font-bold text-[var(--text)] mb-1">No orders yet</h3>
+                  <p className="text-sm text-[var(--text2)]">Your sales and client contracts will populate here once active.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b-[0.5px] border-[#e5e5e5] bg-[#F9F9F8] text-[10px] font-black text-[#888888] uppercase tracking-widest">
+                      <tr className="border-b-[0.5px] border-[var(--border)] bg-[#F9F9F8] text-[10px] font-black text-[var(--text2)] uppercase tracking-widest">
                         <th className="px-6 py-4">Order ID / Buyer</th>
                         <th className="px-6 py-4">Product purchased</th>
                         <th className="px-6 py-4">Date</th>
@@ -602,18 +602,18 @@ export default function FounderStorePage() {
                         return (
                           <tr key={order.id} className="hover:bg-[#F9F9F8] transition-colors text-sm">
                             <td className="px-6 py-4">
-                              <p className="font-bold text-[#222222]">{anonBuyer}</p>
-                              <p className="text-[10px] text-[#888888] font-semibold mt-0.5 truncate max-w-[120px]">
+                              <p className="font-bold text-[var(--text)]">{anonBuyer}</p>
+                              <p className="text-[10px] text-[var(--text2)] font-semibold mt-0.5 truncate max-w-[120px]">
                                 {order.id}
                               </p>
                             </td>
                             <td className="px-6 py-4">
-                              <p className="font-bold text-[#222222]">{order.product?.name || "Deleted Product"}</p>
-                              <span className="text-[10px] font-black uppercase tracking-wider text-[#888888]">
+                              <p className="font-bold text-[var(--text)]">{order.product?.name || "Deleted Product"}</p>
+                              <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text2)]">
                                 {order.product?.type}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-[#888888] font-medium">{formattedDate}</td>
+                            <td className="px-6 py-4 text-[var(--text2)] font-medium">{formattedDate}</td>
                             <td className="px-6 py-4 font-bold text-emerald-600">
                               ₹{(order.seller_payout / 100).toLocaleString()}
                             </td>
@@ -630,7 +630,7 @@ export default function FounderStorePage() {
                               {order.status !== "fulfilled" && order.status !== "completed" ? (
                                 <button
                                   onClick={() => handleMarkFulfilled(order.id)}
-                                  className="px-3 py-1.5 bg-[#222222] text-white hover:bg-black rounded-lg text-xs font-black transition-colors"
+                                  className="px-3 py-1.5 bg-[var(--text)] text-[var(--text)] hover:bg-black rounded-lg text-xs font-black transition-colors"
                                 >
                                   Mark fulfilled
                                 </button>
@@ -663,11 +663,11 @@ function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
       title={collapsed ? label : undefined}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${
         active
-          ? "bg-[#222222] text-white shadow-lg shadow-black/10"
-          : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"
+          ? "bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10"
+          : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"
       } ${collapsed ? "justify-center" : ""}`}
     >
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-white" : "text-[#888888] group-hover:text-[#222222]"}`} />
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--text)]" : "text-[var(--text2)] group-hover:text-[var(--text)]"}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -678,7 +678,7 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     <Link
       href={href}
       className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${
-        active ? "bg-[#222222] text-white" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"
+        active ? "bg-[var(--text)] text-[var(--text)]" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"
       }`}
     >
       <Icon className="w-4 h-4" />

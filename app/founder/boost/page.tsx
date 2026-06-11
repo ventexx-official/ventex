@@ -156,8 +156,8 @@ export default function FounderBoostPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     );
   }
@@ -166,27 +166,27 @@ export default function FounderBoostPage() {
   const mainML = sidebarCollapsed ? "md:ml-[72px]" : "md:ml-[240px]";
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
       {/* Sidebar */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
           {!sidebarCollapsed && (
-            <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
+            <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
           )}
-          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] transition-colors text-[#888888] hover:text-[#222222] ml-auto">
+          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto">
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
         </div>
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
-                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+            <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
+                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || "Founder"}</p>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
               </div>
             </div>
           </div>
@@ -218,14 +218,14 @@ export default function FounderBoostPage() {
           {/* Header */}
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-black text-[#222222] tracking-tighter uppercase flex items-center gap-2">
-                <Zap className="w-8 h-8 text-[#222222] fill-[#222222]" /> Booster Packs
+              <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter uppercase flex items-center gap-2">
+                <Zap className="w-8 h-8 text-[var(--text)] fill-[#222222]" /> Booster Packs
               </h1>
-              <p className="text-[#888888] font-medium text-sm mt-1">Get 10x more eyes on your startup pitch from premier investors globally.</p>
+              <p className="text-[var(--text2)] font-medium text-sm mt-1">Get 10x more eyes on your startup pitch from premier investors globally.</p>
             </div>
             <Link
               href="/founder/dashboard"
-              className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
+              className="flex items-center gap-2 text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors"
             >
               ← Back to Dashboard
             </Link>
@@ -250,27 +250,27 @@ export default function FounderBoostPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left side: Booster Tiers Selector */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 space-y-4 shadow-sm">
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">
                   01. Select Startup Pitch
                 </h3>
                 {pitches.length === 0 ? (
                   <div className="text-center py-6">
-                    <p className="text-sm text-[#888888] font-semibold">You don't have any pitches yet.</p>
+                    <p className="text-sm text-[var(--text2)] font-semibold">You don't have any pitches yet.</p>
                     <Link
                       href="/founder/create-pitch"
-                      className="mt-3 inline-block px-4 py-2 bg-[#222222] text-white text-xs font-bold rounded-xl"
+                      className="mt-3 inline-block px-4 py-2 bg-[var(--text)] text-[var(--text)] text-xs font-bold rounded-xl"
                     >
                       Create your first pitch
                     </Link>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Select Pitch</label>
+                    <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">Select Pitch</label>
                     <select
                       value={selectedPitchId}
                       onChange={(e) => setSelectedPitchId(e.target.value)}
-                      className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
+                      className="w-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl px-4 py-3 text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222]"
                     >
                       {pitches.map(p => (
                         <option key={p.id} value={p.id}>{p.title} {p.featured ? "🌟 (Boosted)" : ""}</option>
@@ -292,26 +292,26 @@ export default function FounderBoostPage() {
                       onClick={() => setSelectedTier(tierKey)}
                       className={`text-left p-6 rounded-3xl border transition-all duration-300 flex flex-col justify-between ${
                         isSelected
-                          ? "bg-[#222222] border-[#222222] text-white shadow-xl scale-[1.02]"
-                          : "bg-[var(--card-bg)] border-[#e5e5e5] text-[#222222] hover:border-[#888888]"
+                          ? "bg-[var(--text)] border-[#222222] text-[var(--text)] shadow-xl scale-[1.02]"
+                          : "bg-[var(--card-bg)] border-[var(--border)] text-[var(--text)] hover:border-[#888888]"
                       }`}
                     >
                       <div className="space-y-3">
-                        <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${t.color} flex items-center justify-center text-white`}>
+                        <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${t.color} flex items-center justify-center text-[var(--text)]`}>
                           <Icon className="w-5 h-5" />
                         </div>
                         <div>
                           <h4 className="font-black text-base uppercase tracking-tight">{t.name}</h4>
-                          <span className={`text-[10px] font-bold ${isSelected ? "text-white/60" : "text-[#888888]"}`}>
+                          <span className={`text-[10px] font-bold ${isSelected ? "text-[var(--text)]/60" : "text-[var(--text2)]"}`}>
                             Duration: {t.period}
                           </span>
                         </div>
                       </div>
 
-                      <div className="mt-8 space-y-2 w-full border-t border-dashed border-[#e5e5e5]/20 pt-4">
+                      <div className="mt-8 space-y-2 w-full border-t border-dashed border-[var(--border)]/20 pt-4">
                         <div className="flex items-baseline justify-between">
                           <span className="text-2xl font-black tracking-tight">{t.price}</span>
-                          <span className={`text-[10px] font-bold ${isSelected ? "text-white/60" : "text-[#888888]"}`}>
+                          <span className={`text-[10px] font-bold ${isSelected ? "text-[var(--text)]/60" : "text-[var(--text2)]"}`}>
                             One-time fee
                           </span>
                         </div>
@@ -322,8 +322,8 @@ export default function FounderBoostPage() {
               </div>
 
               {/* Tier Benefits */}
-              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 space-y-4 shadow-sm">
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">
                   Included Benefits & Coverage
                 </h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -339,8 +339,8 @@ export default function FounderBoostPage() {
 
             {/* Right side: Mock Card Preview & Checkout */}
             <div className="space-y-6">
-              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-6 shadow-sm">
-                <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 space-y-6 shadow-sm">
+                <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2">
                   Live Preview
                 </h3>
 
@@ -348,13 +348,13 @@ export default function FounderBoostPage() {
                 <div className={`relative rounded-3xl p-6 transition-all duration-500 overflow-hidden ${
                   selectedTier === "silver" ? "bg-[var(--card-bg)] border-[2px] border-slate-300 shadow-lg" :
                   selectedTier === "gold" ? "bg-[var(--card-bg)] border-[3px] border-amber-400 shadow-xl shadow-amber-400/5 animate-pulse" :
-                  "bg-[#222222] text-white shadow-2xl shadow-indigo-500/10 border border-indigo-500/30"
+                  "bg-[var(--text)] text-[var(--text)] shadow-2xl shadow-indigo-500/10 border border-indigo-500/30"
                 }`}>
                   {/* Floating Glowing Badge */}
                   <span className={`absolute top-4 right-4 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1 ${
                     selectedTier === "silver" ? "bg-slate-100 text-slate-600" :
                     selectedTier === "gold" ? "bg-amber-100 text-amber-600" :
-                    "bg-indigo-500 text-white animate-bounce"
+                    "bg-indigo-500 text-[var(--text)] animate-bounce"
                   }`}>
                     <Zap className="w-2.5 h-2.5 fill-current" />
                     Boosted ({tiers[selectedTier].name})
@@ -362,7 +362,7 @@ export default function FounderBoostPage() {
 
                   <div className="space-y-4">
                     <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
-                      selectedTier === "platinum" ? "bg-[var(--card-bg)]/10 text-indigo-300" : "bg-[#F2F2F0] text-[#888888]"
+                      selectedTier === "platinum" ? "bg-[var(--card-bg)]/10 text-indigo-300" : "bg-[var(--bg)] text-[var(--text2)]"
                     }`}>
                       {activePitch?.industry || "AI / Deeptech"}
                     </span>
@@ -372,19 +372,19 @@ export default function FounderBoostPage() {
                         {activePitch?.title || "Project Alpha"}
                       </h4>
                       <p className={`text-xs mt-1 leading-relaxed line-clamp-2 ${
-                        selectedTier === "platinum" ? "text-white/60" : "text-[#888888]"
+                        selectedTier === "platinum" ? "text-[var(--text)]/60" : "text-[var(--text2)]"
                       }`}>
                         {activePitch?.tagline || "Redefining startup growth with high-performance metrics."}
                       </p>
                     </div>
 
-                    <div className="flex gap-4 pt-2 border-t border-[#e5e5e5]/10 text-xs font-bold">
+                    <div className="flex gap-4 pt-2 border-t border-[var(--border)]/10 text-xs font-bold">
                       <div className="flex items-center gap-1.5">
                         <Eye className="w-4 h-4 text-emerald-500" />
                         <span>2x Views</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <TrendingUp className="w-4 h-4 text-[#888888]" />
+                        <TrendingUp className="w-4 h-4 text-[var(--text2)]" />
                         <span>Top Tier Rank</span>
                       </div>
                     </div>
@@ -393,15 +393,15 @@ export default function FounderBoostPage() {
 
                 {/* Simulated Checkout Block */}
                 <div className="space-y-4 pt-2">
-                  <div className="flex items-center justify-between text-xs font-bold text-[#888888]">
+                  <div className="flex items-center justify-between text-xs font-bold text-[var(--text2)]">
                     <span>Subtotal:</span>
                     <span>{tiers[selectedTier].price}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs font-bold text-[#888888]">
+                  <div className="flex items-center justify-between text-xs font-bold text-[var(--text2)]">
                     <span>Platform Tax:</span>
                     <span>$0.00</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm font-black text-[#222222] border-t border-[#e5e5e5] pt-2">
+                  <div className="flex items-center justify-between text-sm font-black text-[var(--text)] border-t border-[var(--border)] pt-2">
                     <span>Total Price:</span>
                     <span>{tiers[selectedTier].price}</span>
                   </div>
@@ -409,7 +409,7 @@ export default function FounderBoostPage() {
                   <button
                     onClick={handleSimulateBoost}
                     disabled={boosting || !selectedPitchId}
-                    className="w-full py-4 bg-[#222222] hover:bg-black text-white rounded-2xl font-black text-sm shadow-xl hover:shadow-black/10 active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-[var(--text)] hover:bg-black text-[var(--text)] rounded-2xl font-black text-sm shadow-xl hover:shadow-black/10 active:scale-95 transition-all flex items-center justify-center gap-2"
                   >
                     {boosting ? (
                       <>
@@ -434,8 +434,8 @@ export default function FounderBoostPage() {
 function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
   return (
     <Link href={href} title={collapsed ? label : undefined}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? "bg-[#222222] text-white shadow-lg shadow-black/10" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"} ${collapsed ? "justify-center" : ""}`}>
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-white" : "text-[#888888] group-hover:text-[#222222]"}`} />
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? "bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"} ${collapsed ? "justify-center" : ""}`}>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--text)]" : "text-[var(--text2)] group-hover:text-[var(--text)]"}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -443,7 +443,7 @@ function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
 
 function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
   return (
-    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? "bg-[#222222] text-white" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"}`}>
+    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? "bg-[var(--text)] text-[var(--text)]" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"}`}>
       <Icon className="w-4 h-4" />
       <span className="text-[9px] font-bold">{label}</span>
     </Link>

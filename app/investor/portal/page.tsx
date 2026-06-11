@@ -157,8 +157,8 @@ export default function InvestorPortal() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -167,20 +167,20 @@ export default function InvestorPortal() {
   const mainML = sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-[240px]';
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
 
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-20 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
-          {!sidebarCollapsed && <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>}
-          <button onClick={() => setSidebarCollapsed(v => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] text-[#888888] hover:text-[#222222] ml-auto">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-20 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
+          {!sidebarCollapsed && <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>}
+          <button onClick={() => setSidebarCollapsed(v => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] text-[var(--text2)] hover:text-[var(--text)] ml-auto">
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
         </div>
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-[#222222] to-black rounded-2xl text-white shadow-xl shadow-black/10">
+            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-[#222222] to-black rounded-2xl text-[var(--text)] shadow-xl shadow-black/10">
               <div className="w-9 h-9 rounded-full bg-[var(--card-bg)]/10 flex items-center justify-center overflow-hidden flex-shrink-0 border-[0.5px] border-white/20">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4" />}
               </div>
@@ -195,7 +195,7 @@ export default function InvestorPortal() {
         )}
         {sidebarCollapsed && (
           <div className="hidden md:flex justify-center py-4">
-            <div className="w-9 h-9 rounded-full bg-[#222222] text-white flex items-center justify-center overflow-hidden border-[0.5px] border-white/20">
+            <div className="w-9 h-9 rounded-full bg-[var(--text)] text-[var(--text)] flex items-center justify-center overflow-hidden border-[0.5px] border-white/20">
               {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4" />}
             </div>
           </div>
@@ -226,11 +226,11 @@ export default function InvestorPortal() {
           {/* Header */}
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase flex items-center gap-3">
+              <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase flex items-center gap-3">
                 Investor Portal
                 <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full flex items-center gap-1"><Star className="w-3 h-3 fill-current"/> PRO</span>
               </h1>
-              <p className="text-[#888888] font-medium mt-1 text-sm">Welcome back. Here's your deal flow overview.</p>
+              <p className="text-[var(--text2)] font-medium mt-1 text-sm">Welcome back. Here's your deal flow overview.</p>
             </div>
           </header>
 
@@ -249,63 +249,63 @@ export default function InvestorPortal() {
               
               {/* New Pitches This Week */}
               <div>
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5">New Pitches This Week</h2>
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5">New Pitches This Week</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {newPitches.map(pitch => (
                     <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="block group">
-                      <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-xl hover:border-[#cccccc] transition-all h-full flex flex-col">
+                      <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm hover:shadow-xl hover:border-[#cccccc] transition-all h-full flex flex-col">
                         <div className="flex items-center gap-4 mb-4">
-                          <div className="w-12 h-12 bg-[#F2F2F0] rounded-2xl flex items-center justify-center overflow-hidden">
-                            {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <div className="text-xl font-bold text-[#888888]">{pitch.title?.[0]}</div>}
+                          <div className="w-12 h-12 bg-[var(--bg)] rounded-2xl flex items-center justify-center overflow-hidden">
+                            {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <div className="text-xl font-bold text-[var(--text2)]">{pitch.title?.[0]}</div>}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h3 className="font-bold text-[#222222] group-hover:text-black truncate">{pitch.title}</h3>
-                            <p className="text-xs text-[#888888] truncate">{pitch.industry || 'Tech'} Â¢ {pitch.company_stage || 'Seed'}</p>
+                            <h3 className="font-bold text-[var(--text)] group-hover:text-black truncate">{pitch.title}</h3>
+                            <p className="text-xs text-[var(--text2)] truncate">{pitch.industry || 'Tech'} Â¢ {pitch.company_stage || 'Seed'}</p>
                           </div>
                         </div>
-                        <p className="text-sm text-[#888888] line-clamp-2 mb-4 flex-grow">{pitch.short_description || pitch.tagline}</p>
-                        <div className="flex items-center justify-between pt-4 border-t-[0.5px] border-[#e5e5e5]">
+                        <p className="text-sm text-[var(--text2)] line-clamp-2 mb-4 flex-grow">{pitch.short_description || pitch.tagline}</p>
+                        <div className="flex items-center justify-between pt-4 border-t-[0.5px] border-[var(--border)]">
                           <div>
-                            <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest">MRR</p>
-                            <p className="text-sm font-black text-[#222222]">${pitch.mrr?.toLocaleString() || '0'}</p>
+                            <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest">MRR</p>
+                            <p className="text-sm font-black text-[var(--text)]">${pitch.mrr?.toLocaleString() || '0'}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest">Raising</p>
+                            <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest">Raising</p>
                             <p className="text-sm font-black text-emerald-600">${pitch.amount_seeking?.toLocaleString() || '0'}</p>
                           </div>
                         </div>
                       </div>
                     </Link>
                   ))}
-                  {newPitches.length === 0 && <p className="text-sm text-[#888888]">No new pitches this week.</p>}
+                  {newPitches.length === 0 && <p className="text-sm text-[var(--text2)]">No new pitches this week.</p>}
                 </div>
               </div>
 
               {/* Advanced Search */}
               <div>
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <Search className="w-5 h-5" /> Advanced Search
                 </h2>
-                <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
+                <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm mb-6">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="relative flex-1">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text2)]" />
                       <input 
                         type="text" 
                         placeholder="Search startups by name..." 
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-transparent rounded-2xl text-sm focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors"
+                        className="w-full pl-11 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-transparent rounded-2xl text-sm focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors"
                       />
                     </div>
-                    <label className="flex items-center gap-2 cursor-pointer bg-[#F2F2F0] px-4 py-3 rounded-2xl hover:bg-[#e5e5e5] transition-colors">
+                    <label className="flex items-center gap-2 cursor-pointer bg-[var(--bg)] px-4 py-3 rounded-2xl hover:bg-[#e5e5e5] transition-colors">
                       <input 
                         type="checkbox" 
                         checked={filters.activelyRaising}
                         onChange={e => setFilters(f => ({ ...f, activelyRaising: e.target.checked }))}
-                        className="rounded border-gray-300 text-[#222222] focus:ring-[#222222]"
+                        className="rounded border-gray-300 text-[var(--text)] focus:ring-[#222222]"
                       />
-                      <span className="text-sm font-bold text-[#222222]">Live only</span>
+                      <span className="text-sm font-bold text-[var(--text)]">Live only</span>
                     </label>
                   </div>
                   
@@ -320,22 +320,22 @@ export default function InvestorPortal() {
                 {/* Search Results List */}
                 <div className="space-y-3">
                   {searchResults.map(pitch => (
-                    <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="flex items-center justify-between p-4 bg-[var(--card-bg)] rounded-2xl border-[0.5px] border-[#e5e5e5] hover:shadow-md transition-all group">
+                    <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="flex items-center justify-between p-4 bg-[var(--card-bg)] rounded-2xl border-[0.5px] border-[var(--border)] hover:shadow-md transition-all group">
                       <div className="flex items-center gap-4">
-                         <div className="w-10 h-10 bg-[#F2F2F0] rounded-xl flex items-center justify-center">
+                         <div className="w-10 h-10 bg-[var(--bg)] rounded-xl flex items-center justify-center">
                             {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover rounded-xl" /> : <span className="font-bold text-xs">{pitch.title?.[0]}</span>}
                          </div>
                          <div>
-                           <p className="font-bold text-[#222222] text-sm group-hover:text-black">{pitch.title}</p>
-                           <p className="text-xs text-[#888888]">{pitch.industry} Â¢ {pitch.company_stage}</p>
+                           <p className="font-bold text-[var(--text)] text-sm group-hover:text-black">{pitch.title}</p>
+                           <p className="text-xs text-[var(--text2)]">{pitch.industry} Â¢ {pitch.company_stage}</p>
                          </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-black text-[#222222]">${pitch.mrr?.toLocaleString() || '0'} <span className="text-[10px] text-[#888888] font-normal uppercase">MRR</span></p>
+                        <p className="text-sm font-black text-[var(--text)]">${pitch.mrr?.toLocaleString() || '0'} <span className="text-[10px] text-[var(--text2)] font-normal uppercase">MRR</span></p>
                       </div>
                     </Link>
                   ))}
-                  {searchResults.length === 0 && <p className="text-sm text-[#888888] text-center py-4">No results matching your filters.</p>}
+                  {searchResults.length === 0 && <p className="text-sm text-[var(--text2)] text-center py-4">No results matching your filters.</p>}
                 </div>
               </div>
 
@@ -346,23 +346,23 @@ export default function InvestorPortal() {
               
               {/* My Saved Pitches */}
               <div>
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <Bookmark className="w-5 h-5" /> Watchlist
                 </h2>
-                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
                   {savedPitches.length === 0 ? (
                     <div className="p-8 text-center">
-                      <p className="text-sm text-[#888888]">Your watchlist is empty.</p>
+                      <p className="text-sm text-[var(--text2)]">Your watchlist is empty.</p>
                     </div>
                   ) : (
                     <div className="divide-y divide-[#e5e5e5]">
                       {savedPitches.map(pitch => (
-                        <div key={pitch.id} className="p-4 hover:bg-[#F2F2F0] transition-colors flex items-center justify-between group">
+                        <div key={pitch.id} className="p-4 hover:bg-[var(--bg)] transition-colors flex items-center justify-between group">
                           <div>
-                            <Link href={`/pitch/${pitch.id}`} className="font-bold text-[#222222] text-sm hover:underline">{pitch.title}</Link>
-                            <p className="text-[11px] text-[#888888]">{pitch.industry}</p>
+                            <Link href={`/pitch/${pitch.id}`} className="font-bold text-[var(--text)] text-sm hover:underline">{pitch.title}</Link>
+                            <p className="text-[11px] text-[var(--text2)]">{pitch.industry}</p>
                           </div>
-                          <button onClick={() => handleRemoveSaved(pitch.id)} className="p-2 text-[#888888] hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100" title="Remove from watchlist">
+                          <button onClick={() => handleRemoveSaved(pitch.id)} className="p-2 text-[var(--text2)] hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100" title="Remove from watchlist">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -374,20 +374,20 @@ export default function InvestorPortal() {
 
               {/* Expressed Interests */}
               <div>
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5" /> Interests
                 </h2>
-                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
                   {interests.length === 0 ? (
                     <div className="p-8 text-center">
-                      <p className="text-sm text-[#888888]">No interests expressed yet.</p>
+                      <p className="text-sm text-[var(--text2)]">No interests expressed yet.</p>
                     </div>
                   ) : (
                     <div className="divide-y divide-[#e5e5e5]">
                       {interests.map(interest => (
                         <div key={interest.id} className="p-4">
                           <div className="flex items-start justify-between mb-2">
-                            <Link href={`/pitch/${interest.pitch?.id}`} className="font-bold text-[#222222] text-sm hover:underline">{interest.pitch?.title}</Link>
+                            <Link href={`/pitch/${interest.pitch?.id}`} className="font-bold text-[var(--text)] text-sm hover:underline">{interest.pitch?.title}</Link>
                             <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
                               interest.status === 'accepted' ? 'bg-emerald-100 text-emerald-700' :
                               interest.status === 'declined' ? 'bg-red-100 text-red-700' :
@@ -397,7 +397,7 @@ export default function InvestorPortal() {
                             </span>
                           </div>
                           {interest.status === 'accepted' && (
-                            <button className="text-xs font-bold text-[#222222] flex items-center gap-1 hover:text-black mt-2">
+                            <button className="text-xs font-bold text-[var(--text)] flex items-center gap-1 hover:text-black mt-2">
                               View thread <ExternalLink className="w-3 h-3" />
                             </button>
                           )}
@@ -421,12 +421,12 @@ export default function InvestorPortal() {
 
 function StatCard({ label, value, icon: Icon, color }: any) {
   return (
-    <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+    <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <div className={`p-2.5 rounded-2xl bg-[#F2F2F0] ${color}`}><Icon className="w-5 h-5" /></div>
+        <div className={`p-2.5 rounded-2xl bg-[var(--bg)] ${color}`}><Icon className="w-5 h-5" /></div>
       </div>
-      <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">{label}</p>
-      <h3 className="text-2xl font-black text-[#222222]">{value}</h3>
+      <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">{label}</p>
+      <h3 className="text-2xl font-black text-[var(--text)]">{value}</h3>
     </div>
   );
 }
@@ -437,7 +437,7 @@ function FilterSelect({ label, value, onChange, options }: any) {
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#F2F2F0] border-[0.5px] border-transparent rounded-xl px-3 py-2 text-xs font-medium text-[#222222] focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors appearance-none cursor-pointer"
+        className="w-full bg-[var(--bg)] border-[0.5px] border-transparent rounded-xl px-3 py-2 text-xs font-medium text-[var(--text)] focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors appearance-none cursor-pointer"
       >
         <option value="">{label} (All)</option>
         {options.map((opt: any) => {
@@ -453,8 +453,8 @@ function FilterSelect({ label, value, onChange, options }: any) {
 function NavItem({ icon: Icon, label, active, href = '#', collapsed }: any) {
   return (
     <Link href={href} title={collapsed ? label : undefined}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? 'bg-[#222222] text-white shadow-lg shadow-black/10' : 'text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]'} ${collapsed ? 'justify-center' : ''}`}>
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-white' : 'text-[#888888] group-hover:text-[#222222]'}`} />
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? 'bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'} ${collapsed ? 'justify-center' : ''}`}>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-[var(--text)]' : 'text-[var(--text2)] group-hover:text-[var(--text)]'}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -462,7 +462,7 @@ function NavItem({ icon: Icon, label, active, href = '#', collapsed }: any) {
 
 function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
   return (
-    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? 'bg-[#222222] text-white' : 'text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]'}`}>
+    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? 'bg-[var(--text)] text-[var(--text)]' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'}`}>
       <Icon className="w-4 h-4" /><span className="text-[9px] font-bold">{label}</span>
     </Link>
   );

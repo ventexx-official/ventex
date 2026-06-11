@@ -105,7 +105,7 @@ export default function AdminFlagged() {
         icon: <TrendingUp size={10} />,
       },
       dismissed: {
-        cls: "bg-neutral-500/10 text-[var(--text3)] border-[0.5px] border-[#e5e5e5] dark:border-[#333333]",
+        cls: "bg-neutral-500/10 text-[var(--text3)] border-[0.5px] border-[var(--border)] ",
         icon: <CheckCircle size={10} />,
       },
     };
@@ -139,7 +139,7 @@ export default function AdminFlagged() {
         </div>
         <button
           onClick={fetchItems}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-semibold text-[var(--text)] rounded-lg hover:bg-[var(--bg2)] transition-colors"
         >
           <RefreshCw size={13} /> Refresh
         </button>
@@ -153,7 +153,7 @@ export default function AdminFlagged() {
           { label: "Escalated", val: counts.escalated, color: "text-red-400" },
           { label: "Dismissed", val: counts.dismissed, color: "text-[var(--text2)]" },
         ].map(({ label, val, color }) => (
-          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 text-center">
+          <div key={label} className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-4 text-center">
             <p className={`text-2xl font-black font-mono ${color}`}>{val}</p>
             <p className="text-[11px] text-[var(--text3)] mt-1 uppercase tracking-wider font-bold">{label}</p>
           </div>
@@ -169,10 +169,10 @@ export default function AdminFlagged() {
             placeholder="Search by content, user, pattern..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-sm text-[var(--text)] placeholder-[#888888] focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all"
           />
         </div>
-        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px]">
+        <div className="flex bg-[var(--card-bg)] p-1 border border-[0.5px] border-[var(--border)]  rounded-[24px]">
           {(["all", "pending", "escalated", "dismissed"] as StatusFilter[]).map((s) => {
             const labels: Record<string, string> = {
               all: "All",
@@ -204,7 +204,7 @@ export default function AdminFlagged() {
           <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+        <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] p-12 text-center">
           <Flag className="h-10 w-10 text-[var(--text3)] mx-auto mb-3" />
           <h3 className="text-sm font-bold text-[var(--text)]">No flagged items</h3>
           <p className="text-xs text-[var(--text3)] mt-1">No activity logs match the current filter.</p>
@@ -225,7 +225,7 @@ export default function AdminFlagged() {
                     ? "border-red-900/40"
                     : isPending
                     ? "border-amber-900/30"
-                    : "border-[0.5px] border-[#e5e5e5] dark:border-[#333333]"
+                    : "border-[0.5px] border-[var(--border)] "
                 }`}
               >
                 {/* Summary Row */}
@@ -238,7 +238,7 @@ export default function AdminFlagged() {
                       {/* Badges row */}
                       <div className="flex flex-wrap items-center gap-2">
                         {statusBadge(item.status)}
-                        <span className="text-[10px] font-bold text-[var(--text2)] bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-2 py-0.5 rounded uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-[var(--text2)] bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  px-2 py-0.5 rounded uppercase tracking-wider">
                           {contentTypeLabel(item.content_type)}
                         </span>
                       </div>
@@ -292,7 +292,7 @@ export default function AdminFlagged() {
                         <button
                           onClick={() => updateStatus(item.id, "dismissed")}
                           disabled={isLoading}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-xs font-bold text-[var(--text2)] rounded-[24px] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-all disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[var(--bg2)] border border-[0.5px] border-[var(--border)]  text-xs font-bold text-[var(--text2)] rounded-[24px] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-all disabled:opacity-50"
                         >
                           {isLoading ? <Loader2 size={12} className="animate-spin" /> : <XCircle size={12} />}
                           Dismiss
@@ -309,12 +309,12 @@ export default function AdminFlagged() {
 
                 {/* Expanded full content */}
                 {isExpanded && (
-                  <div className="border-t border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-5 pb-5 pt-4 bg-[var(--bg2)] space-y-4">
+                  <div className="border-t border-[0.5px] border-[var(--border)]  px-5 pb-5 pt-4 bg-[var(--bg2)] space-y-4">
                     <div>
                       <p className="text-[10px] font-bold text-[var(--text3)] uppercase tracking-wider font-mono mb-2">
                         Full Captured Content
                       </p>
-                      <div className="p-4 bg-[var(--bg)] border border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] text-xs text-[var(--text2)] leading-relaxed whitespace-pre-wrap font-mono max-h-60 overflow-y-auto">
+                      <div className="p-4 bg-[var(--bg)] border border-[0.5px] border-[var(--border)]  rounded-[24px] text-xs text-[var(--text2)] leading-relaxed whitespace-pre-wrap font-mono max-h-60 overflow-y-auto">
                         {item.raw_content || "No content captured."}
                       </div>
                     </div>

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function ArenaPage() {
   return (
-    <main className="min-h-screen bg-[#090504] text-white">
+    <main className="min-h-screen bg-[#090504] text-[var(--text)]">
       <section className="relative overflow-hidden px-4 py-24 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(245,158,11,.35),transparent_38%),linear-gradient(180deg,rgba(120,30,0,.35),transparent_55%)]" />
         <div className="relative mx-auto max-w-6xl">
@@ -51,7 +51,7 @@ export default function ArenaPage() {
           </div>
           <div className="space-y-5 text-sm leading-7 text-orange-50/75">
             <p>A panel of verified investors. Live audience. Real decisions.</p>
-            <p className="text-2xl font-black text-white">Pitch. Defend. Win.</p>
+            <p className="text-2xl font-black text-[var(--text)]">Pitch. Defend. Win.</p>
             <p>The best pitches get funded, featured, and amplified across Ventex&apos;s network.</p>
           </div>
         </div>

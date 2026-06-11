@@ -290,34 +290,34 @@ export default function FounderDealsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
           {!sidebarCollapsed && (
-            <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
+            <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
           )}
-          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] transition-colors text-[#888888] hover:text-[#222222] ml-auto">
+          <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto">
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
         </div>
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
-                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+            <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
+                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || "Founder"}</p>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
               </div>
             </div>
           </div>
@@ -350,24 +350,24 @@ export default function FounderDealsPage() {
           {/* Header */}
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase">Deals & Promos</h1>
-              <p className="text-[#888888] font-medium text-sm mt-1">Run time-limited deals and create promo codes for your store.</p>
+              <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase">Deals & Promos</h1>
+              <p className="text-[var(--text2)] font-medium text-sm mt-1">Run time-limited deals and create promo codes for your store.</p>
             </div>
             <Link
               href="/founder/store"
-              className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
+              className="flex items-center gap-2 text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors"
             >
               ← Back to Store
             </Link>
           </header>
 
           {/* Tab Bar */}
-          <div className="flex gap-1 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-2xl p-1.5 w-fit shadow-sm">
+          <div className="flex gap-1 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-2xl p-1.5 w-fit shadow-sm">
             {(["deals", "promo"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? "bg-[#222222] text-white shadow-md" : "text-[#888888] hover:text-[#222222]"}`}
+                className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? "bg-[var(--text)] text-[var(--text)] shadow-md" : "text-[var(--text2)] hover:text-[var(--text)]"}`}
               >
                 {tab === "deals" ? "⚡ Active Deals" : "🎟️ Promo Codes"}
               </button>
@@ -381,40 +381,40 @@ export default function FounderDealsPage() {
               {/* Active Deals */}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Active Deals</h2>
-                  <span className="text-xs font-bold text-[#888888]">{activeDeals.length} running</span>
+                  <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Active Deals</h2>
+                  <span className="text-xs font-bold text-[var(--text2)]">{activeDeals.length} running</span>
                 </div>
 
                 {activeDeals.length === 0 ? (
-                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-12 text-center shadow-sm">
+                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-12 text-center shadow-sm">
                     <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Sparkles className="w-7 h-7 text-amber-500" />
                     </div>
-                    <h3 className="font-bold text-[#222222] mb-1">No active deals</h3>
-                    <p className="text-sm text-[#888888]">Add a deal on any product below to show a countdown timer on the marketplace.</p>
+                    <h3 className="font-bold text-[var(--text)] mb-1">No active deals</h3>
+                    <p className="text-sm text-[var(--text2)]">Add a deal on any product below to show a countdown timer on the marketplace.</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
                     {activeDeals.map((product) => {
                       const pct = Math.round((1 - product.discount_price! / product.price) * 100);
                       return (
-                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
                           <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-[#F2F2F0] overflow-hidden flex-shrink-0">
+                            <div className="w-14 h-14 rounded-2xl bg-[var(--bg)] overflow-hidden flex-shrink-0">
                               {product.images_urls?.[0] ? (
                                 <img src={product.images_urls[0]} alt="" className="w-full h-full object-cover" />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[#888888]">
+                                <div className="w-full h-full flex items-center justify-center text-[var(--text2)]">
                                   <Tag className="w-5 h-5" />
                                 </div>
                               )}
                             </div>
                             <div>
-                              <p className="font-bold text-[#222222] text-sm">{product.name}</p>
+                              <p className="font-bold text-[var(--text)] text-sm">{product.name}</p>
                               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                                 <span className="bg-red-100 text-red-600 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">{pct}% OFF</span>
                                 <span className="text-sm font-black text-emerald-600">₹{(product.discount_price! / 100).toLocaleString()}</span>
-                                <span className="text-xs text-[#888888] line-through">₹{(product.price / 100).toLocaleString()}</span>
+                                <span className="text-xs text-[var(--text2)] line-through">₹{(product.price / 100).toLocaleString()}</span>
                                 {product.deal_end_date && <CountdownBadge endDate={product.deal_end_date} />}
                               </div>
                             </div>
@@ -437,13 +437,13 @@ export default function FounderDealsPage() {
               {/* Set Deal on Product */}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Set a Deal</h2>
-                  <span className="text-xs font-bold text-[#888888]">{eligibleProducts.length} products available</span>
+                  <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Set a Deal</h2>
+                  <span className="text-xs font-bold text-[var(--text2)]">{eligibleProducts.length} products available</span>
                 </div>
 
                 {eligibleProducts.length === 0 ? (
-                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-8 text-center shadow-sm">
-                    <p className="text-sm text-[#888888]">All your live products already have active deals.</p>
+                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-8 text-center shadow-sm">
+                    <p className="text-sm text-[var(--text2)]">All your live products already have active deals.</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -452,13 +452,13 @@ export default function FounderDealsPage() {
                       const isOpen = openDealForm === product.id;
 
                       return (
-                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
                           <button
                             onClick={() => setOpenDealForm(isOpen ? null : product.id)}
                             className="w-full flex items-center justify-between p-5 text-left hover:bg-[#F9F9F8] transition-colors"
                           >
                             <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 rounded-xl bg-[#F2F2F0] overflow-hidden flex-shrink-0">
+                              <div className="w-12 h-12 rounded-xl bg-[var(--bg)] overflow-hidden flex-shrink-0">
                                 {product.images_urls?.[0] ? (
                                   <img src={product.images_urls[0]} alt="" className="w-full h-full object-cover" />
                                 ) : (
@@ -468,25 +468,25 @@ export default function FounderDealsPage() {
                                 )}
                               </div>
                               <div>
-                                <p className="font-bold text-[#222222] text-sm">{product.name}</p>
-                                <p className="text-xs text-[#888888] mt-0.5">Original price: ₹{(product.price / 100).toLocaleString()}</p>
+                                <p className="font-bold text-[var(--text)] text-sm">{product.name}</p>
+                                <p className="text-xs text-[var(--text2)] mt-0.5">Original price: ₹{(product.price / 100).toLocaleString()}</p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-[#888888] px-3 py-1.5 bg-[#F2F2F0] rounded-full">Set Deal</span>
-                              <ChevronDown className={`w-4 h-4 text-[#888888] transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                              <span className="text-xs font-bold text-[var(--text2)] px-3 py-1.5 bg-[var(--bg)] rounded-full">Set Deal</span>
+                              <ChevronDown className={`w-4 h-4 text-[var(--text2)] transition-transform ${isOpen ? "rotate-180" : ""}`} />
                             </div>
                           </button>
 
                           {isOpen && (
-                            <div className="px-5 pb-5 border-t-[0.5px] border-[#e5e5e5] pt-5 bg-[#F9F9F8] animate-in slide-in-from-top-2 duration-200">
+                            <div className="px-5 pb-5 border-t-[0.5px] border-[var(--border)] pt-5 bg-[#F9F9F8] animate-in slide-in-from-top-2 duration-200">
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                  <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
+                                  <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">
                                     Deal Price (₹)
                                   </label>
                                   <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888888] font-bold text-sm">₹</span>
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text2)] font-bold text-sm">₹</span>
                                     <input
                                       type="number"
                                       min="0"
@@ -496,7 +496,7 @@ export default function FounderDealsPage() {
                                       onChange={(e) =>
                                         setDealForms((prev) => ({ ...prev, [product.id]: { ...prev[product.id], price: e.target.value } }))
                                       }
-                                      className="w-full pl-8 pr-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
+                                      className="w-full pl-8 pr-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222]"
                                     />
                                   </div>
                                   {form.price && !isNaN(Number(form.price)) && Number(form.price) > 0 && (
@@ -506,7 +506,7 @@ export default function FounderDealsPage() {
                                   )}
                                 </div>
                                 <div>
-                                  <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
+                                  <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">
                                     Deal End Date & Time
                                   </label>
                                   <input
@@ -516,7 +516,7 @@ export default function FounderDealsPage() {
                                     onChange={(e) =>
                                       setDealForms((prev) => ({ ...prev, [product.id]: { ...prev[product.id], endDate: e.target.value } }))
                                     }
-                                    className="w-full px-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
+                                    className="w-full px-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222]"
                                   />
                                 </div>
                               </div>
@@ -524,7 +524,7 @@ export default function FounderDealsPage() {
                                 <button
                                   onClick={() => handleSaveDeal(product.id)}
                                   disabled={savingDealId === product.id}
-                                  className="px-6 py-3 bg-[#222222] text-white rounded-2xl text-sm font-bold hover:bg-black active:scale-95 transition-all disabled:opacity-50 flex items-center gap-2"
+                                  className="px-6 py-3 bg-[var(--text)] text-[var(--text)] rounded-2xl text-sm font-bold hover:bg-black active:scale-95 transition-all disabled:opacity-50 flex items-center gap-2"
                                 >
                                   <Sparkles className="w-4 h-4" />
                                   {savingDealId === product.id ? "Saving..." : "Launch Deal"}
@@ -546,38 +546,38 @@ export default function FounderDealsPage() {
             <div className="space-y-6">
 
               {/* Create promo form */}
-              <section className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
-                <div className="px-6 py-5 border-b-[0.5px] border-[#e5e5e5]">
-                  <h2 className="text-base font-black text-[#222222] uppercase tracking-tight flex items-center gap-2">
+              <section className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
+                <div className="px-6 py-5 border-b-[0.5px] border-[var(--border)]">
+                  <h2 className="text-base font-black text-[var(--text)] uppercase tracking-tight flex items-center gap-2">
                     <Ticket className="w-5 h-5 text-indigo-500" /> Generate Promo Code
                   </h2>
-                  <p className="text-xs text-[#888888] mt-1 font-medium">Creates a reusable discount code buyers can enter at checkout.</p>
+                  <p className="text-xs text-[var(--text2)] mt-1 font-medium">Creates a reusable discount code buyers can enter at checkout.</p>
                 </div>
 
                 <div className="p-6 space-y-5">
                   {/* Code name row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">Code</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">Code</label>
                       <div className="flex gap-2">
                         <input
                           type="text"
                           placeholder="e.g. LAUNCH50"
                           value={newPromo.code}
                           onChange={(e) => setNewPromo((p) => ({ ...p, code: e.target.value.toUpperCase() }))}
-                          className="flex-1 px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] uppercase focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                          className="flex-1 px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] uppercase focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
                         <button
                           onClick={generateCode}
                           title="Auto-generate code"
-                          className="px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs font-bold text-[#888888] hover:text-[#222222] hover:bg-[var(--card-bg)] transition-all flex-shrink-0"
+                          className="px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-xs font-bold text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--card-bg)] transition-all flex-shrink-0"
                         >
                           ✨ Auto
                         </button>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">Discount %</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">Discount %</label>
                       <div className="relative">
                         <input
                           type="number"
@@ -586,43 +586,43 @@ export default function FounderDealsPage() {
                           placeholder="e.g. 20"
                           value={newPromo.discount_pct}
                           onChange={(e) => setNewPromo((p) => ({ ...p, discount_pct: e.target.value }))}
-                          className="w-full pl-4 pr-10 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                          className="w-full pl-4 pr-10 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] font-black text-sm">%</span>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text2)] font-black text-sm">%</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">Max Uses</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">Max Uses</label>
                       <input
                         type="number"
                         min="1"
                         placeholder="Unlimited"
                         value={newPromo.max_uses}
                         onChange={(e) => setNewPromo((p) => ({ ...p, max_uses: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                        className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">Expiry Date</label>
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">Expiry Date</label>
                       <input
                         type="datetime-local"
                         value={newPromo.expires_at}
                         min={new Date().toISOString().slice(0, 16)}
                         onChange={(e) => setNewPromo((p) => ({ ...p, expires_at: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                        className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
+                      <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest mb-2">
                         Limit to Product <span className="normal-case text-[#cccccc]">(optional)</span>
                       </label>
                       <select
                         value={newPromo.product_id}
                         onChange={(e) => setNewPromo((p) => ({ ...p, product_id: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
+                        className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm font-bold text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       >
                         <option value="">All products</option>
                         {products.map((p) => (
@@ -643,7 +643,7 @@ export default function FounderDealsPage() {
                     <button
                       onClick={handleCreatePromo}
                       disabled={savingPromo}
-                      className="px-6 py-3 bg-[#222222] text-white rounded-2xl text-sm font-bold hover:bg-black active:scale-95 transition-all disabled:opacity-50 flex items-center gap-2"
+                      className="px-6 py-3 bg-[var(--text)] text-[var(--text)] rounded-2xl text-sm font-bold hover:bg-black active:scale-95 transition-all disabled:opacity-50 flex items-center gap-2"
                     >
                       <Ticket className="w-4 h-4" />
                       {savingPromo ? "Creating..." : "Create Promo Code"}
@@ -655,26 +655,26 @@ export default function FounderDealsPage() {
               {/* Promo codes list */}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Your Promo Codes</h2>
-                  <span className="text-xs font-bold text-[#888888]">{promoCodes.length} total</span>
+                  <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Your Promo Codes</h2>
+                  <span className="text-xs font-bold text-[var(--text2)]">{promoCodes.length} total</span>
                 </div>
 
-                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm overflow-hidden">
                   {loadingPromos ? (
                     <div className="p-12 flex justify-center">
-                      <div className="w-6 h-6 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
+                      <div className="w-6 h-6 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
                     </div>
                   ) : promoCodes.length === 0 ? (
                     <div className="p-12 text-center">
                       <Ticket className="w-10 h-10 text-[#cccccc] mx-auto mb-3" />
-                      <p className="text-sm font-bold text-[#222222]">No promo codes yet</p>
-                      <p className="text-xs text-[#888888] mt-1">Create your first promo code above.</p>
+                      <p className="text-sm font-bold text-[var(--text)]">No promo codes yet</p>
+                      <p className="text-xs text-[var(--text2)] mt-1">Create your first promo code above.</p>
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b-[0.5px] border-[#e5e5e5] bg-[#F9F9F8] text-[10px] font-black text-[#888888] uppercase tracking-widest">
+                          <tr className="border-b-[0.5px] border-[var(--border)] bg-[#F9F9F8] text-[10px] font-black text-[var(--text2)] uppercase tracking-widest">
                             <th className="px-5 py-4">Code</th>
                             <th className="px-5 py-4">Discount</th>
                             <th className="px-5 py-4">Uses</th>
@@ -694,10 +694,10 @@ export default function FounderDealsPage() {
                               <tr key={promo.id} className="hover:bg-[#F9F9F8] transition-colors text-sm">
                                 <td className="px-5 py-4">
                                   <div className="flex items-center gap-2">
-                                    <span className="font-black text-[#222222] tracking-widest text-xs bg-[#F2F2F0] px-2.5 py-1 rounded-lg">{promo.code}</span>
+                                    <span className="font-black text-[var(--text)] tracking-widest text-xs bg-[var(--bg)] px-2.5 py-1 rounded-lg">{promo.code}</span>
                                     <button
                                       onClick={() => copyCode(promo.code)}
-                                      className="p-1 rounded hover:bg-[#e5e5e5] transition-colors text-[#888888]"
+                                      className="p-1 rounded hover:bg-[#e5e5e5] transition-colors text-[var(--text2)]"
                                       title="Copy code"
                                     >
                                       {copiedCode === promo.code ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -707,31 +707,31 @@ export default function FounderDealsPage() {
                                 <td className="px-5 py-4 font-bold text-emerald-600">{promo.discount_pct}%</td>
                                 <td className="px-5 py-4">
                                   <div>
-                                    <span className="font-bold text-[#222222]">{promo.used_count}</span>
+                                    <span className="font-bold text-[var(--text)]">{promo.used_count}</span>
                                     {promo.max_uses !== null && (
-                                      <span className="text-[#888888] text-xs"> / {promo.max_uses}</span>
+                                      <span className="text-[var(--text2)] text-xs"> / {promo.max_uses}</span>
                                     )}
                                     {promo.max_uses === null && (
-                                      <span className="text-[#888888] text-xs"> (unlimited)</span>
+                                      <span className="text-[var(--text2)] text-xs"> (unlimited)</span>
                                     )}
                                   </div>
                                   {promo.max_uses !== null && (
                                     <div className="w-16 h-1 bg-[#e5e5e5] rounded-full mt-1">
                                       <div
-                                        className="h-full bg-[#222222] rounded-full transition-all"
+                                        className="h-full bg-[var(--text)] rounded-full transition-all"
                                         style={{ width: `${Math.min(100, (promo.used_count / promo.max_uses) * 100)}%` }}
                                       />
                                     </div>
                                   )}
                                 </td>
-                                <td className="px-5 py-4 text-xs text-[#888888] font-medium">
+                                <td className="px-5 py-4 text-xs text-[var(--text2)] font-medium">
                                   {promo.product ? (
                                     <span className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-bold text-[10px] uppercase tracking-wide">{(promo.product as any).name}</span>
                                   ) : (
                                     "All products"
                                   )}
                                 </td>
-                                <td className="px-5 py-4 text-xs text-[#888888] font-medium">
+                                <td className="px-5 py-4 text-xs text-[var(--text2)] font-medium">
                                   {promo.expires_at
                                     ? new Date(promo.expires_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
                                     : " - "}
@@ -759,7 +759,7 @@ export default function FounderDealsPage() {
                                     )}
                                     <button
                                       onClick={() => handleDeletePromo(promo.id)}
-                                      className="p-1.5 rounded-lg text-[#888888] hover:text-red-500 hover:bg-red-50 transition-colors"
+                                      className="p-1.5 rounded-lg text-[var(--text2)] hover:text-red-500 hover:bg-red-50 transition-colors"
                                     >
                                       <Trash2 className="w-3.5 h-3.5" />
                                     </button>
@@ -790,10 +790,10 @@ function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
       href={href}
       title={collapsed ? label : undefined}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${
-        active ? "bg-[#222222] text-white shadow-lg shadow-black/10" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"
+        active ? "bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"
       } ${collapsed ? "justify-center" : ""}`}
     >
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-white" : "text-[#888888] group-hover:text-[#222222]"}`} />
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--text)]" : "text-[var(--text2)] group-hover:text-[var(--text)]"}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -804,7 +804,7 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     <Link
       href={href}
       className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${
-        active ? "bg-[#222222] text-white" : "text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]"
+        active ? "bg-[var(--text)] text-[var(--text)]" : "text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]"
       }`}
     >
       <Icon className="w-4 h-4" />

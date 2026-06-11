@@ -613,10 +613,10 @@ via Ventex`;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="w-16 h-16 bg-gray-300 dark:bg-[#222222] rounded-xl mb-4"></div>
-          <div className="h-4 bg-gray-300 dark:bg-[#222222] rounded w-32 mb-2"></div>
+          <div className="w-16 h-16 bg-gray-300 dark:bg-[var(--text)] rounded-xl mb-4"></div>
+          <div className="h-4 bg-gray-300 dark:bg-[var(--text)] rounded w-32 mb-2"></div>
         </div>
       </div>
     );
@@ -634,16 +634,16 @@ via Ventex`;
 
   if (!pitch) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center flex-col text-center px-4">
-        <h1 className="text-2xl font-bold text-[#222222] dark:text-white mb-2">Pitch not found</h1>
-        <p className="text-[#888888] mb-6">The pitch you are looking for does not exist or has been removed.</p>
-        <Link href="/discover" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium">Browse startups</Link>
+      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center flex-col text-center px-4">
+        <h1 className="text-2xl font-bold text-[var(--text)]  mb-2">Pitch not found</h1>
+        <p className="text-[var(--text2)] mb-6">The pitch you are looking for does not exist or has been removed.</p>
+        <Link href="/discover" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium">Browse startups</Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#F2F2F0] dark:bg-[#111111] min-h-screen pb-28 md:pb-24">
+    <div className="bg-[var(--bg)]  min-h-screen pb-28 md:pb-24">
       {pitch && (
         <script
           type="application/ld+json"
@@ -665,66 +665,66 @@ via Ventex`;
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
         
         {/* HERO CARD */}
-        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-8 relative">
+        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-8 relative">
           {pitch.status === 'live' && pitch.is_raising === false && (
-            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#F2F2F0] dark:bg-[#333333] px-3 py-1 rounded-full">
+            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--bg)] dark:bg-[#333333] px-3 py-1 rounded-full">
               <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-              <span className="text-[10px] font-bold text-[#222222] dark:text-white uppercase tracking-wider">Verified</span>
+              <span className="text-[10px] font-bold text-[var(--text)]  uppercase tracking-wider">Verified</span>
             </div>
           )}
           {pitch.is_raising && (
-            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#222222] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
-              <span className="text-[10px] font-bold text-white dark:text-[#222222] uppercase tracking-wider">Raising</span>
+            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
+              <span className="text-[10px] font-bold text-[var(--text)] dark:text-[var(--text)] uppercase tracking-wider">Raising</span>
             </div>
           )}
 
           <div className="flex flex-col gap-5 mb-8 sm:flex-row sm:items-start sm:gap-6">
-            <div className="w-20 h-20 bg-[#F2F2F0] dark:bg-[#333333] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
-              {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <div className="text-2xl font-bold text-[#888888]">{pitch.title?.charAt(0)}</div>}
+            <div className="w-20 h-20 bg-[var(--bg)] dark:bg-[#333333] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
+              {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <div className="text-2xl font-bold text-[var(--text2)]">{pitch.title?.charAt(0)}</div>}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-[#222222] dark:text-white mb-2 sm:text-3xl">{pitch.title}</h1>
-              <p className="text-base text-[#888888] mb-2 sm:text-lg">{pitch.tagline || pitch.short_description}</p>
+              <h1 className="text-2xl font-bold text-[var(--text)]  mb-2 sm:text-3xl">{pitch.title}</h1>
+              <p className="text-base text-[var(--text2)] mb-2 sm:text-lg">{pitch.tagline || pitch.short_description}</p>
               {founderProfile && (
-                <p className="text-sm text-[#888888] mb-4 flex flex-wrap items-center gap-2">
-                  <span className="font-medium text-[#222222] dark:text-white">
+                <p className="text-sm text-[var(--text2)] mb-4 flex flex-wrap items-center gap-2">
+                  <span className="font-medium text-[var(--text)] ">
                     {founderProfile.full_name || 'Founder'}
                   </span>
                   {founderProfile.level && (
-                    <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-2.5 py-1 rounded-full font-bold">
+                    <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-2.5 py-1 rounded-full font-bold">
                       {founderProfile.level} {levelEmoji(founderProfile.level)}
                     </span>
                   )}
                 </p>
               )}
               <div className="flex gap-2 flex-wrap">
-                {pitch.industry && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
-                {pitch.company_stage && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
-                {(pitch.state || pitch.country) && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
-                {pitch.business_type && <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#222222] dark:text-white text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.business_type}</span>}
+                {pitch.industry && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
+                {pitch.company_stage && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
+                {(pitch.state || pitch.country) && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
+                {pitch.business_type && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.business_type}</span>}
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Sign in'}</span>
+            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
+              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
+              <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Sign in'}</span>
             </div>
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Sign in'}</span>
+            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
+              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
+              <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Sign in'}</span>
             </div>
-            <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[#888888] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
-              <span className="text-xl font-bold text-[#222222] dark:text-white">
+            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
+              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
+              <span className="text-xl font-bold text-[var(--text)] ">
                 {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Sign in'}
               </span>
             </div>
           </div>
 
           {!canSeeFinancialDetails && (
-            <div className="mb-8 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] p-4 text-sm font-semibold text-[#666666] dark:border-[#333333] dark:bg-[#222222] dark:text-gray-300">
+            <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[#666666]  dark:bg-[var(--text)] dark:text-gray-300">
               Sign in to view financial details.
             </div>
           )}
@@ -734,7 +734,7 @@ via Ventex`;
               <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
                 â° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
               </p>
-              <div className="w-full h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-red-500 rounded-full transition-all"
                   style={{ width: `${runwayProgress}%` }}
@@ -749,7 +749,7 @@ via Ventex`;
                  if (!currentUser) router.push('/login');
                  else setIsInterestModalOpen(true);
                }}
-               className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
+               className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
              >
                Express interest
              </button>
@@ -783,14 +783,14 @@ via Ventex`;
           <button
             type="button"
             onClick={handleWhatsAppShare}
-            className="flex-1 bg-[#25D366] text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
+            className="flex-1 bg-[#25D366] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
           >
             Share on WhatsApp ðŸ’¬
           </button>
           <button
             type="button"
             onClick={handleCopyLink}
-            className="flex-1 bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
+            className="flex-1 bg-[#e5e5e5] dark:bg-[#333333] text-[var(--text)]  px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
           >
             {linkCopied ? 'Copied! âœ“' : 'Copy link ðŸ”—'}
           </button>
@@ -798,8 +798,8 @@ via Ventex`;
 
         {/* AI SUMMARY BAR */}
         {videoEmbedUrl ? (
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
-            <div className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6 md:col-span-2">
+            <div className="text-xs font-bold text-[var(--text)]  uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
             {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
               <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
             ) : (
@@ -813,22 +813,22 @@ via Ventex`;
             )}
           </div>
         ) : isPitchOwner ? (
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center md:col-span-2">
-            <div className="text-sm font-bold text-[#222222] dark:text-white mb-2">Add your 60-second founder pitch</div>
-            <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[#222222] dark:text-white underline underline-offset-4">
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4]  p-6 text-center md:col-span-2">
+            <div className="text-sm font-bold text-[var(--text)]  mb-2">Add your 60-second founder pitch</div>
+            <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[var(--text)]  underline underline-offset-4">
               Edit pitch â†’
             </Link>
           </div>
         ) : null}
 
         {matchedInvestors.length > 0 && (
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-4">Best matched investors</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6 md:col-span-2">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-4">Best matched investors</h2>
             <div className="grid grid-cols-1 gap-3">
               {matchedInvestors.map((investor) => (
-                <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[#e5e5e5] dark:border-[#333333] p-4 hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
-                  <div className="font-bold text-sm text-[#222222] dark:text-white">{investor.full_name || 'Investor'}</div>
-                  <p className="mt-1 text-xs text-[#888888] line-clamp-2">
+                <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[var(--border)]  p-4 hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
+                  <div className="font-bold text-sm text-[var(--text)] ">{investor.full_name || 'Investor'}</div>
+                  <p className="mt-1 text-xs text-[var(--text2)] line-clamp-2">
                     Invests in {pitch.industry || 'your sector'} Â· {pitch.company_stage || 'this stage'}
                   </p>
                 </Link>
@@ -838,160 +838,160 @@ via Ventex`;
         )}
 
         {pitch.ai_summary && (
-          <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 md:col-span-2">
+          <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 md:col-span-2">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-[#888888]" />
-              <span className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider">AI-generated briefing</span>
+              <Sparkles className="w-4 h-4 text-[var(--text2)]" />
+              <span className="text-xs font-bold text-[var(--text)]  uppercase tracking-wider">AI-generated briefing</span>
             </div>
-            <p className="text-[#888888] italic text-[15px] leading-relaxed">"{pitch.ai_summary}"</p>
+            <p className="text-[var(--text2)] italic text-[15px] leading-relaxed">"{pitch.ai_summary}"</p>
           </div>
         )}
 
         {/* CONTENT SECTIONS */}
         <div className="space-y-6 md:col-span-2">
           {/* Problem & Solution */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
-            <div className="p-5 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] sm:p-6">
-              <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Problem & Solution</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  overflow-hidden">
+            <div className="p-5 border-b-[0.5px] border-[var(--border)]  sm:p-6">
+              <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Problem & Solution</h2>
               <div className="flex gap-4 items-start mb-8">
-                <div className="w-8 h-8 rounded-full bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center flex-shrink-0 font-bold text-[#888888] text-sm">P</div>
+                <div className="w-8 h-8 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text2)] text-sm">P</div>
                 <div>
-                  <h3 className="font-bold text-[#222222] dark:text-white mb-2 text-sm">The Problem</h3>
-                  <p className="text-[#888888] text-sm leading-relaxed">{pitch.problem || 'Not specified'}</p>
+                  <h3 className="font-bold text-[var(--text)]  mb-2 text-sm">The Problem</h3>
+                  <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.problem || 'Not specified'}</p>
                 </div>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-[#222222] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-white dark:text-[#222222] text-sm">S</div>
+                <div className="w-8 h-8 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text)] dark:text-[var(--text)] text-sm">S</div>
                 <div>
-                  <h3 className="font-bold text-[#222222] dark:text-white mb-2 text-sm">Our Solution</h3>
-                  <p className="text-[#888888] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
+                  <h3 className="font-bold text-[var(--text)]  mb-2 text-sm">Our Solution</h3>
+                  <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Market Opportunity */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Market opportunity</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Market opportunity</h2>
             <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
-              <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[#888888] font-bold mb-1">TAM</div>
-                <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.tam)}</div>
+              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
+                <div className="text-xs text-[var(--text2)] font-bold mb-1">TAM</div>
+                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.tam)}</div>
               </div>
-              <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[#888888] font-bold mb-1">SAM</div>
-                <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.sam)}</div>
+              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
+                <div className="text-xs text-[var(--text2)] font-bold mb-1">SAM</div>
+                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.sam)}</div>
               </div>
-              <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[#888888] font-bold mb-1">SOM</div>
-                <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.som)}</div>
+              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
+                <div className="text-xs text-[var(--text2)] font-bold mb-1">SOM</div>
+                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.som)}</div>
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Market Trends</h3>
-              <p className="text-[#888888] text-sm leading-relaxed">{pitch.market_trend || 'Not specified'}</p>
+              <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Market Trends</h3>
+              <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.market_trend || 'Not specified'}</p>
             </div>
           </div>
 
           {/* Competition */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Competition</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Competition</h2>
             <div className="space-y-6">
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Key Competitors</h3>
-                <p className="text-[#888888] text-sm leading-relaxed">{pitch.competitors || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Key Competitors</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitors || 'Not specified'}</p>
               </div>
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Competitive Advantages</h3>
-                <p className="text-[#888888] text-sm leading-relaxed">{pitch.competitive_advantages || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Competitive Advantages</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitive_advantages || 'Not specified'}</p>
               </div>
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Moat / Defensibility</h3>
-                <p className="text-[#888888] text-sm leading-relaxed">{pitch.moat || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Moat / Defensibility</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.moat || 'Not specified'}</p>
               </div>
             </div>
           </div>
 
           {/* Business Model */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Business model</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Business model</h2>
             <div className="space-y-6">
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Revenue Model</h3>
-                <p className="text-[#888888] text-sm leading-relaxed">{pitch.revenue_model || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Revenue Model</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.revenue_model || 'Not specified'}</p>
               </div>
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Pricing Strategy</h3>
-                <p className="text-[#888888] text-sm leading-relaxed">{pitch.pricing || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Pricing Strategy</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.pricing || 'Not specified'}</p>
               </div>
             </div>
           </div>
 
           {/* Team (Mocked) */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Team</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Team</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-[#888888]" />
+              <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex gap-4">
+                <div className="w-12 h-12 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
+                  <User className="w-5 h-5 text-[var(--text2)]" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#222222] dark:text-white text-sm">Jane Doe</h4>
-                  <p className="text-[#888888] text-[11px] uppercase tracking-wider mb-2">Founder & CEO</p>
-                  <p className="text-[#888888] text-xs">Ex-Google PM. 2x founder with 1 exit in the logistics space.</p>
+                  <h4 className="font-bold text-[var(--text)]  text-sm">Jane Doe</h4>
+                  <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">Founder & CEO</p>
+                  <p className="text-[var(--text2)] text-xs">Ex-Google PM. 2x founder with 1 exit in the logistics space.</p>
                 </div>
               </div>
-              <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-[#888888]" />
+              <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex gap-4">
+                <div className="w-12 h-12 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
+                  <User className="w-5 h-5 text-[var(--text2)]" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#222222] dark:text-white text-sm">John Smith</h4>
-                  <p className="text-[#888888] text-[11px] uppercase tracking-wider mb-2">CTO</p>
-                  <p className="text-[#888888] text-xs">10 years engineering leadership at Stripe. Built highly scalable architectures.</p>
+                  <h4 className="font-bold text-[var(--text)]  text-sm">John Smith</h4>
+                  <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">CTO</p>
+                  <p className="text-[var(--text2)] text-xs">10 years engineering leadership at Stripe. Built highly scalable architectures.</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Traction & Financials (Premium Gated) */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Traction & Financials</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 relative overflow-hidden">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Traction & Financials</h2>
             
             <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[#888888] mb-1">MRR</div>
-                  <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.mrr)}</div>
+                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
+                  <div className="text-xs text-[var(--text2)] mb-1">MRR</div>
+                  <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.mrr)}</div>
                 </div>
-                <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[#888888] mb-1">ARR</div>
-                  <div className="font-bold text-[#222222] dark:text-white">{formatCurrency(pitch.arr)}</div>
+                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
+                  <div className="text-xs text-[var(--text2)] mb-1">ARR</div>
+                  <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.arr)}</div>
                 </div>
-                <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[#888888] mb-1">Active Users</div>
-                  <div className="font-bold text-[#222222] dark:text-white">{pitch.users_count ? pitch.users_count.toLocaleString() : 'N/A'}</div>
+                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
+                  <div className="text-xs text-[var(--text2)] mb-1">Active Users</div>
+                  <div className="font-bold text-[var(--text)] ">{pitch.users_count ? pitch.users_count.toLocaleString() : 'N/A'}</div>
                 </div>
-                <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[#888888] mb-1">MoM Growth</div>
-                  <div className="font-bold text-[#222222] dark:text-white">{pitch.mom_growth || 'N/A'}</div>
+                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
+                  <div className="text-xs text-[var(--text2)] mb-1">MoM Growth</div>
+                  <div className="font-bold text-[var(--text)] ">{pitch.mom_growth || 'N/A'}</div>
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">Key Milestones</h3>
-                <p className="text-[#888888] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
+                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Key Milestones</h3>
+                <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
               </div>
             </div>
 
             {!investorPremium && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
-                  <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
-                    <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
+                <div className="bg-[var(--card-bg)]  border-[0.5px] border-[var(--border)]  p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+                  <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+                    <Lock className="w-5 h-5 text-[var(--text)] " />
                   </div>
-                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Investor Account required</h3>
-                  <p className="text-sm text-[#888888] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
-                  <Link href="/pricing" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+                  <h3 className="text-lg font-bold text-[var(--text)]  mb-2">Investor Account required</h3>
+                  <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
+                  <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
                     View Investor Accounts
                   </Link>
                 </div>
@@ -1001,25 +1001,25 @@ via Ventex`;
 
           {/* Product Listings (If exists) */}
           {products.length > 0 && (
-            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+            <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-[#222222] dark:text-white">Products by this startup</h2>
-                <span className="text-[#888888] text-sm font-medium">{products.length} listed</span>
+                <h2 className="text-lg font-bold text-[var(--text)] ">Products by this startup</h2>
+                <span className="text-[var(--text2)] text-sm font-medium">{products.length} listed</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map(p => (
-                  <div key={p.id} className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[10px] overflow-hidden group">
-                    <div className="w-full aspect-video bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center">
-                      <span className="text-[#888888] text-xs">Image Placeholder</span>
+                  <div key={p.id} className="border-[0.5px] border-[var(--border)]  rounded-[10px] overflow-hidden group">
+                    <div className="w-full aspect-video bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center">
+                      <span className="text-[var(--text2)] text-xs">Image Placeholder</span>
                     </div>
                     <div className="p-3">
-                      <h4 className="font-bold text-[#222222] dark:text-white text-sm mb-1 truncate">{p.name}</h4>
+                      <h4 className="font-bold text-[var(--text)]  text-sm mb-1 truncate">{p.name}</h4>
                       <div className="flex justify-between items-center mt-3">
-                        <span className="font-bold text-[#222222] dark:text-white text-sm">{formatCurrency(p.price)}</span>
+                        <span className="font-bold text-[var(--text)]  text-sm">{formatCurrency(p.price)}</span>
                         <button 
                           onClick={() => handleBuyProduct(p)}
                           disabled={isCheckingOut}
-                          className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+                          className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
                         >
                           {isCheckingOut ? '...' : 'Buy now'}
                         </button>
@@ -1032,22 +1032,22 @@ via Ventex`;
           )}
 
           {/* Documents */}
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
-            <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Documents</h2>
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 relative overflow-hidden">
+            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Documents</h2>
             
-            <div className={`flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+            <div className={`flex items-center justify-between border-[0.5px] border-[var(--border)]  rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-[#F2F2F0] dark:bg-[#333333] rounded-md flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-[#888888]" />
+                <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-md flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-[var(--text2)]" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#222222] dark:text-white text-sm">Pitch Deck</h4>
-                  <p className="text-[#888888] text-xs">Confidential PDF</p>
+                  <h4 className="font-bold text-[var(--text)]  text-sm">Pitch Deck</h4>
+                  <p className="text-[var(--text2)] text-xs">Confidential PDF</p>
                 </div>
               </div>
               <button 
                 onClick={handleOpenDeck}
-                className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
+                className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
                 disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
               >
                 View Pitch Deck
@@ -1056,13 +1056,13 @@ via Ventex`;
 
             {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
-                  <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
-                    <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
+                <div className="bg-[var(--card-bg)]  border-[0.5px] border-[var(--border)]  p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+                  <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+                    <Lock className="w-5 h-5 text-[var(--text)] " />
                   </div>
-                  <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
-                  <p className="text-sm text-[#888888] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
-                  <Link href="/pricing" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+                  <h3 className="text-lg font-bold text-[var(--text)]  mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
+                  <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
+                  <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
                     View Investor Accounts
                   </Link>
                 </div>
@@ -1072,21 +1072,21 @@ via Ventex`;
             {pitch.additional_docs && pitch.additional_docs.length > 0 && (
               <div className={`mt-4 space-y-3 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
                 {pitch.additional_docs.map((doc: any, idx: number) => (
-                  <div key={idx} className="flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4">
+                  <div key={idx} className="flex items-center justify-between border-[0.5px] border-[var(--border)]  rounded-xl p-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-[#F2F2F0] dark:bg-[#333333] rounded-md flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-[#888888]" />
+                      <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-md flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-[var(--text2)]" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-[#222222] dark:text-white text-sm">{doc.name}</h4>
-                        <p className="text-[#888888] text-xs">Additional Document</p>
+                        <h4 className="font-bold text-[var(--text)]  text-sm">{doc.name}</h4>
+                        <p className="text-[var(--text2)] text-xs">Additional Document</p>
                       </div>
                     </div>
                     <a
                       href={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '#' : doc.url}
                       target={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '_self' : '_blank'}
                       rel="noopener noreferrer"
-                      className="bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
+                      className="bg-[#e5e5e5] dark:bg-[#333333] text-[var(--text)]  px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
                       onClick={(e) => {
                         if (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) {
                           e.preventDefault();
@@ -1103,8 +1103,8 @@ via Ventex`;
 
           {/* Q&A Section */}
           {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
-            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
-              <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Founder Q&A</h2>
+            <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
+              <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Founder Q&A</h2>
               <div className="space-y-6">
                 {QUESTIONS.map((q) => {
                   const answer = pitch.qa_data?.[q.id];
@@ -1114,11 +1114,11 @@ via Ventex`;
 
                   return (
                     <div key={q.id}>
-                      <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2 flex items-center gap-2">
+                      <h3 className="font-bold text-[var(--text)]  text-sm mb-2 flex items-center gap-2">
                         {q.text}
                         {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><Lock className="w-2.5 h-2.5" /> Premium</span>}
                       </h3>
-                      <div className={`text-[#888888] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
+                      <div className={`text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
                         {isGated ? 'This content is hidden to non-investors. A premium account is required to view the detailed traction and analytics provided by the founders. Upgrade your account today.' : answer}
                       </div>
                     </div>
@@ -1129,8 +1129,8 @@ via Ventex`;
                   if (!qa.question || !qa.answer) return null;
                   return (
                     <div key={idx}>
-                      <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-2">{qa.question}</h3>
-                      <div className="text-[#888888] text-sm leading-relaxed whitespace-pre-wrap">
+                      <h3 className="font-bold text-[var(--text)]  text-sm mb-2">{qa.question}</h3>
+                      <div className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">
                         {qa.answer}
                       </div>
                     </div>
@@ -1142,15 +1142,15 @@ via Ventex`;
         </div>
 
         {/* COMMUNITY COMMENTS */}
-        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
-          <h2 className="text-xl font-bold text-[#222222] dark:text-white mb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4">
+        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
+          <h2 className="text-xl font-bold text-[var(--text)]  mb-8 border-b-[0.5px] border-[var(--border)]  pb-4">
             Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
           </h2>
 
           {/* Comment Input */}
           {currentUser ? (
             <div className="flex gap-4 mb-10">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-[0.5px] border-[#e5e5e5] bg-[#222222] text-white font-bold text-sm flex-shrink-0">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-[0.5px] border-[var(--border)] bg-[var(--text)] text-[var(--text)] font-bold text-sm flex-shrink-0">
                 {currentProfile?.avatar_url
                   ? <img src={currentProfile.avatar_url} alt="" className="w-full h-full object-cover" />
                   : getInitials(currentProfile?.full_name || currentUser.email || 'U')
@@ -1159,18 +1159,18 @@ via Ventex`;
               <div className="flex-1">
                 <textarea
                   ref={textareaRef}
-                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
+                  className="w-full border-[0.5px] border-[var(--border)]  rounded-xl p-4 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
                   placeholder="Ask a question or leave feedback for the founders..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handlePostComment(); }}
                 />
                 <div className="flex items-center justify-between mt-3">
-                  <span className="text-xs text-[#888888]">Ctrl+Enter to post</span>
+                  <span className="text-xs text-[var(--text2)]">Ctrl+Enter to post</span>
                   <button
                     onClick={handlePostComment}
                     disabled={!newComment.trim() || posting}
-                    className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
                     {posting ? 'Posting...' : 'Post'}
@@ -1181,15 +1181,15 @@ via Ventex`;
           ) : (
             <Link
               href="/login"
-              className="flex items-center justify-between w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 mb-10 hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors group"
+              className="flex items-center justify-between w-full border-[0.5px] border-[var(--border)]  rounded-xl p-4 mb-10 hover:bg-[var(--bg)] dark:hover:bg-[#333333] transition-colors group"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#F2F2F0] dark:bg-[#333333] rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-[#888888]" />
+                <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-[var(--text2)]" />
                 </div>
-                <span className="text-sm text-[#888888]">Login to join the conversation</span>
+                <span className="text-sm text-[var(--text2)]">Login to join the conversation</span>
               </div>
-              <span className="text-sm font-bold text-[#222222] dark:text-white group-hover:underline">Login &rarr;</span>
+              <span className="text-sm font-bold text-[var(--text)]  group-hover:underline">Login &rarr;</span>
             </Link>
           )}
 
@@ -1198,18 +1198,18 @@ via Ventex`;
             <div className="space-y-6">
               {[1, 2].map(i => (
                 <div key={i} className="flex gap-4 animate-pulse">
-                  <div className="w-10 h-10 bg-[#F2F2F0] rounded-full flex-shrink-0" />
+                  <div className="w-10 h-10 bg-[var(--bg)] rounded-full flex-shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-3 bg-[#F2F2F0] rounded w-24" />
-                    <div className="h-3 bg-[#F2F2F0] rounded w-full" />
-                    <div className="h-3 bg-[#F2F2F0] rounded w-2/3" />
+                    <div className="h-3 bg-[var(--bg)] rounded w-24" />
+                    <div className="h-3 bg-[var(--bg)] rounded w-full" />
+                    <div className="h-3 bg-[var(--bg)] rounded w-2/3" />
                   </div>
                 </div>
               ))}
             </div>
           ) : comments.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-[#888888] text-sm">No comments yet. Be the first to start the conversation!</p>
+              <p className="text-[var(--text2)] text-sm">No comments yet. Be the first to start the conversation!</p>
             </div>
           ) : (
             <div className="space-y-8">
@@ -1219,27 +1219,27 @@ via Ventex`;
                 const isLiked = likedComments.has(comment.id);
                 return (
                   <div key={comment.id} className="flex gap-4 group">
-                    <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-[#F2F2F0] dark:bg-[#333333] flex items-center justify-center border-[0.5px] border-[#e5e5e5]">
+                    <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center border-[0.5px] border-[var(--border)]">
                       {user?.avatar_url
                         ? <img src={user.avatar_url} alt={name} className="w-full h-full object-cover" />
-                        : <span className="text-[#888888] font-bold text-xs">{getInitials(name)}</span>
+                        : <span className="text-[var(--text2)] font-bold text-xs">{getInitials(name)}</span>
                       }
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="font-bold text-[#222222] dark:text-white text-sm">{name}</span>
+                        <span className="font-bold text-[var(--text)]  text-sm">{name}</span>
                         {user?.role === 'mentor' && (
-                          <span className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
+                          <span className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
                         )}
                         {user?.role === 'investor' && (
-                          <span className="bg-[#888888] text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
+                          <span className="bg-[#888888] text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
                         )}
                         {user?.role === 'founder' && (
                           <span className="bg-blue-100 text-blue-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Founder</span>
                         )}
-                        <span className="text-[#888888] text-xs ml-auto">{timeAgo(comment.created_at)}</span>
+                        <span className="text-[var(--text2)] text-xs ml-auto">{timeAgo(comment.created_at)}</span>
                       </div>
-                      <p className="text-[#222222] dark:text-[#cccccc] text-sm leading-relaxed mb-3">
+                      <p className="text-[var(--text)] dark:text-[#cccccc] text-sm leading-relaxed mb-3">
                         {comment.content}
                       </p>
                       <div className="flex items-center gap-4">
@@ -1249,7 +1249,7 @@ via Ventex`;
                           className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
                             isLiked
                               ? 'text-red-500'
-                              : 'text-[#888888] hover:text-red-500'
+                              : 'text-[var(--text2)] hover:text-red-500'
                           } disabled:cursor-not-allowed`}
                         >
                           <Heart className={`w-3.5 h-3.5 transition-all ${isLiked ? 'fill-red-500' : ''}`} />
@@ -1265,13 +1265,13 @@ via Ventex`;
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-[var(--card-bg)]/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--card-bg)]/95 p-3 shadow-2xl backdrop-blur  bg-[var(--card-bg)]/95 md:hidden">
         <button
           onClick={() => {
             if (!currentUser) router.push('/login');
             else setIsInterestModalOpen(true);
           }}
-          className="min-h-11 w-full rounded-full bg-[#222222] px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[#222222] dark:hover:bg-gray-200"
+          className="min-h-11 w-full rounded-full bg-[var(--text)] px-6 py-3 text-center text-sm font-bold text-[var(--text)] transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[var(--text)] dark:hover:bg-gray-200"
         >
           Express interest
         </button>
@@ -1279,16 +1279,16 @@ via Ventex`;
 
       {isNdaModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl dark:bg-[#1a1a1a]">
-            <h3 className="text-lg font-bold text-[#222222] dark:text-white">Data room NDA terms</h3>
-            <p className="mt-3 text-sm leading-6 text-[#888888]">
+          <div className="w-full max-w-lg rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl bg-[var(--card-bg)]">
+            <h3 className="text-lg font-bold text-[var(--text)] ">Data room NDA terms</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
               By accessing this data room you agree all information is confidential.
             </p>
             <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[#e5e5e5] px-5 py-2.5 text-sm font-bold text-[#222222] dark:border-[#333333] dark:text-white">
+              <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[var(--border)] px-5 py-2.5 text-sm font-bold text-[var(--text)]  ">
                 Cancel
               </button>
-              <button onClick={handleAcceptNda} className="rounded-full bg-[#222222] px-5 py-2.5 text-sm font-bold text-white dark:bg-[var(--card-bg)] dark:text-[#222222]">
+              <button onClick={handleAcceptNda} className="rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-bold text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
                 I Agree â€” View Documents
               </button>
             </div>
@@ -1299,15 +1299,15 @@ via Ventex`;
       {/* Pitch Deck Modal Overlay */}
       {isDeckModalOpen && pitch.id && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
-          <div className="bg-[#F2F2F0] w-full max-w-6xl h-full rounded-2xl overflow-hidden flex flex-col shadow-2xl relative animate-in zoom-in-95 duration-200">
-            <div className="bg-[#222222] px-6 py-4 flex items-center justify-between flex-shrink-0">
+          <div className="bg-[var(--bg)] w-full max-w-6xl h-full rounded-2xl overflow-hidden flex flex-col shadow-2xl relative animate-in zoom-in-95 duration-200">
+            <div className="bg-[var(--text)] px-6 py-4 flex items-center justify-between flex-shrink-0">
               <div>
-                <h3 className="text-white font-bold text-lg">{pitch.title} - Pitch Deck</h3>
-                <p className="text-[#888888] text-xs">Secure Viewer</p>
+                <h3 className="text-[var(--text)] font-bold text-lg">{pitch.title} - Pitch Deck</h3>
+                <p className="text-[var(--text2)] text-xs">Secure Viewer</p>
               </div>
               <button 
                 onClick={() => setIsDeckModalOpen(false)}
-                className="text-[#888888] hover:text-white transition-colors p-2 bg-[var(--card-bg)]/10 rounded-full hover:bg-[var(--card-bg)]/20"
+                className="text-[var(--text2)] hover:text-[var(--text)] transition-colors p-2 bg-[var(--card-bg)]/10 rounded-full hover:bg-[var(--card-bg)]/20"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1326,12 +1326,12 @@ via Ventex`;
       {/* Express Interest Modal Overlay */}
       {isInterestModalOpen && pitch.id && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-[#222222] dark:text-white font-bold text-lg">Express Interest in {pitch.title}</h3>
+              <h3 className="text-[var(--text)]  font-bold text-lg">Express Interest in {pitch.title}</h3>
               <button 
                 onClick={() => setIsInterestModalOpen(false)}
-                className="text-[#888888] hover:text-[#222222] dark:hover:text-white transition-colors"
+                className="text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1339,26 +1339,26 @@ via Ventex`;
             
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">Amount</label>
+                <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Amount</label>
                 <input
                   type="number"
                   min="0"
                   value={interestAmount}
                   onChange={(e) => setInterestAmount(e.target.value)}
                   placeholder="Enter amount you are interested in"
-                  className="w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222] dark:border-[#333333] dark:bg-[#222222] dark:text-white"
+                  className="w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222]  dark:bg-[var(--text)] "
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-[#888888] uppercase tracking-wider mb-2">Message to Founder</label>
+                <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Message to Founder</label>
                 <textarea 
                   value={interestMessage}
                   onChange={(e) => setInterestMessage(e.target.value.slice(0, 500))}
                   placeholder="Introduce yourself and explain why you're interested in this startup..."
                   rows={6}
-                  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[#F2F2F0] dark:bg-[#222222] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
+                  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)]  bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
                 />
-                <div className="flex justify-between text-xs text-[#888888] mt-1.5">
+                <div className="flex justify-between text-xs text-[var(--text2)] mt-1.5">
                   <span>Keep it professional and concise.</span>
                   <span className={interestMessage.length >= 500 ? 'text-red-500 font-bold' : ''}>
                     {interestMessage.length}/500 chars
@@ -1369,14 +1369,14 @@ via Ventex`;
               <div className="flex gap-3 justify-end pt-4">
                 <button
                   onClick={() => setIsInterestModalOpen(false)}
-                  className="px-5 py-2.5 rounded-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:bg-[#F2F2F0] dark:hover:bg-[#222222] text-sm font-bold text-[#222222] dark:text-white transition-colors"
+                  className="px-5 py-2.5 rounded-full border-[0.5px] border-[var(--border)]  hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] text-sm font-bold text-[var(--text)]  transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSendInterest}
                   disabled={sendingInterest || !interestMessage.trim()}
-                  className="px-6 py-2.5 rounded-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {sendingInterest ? 'Sending...' : 'Send interest'}
                 </button>

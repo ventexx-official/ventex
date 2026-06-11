@@ -179,7 +179,7 @@ function MessagesContent() {
                       <p className="mt-1 truncate text-xs text-[var(--text2)]">{meta?.preview || "No messages yet."}</p>
                     </div>
                     {meta?.unread ? (
-                      <span className="flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-black text-white">
+                      <span className="flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-black text-[var(--text)]">
                         {meta.unread}
                       </span>
                     ) : null}

@@ -190,18 +190,18 @@ export default function CartPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
+    <div className="min-h-screen bg-[var(--bg)]  pb-24">
       {/* HEADER */}
-      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
+      <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)]  pt-12 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
+          <h1 className="text-3xl font-black text-[var(--text)]  uppercase tracking-tighter flex items-center gap-3">
             <ShoppingBag className="w-8 h-8" />
             Your Cart
           </h1>
@@ -210,15 +210,15 @@ export default function CartPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         {cartItems.length === 0 ? (
-          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
-            <div className="w-24 h-24 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mx-auto mb-6">
-              <ShoppingBag className="w-10 h-10 text-[#888888]" />
+          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
+            <div className="w-24 h-24 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mx-auto mb-6">
+              <ShoppingBag className="w-10 h-10 text-[var(--text2)]" />
             </div>
-            <h2 className="text-2xl font-black text-[#222222] dark:text-white mb-2 tracking-tight">Your cart is empty</h2>
-            <p className="text-[#888888] mb-8 max-w-md mx-auto">Looks like you haven't added any products, templates, or services to your cart yet.</p>
+            <h2 className="text-2xl font-black text-[var(--text)]  mb-2 tracking-tight">Your cart is empty</h2>
+            <p className="text-[var(--text2)] mb-8 max-w-md mx-auto">Looks like you haven't added any products, templates, or services to your cart yet.</p>
             <Link 
               href="/marketplace" 
-              className="inline-flex items-center gap-2 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10"
+              className="inline-flex items-center gap-2 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10"
             >
               Browse Products <ArrowRight className="w-4 h-4" />
             </Link>
@@ -236,9 +236,9 @@ export default function CartPage() {
                 const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
 
                 return (
-                  <div key={item.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
+                  <div key={item.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
                     {/* Image */}
-                    <div className="w-full sm:w-32 aspect-video sm:aspect-square bg-[#F2F2F0] dark:bg-[#222222] rounded-xl overflow-hidden flex-shrink-0 relative">
+                    <div className="w-full sm:w-32 aspect-video sm:aspect-square bg-[var(--bg)] dark:bg-[var(--text)] rounded-xl overflow-hidden flex-shrink-0 relative">
                       {product.images_urls?.[0] ? (
                         <img src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover" />
                       ) : (
@@ -247,7 +247,7 @@ export default function CartPage() {
                         </div>
                       )}
                       {isDeal && (
-                        <span className="absolute top-2 left-2 bg-red-500 text-white text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full">
+                        <span className="absolute top-2 left-2 bg-red-500 text-[var(--text)] text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full">
                           {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
                         </span>
                       )}
@@ -257,19 +257,19 @@ export default function CartPage() {
                     <div className="flex-grow">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <Link href={`/marketplace/${product.id}`} className="font-bold text-lg text-[#222222] dark:text-white hover:underline decoration-2 underline-offset-2 mb-1 line-clamp-2">
+                          <Link href={`/marketplace/${product.id}`} className="font-bold text-lg text-[var(--text)]  hover:underline decoration-2 underline-offset-2 mb-1 line-clamp-2">
                             {product.name}
                           </Link>
-                          <p className="text-sm text-[#888888] flex items-center gap-1.5 mb-2">
+                          <p className="text-sm text-[var(--text2)] flex items-center gap-1.5 mb-2">
                             By {product.seller?.full_name || 'Anonymous'} <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                           </p>
-                          <span className="bg-[#F2F2F0] dark:bg-[#333333] text-[#888888] dark:text-gray-300 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">
+                          <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text2)] dark:text-gray-300 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded">
                             {product.category}
                           </span>
                         </div>
                         <button 
                           onClick={() => removeItem(item.id)}
-                          className="text-[#888888] hover:text-red-500 transition-colors p-2"
+                          className="text-[var(--text2)] hover:text-red-500 transition-colors p-2"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -278,16 +278,16 @@ export default function CartPage() {
                       <div className="mt-6 flex items-end justify-between">
                         {/* Quantity */}
                         <div className="flex items-center gap-3">
-                          <span className="text-xs font-bold text-[#888888] uppercase tracking-widest">Qty</span>
+                          <span className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest">Qty</span>
                           {isHardware ? (
-                            <div className="flex items-center bg-[#F2F2F0] dark:bg-[#222222] rounded-lg p-1 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
-                              <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Minus className="w-3.5 h-3.5" /></button>
-                              <span className="w-8 text-center text-sm font-bold text-[#222222] dark:text-white">{item.quantity}</span>
-                              <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Plus className="w-3.5 h-3.5" /></button>
+                            <div className="flex items-center bg-[var(--bg)] dark:bg-[var(--text)] rounded-lg p-1 border-[0.5px] border-[var(--border)] ">
+                              <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[var(--text)] "><Minus className="w-3.5 h-3.5" /></button>
+                              <span className="w-8 text-center text-sm font-bold text-[var(--text)] ">{item.quantity}</span>
+                              <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[var(--text)] "><Plus className="w-3.5 h-3.5" /></button>
                             </div>
                           ) : (
-                            <div className="bg-[#F2F2F0] dark:bg-[#222222] rounded-lg px-4 py-1.5 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
-                              <span className="text-sm font-bold text-[#888888]">1 (Digital)</span>
+                            <div className="bg-[var(--bg)] dark:bg-[var(--text)] rounded-lg px-4 py-1.5 border-[0.5px] border-[var(--border)] ">
+                              <span className="text-sm font-bold text-[var(--text2)]">1 (Digital)</span>
                             </div>
                           )}
                         </div>
@@ -295,11 +295,11 @@ export default function CartPage() {
                         {/* Price */}
                         <div className="text-right">
                           {isDeal && (
-                            <div className="text-xs text-[#888888] line-through font-medium mb-0.5">
+                            <div className="text-xs text-[var(--text2)] line-through font-medium mb-0.5">
                               ₹{(product.price * item.quantity).toLocaleString()}
                             </div>
                           )}
-                          <div className="text-xl font-black text-[#222222] dark:text-white">
+                          <div className="text-xl font-black text-[var(--text)] ">
                             ₹{(itemPrice * item.quantity).toLocaleString()}
                           </div>
                         </div>
@@ -312,13 +312,13 @@ export default function CartPage() {
 
             {/* ORDER SUMMARY */}
             <div className="w-full lg:w-[400px] flex-shrink-0">
-              <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
-                <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-6">Order Summary</h2>
+              <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
+                <h2 className="text-xl font-black text-[var(--text)]  uppercase tracking-tight mb-6">Order Summary</h2>
                 
-                <div className="space-y-4 mb-6 pb-6 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+                <div className="space-y-4 mb-6 pb-6 border-b-[0.5px] border-[var(--border)] ">
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#888888] font-medium">Subtotal ({cartItems.length} items)</span>
-                    <span className="text-[#222222] dark:text-white font-bold">₹{subtotal.toLocaleString()}</span>
+                    <span className="text-[var(--text2)] font-medium">Subtotal ({cartItems.length} items)</span>
+                    <span className="text-[var(--text)]  font-bold">₹{subtotal.toLocaleString()}</span>
                   </div>
                   {discountPct > 0 && (
                     <div className="flex justify-between text-sm text-emerald-500">
@@ -329,18 +329,18 @@ export default function CartPage() {
                     </div>
                   )}
                   <div className="flex justify-between text-sm">
-                    <span className="text-[#888888] font-medium">Platform Fee</span>
+                    <span className="text-[var(--text2)] font-medium">Platform Fee</span>
                     <span className="text-emerald-500 font-bold">Waived</span>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-end mb-8">
-                  <span className="text-sm font-bold text-[#222222] dark:text-white uppercase tracking-widest">Total</span>
+                  <span className="text-sm font-bold text-[var(--text)]  uppercase tracking-widest">Total</span>
                   <div className="text-right">
                     {discountPct > 0 && (
-                      <div className="text-xs text-[#888888] line-through font-medium">₹{subtotal.toLocaleString()}</div>
+                      <div className="text-xs text-[var(--text2)] line-through font-medium">₹{subtotal.toLocaleString()}</div>
                     )}
-                    <span className="text-3xl font-black text-[#222222] dark:text-white tracking-tight">₹{total.toLocaleString()}</span>
+                    <span className="text-3xl font-black text-[var(--text)]  tracking-tight">₹{total.toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -369,20 +369,20 @@ export default function CartPage() {
                     <div className="space-y-2">
                       <div className="flex gap-2">
                         <div className="relative flex-grow">
-                          <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#888888]" />
+                          <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--text2)]" />
                           <input 
                             type="text" 
                             placeholder="Promo code" 
                             value={promoCode}
                             onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(''); }}
                             onKeyDown={e => e.key === 'Enter' && handleApplyPromo()}
-                            className="w-full pl-10 pr-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white uppercase font-bold tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal"
+                            className="w-full pl-10 pr-4 py-3 bg-[var(--bg)]  border-[0.5px] border-[var(--border)]  rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[var(--text)]  uppercase font-bold tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal"
                           />
                         </div>
                         <button 
                           onClick={handleApplyPromo}
                           disabled={applyingPromo || !promoCode.trim()}
-                          className="px-4 py-3 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] rounded-xl text-sm font-bold hover:bg-black dark:hover:bg-[var(--bg3)] transition-colors disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
+                          className="px-4 py-3 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] rounded-xl text-sm font-bold hover:bg-black dark:hover:bg-[var(--bg3)] transition-colors disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
                         >
                           {applyingPromo ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                           {applyingPromo ? '' : 'Apply'}
@@ -401,7 +401,7 @@ export default function CartPage() {
                 <button 
                   onClick={handleCheckout}
                   disabled={checkingOut || cartItems.length === 0}
-                  className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
                 >
                   {checkingOut ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> Creating Session...</>
@@ -410,7 +410,7 @@ export default function CartPage() {
                   )}
                 </button>
 
-                <div className="mt-6 flex items-center justify-center gap-2 text-xs text-[#888888] font-medium">
+                <div className="mt-6 flex items-center justify-center gap-2 text-xs text-[var(--text2)] font-medium">
                   <ShieldCheck className="w-4 h-4" /> Secure checkout powered by Stripe
                 </div>
               </div>

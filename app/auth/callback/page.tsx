@@ -60,22 +60,22 @@ export default function AuthCallback() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--bg)]  flex flex-col items-center justify-center p-4">
       {error ? (
-        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
+        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)]  rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
            <h1 className="text-xl font-bold text-red-600 mb-2">Auth Error</h1>
-           <p className="text-sm text-[#888888] mb-6">{error}</p>
+           <p className="text-sm text-[var(--text2)] mb-6">{error}</p>
            <button 
              onClick={() => router.push('/login')}
-             className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium"
+             className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium"
            >
              Return to login
            </button>
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-[#e5e5e5] dark:border-[#333333] border-t-[#222222] dark:border-t-white rounded-full animate-spin mb-4"></div>
-          <p className="text-[#888888] text-sm font-medium">Authenticating...</p>
+          <div className="w-12 h-12 border-4 border-[var(--border)]  border-t-[#222222] dark:border-t-white rounded-full animate-spin mb-4"></div>
+          <p className="text-[var(--text2)] text-sm font-medium">Authenticating...</p>
         </div>
       )}
     </div>

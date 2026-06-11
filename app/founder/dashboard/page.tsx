@@ -340,8 +340,8 @@ export default function FounderDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -361,7 +361,7 @@ export default function FounderDashboard() {
   const mainML = sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-[240px]';
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
 
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ DELETE CONFIRMATION MODAL Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {confirmDelete && (
@@ -370,18 +370,18 @@ export default function FounderDashboard() {
           <div className="relative bg-[var(--card-bg)] rounded-3xl shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={() => setConfirmDelete(null)}
-              className="absolute top-4 right-4 p-1.5 hover:bg-[#F2F2F0] rounded-lg transition-colors text-[#888888]"
+              className="absolute top-4 right-4 p-1.5 hover:bg-[var(--bg)] rounded-lg transition-colors text-[var(--text2)]"
             >
               <X className="w-4 h-4" />
             </button>
             <div className="flex items-center justify-center w-14 h-14 bg-red-50 rounded-2xl mx-auto mb-5">
               <AlertTriangle className="w-7 h-7 text-red-500" />
             </div>
-            <h2 className="text-xl font-black text-[#222222] text-center mb-2">Delete pitch?</h2>
-            <p className="text-sm text-[#888888] text-center mb-1">
+            <h2 className="text-xl font-black text-[var(--text)] text-center mb-2">Delete pitch?</h2>
+            <p className="text-sm text-[var(--text2)] text-center mb-1">
               You're about to permanently delete:
             </p>
-            <p className="text-sm font-bold text-[#222222] text-center mb-6 px-4 truncate">
+            <p className="text-sm font-bold text-[var(--text)] text-center mb-6 px-4 truncate">
               "{confirmDelete.title}"
             </p>
             <p className="text-xs text-red-500 text-center mb-8 bg-red-50 rounded-xl py-2 px-4">
@@ -390,13 +390,13 @@ export default function FounderDashboard() {
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmDelete(null)}
-                className="flex-1 py-3 border-[0.5px] border-[#e5e5e5] rounded-2xl font-bold text-[#222222] hover:bg-[#F2F2F0] transition-colors text-sm"
+                className="flex-1 py-3 border-[0.5px] border-[var(--border)] rounded-2xl font-bold text-[var(--text)] hover:bg-[var(--bg)] transition-colors text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 py-3 bg-red-500 text-white rounded-2xl font-bold hover:bg-red-600 active:scale-95 transition-all text-sm flex items-center justify-center gap-2"
+                className="flex-1 py-3 bg-red-500 text-[var(--text)] rounded-2xl font-bold hover:bg-red-600 active:scale-95 transition-all text-sm flex items-center justify-center gap-2"
               >
                 <Trash2 className="w-4 h-4" />
                 Yes, delete it
@@ -407,14 +407,14 @@ export default function FounderDashboard() {
       )}
 
       {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
-      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
-        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
           {!sidebarCollapsed && (
-            <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
+            <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
           )}
           <button
             onClick={() => setSidebarCollapsed(v => !v)}
-            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] transition-colors text-[#888888] hover:text-[#222222] ml-auto"
+            className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto"
             title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
@@ -423,21 +423,21 @@ export default function FounderDashboard() {
 
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
-            <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
-                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+            <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
+                {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || 'Founder'}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || 'Founder'}</p>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
               </div>
             </div>
           </div>
         )}
         {sidebarCollapsed && (
           <div className="hidden md:flex justify-center py-4">
-            <div className="w-9 h-9 rounded-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden">
-              {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
+            <div className="w-9 h-9 rounded-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden">
+              {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
             </div>
           </div>
         )}
@@ -463,16 +463,16 @@ export default function FounderDashboard() {
         </nav>
 
         {!sidebarCollapsed && (
-          <div className="hidden md:block px-3 pb-4 mt-auto border-t-[0.5px] border-[#e5e5e5] pt-4">
-            <Link href={`/profile/${userProfile?.id}`} className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[#F2F2F0] transition-colors group">
-              <span className="text-xs font-bold text-[#888888] group-hover:text-[#222222]">View public profile</span>
-              <ArrowRight className="w-4 h-4 text-[#888888]" />
+          <div className="hidden md:block px-3 pb-4 mt-auto border-t-[0.5px] border-[var(--border)] pt-4">
+            <Link href={`/profile/${userProfile?.id}`} className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--bg)] transition-colors group">
+              <span className="text-xs font-bold text-[var(--text2)] group-hover:text-[var(--text)]">View public profile</span>
+              <ArrowRight className="w-4 h-4 text-[var(--text2)]" />
             </Link>
           </div>
         )}
         {sidebarCollapsed && (
-          <div className="hidden md:flex justify-center pb-4 mt-auto pt-4 border-t-[0.5px] border-[#e5e5e5]">
-            <Link href={`/profile/${userProfile?.id}`} className="p-2 rounded-xl hover:bg-[#F2F2F0] transition-colors text-[#888888]" title="View public profile">
+          <div className="hidden md:flex justify-center pb-4 mt-auto pt-4 border-t-[0.5px] border-[var(--border)]">
+            <Link href={`/profile/${userProfile?.id}`} className="p-2 rounded-xl hover:bg-[var(--bg)] transition-colors text-[var(--text2)]" title="View public profile">
               <ExternalLink className="w-4 h-4" />
             </Link>
           </div>
@@ -486,20 +486,20 @@ export default function FounderDashboard() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-2xl md:text-3xl font-black text-[#222222] tracking-tighter uppercase">Founder Dashboard</h1>
+                <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase">Founder Dashboard</h1>
                 {userProfile?.level && (
-                  <span className="bg-[#222222] text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span className="bg-[var(--text)] text-[var(--text)] text-xs font-bold px-3 py-1.5 rounded-full">
                     {userProfile.level} {levelEmoji(userProfile.level)}
                   </span>
                 )}
               </div>
-              <p className="text-[#888888] font-medium mt-1 text-sm">
+              <p className="text-[var(--text2)] font-medium mt-1 text-sm">
                 {userProfile?.full_name ? `Welcome, ${userProfile.full_name}` : 'Everything you need to scale your startup.'}
               </p>
             </div>
             <button
               onClick={() => router.push('/founder/create-pitch')}
-              className="bg-[#222222] text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-black active:scale-95 transition-all shadow-xl shadow-black/5 w-full sm:w-auto justify-center"
+              className="bg-[var(--text)] text-[var(--text)] px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-black active:scale-95 transition-all shadow-xl shadow-black/5 w-full sm:w-auto justify-center"
             >
               <Plus className="w-5 h-5" /> Create New Pitch
             </button>
@@ -513,23 +513,23 @@ export default function FounderDashboard() {
 
           {/* XP PROGRESS */}
           {userProfile && (
-            <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
+            <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm mb-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div>
-                  <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">Founder XP</p>
-                  <p className="text-2xl font-black text-[#222222]">
+                  <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">Founder XP</p>
+                  <p className="text-2xl font-black text-[var(--text)]">
                     {(userProfile.xp ?? 0).toLocaleString()} XP
                   </p>
                 </div>
-                <p className="text-sm text-[#888888] font-medium">
+                <p className="text-sm text-[var(--text2)] font-medium">
                   {(userProfile.xp ?? 0) >= 1000
                     ? 'Max level reached'
                     : `${(userProfile.xp ?? 0).toLocaleString()} / ${nextLevelThreshold(userProfile.xp ?? 0).toLocaleString()} to next level`}
                 </p>
               </div>
-              <div className="w-full h-3 bg-[#F2F2F0] rounded-full overflow-hidden mb-4">
+              <div className="w-full h-3 bg-[var(--bg)] rounded-full overflow-hidden mb-4">
                 <div
-                  className="h-full bg-[#222222] rounded-full transition-all"
+                  className="h-full bg-[var(--text)] rounded-full transition-all"
                   style={{
                     width: `${(() => {
                       const xp = userProfile.xp ?? 0;
@@ -546,7 +546,7 @@ export default function FounderDashboard() {
                   {parseBadges(userProfile.badges).map((badge) => (
                     <span
                       key={badge}
-                      className="bg-[#F2F2F0] text-[#222222] text-xs font-bold px-3 py-1.5 rounded-full"
+                      className="bg-[var(--bg)] text-[var(--text)] text-xs font-bold px-3 py-1.5 rounded-full"
                     >
                       {badge}
                     </span>
@@ -559,12 +559,12 @@ export default function FounderDashboard() {
           {/* STATS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {stats.map((stat, idx) => (
-              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`p-2.5 rounded-2xl bg-[#F2F2F0] ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
+                  <div className={`p-2.5 rounded-2xl bg-[var(--bg)] ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
                 </div>
-                <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">{stat.label}</p>
-                <h3 className="text-2xl font-black text-[#222222]">{stat.value}</h3>
+                <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">{stat.label}</p>
+                <h3 className="text-2xl font-black text-[var(--text)]">{stat.value}</h3>
               </div>
             ))}
           </div>
@@ -572,7 +572,7 @@ export default function FounderDashboard() {
           {/* ACTIVE DISPUTES */}
           {disputes.length > 0 && (
             <div className="mb-10 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
-              <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase flex items-center gap-2">
+              <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-500 animate-pulse" />
                 Active Disputes ({disputes.filter(d => d.status === 'open' || d.status === 'under_review').length})
               </h2>
@@ -588,14 +588,14 @@ export default function FounderDashboard() {
                       className={`bg-[var(--card-bg)] rounded-3xl border shadow-sm overflow-hidden transition-all duration-200 ${
                         isPendingResponse 
                           ? 'border-red-200 hover:border-red-300' 
-                          : 'border-[#e5e5e5]'
+                          : 'border-[var(--border)]'
                       }`}
                     >
                       {/* Top status bar */}
                       <div className={`px-5 py-2.5 flex items-center justify-between border-b ${
                         isPendingResponse 
                           ? 'bg-red-50/50 border-red-100' 
-                          : 'bg-[var(--bg2)]/50 border-[#e5e5e5]'
+                          : 'bg-[var(--bg2)]/50 border-[var(--border)]'
                       }`}>
                         <span className={`text-[10px] font-black uppercase tracking-wider ${
                           isPendingResponse ? 'text-red-600' : 'text-amber-600'
@@ -612,24 +612,24 @@ export default function FounderDashboard() {
                       <div className="p-5 space-y-4">
                         {/* Order & Product Info */}
                         <div className="flex gap-3.5 items-start">
-                          <div className="w-10 h-10 bg-[#F2F2F0] rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden border-[0.5px] border-[#e5e5e5]">
+                          <div className="w-10 h-10 bg-[var(--bg)] rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden border-[0.5px] border-[var(--border)]">
                             {dispute.order?.product?.images_urls?.[0] ? (
                               <img src={dispute.order.product.images_urls[0]} alt="" className="w-full h-full object-cover" />
                             ) : (
-                              <ShoppingBag className="w-5 h-5 text-[#888888]" />
+                              <ShoppingBag className="w-5 h-5 text-[var(--text2)]" />
                             )}
                           </div>
                           <div className="min-w-0">
-                            <h4 className="font-bold text-[#222222] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
-                            <p className="text-[10px] text-[#888888] font-semibold mt-0.5">
+                            <h4 className="font-bold text-[var(--text)] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
+                            <p className="text-[10px] text-[var(--text2)] font-semibold mt-0.5">
                               Order ID: <span className="font-mono">{dispute.order_id}</span> Â¢ Net Sale: ₹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
                             </p>
                           </div>
                         </div>
 
                         {/* Dispute Detail */}
-                        <div className="bg-[#F2F2F0] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] space-y-2">
-                          <div className="flex justify-between items-center text-[10px] font-black text-[#888888] uppercase tracking-wider">
+                        <div className="bg-[var(--bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)] space-y-2">
+                          <div className="flex justify-between items-center text-[10px] font-black text-[var(--text2)] uppercase tracking-wider">
                             <span>Reason: {dispute.reason}</span>
                             <span>Buyer: {dispute.buyer?.full_name || 'Anon'}</span>
                           </div>
@@ -657,14 +657,14 @@ export default function FounderDashboard() {
                                   setExpandedDisputeId(dispute.id);
                                   setRebuttalText('');
                                 }}
-                                className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-colors animate-pulse"
+                                className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-[var(--text)] rounded-xl text-xs font-black uppercase tracking-wider transition-colors animate-pulse"
                               >
                                 Respond to Dispute
                               </button>
                             ) : (
                               <div className="space-y-3 pt-2">
                                 <div className="flex justify-between items-center">
-                                  <label className="text-[10px] font-black uppercase tracking-wider text-[#888888]">Rebuttal / Resolution Response</label>
+                                  <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text2)]">Rebuttal / Resolution Response</label>
                                   <span className={`text-[10px] font-semibold ${
                                     rebuttalText.trim().length < 20 ? 'text-amber-500' : 'text-emerald-500'
                                   }`}>
@@ -676,19 +676,19 @@ export default function FounderDashboard() {
                                   value={rebuttalText}
                                   onChange={(e) => setRebuttalText(e.target.value)}
                                   placeholder="Provide evidence of delivery, template details, links, or communication log showing resolution..."
-                                  className="w-full px-3 py-2 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#222222] text-[#222222] resize-none leading-relaxed"
+                                  className="w-full px-3 py-2 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#222222] text-[var(--text)] resize-none leading-relaxed"
                                 />
                                 <div className="flex gap-2">
                                   <button
                                     onClick={() => setExpandedDisputeId(null)}
-                                    className="flex-1 py-2 bg-[#F2F2F0] hover:bg-[#e5e5e5] text-[#222222] rounded-xl text-[10px] font-bold uppercase transition-colors"
+                                    className="flex-1 py-2 bg-[var(--bg)] hover:bg-[#e5e5e5] text-[var(--text)] rounded-xl text-[10px] font-bold uppercase transition-colors"
                                   >
                                     Cancel
                                   </button>
                                   <button
                                     onClick={() => handleSubmitRebuttal(dispute.id)}
                                     disabled={submittingDisputeId === dispute.id || rebuttalText.trim().length < 20}
-                                    className="flex-1 py-2 bg-[#222222] hover:bg-black disabled:opacity-50 text-white rounded-xl text-[10px] font-bold uppercase transition-colors"
+                                    className="flex-1 py-2 bg-[var(--text)] hover:bg-black disabled:opacity-50 text-[var(--text)] rounded-xl text-[10px] font-bold uppercase transition-colors"
                                   >
                                     {submittingDisputeId === dispute.id ? 'Submitting...' : 'Submit Rebuttal'}
                                   </button>
@@ -710,19 +710,19 @@ export default function FounderDashboard() {
             {/* MY PITCHES */}
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase">My Pitches</h2>
-                <Link href="/founder/pitches" className="text-sm font-bold text-[#888888] hover:text-[#222222] flex items-center gap-1 transition-colors">
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase">My Pitches</h2>
+                <Link href="/founder/pitches" className="text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] flex items-center gap-1 transition-colors">
                   View all <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
               <div className="space-y-3" ref={menuRef}>
                 {pitches.length === 0 ? (
-                  <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-12 text-center">
-                    <p className="text-[#888888] font-medium">You haven't created any pitches yet.</p>
+                  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-12 text-center">
+                    <p className="text-[var(--text2)] font-medium">You haven't created any pitches yet.</p>
                     <button
                       onClick={() => router.push('/founder/create-pitch')}
-                      className="mt-4 text-sm font-bold text-[#222222] underline decoration-[0.5px] underline-offset-4 hover:no-underline"
+                      className="mt-4 text-sm font-bold text-[var(--text)] underline decoration-[0.5px] underline-offset-4 hover:no-underline"
                     >
                       Create your first pitch →
                     </button>
@@ -731,18 +731,18 @@ export default function FounderDashboard() {
                   pitches.slice(0, 5).map((pitch) => (
                     <div
                       key={pitch.id}
-                      className={`bg-[var(--card-bg)] p-4 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
+                      className={`bg-[var(--card-bg)] p-4 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
                     >
                       <div className="flex items-center gap-4 min-w-0">
-                        <div className="w-12 h-12 bg-[#F2F2F0] rounded-2xl flex items-center justify-center overflow-hidden border-[0.5px] border-[#e5e5e5] flex-shrink-0">
-                          {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <FileText className="w-5 h-5 text-[#888888]" />}
+                        <div className="w-12 h-12 bg-[var(--bg)] rounded-2xl flex items-center justify-center overflow-hidden border-[0.5px] border-[var(--border)] flex-shrink-0">
+                          {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <FileText className="w-5 h-5 text-[var(--text2)]" />}
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <h3 className="font-bold text-[#222222] text-sm truncate">{pitch.title || 'Untitled Pitch'}</h3>
+                            <h3 className="font-bold text-[var(--text)] text-sm truncate">{pitch.title || 'Untitled Pitch'}</h3>
                             <StatusBadge status={pitch.status} />
                           </div>
-                          <div className="flex items-center gap-3 text-[11px] font-medium text-[#888888]">
+                          <div className="flex items-center gap-3 text-[11px] font-medium text-[var(--text2)]">
                             <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {pitch.views || 0}</span>
                             <span className="hidden sm:flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(pitch.updated_at).toLocaleDateString()}</span>
                           </div>
@@ -751,30 +751,30 @@ export default function FounderDashboard() {
                       </div>
 
                       <div className="flex items-center gap-2 flex-shrink-0 ml-3">
-                        <Link href={`/founder/create-pitch?id=${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[#F2F2F0] text-[#222222] text-xs font-bold rounded-xl hover:bg-[#e5e5e5] active:scale-95 transition-all">Edit</Link>
-                        <Link href={`/pitch/${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[#222222] text-white text-xs font-bold rounded-xl hover:bg-black active:scale-95 transition-all">View</Link>
+                        <Link href={`/founder/create-pitch?id=${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[var(--bg)] text-[var(--text)] text-xs font-bold rounded-xl hover:bg-[#e5e5e5] active:scale-95 transition-all">Edit</Link>
+                        <Link href={`/pitch/${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[var(--text)] text-[var(--text)] text-xs font-bold rounded-xl hover:bg-black active:scale-95 transition-all">View</Link>
 
                         {/* Three-dot menu */}
                         <div className="relative">
                           <button
                             onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === pitch.id ? null : pitch.id); }}
-                            className="p-2 hover:bg-[#F2F2F0] rounded-xl transition-colors text-[#888888] hover:text-[#222222]"
+                            className="p-2 hover:bg-[var(--bg)] rounded-xl transition-colors text-[var(--text2)] hover:text-[var(--text)]"
                           >
                             <MoreVertical className="w-4 h-4" />
                           </button>
 
                           {openMenuId === pitch.id && (
-                            <div className="absolute right-0 top-full mt-1 w-48 bg-[var(--card-bg)] rounded-2xl shadow-xl border-[0.5px] border-[#e5e5e5] z-50 py-1 overflow-hidden">
-                              <Link href={`/founder/create-pitch?id=${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0] transition-colors">
-                                <Edit2 className="w-4 h-4 text-[#888888]" /> Edit pitch
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-[var(--card-bg)] rounded-2xl shadow-xl border-[0.5px] border-[var(--border)] z-50 py-1 overflow-hidden">
+                              <Link href={`/founder/create-pitch?id=${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
+                                <Edit2 className="w-4 h-4 text-[var(--text2)]" /> Edit pitch
                               </Link>
-                              <Link href={`/pitch/${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0] transition-colors">
-                                <ExternalLink className="w-4 h-4 text-[#888888]" /> View public page
+                              <Link href={`/pitch/${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
+                                <ExternalLink className="w-4 h-4 text-[var(--text2)]" /> View public page
                               </Link>
-                              <button onClick={() => handleDuplicate(pitch)} className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0] transition-colors">
-                                <Copy className="w-4 h-4 text-[#888888]" /> Duplicate
+                              <button onClick={() => handleDuplicate(pitch)} className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
+                                <Copy className="w-4 h-4 text-[var(--text2)]" /> Duplicate
                               </button>
-                              <div className="border-t-[0.5px] border-[#e5e5e5] my-1" />
+                              <div className="border-t-[0.5px] border-[var(--border)] my-1" />
                               <button
                                 onClick={() => { setOpenMenuId(null); setConfirmDelete({ id: pitch.id, title: pitch.title || 'Untitled Pitch' }); }}
                                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
@@ -789,7 +789,7 @@ export default function FounderDashboard() {
                   ))
                 )}
                 {pitches.length > 5 && (
-                  <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors">
+                  <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors">
                     + {pitches.length - 5} more pitches  -  View all →
                   </Link>
                 )}
@@ -798,11 +798,11 @@ export default function FounderDashboard() {
 
             {/* SIDE CONTENT */}
             <div className="space-y-8">
-              <div className="bg-[#222222] rounded-[32px] p-8 text-white relative overflow-hidden group">
+              <div className="bg-[var(--text)] rounded-[32px] p-8 text-[var(--text)] relative overflow-hidden group">
                 <div className="relative z-10">
                   <h3 className="text-xl font-black mb-2 uppercase tracking-tighter">Boost your pitch</h3>
-                  <p className="text-white/60 text-sm mb-6 leading-relaxed">Get 10x more eyes on your startup with premium booster packs.</p>
-                  <Link href="/founder/boost" className="w-full py-3 bg-[var(--card-bg)] text-[#222222] rounded-2xl font-bold text-sm hover:bg-[var(--bg3)] active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <p className="text-[var(--text)]/60 text-sm mb-6 leading-relaxed">Get 10x more eyes on your startup with premium booster packs.</p>
+                  <Link href="/founder/boost" className="w-full py-3 bg-[var(--card-bg)] text-[var(--text)] rounded-2xl font-bold text-sm hover:bg-[var(--bg3)] active:scale-95 transition-all flex items-center justify-center gap-2">
                     Buy booster pack <Zap className="w-4 h-4" />
                   </Link>
                 </div>
@@ -810,26 +810,26 @@ export default function FounderDashboard() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5">Investor Interests</h2>
+                <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5">Investor Interests</h2>
                 <div className="space-y-4">
                   {interests.length === 0 ? (
-                    <p className="text-sm text-[#888888]">No requests yet.</p>
+                    <p className="text-sm text-[var(--text2)]">No requests yet.</p>
                   ) : (
                     interests.map((interest) => {
                       const invName = interest.investor?.full_name || interest.investor?.email?.split('@')[0] || 'Premium Investor';
                       return (
-                        <div key={interest.id} className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-5 shadow-sm space-y-3">
+                        <div key={interest.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-5 shadow-sm space-y-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div className="w-9 h-9 rounded-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                               {interest.investor?.avatar_url ? (
                                 <img src={interest.investor.avatar_url} alt="" className="w-full h-full object-cover" />
                               ) : (
-                                <User className="w-4 h-4 text-[#888888]" />
+                                <User className="w-4 h-4 text-[var(--text2)]" />
                               )}
                             </div>
                             <div className="min-w-0">
-                              <p className="text-sm font-bold text-[#222222] truncate">{invName}</p>
-                              <p className="text-[10px] text-[#888888] font-semibold truncate">Interest in {interest.pitch?.title}</p>
+                              <p className="text-sm font-bold text-[var(--text)] truncate">{invName}</p>
+                              <p className="text-[10px] text-[var(--text2)] font-semibold truncate">Interest in {interest.pitch?.title}</p>
                             </div>
                             <span className={`ml-auto px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
                               interest.status === 'accepted' ? 'bg-emerald-100 text-emerald-700' :
@@ -840,7 +840,7 @@ export default function FounderDashboard() {
                             </span>
                           </div>
 
-                          <p className="text-xs text-[#555555] dark:text-[#cccccc] italic leading-relaxed border-l-2 border-[#e5e5e5] pl-3 py-0.5">
+                          <p className="text-xs text-[#555555] dark:text-[#cccccc] italic leading-relaxed border-l-2 border-[var(--border)] pl-3 py-0.5">
                             "{interest.message || 'No custom message.'}"
                           </p>
 
@@ -848,13 +848,13 @@ export default function FounderDashboard() {
                             <div className="flex gap-2 pt-2">
                               <button
                                 onClick={() => handleDeclineInterest(interest.id, interest.investor_id, interest.pitch?.title)}
-                                className="flex-1 py-2 rounded-xl border-[0.5px] border-[#e5e5e5] text-xs font-bold text-[#222222] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
+                                className="flex-1 py-2 rounded-xl border-[0.5px] border-[var(--border)] text-xs font-bold text-[var(--text)] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
                               >
                                 Decline
                               </button>
                               <button
                                 onClick={() => handleAcceptInterest(interest.id, interest.investor_id, interest.pitch?.title)}
-                                className="flex-1 py-2 rounded-xl bg-[#222222] text-white text-xs font-bold hover:bg-black transition-colors"
+                                className="flex-1 py-2 rounded-xl bg-[var(--text)] text-[var(--text)] text-xs font-bold hover:bg-black transition-colors"
                               >
                                 Accept
                               </button>
@@ -864,7 +864,7 @@ export default function FounderDashboard() {
                           {interest.status === 'accepted' && (
                             <Link
                               href={`/deal-room/${interest.id}`}
-                              className="block w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold text-center transition-colors"
+                              className="block w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-[var(--text)] rounded-xl text-xs font-bold text-center transition-colors"
                             >
                               Enter Deal Room
                             </Link>
@@ -886,8 +886,8 @@ export default function FounderDashboard() {
 function NavItem({ icon: Icon, label, active, href = '#', collapsed }: any) {
   return (
     <Link href={href} title={collapsed ? label : undefined}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? 'bg-[#222222] text-white shadow-lg shadow-black/10' : 'text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]'} ${collapsed ? 'justify-center' : ''}`}>
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-white' : 'text-[#888888] group-hover:text-[#222222]'}`} />
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? 'bg-[var(--text)] text-[var(--text)] shadow-lg shadow-black/10' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'} ${collapsed ? 'justify-center' : ''}`}>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-[var(--text)]' : 'text-[var(--text2)] group-hover:text-[var(--text)]'}`} />
       {!collapsed && <span className="text-sm font-bold">{label}</span>}
     </Link>
   );
@@ -895,7 +895,7 @@ function NavItem({ icon: Icon, label, active, href = '#', collapsed }: any) {
 
 function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
   return (
-    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? 'bg-[#222222] text-white' : 'text-[#888888] hover:text-[#222222] hover:bg-[#F2F2F0]'}`}>
+    <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? 'bg-[var(--text)] text-[var(--text)]' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'}`}>
       <Icon className="w-4 h-4" />
       <span className="text-[9px] font-bold">{label}</span>
     </Link>
