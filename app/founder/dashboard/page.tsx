@@ -171,13 +171,13 @@ export default function FounderDashboard() {
         });
 
       // Send email to investor
-      const { data: investorProfile } = await supabase
+      const { data: _investorProfile } = await supabase
         .from('users')
         .select('full_name')
         .eq('id', investorId)
         .single();
 
-      const { data: investorAuth } = await supabase.auth.admin
+      const { data: _investorAuth } = await supabase.auth.admin
         ? ({ data: null } as any)
         : ({ data: null } as any);
 
@@ -911,3 +911,4 @@ function StatusBadge({ status }: { status: string }) {
   };
   return <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${styles[status] || styles.draft}`}>{status}</span>;
 }
+

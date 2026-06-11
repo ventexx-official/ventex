@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, Bookmark, MessageSquare, Briefcase, 
   Search, Settings, PanelLeftClose, PanelLeftOpen, 
-  ArrowRight, User, Star, Eye, Clock, Trash2, 
-  ExternalLink, Filter
+  User, Star, Eye, Clock, Trash2, 
+  ExternalLink
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -467,3 +467,4 @@ function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
     </Link>
   );
 }
+

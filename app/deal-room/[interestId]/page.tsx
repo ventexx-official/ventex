@@ -15,7 +15,7 @@ import {
   Sparkles,
   Lock
 } from 'lucide-react';
-import Link from 'next/link';
+
 
 export default function DealRoomChat() {
   const { interestId } = useParams();
@@ -178,7 +178,7 @@ export default function DealRoomChat() {
 
     setSending(true);
     try {
-      const { data, error } = await supabase
+      const { data: _data, error } = await supabase
         .from('deal_room_messages')
         .insert({
           interest_id: interestId,

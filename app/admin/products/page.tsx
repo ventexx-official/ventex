@@ -12,8 +12,7 @@ import {
   RefreshCw,
   Tag,
   DollarSign,
-  Image as ImageIcon,
-  ExternalLink
+  Image as ImageIcon
 } from "lucide-react";
 
 const FINANCIAL_KEYWORDS = [
@@ -303,3 +302,4 @@ export default function AdminProducts() {
     </div>
   );
 }
+

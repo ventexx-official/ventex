@@ -102,17 +102,17 @@ export default async function Home() {
       <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
         <div className="absolute inset-0 bg-[var(--bg)]/60" />
         <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
-          <div className="reveal mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)]" style={{ borderColor: 'var(--border2)' }}>
+          <div className="reveal mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] bg-[var(--bg2)] rounded-full" style={{ borderColor: 'var(--border2)' }}>
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            v1.0 · Early Access Now Open
+            Platform for Elite Startup Liquidity
           </div>
 
           <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
-            The platform where startups get funded, backed, and scaled.
+            The premier ecosystem for startup liquidity. Pitch, fund, sell.
           </h1>
 
           <p className="reveal mt-6 max-w-[520px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            Ventex is where serious founders meet verified investors. Pitch with structure, protect your data room, sell your products — all in one ecosystem built for the way startups actually work.
+            Ventex is the authoritative network where elite founders meet verified capital. Enforce rigorous due diligence, protect confidential data rooms, and drive seamless liquidity events.
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
@@ -126,6 +126,29 @@ export default async function Home() {
 
           <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
             <span className="block h-6 w-px bg-[var(--text)]" style={{ animation: 'line-drop 1.6s ease-in-out infinite' }} />
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Signals Section */}
+      <section className="border-y bg-[var(--bg2)] py-10" style={{ borderColor: 'var(--border)' }}>
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <p className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)] mb-6">
+            Trusted by top-tier VCs, accelerators, and elite founders
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale">
+            <div className="flex items-center gap-2 font-black text-xl text-[var(--text)] tracking-tighter">
+              <Shield className="w-6 h-6" /> SECURE FUND
+            </div>
+            <div className="flex items-center gap-2 font-black text-xl text-[var(--text)] tracking-tighter">
+              <TrendingUp className="w-6 h-6" /> APEX CAPITAL
+            </div>
+            <div className="flex items-center gap-2 font-black text-xl text-[var(--text)] tracking-tighter">
+              <Globe className="w-6 h-6" /> GLOBAL VENTURES
+            </div>
+            <div className="flex items-center gap-2 font-black text-xl text-[var(--text)] tracking-tighter">
+              <Zap className="w-6 h-6" /> NEXUS ACCELERATOR
+            </div>
           </div>
         </div>
       </section>

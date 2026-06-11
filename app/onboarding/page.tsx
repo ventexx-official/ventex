@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Rocket, LineChart, ShoppingBag, Compass, Upload, Check } from 'lucide-react';
-import Link from 'next/link';
-
+import { Rocket, LineChart, ShoppingBag, Compass, Upload } from 'lucide-react';
 type Role = 'founder' | 'investor' | 'buyer' | 'explorer' | null;
 
 export default function Onboarding() {
@@ -242,3 +240,4 @@ export default function Onboarding() {
     </div>
   );
 }
+

@@ -35,7 +35,7 @@ export function rateLimit(
 
   // Evict oldest entries if store is too large
   if (store.size >= MAX_STORE_SIZE) {
-    const oldest = [...store.entries()].sort((a, b) => a[1].resetAt - b[1].resetAt)[0];
+    const oldest = Array.from(store.entries()).sort((a, b) => a[1].resetAt - b[1].resetAt)[0];
     if (oldest) store.delete(oldest[0]);
   }
 

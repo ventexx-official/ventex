@@ -49,7 +49,7 @@ export async function POST(req: Request) {
             commenterName,
             commentText: commentText?.slice(0, 200),
           });
-          console.log(`[EMAIL TRIGGER] new_comment → ${user.email}`);
+          console.warn(`[EMAIL TRIGGER] new_comment → ${user.email}`);
         }
         break;
       }
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
             investorName,
             message: message?.slice(0, 300),
           });
-          console.log(`[EMAIL TRIGGER] investor_interest → ${user.email}`);
+          console.warn(`[EMAIL TRIGGER] investor_interest → ${user.email}`);
         }
         break;
       }
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
             productName, amount, orderId,
           });
         }
-        console.log(`[EMAIL TRIGGER] order_created seller=${sellerResult.data.user?.email} buyer=${buyerResult.data.user?.email}`);
+        console.warn(`[EMAIL TRIGGER] order_created seller=${sellerResult.data.user?.email} buyer=${buyerResult.data.user?.email}`);
         break;
       }
 

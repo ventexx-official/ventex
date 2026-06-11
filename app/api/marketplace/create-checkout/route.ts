@@ -155,6 +155,9 @@ export async function POST(req: Request) {
 
     // Select the first seller's items to check out in this session
     const targetSellerId = sellerIds[0];
+    if (targetSellerId === buyerId) {
+      return new NextResponse('You cannot purchase your own products.', { status: 400 });
+    }
     const targetSellerItems = groupedBySeller[targetSellerId];
     
     // Get the seller's Stripe Connect ID

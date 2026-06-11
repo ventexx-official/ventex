@@ -13,20 +13,17 @@ import {
   ShoppingBag,
   DollarSign,
   Star,
-  Eye,
   MoreVertical,
   Edit,
   Trash2,
   CheckCircle,
   Clock,
-  ArrowRight,
   User,
   PanelLeftClose,
   PanelLeftOpen,
   Pause,
   Play,
   TrendingUp,
-  AlertCircle,
   FileCode,
   Package,
   Tag,
@@ -689,3 +686,4 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     </Link>
   );
 }
+

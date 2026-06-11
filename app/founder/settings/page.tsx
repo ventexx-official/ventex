@@ -14,10 +14,8 @@ import {
   Tag,
   PanelLeftClose,
   PanelLeftOpen,
-  ArrowRight,
   Shield,
   CreditCard,
-  Bell,
   Mail,
   Loader2,
   CheckCircle,
@@ -371,3 +369,4 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     </Link>
   );
 }
+

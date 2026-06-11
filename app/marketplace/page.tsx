@@ -110,10 +110,10 @@ export default function MarketplacePage() {
   const [selectedType, setSelectedType] = useState<string>('All');
   const [dealsOnly, setDealsOnly] = useState<boolean>(false);
   const [minRating, setMinRating] = useState<number>(0);
-  const [listingTab, setListingTab] = useState<'All' | 'software' | 'freelance' | 'job'>('All');
+  const [listingTab, _setListingTab] = useState<'All' | 'software' | 'freelance' | 'job'>('All');
 
   const CATEGORIES = ['All', 'Software', 'Templates', 'Services', 'Hardware', 'Courses'];
-  const TYPES = ['All', 'fixed_price', 'custom_work'];
+  const _TYPES = ['All', 'fixed_price', 'custom_work'];
 
   // Global 1-minute tick to remove expired deals from view automatically
   useEffect(() => {

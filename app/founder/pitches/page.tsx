@@ -7,7 +7,7 @@ import {
   Plus, LayoutDashboard, FileText, Store, Zap, Settings,
   Eye, Clock, MoreVertical, Edit2, ExternalLink, Copy, Trash2,
   AlertTriangle, X, PanelLeftClose, PanelLeftOpen, ArrowRight,
-  User, Search, Filter, Tag
+  User, Search, Tag
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -326,3 +326,4 @@ function StatusBadge({ status }: { status: string }) {
   const styles: any = { live: 'bg-emerald-100 text-emerald-700', pending: 'bg-amber-100 text-amber-700', rejected: 'bg-red-100 text-red-700', draft: 'bg-gray-100 text-gray-500' };
   return <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${styles[status] || styles.draft}`}>{status}</span>;
 }
+

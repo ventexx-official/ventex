@@ -8,17 +8,12 @@ import {
   Search, 
   Download, 
   Star, 
-  AlertTriangle, 
-  ChevronRight, 
   ShieldAlert, 
-  Clock, 
   ArrowLeft,
   Calendar,
   User,
   MessageSquare,
-  HelpCircle,
-  X,
-  FileText
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 

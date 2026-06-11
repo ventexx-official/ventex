@@ -12,14 +12,13 @@ import {
   ShoppingBag, 
   ShieldCheck,
   ChevronRight,
-  User,
   X
 } from 'lucide-react';
 import Link from 'next/link';
 
 function OrderConfirmationDetails() {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const _router = useRouter();
   const sessionId = searchParams.get('session_id');
 
   const [loading, setLoading] = useState(true);
@@ -393,3 +392,4 @@ export default function OrderConfirmationPage() {
     </Suspense>
   );
 }
+

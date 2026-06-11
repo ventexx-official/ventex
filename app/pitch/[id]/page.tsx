@@ -28,8 +28,8 @@ const QUESTIONS = [
   { id: 'q9', text: "Why is now the right time?" }
 ];
 
-// Fire-and-forget email helper
-async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
+// Fire-and-forget email helper (available for future use)
+async function _sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   try {
     await fetch('/api/emails', {
       method: 'POST',
@@ -75,7 +75,6 @@ export default function PitchDetail() {
   
   // Subscription state
   const [investorPremium, setInvestorPremium] = useState(false);
-  const [ventexAccess, setVentexAccess] = useState(false);
   const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
   const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
   
@@ -113,7 +112,7 @@ export default function PitchDetail() {
 
       const isFirstInterest = (priorInterests ?? 0) === 0;
 
-      const { data, error } = await supabase
+      const { data: _interestData, error } = await supabase
         .from('investor_interests')
         .insert({
           investor_id: currentUser.id,
@@ -394,7 +393,6 @@ via Ventex`;
           setCurrentProfile(profile);
           const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
           setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
-          setVentexAccess(!!(profile.ventex_access && hasActiveSub));
         }
       }
       // Load liked comments from localStorage
@@ -410,7 +408,7 @@ via Ventex`;
   const fetchComments = useCallback(async () => {
     if (!id) return;
     setCommentsLoading(true);
-    const { data, error } = await supabase
+    const { data: _commentsData, error: _commentsError } = await supabase
       .from('comments')
       .select(`
         id, content, likes, created_at,
@@ -418,7 +416,7 @@ via Ventex`;
       `)
       .eq('pitch_id', id)
       .order('created_at', { ascending: false });
-    if (data) setComments(data);
+    if (_commentsData) setComments(_commentsData);
     setCommentsLoading(false);
   }, [id]);
 

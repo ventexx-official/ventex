@@ -262,7 +262,7 @@ export async function POST(req: Request) {
 
     if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 're_placeholder') {
       // Log in dev when key not set
-      console.log(`[EMAIL LOG] type=${type} to=${recipientEmail} data=${JSON.stringify(data)}`);
+      console.warn(`[EMAIL LOG] type=${type} to=${recipientEmail} data=${JSON.stringify(data)}`);
       return NextResponse.json({ success: true, dev: true, message: 'Email logged (no API key set)' });
     }
 
@@ -283,7 +283,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    console.log(`[EMAIL SENT] type=${type} to=${recipientEmail} id=${result?.id}`);
+    console.warn(`[EMAIL SENT] type=${type} to=${recipientEmail} id=${result?.id}`);
     return NextResponse.json({ success: true, id: result?.id });
 
   } catch (err: any) {

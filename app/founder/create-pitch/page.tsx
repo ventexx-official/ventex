@@ -10,16 +10,13 @@ import {
   Plus, 
   X, 
   Globe,
-  ChevronDown,
   CheckCircle2,
   Upload,
   FileText,
   Video,
   Users,
-  MessageSquare,
   Trash2,
   Edit2,
-  ExternalLink,
   Lock,
   ArrowRight
 } from 'lucide-react';
@@ -1180,3 +1177,4 @@ function MemberDrawer({ member, type, onClose, onSave }: any) {
     </div>
   );
 }
+

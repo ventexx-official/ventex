@@ -6,7 +6,6 @@ import {
   Users,
   Search,
   Loader2,
-  Shield,
   ShieldOff,
   ChevronDown,
   ChevronUp,
@@ -14,7 +13,6 @@ import {
   BadgeMinus,
   RefreshCw,
   Crown,
-  Eye,
   Ban
 } from "lucide-react";
 

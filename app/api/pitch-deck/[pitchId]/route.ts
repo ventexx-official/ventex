@@ -42,7 +42,7 @@ export async function GET(req: Request, { params }: { params: { pitchId: string 
     }
 
     // Get Pitch Deck Path
-    const { data: pitch, error: pitchError } = await supabaseAdmin
+    const { data: pitch, error: _pitchError } = await supabaseAdmin
       .from('pitches')
       .select('pitch_deck_url')
       .eq('id', params.pitchId)

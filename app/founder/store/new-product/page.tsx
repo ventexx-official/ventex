@@ -8,16 +8,11 @@ import {
   Upload,
   Plus,
   Trash2,
-  Image as ImageIcon,
-  DollarSign,
-  Calendar,
+  Image as Calendar,
   Lock,
   Loader2,
   FileCode,
-  Tag,
   AlertCircle,
-  HelpCircle,
-  Maximize2,
   Info,
   CheckCircle,
 } from "lucide-react";
@@ -282,7 +277,7 @@ export default function NewProductPage() {
         deal_end_date: (hasDeal && dealEndDate) ? new Date(dealEndDate).toISOString() : null,
       };
 
-      const { data: newProd, error: insertErr } = await supabase
+      const { data: _newProd, error: insertErr } = await supabase
         .from("products")
         .insert(productPayload)
         .select()
@@ -771,3 +766,4 @@ export default function NewProductPage() {
     </div>
   );
 }
+

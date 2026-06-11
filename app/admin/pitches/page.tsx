@@ -9,7 +9,6 @@ import {
   ArrowRight,
   Loader2,
   Calendar,
-  AlertCircle,
   Building2,
   CheckCircle,
   XCircle,
@@ -33,7 +32,7 @@ interface Pitch {
 }
 
 export default function PitchesQueue() {
-  const router = useRouter();
+  const _router = useRouter();
   const [pitches, setPitches] = useState<Pitch[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

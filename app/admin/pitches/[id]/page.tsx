@@ -11,13 +11,8 @@ import {
   Building2,
   Globe,
   MapPin,
-  Calendar,
-  DollarSign,
-  TrendingUp,
-  Target,
   Users as UsersIcon,
   HelpCircle,
-  ChevronRight,
   FileText
 } from "lucide-react";
 import Link from "next/link";

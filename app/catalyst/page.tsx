@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, X, Star, Shield, ArrowRight } from 'lucide-react';
+import { CheckCircle2, X, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { emailFor } from '@/lib/site';
 

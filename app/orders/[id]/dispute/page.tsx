@@ -9,9 +9,7 @@ import {
   ArrowLeft, 
   CheckCircle2, 
   ShieldAlert, 
-  MessageSquare,
-  ShoppingBag,
-  HelpCircle
+  ShoppingBag
 } from 'lucide-react';
 import Link from 'next/link';
 

@@ -134,7 +134,7 @@ export async function POST(req: Request) {
       }
 
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        console.warn('Unhandled event type:', event.type);
     }
 
     return new NextResponse('Webhook processed successfully', { status: 200 });
@@ -143,3 +143,4 @@ export async function POST(req: Request) {
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
+
