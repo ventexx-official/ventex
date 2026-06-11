@@ -11,29 +11,29 @@ const groups = [
   {
     heading: 'For Founders',
     tiers: [
-      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
-      { name: 'Builder', inr: '₹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
-      { name: 'Pro', inr: '₹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena - priority application'] },
+      { name: 'Free', inr: 'Ã¢â€šÂ¹0/month', usd: '$0/month', features: ['1 active pitch', '1 marketplace listing', 'Basic profile'] },
+      { name: 'Builder', inr: 'Ã¢â€šÂ¹299/month', usd: '$4/month', features: ['3 pitches', '5 listings', 'Pitch score', 'AI summary', 'Analytics'] },
+      { name: 'Pro', inr: 'Ã¢â€šÂ¹799/month', usd: '$10/month', features: ['Unlimited pitches + listings', 'Premium data room', 'Featured placement', 'The Arena - priority application'] },
     ],
   },
   {
     heading: 'For Investors',
     tiers: [
-      { name: 'Free', inr: '₹0/month', usd: '$0/month', features: ['View 5 pitches/month', 'Basic search'] },
-      { name: 'Basic', inr: '₹499/month', usd: '$6/month', features: ['Unlimited pitch views', 'Save pitches', 'Contact founders'] },
-      { name: 'Pro', inr: '₹1499/month', usd: '$18/month', features: ['All Basic features', 'Data rooms', 'Investor badge', 'Priority matching', 'Portfolio tracking', 'Analytics'] },
+      { name: 'Free', inr: 'Ã¢â€šÂ¹0/month', usd: '$0/month', features: ['View 5 pitches/month', 'Basic search'] },
+      { name: 'Basic', inr: 'Ã¢â€šÂ¹499/month', usd: '$6/month', features: ['Unlimited pitch views', 'Save pitches', 'Contact founders'] },
+      { name: 'Pro', inr: 'Ã¢â€šÂ¹1499/month', usd: '$18/month', features: ['All Basic features', 'Data rooms', 'Investor badge', 'Priority matching', 'Portfolio tracking', 'Analytics'] },
     ],
   },
   {
     heading: 'Marketplace Buyers (Premium)',
     tiers: [
-      { name: 'Premium', inr: '₹199/month', usd: '$3/month', features: ['Buy software products', 'Post job applications', 'Request custom builds from founders'] },
+      { name: 'Premium', inr: 'Ã¢â€šÂ¹199/month', usd: '$3/month', features: ['Buy software products', 'Post job applications', 'Request custom builds from founders'] },
     ],
   },
 ];
 
 const faqs = [
-  ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace — buy software, hire developers, and request custom builds. It does not include investor features.'],
+  ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace Ã¢â‚¬â€ buy software, hire developers, and request custom builds. It does not include investor features.'],
   ['What is an Investor Account?', 'Investor accounts are for discovering startups, viewing pitches, and connecting with founders for funding. Separate from Premium.'],
   ['Can I be both a founder and an investor?', 'Yes. You can hold multiple roles under one account.'],
   ['Is every plan free during early access?', 'Yes. All features are unlocked during early access. No card required.'],
@@ -43,7 +43,7 @@ const faqs = [
 function displayPrice(tier: { inr: string; usd: string }, mode: PriceMode) {
   if (mode === 'inr') return tier.inr;
   if (mode === 'usd') return tier.usd;
-  return `${tier.inr} · ${tier.usd}`;
+  return `${tier.inr} Ã‚Â· ${tier.usd}`;
 }
 
 export default function PricingPage() {
@@ -76,13 +76,13 @@ export default function PricingPage() {
             <h1 className="max-w-3xl text-4xl font-black uppercase tracking-tight md:text-6xl">Plans for founders, investors, and marketplace buyers.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#666666] dark:text-gray-300">Ventex Premium is marketplace access only. Investor Accounts are separate and built for pitch discovery, deal flow, and founder contact.</p>
           </div>
-          <div className="inline-flex rounded-full border border-black/10 bg-white p-1 dark:border-white/10 dark:bg-[#1a1a1a]">
+          <div className="inline-flex rounded-full border border-black/10 bg-[var(--card-bg)] p-1 dark:border-white/10 dark:bg-[#1a1a1a]">
             {[
-              ['both', '₹ INR / $ USD'],
-              ['inr', '₹ INR'],
+              ['both', 'Ã¢â€šÂ¹ INR / $ USD'],
+              ['inr', 'Ã¢â€šÂ¹ INR'],
               ['usd', '$ USD'],
             ].map(([value, label]) => (
-              <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[#222222] text-white dark:bg-white dark:text-[#222222]' : 'text-[#666666] dark:text-gray-300'}`}>
+              <button key={value} onClick={() => setMode(value as PriceMode)} className={`rounded-full px-4 py-2 text-xs font-black ${mode === value ? 'bg-[#222222] text-white dark:bg-[var(--card-bg)] dark:text-[#222222]' : 'text-[#666666] dark:text-gray-300'}`}>
                 {label}
               </button>
             ))}
@@ -91,7 +91,7 @@ export default function PricingPage() {
 
         <div className="grid gap-5 lg:grid-cols-3">
           {groups.map((group) => (
-            <section key={group.heading} id={group.heading === 'For Founders' ? 'founders' : group.heading === 'For Investors' ? 'investors' : 'marketplace'} className="rounded-lg border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section key={group.heading} id={group.heading === 'For Founders' ? 'founders' : group.heading === 'For Investors' ? 'investors' : 'marketplace'} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
               <h2 className="mb-5 text-xl font-black">{group.heading}</h2>
               <div className="space-y-4">
                 {group.tiers.map((tier) => (
@@ -110,8 +110,8 @@ export default function PricingPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-white dark:text-[#222222]">
-                      {tier.name === 'Free' ? 'Get started →' : 'Join free →'}
+                    <Link href={`/signup?plan=${encodeURIComponent(tier.name.toLowerCase())}`} className="mt-5 inline-flex w-full justify-center rounded-xl bg-[#222222] px-4 py-3 text-sm font-black text-white dark:bg-[var(--card-bg)] dark:text-[#222222]">
+                      {tier.name === 'Free' ? 'Get started Ã¢â€ â€™' : 'Join free Ã¢â€ â€™'}
                     </Link>
                   </article>
                 ))}
@@ -120,14 +120,14 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <section className="mt-12 rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
           <h2 className="text-2xl font-black">When you raise, we take 2%.</h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-[#666666] dark:text-gray-300">
-            No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee — only on success. Free during early access.
+            No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee Ã¢â‚¬â€ only on success. Free during early access.
           </p>
         </section>
 
-        <section className="mt-12 rounded-lg border border-black/10 bg-white p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
+        <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-5 dark:border-white/10 dark:bg-[#1a1a1a]">
           <h2 className="mb-4 text-2xl font-black">FAQ</h2>
           <div className="divide-y divide-black/10 dark:divide-white/10">
             {faqs.map(([question, answer], index) => (

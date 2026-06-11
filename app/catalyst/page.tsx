@@ -102,13 +102,13 @@ export default function CatalystPage() {
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3.5 rounded-full text-sm font-bold transition-all hover:scale-105"
+              className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3.5 rounded-full text-sm font-bold transition-all hover:scale-105"
             >
               Apply to Catalyst
             </button>
             <Link 
               href="/investors" 
-              className="bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-8 py-3.5 rounded-full text-sm font-bold transition-colors hover:bg-gray-50 dark:hover:bg-[#222222]"
+              className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] text-[#222222] dark:text-white border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-8 py-3.5 rounded-full text-sm font-bold transition-colors hover:bg-[var(--bg2)] dark:hover:bg-[#222222]"
             >
               View investor network
             </Link>
@@ -119,12 +119,12 @@ export default function CatalystPage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-black tracking-tight text-[#222222] dark:text-white">Join the Catalyst Network</h2>
           </div>
-          <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-10 flex flex-col items-center text-center">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-10 flex flex-col items-center text-center">
             <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-4">Are you an experienced operator, founder, or investor?</h3>
             <p className="text-[#888888] mb-6 max-w-xl">We are currently onboarding the first cohort of Ventex Catalysts. Apply now to get early access and start mentoring the next generation of startups.</p>
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold transition-all hover:scale-105"
+              className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold transition-all hover:scale-105"
             >
               Submit Application
             </button>
@@ -134,7 +134,7 @@ export default function CatalystPage() {
         {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-white dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
               <div className="p-5 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-between items-center bg-[#F8F8F8] dark:bg-[#1a1a1a]">
                 <h2 className="text-xl font-black tracking-tight text-[#222222] dark:text-white">Apply to Ventex Catalyst</h2>
                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-[#e5e5e5] dark:hover:bg-[#333333] rounded-full transition-colors">
@@ -150,11 +150,11 @@ export default function CatalystPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="text-xs font-black uppercase text-[#888888] mb-2 block">Full Name</label>
-                      <input required value={form.fullName} onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))} placeholder="John Doe" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
+                      <input required value={form.fullName} onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))} placeholder="John Doe" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
                     </div>
                     <div>
                       <label className="text-xs font-black uppercase text-[#888888] mb-2 block">Email</label>
-                      <input required type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} placeholder="john@example.com" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
+                      <input required type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} placeholder="john@example.com" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
                     </div>
                   </div>
 
@@ -174,7 +174,7 @@ export default function CatalystPage() {
                     <label className="text-xs font-black uppercase text-[#888888] mb-2 block">Sector Expertise</label>
                     <div className="flex flex-wrap gap-2">
                       {SECTORS.map((sector) => (
-                        <button type="button" key={sector} onClick={() => toggleSector(sector)} className={`rounded-full border-[1.5px] px-3 py-1.5 text-xs font-black transition-colors ${form.sectorExpertise.includes(sector) ? 'border-[#222222] dark:border-white bg-[#222222] dark:bg-white text-white dark:text-[#222222]' : 'border-[#e5e5e5] dark:border-[#333333] bg-transparent text-[#888888] hover:border-[#cccccc] dark:hover:border-[#555555]'}`}>
+                        <button type="button" key={sector} onClick={() => toggleSector(sector)} className={`rounded-full border-[1.5px] px-3 py-1.5 text-xs font-black transition-colors ${form.sectorExpertise.includes(sector) ? 'border-[#222222] dark:border-white bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222]' : 'border-[#e5e5e5] dark:border-[#333333] bg-transparent text-[#888888] hover:border-[#cccccc] dark:hover:border-[#555555]'}`}>
                           {sector}
                         </button>
                       ))}
@@ -183,22 +183,22 @@ export default function CatalystPage() {
 
                   <div>
                     <label className="text-xs font-black uppercase text-[#888888] mb-2 block">LinkedIn URL</label>
-                    <input required value={form.linkedIn} onChange={(e) => setForm((p) => ({ ...p, linkedIn: e.target.value }))} placeholder="https://linkedin.com/in/username" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
+                    <input required value={form.linkedIn} onChange={(e) => setForm((p) => ({ ...p, linkedIn: e.target.value }))} placeholder="https://linkedin.com/in/username" className="w-full rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
                   </div>
                   <div>
                     <label className="text-xs font-black uppercase text-[#888888] mb-2 block">Brief Bio</label>
-                    <textarea required maxLength={300} value={form.bio} onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))} placeholder="Summarize your background (300 chars max)" rows={3} className="w-full resize-none rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
+                    <textarea required maxLength={300} value={form.bio} onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))} placeholder="Summarize your background (300 chars max)" rows={3} className="w-full resize-none rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
                   </div>
                   <div>
                     <label className="text-xs font-black uppercase text-[#888888] mb-2 block">What You Offer</label>
-                    <textarea required maxLength={500} value={form.offer} onChange={(e) => setForm((p) => ({ ...p, offer: e.target.value }))} placeholder="How can you help founders? (500 chars max)" rows={3} className="w-full resize-none rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
+                    <textarea required maxLength={500} value={form.offer} onChange={(e) => setForm((p) => ({ ...p, offer: e.target.value }))} placeholder="How can you help founders? (500 chars max)" rows={3} className="w-full resize-none rounded-xl border border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#1a1a1a] px-4 py-3 text-sm font-bold text-[#222222] dark:text-white outline-none focus:border-[#222222] dark:focus:border-white transition-colors" />
                   </div>
                   
                   <div className="pt-4 border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] flex justify-end gap-3">
                     <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-3 rounded-full text-sm font-bold text-[#888888] hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors">
                       Cancel
                     </button>
-                    <button disabled={submitting} className="rounded-full bg-[#222222] dark:bg-white px-8 py-3 text-sm font-black text-white dark:text-[#222222] disabled:opacity-50 hover:bg-black dark:hover:bg-gray-200 transition-colors flex items-center gap-2">
+                    <button disabled={submitting} className="rounded-full bg-[#222222] dark:bg-[var(--card-bg)] px-8 py-3 text-sm font-black text-white dark:text-[#222222] disabled:opacity-50 hover:bg-black dark:hover:bg-gray-200 transition-colors flex items-center gap-2">
                       {submitting ? 'Submitting...' : <>Submit Application <ArrowRight className="w-4 h-4" /></>}
                     </button>
                   </div>

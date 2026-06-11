@@ -241,7 +241,7 @@ export default function AdminProducts() {
                       {product.users && (
                         <span>
                           Seller: <span className="text-neutral-300 font-semibold">{product.users.full_name}</span>
-                          {" · "}
+                          {" Ã‚Â· "}
                           <span className="font-mono">{product.users.email}</span>
                         </span>
                       )}
@@ -302,4 +302,3 @@ export default function AdminProducts() {
     </div>
   );
 }
-

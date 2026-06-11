@@ -101,9 +101,9 @@ export default function Onboarding() {
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex flex-col items-center justify-center p-4">
       {/* Progress Indicators */}
       <div className="flex gap-2 mb-12">
-        <div className={`h-1 w-12 rounded-full ${step >= 1 ? 'bg-[#222222] dark:bg-white' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
-        <div className={`h-1 w-12 rounded-full ${step >= 2 ? 'bg-[#222222] dark:bg-white' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
-        <div className={`h-1 w-12 rounded-full ${step >= 3 ? 'bg-[#222222] dark:bg-white' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 1 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 2 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
+        <div className={`h-1 w-12 rounded-full ${step >= 3 ? 'bg-[#222222] dark:bg-[var(--card-bg)]' : 'bg-[#e5e5e5] dark:bg-[#333333]'}`} />
       </div>
 
       <div className="w-full max-w-[640px]">
@@ -117,7 +117,7 @@ export default function Onboarding() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <button 
                 onClick={() => setRole('founder')}
-                className={`p-6 bg-white dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
                   role === 'founder' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
                     : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
@@ -130,7 +130,7 @@ export default function Onboarding() {
 
               <button 
                 onClick={() => setRole('investor')}
-                className={`p-6 bg-white dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
                   role === 'investor' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
                     : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
@@ -143,7 +143,7 @@ export default function Onboarding() {
 
               <button 
                 onClick={() => setRole('buyer')}
-                className={`p-6 bg-white dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
                   role === 'buyer' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
                     : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
@@ -156,7 +156,7 @@ export default function Onboarding() {
 
               <button 
                 onClick={() => setRole('explorer')}
-                className={`p-6 bg-white dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
+                className={`p-6 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] text-left transition-all ${
                   role === 'explorer' 
                     ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
                     : 'border-[0.5px] border-[#e5e5e5] dark:border-[#333333] hover:border-gray-400 dark:hover:border-gray-500'
@@ -172,7 +172,7 @@ export default function Onboarding() {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!role}
-                className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue &rarr;
               </button>
@@ -182,7 +182,7 @@ export default function Onboarding() {
 
         {/* STEP 2: Quick Profile */}
         {step === 2 && (
-          <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
+          <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
             <h1 className="text-2xl font-bold text-center text-[#222222] dark:text-white mb-2">
               Setup your profile
             </h1>
@@ -211,7 +211,7 @@ export default function Onboarding() {
                 <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Full Name</label>
                 <input
                   type="text"
-                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2.5 text-sm bg-white dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2.5 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
@@ -228,7 +228,7 @@ export default function Onboarding() {
                 <button 
                   onClick={handleComplete}
                   disabled={!fullName || submitting}
-                  className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                  className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
                 >
                   {submitting ? 'Saving...' : 'Complete setup'}
                 </button>
@@ -240,4 +240,3 @@ export default function Onboarding() {
     </div>
   );
 }
-

@@ -141,7 +141,7 @@ export default function OrderDisputePage() {
   if (!order) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] py-16 px-6">
-        <div className="max-w-md mx-auto bg-white dark:bg-[#1a1a1a] rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl">
+        <div className="max-w-md mx-auto bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl">
           <div className="w-16 h-16 bg-red-50 dark:bg-red-950/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <ShieldAlert className="w-8 h-8 text-red-500" />
           </div>
@@ -149,7 +149,7 @@ export default function OrderDisputePage() {
           <p className="text-[#888888] text-sm mb-6 leading-relaxed">
             We couldn't retrieve this order. Please verify that the URL is correct and that you are logged in to the account that purchased this item.
           </p>
-          <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
+          <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
             Return to Marketplace
           </Link>
         </div>
@@ -170,7 +170,7 @@ export default function OrderDisputePage() {
 
         {isSuccess ? (
           /* Success Screen */
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-red-500 to-amber-500"></div>
             
             <div className="w-20 h-20 bg-red-50 dark:bg-red-950/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -188,13 +188,13 @@ export default function OrderDisputePage() {
               <p className="text-sm text-[#555555] dark:text-gray-300 italic">"{description}"</p>
             </div>
 
-            <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+            <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
               Go to Marketplace
             </Link>
           </div>
         ) : isAlreadyDisputed ? (
           /* Already Disputed State */
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-2 bg-amber-500"></div>
             
             <div className="w-16 h-16 bg-amber-50 dark:bg-amber-950/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -206,13 +206,13 @@ export default function OrderDisputePage() {
               This purchase is already marked as disputed. The payout is frozen and is currently under review by our administration team.
             </p>
 
-            <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
+            <Link href="/marketplace" className="inline-block bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
               Return to Marketplace
             </Link>
           </div>
         ) : (
           /* Dispute Form */
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl overflow-hidden relative">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl overflow-hidden relative">
             <div className="absolute top-0 left-0 right-0 h-2 bg-red-500"></div>
             
             <div className="p-8 md:p-10">
@@ -292,7 +292,7 @@ export default function OrderDisputePage() {
                 <button
                   type="submit"
                   disabled={submitting || description.length < 20 || description.length > 1000}
-                  className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {submitting ? 'Initiating Dispute...' : 'File Dispute'}
                 </button>

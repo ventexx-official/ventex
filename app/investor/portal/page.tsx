@@ -169,8 +169,8 @@ export default function InvestorPortal() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
 
-      {/* ── SIDEBAR ── */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-20 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-20 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>}
           <button onClick={() => setSidebarCollapsed(v => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] text-[#888888] hover:text-[#222222] ml-auto">
@@ -181,7 +181,7 @@ export default function InvestorPortal() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-[#222222] to-black rounded-2xl text-white shadow-xl shadow-black/10">
-              <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center overflow-hidden flex-shrink-0 border-[0.5px] border-white/20">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)]/10 flex items-center justify-center overflow-hidden flex-shrink-0 border-[0.5px] border-white/20">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4" />}
               </div>
               <div className="min-w-0">
@@ -219,7 +219,7 @@ export default function InvestorPortal() {
         </nav>
       </aside>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN CONTENT Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
         <div className="max-w-6xl mx-auto space-y-10">
 
@@ -253,14 +253,14 @@ export default function InvestorPortal() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {newPitches.map(pitch => (
                     <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="block group">
-                      <div className="bg-white p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-xl hover:border-[#cccccc] transition-all h-full flex flex-col">
+                      <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-xl hover:border-[#cccccc] transition-all h-full flex flex-col">
                         <div className="flex items-center gap-4 mb-4">
                           <div className="w-12 h-12 bg-[#F2F2F0] rounded-2xl flex items-center justify-center overflow-hidden">
                             {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <div className="text-xl font-bold text-[#888888]">{pitch.title?.[0]}</div>}
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="font-bold text-[#222222] group-hover:text-black truncate">{pitch.title}</h3>
-                            <p className="text-xs text-[#888888] truncate">{pitch.industry || 'Tech'} • {pitch.company_stage || 'Seed'}</p>
+                            <p className="text-xs text-[#888888] truncate">{pitch.industry || 'Tech'} Ã¢â‚¬Â¢ {pitch.company_stage || 'Seed'}</p>
                           </div>
                         </div>
                         <p className="text-sm text-[#888888] line-clamp-2 mb-4 flex-grow">{pitch.short_description || pitch.tagline}</p>
@@ -286,7 +286,7 @@ export default function InvestorPortal() {
                 <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <Search className="w-5 h-5" /> Advanced Search
                 </h2>
-                <div className="bg-white p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
+                <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="relative flex-1">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
@@ -295,7 +295,7 @@ export default function InvestorPortal() {
                         placeholder="Search startups by name..." 
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-transparent rounded-2xl text-sm focus:outline-none focus:bg-white focus:border-[#222222] transition-colors"
+                        className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-transparent rounded-2xl text-sm focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors"
                       />
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer bg-[#F2F2F0] px-4 py-3 rounded-2xl hover:bg-[#e5e5e5] transition-colors">
@@ -320,14 +320,14 @@ export default function InvestorPortal() {
                 {/* Search Results List */}
                 <div className="space-y-3">
                   {searchResults.map(pitch => (
-                    <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="flex items-center justify-between p-4 bg-white rounded-2xl border-[0.5px] border-[#e5e5e5] hover:shadow-md transition-all group">
+                    <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="flex items-center justify-between p-4 bg-[var(--card-bg)] rounded-2xl border-[0.5px] border-[#e5e5e5] hover:shadow-md transition-all group">
                       <div className="flex items-center gap-4">
                          <div className="w-10 h-10 bg-[#F2F2F0] rounded-xl flex items-center justify-center">
                             {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover rounded-xl" /> : <span className="font-bold text-xs">{pitch.title?.[0]}</span>}
                          </div>
                          <div>
                            <p className="font-bold text-[#222222] text-sm group-hover:text-black">{pitch.title}</p>
-                           <p className="text-xs text-[#888888]">{pitch.industry} • {pitch.company_stage}</p>
+                           <p className="text-xs text-[#888888]">{pitch.industry} Ã¢â‚¬Â¢ {pitch.company_stage}</p>
                          </div>
                       </div>
                       <div className="text-right">
@@ -349,7 +349,7 @@ export default function InvestorPortal() {
                 <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <Bookmark className="w-5 h-5" /> Watchlist
                 </h2>
-                <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
                   {savedPitches.length === 0 ? (
                     <div className="p-8 text-center">
                       <p className="text-sm text-[#888888]">Your watchlist is empty.</p>
@@ -377,7 +377,7 @@ export default function InvestorPortal() {
                 <h2 className="text-xl font-black text-[#222222] tracking-tight uppercase mb-5 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5" /> Interests
                 </h2>
-                <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
                   {interests.length === 0 ? (
                     <div className="p-8 text-center">
                       <p className="text-sm text-[#888888]">No interests expressed yet.</p>
@@ -417,11 +417,11 @@ export default function InvestorPortal() {
   );
 }
 
-/* ─── Sub-components ─── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Sub-components Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 
 function StatCard({ label, value, icon: Icon, color }: any) {
   return (
-    <div className="bg-white p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+    <div className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className={`p-2.5 rounded-2xl bg-[#F2F2F0] ${color}`}><Icon className="w-5 h-5" /></div>
       </div>
@@ -437,7 +437,7 @@ function FilterSelect({ label, value, onChange, options }: any) {
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#F2F2F0] border-[0.5px] border-transparent rounded-xl px-3 py-2 text-xs font-medium text-[#222222] focus:outline-none focus:bg-white focus:border-[#222222] transition-colors appearance-none cursor-pointer"
+        className="w-full bg-[#F2F2F0] border-[0.5px] border-transparent rounded-xl px-3 py-2 text-xs font-medium text-[#222222] focus:outline-none focus:bg-[var(--card-bg)] focus:border-[#222222] transition-colors appearance-none cursor-pointer"
       >
         <option value="">{label} (All)</option>
         {options.map((opt: any) => {
@@ -467,4 +467,3 @@ function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
     </Link>
   );
 }
-

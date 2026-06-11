@@ -307,7 +307,7 @@ export default function FounderDashboard() {
     if (error) {
       alert(`Delete failed: ${error.message}`);
     } else if (!data || data.length === 0) {
-      // RLS silently blocked — patch founder_id and retry
+      // RLS silently blocked Ã¢â‚¬â€ patch founder_id and retry
       if (session?.user?.id) {
         await supabase.from('pitches').update({ founder_id: session.user.id }).eq('id', pitchId);
         const { data: retryData, error: retryError } = await supabase
@@ -363,11 +363,11 @@ export default function FounderDashboard() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
 
-      {/* ── DELETE CONFIRMATION MODAL ── */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ DELETE CONFIRMATION MODAL Ã¢â€â‚¬Ã¢â€â‚¬ */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
-          <div className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative bg-[var(--card-bg)] rounded-3xl shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={() => setConfirmDelete(null)}
               className="absolute top-4 right-4 p-1.5 hover:bg-[#F2F2F0] rounded-lg transition-colors text-[#888888]"
@@ -406,8 +406,8 @@ export default function FounderDashboard() {
         </div>
       )}
 
-      {/* ── SIDEBAR ── */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && (
             <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
@@ -424,12 +424,12 @@ export default function FounderDashboard() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || 'Founder'}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -479,7 +479,7 @@ export default function FounderDashboard() {
         )}
       </aside>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN CONTENT Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
         <div className="max-w-6xl mx-auto">
 
@@ -513,7 +513,7 @@ export default function FounderDashboard() {
 
           {/* XP PROGRESS */}
           {userProfile && (
-            <div className="bg-white p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
+            <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm mb-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div>
                   <p className="text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1">Founder XP</p>
@@ -559,7 +559,7 @@ export default function FounderDashboard() {
           {/* STATS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {stats.map((stat, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-2.5 rounded-2xl bg-[#F2F2F0] ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
                 </div>
@@ -585,7 +585,7 @@ export default function FounderDashboard() {
                   return (
                     <div 
                       key={dispute.id} 
-                      className={`bg-white rounded-3xl border shadow-sm overflow-hidden transition-all duration-200 ${
+                      className={`bg-[var(--card-bg)] rounded-3xl border shadow-sm overflow-hidden transition-all duration-200 ${
                         isPendingResponse 
                           ? 'border-red-200 hover:border-red-300' 
                           : 'border-[#e5e5e5]'
@@ -595,12 +595,12 @@ export default function FounderDashboard() {
                       <div className={`px-5 py-2.5 flex items-center justify-between border-b ${
                         isPendingResponse 
                           ? 'bg-red-50/50 border-red-100' 
-                          : 'bg-gray-50/50 border-[#e5e5e5]'
+                          : 'bg-[var(--bg2)]/50 border-[#e5e5e5]'
                       }`}>
                         <span className={`text-[10px] font-black uppercase tracking-wider ${
                           isPendingResponse ? 'text-red-600' : 'text-amber-600'
                         }`}>
-                          {isPendingResponse ? '⚠️ Payout Frozen - Action Required' : '⏳ Response Under Admin Review'}
+                          {isPendingResponse ? 'Ã¢Å¡Â Ã¯Â¸Â Payout Frozen - Action Required' : 'Ã¢ÂÂ³ Response Under Admin Review'}
                         </span>
                         <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
                           isPendingResponse ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
@@ -622,7 +622,7 @@ export default function FounderDashboard() {
                           <div className="min-w-0">
                             <h4 className="font-bold text-[#222222] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
                             <p className="text-[10px] text-[#888888] font-semibold mt-0.5">
-                              Order ID: <span className="font-mono">{dispute.order_id}</span> • Net Sale: ₹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
+                              Order ID: <span className="font-mono">{dispute.order_id}</span> Ã¢â‚¬Â¢ Net Sale: Ã¢â€šÂ¹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
                             </p>
                           </div>
                         </div>
@@ -718,20 +718,20 @@ export default function FounderDashboard() {
 
               <div className="space-y-3" ref={menuRef}>
                 {pitches.length === 0 ? (
-                  <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-12 text-center">
+                  <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-12 text-center">
                     <p className="text-[#888888] font-medium">You haven't created any pitches yet.</p>
                     <button
                       onClick={() => router.push('/founder/create-pitch')}
                       className="mt-4 text-sm font-bold text-[#222222] underline decoration-[0.5px] underline-offset-4 hover:no-underline"
                     >
-                      Create your first pitch →
+                      Create your first pitch Ã¢â€ â€™
                     </button>
                   </div>
                 ) : (
                   pitches.slice(0, 5).map((pitch) => (
                     <div
                       key={pitch.id}
-                      className={`bg-white p-4 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
+                      className={`bg-[var(--card-bg)] p-4 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
                     >
                       <div className="flex items-center gap-4 min-w-0">
                         <div className="w-12 h-12 bg-[#F2F2F0] rounded-2xl flex items-center justify-center overflow-hidden border-[0.5px] border-[#e5e5e5] flex-shrink-0">
@@ -764,7 +764,7 @@ export default function FounderDashboard() {
                           </button>
 
                           {openMenuId === pitch.id && (
-                            <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-2xl shadow-xl border-[0.5px] border-[#e5e5e5] z-50 py-1 overflow-hidden">
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-[var(--card-bg)] rounded-2xl shadow-xl border-[0.5px] border-[#e5e5e5] z-50 py-1 overflow-hidden">
                               <Link href={`/founder/create-pitch?id=${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0] transition-colors">
                                 <Edit2 className="w-4 h-4 text-[#888888]" /> Edit pitch
                               </Link>
@@ -790,7 +790,7 @@ export default function FounderDashboard() {
                 )}
                 {pitches.length > 5 && (
                   <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors">
-                    + {pitches.length - 5} more pitches — View all →
+                    + {pitches.length - 5} more pitches Ã¢â‚¬â€ View all Ã¢â€ â€™
                   </Link>
                 )}
               </div>
@@ -802,11 +802,11 @@ export default function FounderDashboard() {
                 <div className="relative z-10">
                   <h3 className="text-xl font-black mb-2 uppercase tracking-tighter">Boost your pitch</h3>
                   <p className="text-white/60 text-sm mb-6 leading-relaxed">Get 10x more eyes on your startup with premium booster packs.</p>
-                  <Link href="/founder/boost" className="w-full py-3 bg-white text-[#222222] rounded-2xl font-bold text-sm hover:bg-gray-100 active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <Link href="/founder/boost" className="w-full py-3 bg-[var(--card-bg)] text-[#222222] rounded-2xl font-bold text-sm hover:bg-[var(--bg3)] active:scale-95 transition-all flex items-center justify-center gap-2">
                     Buy booster pack <Zap className="w-4 h-4" />
                   </Link>
                 </div>
-                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all duration-500"></div>
+                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-[var(--card-bg)]/5 rounded-full blur-2xl group-hover:bg-[var(--card-bg)]/10 transition-all duration-500"></div>
               </div>
 
               <div>
@@ -818,7 +818,7 @@ export default function FounderDashboard() {
                     interests.map((interest) => {
                       const invName = interest.investor?.full_name || interest.investor?.email?.split('@')[0] || 'Premium Investor';
                       return (
-                        <div key={interest.id} className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-5 shadow-sm space-y-3">
+                        <div key={interest.id} className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-5 shadow-sm space-y-3">
                           <div className="flex items-center gap-3">
                             <div className="w-9 h-9 rounded-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                               {interest.investor?.avatar_url ? (
@@ -907,8 +907,7 @@ function StatusBadge({ status }: { status: string }) {
     live: 'bg-emerald-100 text-emerald-700',
     pending: 'bg-amber-100 text-amber-700',
     rejected: 'bg-red-100 text-red-700',
-    draft: 'bg-gray-100 text-gray-500',
+    draft: 'bg-[var(--bg3)] text-[var(--text3)]',
   };
   return <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${styles[status] || styles.draft}`}>{status}</span>;
 }
-

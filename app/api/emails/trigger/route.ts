@@ -12,8 +12,8 @@ import { BASE_URL } from '@/lib/site';
  * POST body: { secret, event, payload }
  * 
  * Supported events:
- *   - new_comment     → emails pitch founder
- *   - investor_interest → emails pitch founder
+ *   - new_comment     Ã¢â€ â€™ emails pitch founder
+ *   - investor_interest Ã¢â€ â€™ emails pitch founder
  */
 
 const supabaseAdmin = createClient(
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
             commenterName,
             commentText: commentText?.slice(0, 200),
           });
-          console.warn(`[EMAIL TRIGGER] new_comment → ${user.email}`);
+          console.warn(`[EMAIL TRIGGER] new_comment Ã¢â€ â€™ ${user.email}`);
         }
         break;
       }
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
             investorName,
             message: message?.slice(0, 300),
           });
-          console.warn(`[EMAIL TRIGGER] investor_interest → ${user.email}`);
+          console.warn(`[EMAIL TRIGGER] investor_interest Ã¢â€ â€™ ${user.email}`);
         }
         break;
       }

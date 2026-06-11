@@ -142,11 +142,11 @@ export default function BattlePage() {
             <h1 className="text-4xl font-black tracking-tighter text-[#222222]">Weekly pitch battle</h1>
             <p className="mt-2 text-sm font-medium text-[#666666]">Vote for the strongest startup of the week. Ends in {endOfWeekLabel()}.</p>
           </div>
-          <div className="rounded-full bg-white px-4 py-2 text-sm font-black text-[#222222]">{totalVotes} votes</div>
+          <div className="rounded-full bg-[var(--card-bg)] px-4 py-2 text-sm font-black text-[#222222]">{totalVotes} votes</div>
         </header>
 
         {entries.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-white p-10 text-center text-sm font-bold text-[#888888]">
+          <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-[var(--card-bg)] p-10 text-center text-sm font-bold text-[#888888]">
             Battle entries are being prepared. Submit a pitch to be considered this week.
           </div>
         ) : (
@@ -155,7 +155,7 @@ export default function BattlePage() {
               const pitch = entry.pitch || {};
               const pct = totalVotes ? Math.round(((entry.votes || 0) / totalVotes) * 100) : 0;
               return (
-                <article key={entry.pitch_id} className="rounded-3xl border border-[#e5e5e5] bg-white p-5">
+                <article key={entry.pitch_id} className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-5">
                   <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[#222222] text-xl font-black text-white">
                     {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="h-full w-full object-cover" /> : (pitch.title || 'P')[0]}
                   </div>
@@ -164,7 +164,7 @@ export default function BattlePage() {
                   <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#F2F2F0]">
                     <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
                   </div>
-                  <div className="mt-2 text-xs font-black text-[#888888]">{entry.votes || 0} votes · {pct}%</div>
+                  <div className="mt-2 text-xs font-black text-[#888888]">{entry.votes || 0} votes Ã‚Â· {pct}%</div>
                   <button
                     onClick={() => vote(entry)}
                     disabled={!!votedId}

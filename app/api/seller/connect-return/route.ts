@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     const account = await stripe.accounts.retrieve(accountId);
 
     if (account.charges_enabled) {
-      // Fully onboarded — mark as seller
+      // Fully onboarded Ã¢â‚¬â€ mark as seller
       const { error } = await supabaseAdmin
         .from('users')
         .update({
@@ -40,7 +40,7 @@ export async function GET(req: Request) {
 
       return NextResponse.redirect(`${origin}/founder/become-seller?step=complete`);
     } else {
-      // Onboarding incomplete — send back to step 2 with a message
+      // Onboarding incomplete Ã¢â‚¬â€ send back to step 2 with a message
       return NextResponse.redirect(`${origin}/founder/become-seller?step=stripe&error=incomplete`);
     }
   } catch (err: any) {

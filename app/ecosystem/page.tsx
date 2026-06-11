@@ -53,7 +53,7 @@ export default function EcosystemPage() {
         </header>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
-          <section className="rounded-3xl border border-[#e5e5e5] bg-white p-4">
+          <section className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-4">
             <ComposableMap projection="geoMercator" projectionConfig={{ center: [82, 23], scale: 900 }} className="h-[560px] w-full">
               <Geographies geography={INDIA_TOPO}>
                 {({ geographies }) =>
@@ -84,14 +84,14 @@ export default function EcosystemPage() {
           </section>
 
           <aside className="space-y-4">
-            <div className="rounded-3xl border border-[#e5e5e5] bg-white p-6">
+            <div className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-6">
               <div className="text-xs font-black uppercase tracking-widest text-[#888888]">Hover details</div>
               <div className="mt-3 text-2xl font-black text-[#222222]">{hovered?.name || 'Select a state'}</div>
               <p className="mt-2 text-sm font-medium text-[#666666]">
-                {hovered ? `${hovered.count} startups · Top sector: ${hovered.topSector}` : 'Hover over the map to inspect startup count and top sector.'}
+                {hovered ? `${hovered.count} startups Ã‚Â· Top sector: ${hovered.topSector}` : 'Hover over the map to inspect startup count and top sector.'}
               </p>
             </div>
-            <div className="rounded-3xl border border-[#e5e5e5] bg-white p-6">
+            <div className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-6">
               <div className="mb-3 text-xs font-black uppercase tracking-widest text-[#888888]">Top states</div>
               <div className="space-y-3">
                 {rows.slice(0, 8).map(([state, item]) => (

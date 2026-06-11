@@ -142,7 +142,7 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-4 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled ? 'translate-y-1' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+        <div className="relative flex items-center justify-between h-14">
           {/* Left Pill - Logo */}
           <div className="pointer-events-auto flex items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
@@ -151,7 +151,7 @@ export default function Navbar() {
           </div>
 
           {/* Center Pill - Desktop Nav Links */}
-          <div className="hidden md:flex pointer-events-auto items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+          <div className="hidden md:flex absolute left-1/2 top-0 -translate-x-1/2 pointer-events-auto items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             {navLinks.map(link => (
               <Link
                 key={link.href}
@@ -169,7 +169,6 @@ export default function Navbar() {
 
           {/* Right Pill - Actions */}
           <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
-            <ThemeToggle />
             {user ? (
               <>
                 <Link

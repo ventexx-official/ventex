@@ -435,19 +435,19 @@ export default function CreatePitch() {
             <span className="text-sm font-medium whitespace-nowrap">Profile {completion}%</span>
           </div>
           
-          <div className="flex-grow max-w-xl h-2 bg-white/10 rounded-full overflow-hidden">
+          <div className="flex-grow max-w-xl h-2 bg-[var(--card-bg)]/10 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-white transition-all duration-500 ease-out" 
+              className="h-full bg-[var(--card-bg)] transition-all duration-500 ease-out" 
               style={{ width: `${completion}%` }}
             />
           </div>
 
           <div className="flex items-center gap-3">
             {saving && <span className="text-[10px] text-white/50 animate-pulse uppercase tracking-widest font-bold">Auto-saving...</span>}
-            <button className="px-5 py-2 text-sm font-bold bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
+            <button className="px-5 py-2 text-sm font-bold bg-[var(--card-bg)]/10 hover:bg-[var(--card-bg)]/20 rounded-lg transition-colors">
               Preview profile
             </button>
-            <button className="px-5 py-2 text-sm font-bold bg-white text-[#222222] rounded-lg hover:bg-gray-200 transition-colors">
+            <button className="px-5 py-2 text-sm font-bold bg-[var(--card-bg)] text-[#222222] rounded-lg hover:bg-gray-200 transition-colors">
               Checklist
             </button>
           </div>
@@ -470,7 +470,7 @@ export default function CreatePitch() {
               className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
                 activeTab === tab 
                 ? 'bg-[#222222] text-white' 
-                : 'bg-white text-[#888888] border-[0.5px] border-[#e5e5e5] hover:border-[#222222] hover:text-[#222222]'
+                : 'bg-[var(--card-bg)] text-[#888888] border-[0.5px] border-[#e5e5e5] hover:border-[#222222] hover:text-[#222222]'
               }`}
             >
               {tab}
@@ -480,7 +480,7 @@ export default function CreatePitch() {
 
         {activeTab === 'Overview' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Company Overview</h2>
               <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
                 <div className="flex flex-col gap-3">
@@ -554,7 +554,7 @@ export default function CreatePitch() {
                     <div>
                       <label className="block text-sm font-bold text-[#222222] mb-2">Country</label>
                       <select 
-                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-white focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                        className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                         value={formData.country}
                         onChange={(e) => handleChange('country', e.target.value)}
                       >
@@ -628,7 +628,7 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -641,7 +641,7 @@ export default function CreatePitch() {
                         className={`py-3 rounded-xl border-[0.5px] text-xs font-bold transition-all ${
                           formData.business_type === type 
                           ? 'bg-[#222222] text-white border-[#222222]' 
-                          : 'bg-white text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
+                          : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
                         }`}
                       >
                         {type}
@@ -660,7 +660,7 @@ export default function CreatePitch() {
                         className={`py-3 rounded-xl border-[0.5px] text-xs font-bold transition-all ${
                           formData.product_type === type 
                           ? 'bg-[#222222] text-white border-[#222222]' 
-                          : 'bg-white text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
+                          : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222]'
                         }`}
                       >
                         {type}
@@ -672,7 +672,7 @@ export default function CreatePitch() {
                 <div>
                   <label className="block text-sm font-bold text-[#222222] mb-2">Company stage</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-white focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.company_stage}
                     onChange={(e) => handleChange('company_stage', e.target.value)}
                   >
@@ -718,7 +718,7 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Social Media Links</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
@@ -744,13 +744,13 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Funding Rounds</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-[#222222] mb-2">Round type</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-white focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.round_type}
                     onChange={(e) => handleChange('round_type', e.target.value)}
                   >
@@ -798,7 +798,7 @@ export default function CreatePitch() {
                 <div>
                   <label className="block text-sm font-bold text-[#222222] mb-2">Security type</label>
                   <select 
-                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-white focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[#e5e5e5] bg-[var(--card-bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all appearance-none"
                     value={formData.security_type}
                     onChange={(e) => handleChange('security_type', e.target.value)}
                   >
@@ -855,7 +855,7 @@ export default function CreatePitch() {
               </div>
             </section>
 
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm mb-12">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm mb-12">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Founding Year</h2>
               <div className="max-w-xs">
                 <input 
@@ -872,11 +872,11 @@ export default function CreatePitch() {
 
         {activeTab === 'Pitch Deck' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-2">Pitch Deck</h2>
               <p className="text-sm text-[#888888] mb-6 italic">Visible to Premium Investors only</p>
               <div 
-                className="w-full h-48 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+                className="w-full h-48 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
                 onClick={() => document.getElementById('deck-input')?.click()}
               >
                 {formData.pitch_deck_url ? (
@@ -910,7 +910,7 @@ export default function CreatePitch() {
               </div>
             </section>
  
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-[#222222]">Additional Documents</h2>
                 <button onClick={() => document.getElementById('doc-input')?.click()} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Upload other document</button>
@@ -949,7 +949,7 @@ export default function CreatePitch() {
  
         {activeTab === 'Video' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Pitch Video</h2>
               <div className="space-y-6">
                 <div>
@@ -965,7 +965,7 @@ export default function CreatePitch() {
                   <div className="flex-grow border-t-[0.5px] border-[#e5e5e5]"></div>
                 </div>
                 <div 
-                  className="w-full h-32 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+                  className="w-full h-32 bg-[#F2F2F0] rounded-xl border-2 border-dashed border-[#e5e5e5] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
                   onClick={() => document.getElementById('video-input')?.click()}
                 >
                   <Upload className="w-6 h-6 text-[#888888] mb-2" />
@@ -986,7 +986,7 @@ export default function CreatePitch() {
                 </div>
               </div>
             </section>
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <h2 className="text-xl font-bold text-[#222222] mb-6">Product Demo Video (Optional)</h2>
               <div className="relative">
                 <Video className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888888]" />
@@ -998,7 +998,7 @@ export default function CreatePitch() {
  
         {activeTab === 'Team' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-[#222222]">Core Team</h2>
                 <button onClick={() => { setDrawerType('member'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Add member</button>
@@ -1014,8 +1014,8 @@ export default function CreatePitch() {
                       <p className="text-xs text-[#888888] font-medium">{member.role}</p>
                     </div>
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => { setDrawerType('member'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-white rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => handleChange('team_data', formData.team_data.filter((m: any) => m.id !== member.id))} className="p-1.5 bg-white rounded-lg shadow-sm hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => { setDrawerType('member'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => handleChange('team_data', formData.team_data.filter((m: any) => m.id !== member.id))} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
                     </div>
                   </div>
                 ))}
@@ -1027,7 +1027,7 @@ export default function CreatePitch() {
                 )}
               </div>
             </section>
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-[#222222]">Advisors</h2>
                 <button onClick={() => { setDrawerType('advisor'); setEditingMember(null); setShowMemberDrawer(true); }} className="flex items-center gap-2 text-sm font-bold text-[#222222] hover:opacity-70"><Plus className="w-4 h-4" /> Add advisor</button>
@@ -1043,8 +1043,8 @@ export default function CreatePitch() {
                       <p className="text-[10px] text-[#888888] font-bold uppercase tracking-wider">{member.role}</p>
                     </div>
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => { setDrawerType('advisor'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-white rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
-                      <button onClick={() => handleChange('team_data', formData.team_data.filter((m: any) => m.id !== member.id))} className="p-1.5 bg-white rounded-lg shadow-sm hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => { setDrawerType('advisor'); setEditingMember(member); setShowMemberDrawer(true); }} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-blue-500"><Edit2 className="w-3.5 h-3.5" /></button>
+                      <button onClick={() => handleChange('team_data', formData.team_data.filter((m: any) => m.id !== member.id))} className="p-1.5 bg-[var(--card-bg)] rounded-lg shadow-sm hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
                     </div>
                   </div>
                 ))}
@@ -1058,9 +1058,9 @@ export default function CreatePitch() {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-emerald-50 border-[0.5px] border-emerald-200 rounded-xl p-4 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">!</div>
-              <p className="text-sm text-emerald-800 font-medium">Investors love this section — we recommend filling it.</p>
+              <p className="text-sm text-emerald-800 font-medium">Investors love this section Ã¢â‚¬â€ we recommend filling it.</p>
             </div>
-            <section className="bg-white rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
+            <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <div className="space-y-10">
                 {QUESTIONS.map((q: any) => (
                   <div key={q.id}>
@@ -1068,10 +1068,10 @@ export default function CreatePitch() {
                       {q.text} {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase"><Lock className="w-2.5 h-2.5" /> Premium</span>}
                     </label>
                     <div className="border-[0.5px] border-[#e5e5e5] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
-                      <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border-b-[0.5px] border-[#e5e5e5]">
-                        {['B', 'I', 'U', '•', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#888888] hover:bg-white rounded-md">{tool}</button>)}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-[var(--bg2)] border-b-[0.5px] border-[#e5e5e5]">
+                        {['B', 'I', 'U', 'Ã¢â‚¬Â¢', '1.'].map(tool => <button key={tool} className="w-7 h-7 flex items-center justify-center text-xs font-bold text-[#888888] hover:bg-[var(--card-bg)] rounded-md">{tool}</button>)}
                         <div className="flex-grow"></div>
-                        <button className="p-1.5 hover:bg-white rounded-md"><Globe className="w-3.5 h-3.5 text-[#888888]" /></button>
+                        <button className="p-1.5 hover:bg-[var(--card-bg)] rounded-md"><Globe className="w-3.5 h-3.5 text-[#888888]" /></button>
                       </div>
                       <textarea rows={4} className="w-full px-4 py-3 text-sm focus:outline-none resize-none" placeholder="Write your answer..." value={formData.qa_data[q.id] || ''} onChange={(e) => handleChange('qa_data', { ...formData.qa_data, [q.id]: e.target.value })} />
                     </div>
@@ -1133,14 +1133,14 @@ export default function CreatePitch() {
 function SectorModal({ formData, toggleSector, onClose }: any) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl">
+      <div className="bg-[var(--card-bg)] rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl">
         <div className="px-8 py-6 border-b-[0.5px] border-[#e5e5e5] flex items-center justify-between">
           <div><h3 className="text-xl font-bold text-[#222222]">Select Sectors</h3><p className="text-xs text-[#888888] font-bold uppercase tracking-wider mt-1">{formData.tags.length}/5 selected</p></div>
           <button onClick={onClose} className="p-2 hover:bg-[#F2F2F0] rounded-full transition-colors"><X className="w-6 h-6" /></button>
         </div>
         <div className="flex-grow overflow-y-auto p-8 grid grid-cols-2 md:grid-cols-3 gap-3">
           {SECTORS.map(sector => (
-            <button key={sector} onClick={() => toggleSector(sector)} disabled={!formData.tags.includes(sector) && formData.tags.length >= 5} className={`flex items-center justify-between px-4 py-2.5 rounded-xl border-[0.5px] text-xs font-bold transition-all ${formData.tags.includes(sector) ? 'bg-[#222222] text-white border-[#222222]' : 'bg-white text-[#222222] border-[#e5e5e5] hover:border-[#222222] disabled:opacity-30'}`}>
+            <button key={sector} onClick={() => toggleSector(sector)} disabled={!formData.tags.includes(sector) && formData.tags.length >= 5} className={`flex items-center justify-between px-4 py-2.5 rounded-xl border-[0.5px] text-xs font-bold transition-all ${formData.tags.includes(sector) ? 'bg-[#222222] text-white border-[#222222]' : 'bg-[var(--card-bg)] text-[#222222] border-[#e5e5e5] hover:border-[#222222] disabled:opacity-30'}`}>
               {sector} {formData.tags.includes(sector) && <CheckCircle2 className="w-3 h-3" />}
             </button>
           ))}
@@ -1155,14 +1155,14 @@ function MemberDrawer({ member, type, onClose, onSave }: any) {
   const [data, setData] = useState(member || { name: '', role: '', bio: '', linkedin: '', photo_url: '' });
   return (
     <div className="fixed inset-0 z-[100] flex justify-end bg-black/40 backdrop-blur-[2px] animate-in fade-in duration-300">
-      <div className="w-full max-w-md bg-white h-full shadow-2xl animate-in slide-in-from-right duration-500 overflow-y-auto p-8">
+      <div className="w-full max-w-md bg-[var(--card-bg)] h-full shadow-2xl animate-in slide-in-from-right duration-500 overflow-y-auto p-8">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-xl font-bold text-[#222222]">{member ? 'Edit' : 'Add'} {type === 'member' ? 'Team Member' : 'Advisor'}</h3>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><X className="w-6 h-6" /></button>
+          <button onClick={onClose} className="p-2 hover:bg-[var(--bg3)] rounded-full"><X className="w-6 h-6" /></button>
         </div>
         <div className="space-y-6">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-24 h-24 rounded-full bg-gray-100 border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden mb-2">
+            <div className="w-24 h-24 rounded-full bg-[var(--bg3)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden mb-2">
               {data.photo_url ? <img src={data.photo_url} className="w-full h-full object-cover" /> : <Users className="w-8 h-8 text-[#888888]" />}
             </div>
             <button className="text-[10px] font-black uppercase tracking-widest text-[#888888] hover:text-[#222222]">Upload photo</button>
@@ -1177,4 +1177,3 @@ function MemberDrawer({ member, type, onClose, onSave }: any) {
     </div>
   );
 }
-

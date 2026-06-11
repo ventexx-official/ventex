@@ -198,7 +198,7 @@ export default function FounderStorePage() {
     return (
       <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
         {/* Sidebar skeleton */}
-        <aside className="hidden md:flex md:flex-col md:fixed md:h-screen md:w-[240px] bg-white border-r-[0.5px] border-[#e5e5e5] p-4 gap-3 z-10">
+        <aside className="hidden md:flex md:flex-col md:fixed md:h-screen md:w-[240px] bg-[var(--card-bg)] border-r-[0.5px] border-[#e5e5e5] p-4 gap-3 z-10">
           <div className="h-8 w-24 bg-[#e5e5e5] rounded-xl animate-pulse mb-4" />
           <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl mb-4">
             <div className="w-9 h-9 rounded-full bg-[#e5e5e5] animate-pulse flex-shrink-0" />
@@ -225,7 +225,7 @@ export default function FounderStorePage() {
             {/* Stat cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white rounded-3xl p-5 border-[0.5px] border-[#e5e5e5] space-y-3" style={{ animationDelay: `${i * 80}ms` }}>
+                <div key={i} className="bg-[var(--card-bg)] rounded-3xl p-5 border-[0.5px] border-[#e5e5e5] space-y-3" style={{ animationDelay: `${i * 80}ms` }}>
                   <div className="w-10 h-10 bg-[#e5e5e5] rounded-2xl animate-pulse" />
                   <div className="h-3 w-20 bg-[#e5e5e5] rounded-full animate-pulse" />
                   <div className="h-7 w-16 bg-[#e5e5e5] rounded-xl animate-pulse" />
@@ -233,7 +233,7 @@ export default function FounderStorePage() {
               ))}
             </div>
             {/* Product rows */}
-            <div className="bg-white rounded-[32px] border-[0.5px] border-[#e5e5e5] overflow-hidden">
+            <div className="bg-[var(--card-bg)] rounded-[32px] border-[0.5px] border-[#e5e5e5] overflow-hidden">
               <div className="p-6 border-b border-[#e5e5e5] flex justify-between items-center">
                 <div className="h-5 w-28 bg-[#e5e5e5] rounded-xl animate-pulse" />
                 <div className="h-9 w-32 bg-[#e5e5e5] rounded-xl animate-pulse" />
@@ -264,15 +264,15 @@ export default function FounderStorePage() {
   // Quick stats card data
   const statCards = [
     { label: "Total Sales", value: stats.totalSales, icon: ShoppingBag, desc: "Units sold", color: "text-blue-500 bg-blue-50" },
-    { label: "Total Revenue", value: `₹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
+    { label: "Total Revenue", value: `Ã¢â€šÂ¹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
     { label: "Active Listings", value: stats.activeListings, icon: Package, desc: "Live in store", color: "text-indigo-500 bg-indigo-50" },
-    { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} ★` : "—", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
+    { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} Ã¢Ëœâ€¦` : "Ã¢â‚¬â€", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
   ];
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
-      {/* ── SIDEBAR ── */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && (
             <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">
@@ -290,7 +290,7 @@ export default function FounderStorePage() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? (
                   <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" />
                 ) : (
@@ -299,7 +299,7 @@ export default function FounderStorePage() {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function FounderStorePage() {
         </nav>
       </aside>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN CONTENT Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
         <div className="max-w-6xl mx-auto space-y-8">
           
@@ -347,7 +347,7 @@ export default function FounderStorePage() {
           {/* Stats grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {statCards.map((card, idx) => (
-              <div key={idx} className="bg-white p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
+              <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`p-2.5 rounded-2xl ${card.color}`}>
                     <card.icon className="w-5 h-5" />
@@ -368,7 +368,7 @@ export default function FounderStorePage() {
                 <span className="text-xs font-bold text-[#888888]">{products.length} listed</span>
               </div>
 
-              <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
+              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
                 {products.length === 0 ? (
                   <div className="p-16 text-center">
                     <Store className="w-12 h-12 text-[#cccccc] mx-auto mb-4 animate-bounce" />
@@ -429,7 +429,7 @@ export default function FounderStorePage() {
                                 {isCustom ? (
                                   <span className="text-[#888888] text-xs">Custom Work</span>
                                 ) : (
-                                  `₹${(product.price / 100).toLocaleString()}`
+                                  `Ã¢â€šÂ¹${(product.price / 100).toLocaleString()}`
                                 )}
                               </td>
 
@@ -438,7 +438,7 @@ export default function FounderStorePage() {
                                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
                                   product.status === "live" ? "bg-emerald-100 text-emerald-700" :
                                   product.status === "pending" ? "bg-amber-100 text-amber-700" :
-                                  product.status === "paused" ? "bg-gray-100 text-gray-600" :
+                                  product.status === "paused" ? "bg-[var(--bg3)] text-[var(--text2)]" :
                                   "bg-red-100 text-red-700"
                                 }`}>
                                   {product.status}
@@ -449,7 +449,7 @@ export default function FounderStorePage() {
                               <td className="px-6 py-4 text-center">
                                 <p className="font-bold text-[#222222]">{product.sales_count || 0}</p>
                                 <p className="text-[10px] text-[#888888] font-medium mt-0.5">
-                                  ₹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
+                                  Ã¢â€šÂ¹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
                                 </p>
                               </td>
 
@@ -473,7 +473,7 @@ export default function FounderStorePage() {
                                     </button>
 
                                     {openMenuId === product.id && (
-                                      <div className="absolute right-0 top-full mt-1 w-40 bg-white border-[0.5px] border-[#e5e5e5] rounded-xl shadow-xl z-50 py-1 overflow-hidden">
+                                      <div className="absolute right-0 top-full mt-1 w-40 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl shadow-xl z-50 py-1 overflow-hidden">
                                         <button
                                           onClick={() => handleTogglePause(product.id, product.status)}
                                           disabled={updatingId === product.id || product.status === "pending"}
@@ -517,11 +517,11 @@ export default function FounderStorePage() {
             {/* Payouts card + schedule */}
             <div className="space-y-6">
               <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Payout Account</h2>
-              <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] p-6 shadow-sm space-y-6">
+              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-6 shadow-sm space-y-6">
                 <div>
                   <p className="text-[10px] font-black uppercase text-[#888888] tracking-widest mb-2">Payout balance</p>
                   <h3 className="text-3xl font-black text-[#222222]">
-                    ₹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
+                    Ã¢â€šÂ¹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
                   </h3>
                   <div className="flex items-center gap-1.5 text-xs text-[#888888] mt-2 font-medium">
                     <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
@@ -533,7 +533,7 @@ export default function FounderStorePage() {
                   <div className="flex justify-between items-center text-xs font-bold">
                     <span className="text-[#888888]">Earnings (This Month)</span>
                     <span className="text-[#222222]">
-                      ₹{(orders.reduce((acc, o) => {
+                      Ã¢â€šÂ¹{(orders.reduce((acc, o) => {
                         const orderMonth = new Date(o.created_at).getMonth();
                         const currMonth = new Date().getMonth();
                         return orderMonth === currMonth ? acc + (o.seller_payout || 0) : acc;
@@ -560,7 +560,7 @@ export default function FounderStorePage() {
                   target="_blank"
                   className="block w-full text-center py-3.5 border-[0.5px] border-[#e5e5e5] rounded-2xl text-xs font-black text-[#222222] hover:bg-[#F2F2F0] active:scale-95 transition-all"
                 >
-                  Manage payout account →
+                  Manage payout account Ã¢â€ â€™
                 </Link>
               </div>
             </div>
@@ -570,7 +570,7 @@ export default function FounderStorePage() {
           <div className="space-y-4">
             <h2 className="text-lg font-black text-[#222222] uppercase tracking-tight">Recent Orders</h2>
             
-            <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
+            <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] overflow-hidden shadow-sm">
               {orders.length === 0 ? (
                 <div className="p-16 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#cccccc] mx-auto mb-4" />
@@ -615,7 +615,7 @@ export default function FounderStorePage() {
                             </td>
                             <td className="px-6 py-4 text-[#888888] font-medium">{formattedDate}</td>
                             <td className="px-6 py-4 font-bold text-emerald-600">
-                              ₹{(order.seller_payout / 100).toLocaleString()}
+                              Ã¢â€šÂ¹{(order.seller_payout / 100).toLocaleString()}
                             </td>
                             <td className="px-6 py-4">
                               <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
@@ -686,4 +686,3 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     </Link>
   );
 }
-

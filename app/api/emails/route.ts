@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { resend, FROM_EMAIL, VENTEX_URL } from '@/lib/resend';
 
-// ─── HTML Template Builder ───────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ HTML Template Builder Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 function buildEmail({
   heading,
@@ -52,7 +52,7 @@ function buildEmail({
             <p style="margin:0;font-size:12px;color:#999999;">
               You're receiving this because you have an account on 
               <a href="${VENTEX_URL}" style="color:#666666;">ventex.co</a>.
-              &nbsp;·&nbsp;
+              &nbsp;Ã‚Â·&nbsp;
               <a href="${VENTEX_URL}/unsubscribe" style="color:#666666;text-decoration:underline;">Unsubscribe</a>
             </p>
           </td>
@@ -65,7 +65,7 @@ function buildEmail({
 </html>`;
 }
 
-// ─── Email Templates ─────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Email Templates Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 type EmailType =
   | 'welcome'
@@ -87,10 +87,10 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
     case 'welcome':
       return {
-        subject: `Welcome to Ventex, ${data.name || 'there'}! 🚀`,
+        subject: `Welcome to Ventex, ${data.name || 'there'}! Ã°Å¸Å¡â‚¬`,
         html: buildEmail({
           heading: `Welcome to Ventex, ${data.name || 'there'}!`,
-          body: `<p>You're in. Ventex is where serious startups meet serious investors — and you've just become part of it.</p>
+          body: `<p>You're in. Ventex is where serious startups meet serious investors Ã¢â‚¬â€ and you've just become part of it.</p>
                  <p>Start by exploring the pitch hub, browsing the marketplace, or submitting your first pitch.</p>`,
           ctaText: 'Explore Ventex',
           ctaUrl: `${VENTEX_URL}/discover`,
@@ -99,7 +99,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'new_comment':
       return {
-        subject: `💬 New comment on your pitch "${data.pitchName}"`,
+        subject: `Ã°Å¸â€™Â¬ New comment on your pitch "${data.pitchName}"`,
         html: buildEmail({
           heading: `Someone commented on "${data.pitchName}"`,
           body: `<p><strong>${data.commenterName || 'A visitor'}</strong> left a comment on your pitch:</p>
@@ -112,7 +112,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'investor_interest':
       return {
-        subject: `🤝 An investor expressed interest in "${data.startupName}"`,
+        subject: `Ã°Å¸Â¤Â An investor expressed interest in "${data.startupName}"`,
         html: buildEmail({
           heading: `An investor is interested in ${data.startupName}`,
           body: `<p><strong>${data.investorName || 'A premium investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
@@ -125,10 +125,10 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'interest_accepted':
       return {
-        subject: `✅ ${data.startupName} accepted your interest`,
+        subject: `Ã¢Å“â€¦ ${data.startupName} accepted your interest`,
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
-          body: `<p>Great news — the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
+          body: `<p>Great news Ã¢â‚¬â€ the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
                  <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Ventex.</p>`,
           ctaText: 'Enter Deal Room',
           ctaUrl: `${VENTEX_URL}/deal-room/${data.interestId}`,
@@ -137,7 +137,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'product_sold':
       return {
-        subject: `🎉 You sold "${data.productName}"! Order details inside.`,
+        subject: `Ã°Å¸Å½â€° You sold "${data.productName}"! Order details inside.`,
         html: buildEmail({
           heading: `You sold "${data.productName}"!`,
           body: `<p>Congratulations! A buyer just purchased your product on Ventex Marketplace.</p>
@@ -146,7 +146,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Your Payout</td><td style="font-weight:700;font-size:13px;padding-top:8px;color:#22c55e;">$${((data.payout || 0) / 100).toFixed(2)}</td></tr>
                  </table>
-                 <p>Payouts are processed to your connected Stripe account within 2–5 business days.</p>`,
+                 <p>Payouts are processed to your connected Stripe account within 2Ã¢â‚¬â€œ5 business days.</p>`,
           ctaText: 'View Order',
           ctaUrl: `${VENTEX_URL}/founder/dashboard`,
         }),
@@ -154,14 +154,14 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'order_confirmation':
       return {
-        subject: `📦 Your order for "${data.productName}" is confirmed`,
+        subject: `Ã°Å¸â€œÂ¦ Your order for "${data.productName}" is confirmed`,
         html: buildEmail({
           heading: `Your order is confirmed!`,
           body: `<p>Thanks for your purchase on Ventex Marketplace. Here are your order details:</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount Paid</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Order ID</td><td style="font-size:12px;padding-top:8px;color:#888;">${data.orderId || '—'}</td></tr>
+                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Order ID</td><td style="font-size:12px;padding-top:8px;color:#888;">${data.orderId || 'Ã¢â‚¬â€'}</td></tr>
                  </table>
                  <p>You can access your download or track your order in your account.</p>`,
           ctaText: 'View My Order',
@@ -171,7 +171,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'ai_summary_ready':
       return {
-        subject: `🤖 Your pitch "${data.pitchName}" is live with an AI briefing`,
+        subject: `Ã°Å¸Â¤â€“ Your pitch "${data.pitchName}" is live with an AI briefing`,
         html: buildEmail({
           heading: `Your pitch is live on Ventex!`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> has been published and an AI-generated briefing is now attached to it.</p>
@@ -183,7 +183,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'pitch_rejected':
       return {
-        subject: `❌ Update on your pitch "${data.pitchName}"`,
+        subject: `Ã¢ÂÅ’ Update on your pitch "${data.pitchName}"`,
         html: buildEmail({
           heading: `Pitch Review Result: Action Required`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> was reviewed by the admin and could not be approved at this time.</p>
@@ -245,7 +245,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   }
 }
 
-// ─── API Handler ─────────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ API Handler Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 export async function POST(req: Request) {
   try {

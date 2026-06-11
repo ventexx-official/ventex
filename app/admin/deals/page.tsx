@@ -112,7 +112,7 @@ export default function AdminDealsPage() {
           <p>Partial 50% payment: conversation unlocks 3 more days.</p>
         </div>
         <p className="mt-3 text-xs font-bold uppercase tracking-[.14em] text-amber-300/80">
-          {sevenDayOverdue.length} at 7+ days · {fourteenDayOverdue.length} at 14+ days
+          {sevenDayOverdue.length} at 7+ days Ã‚Â· {fourteenDayOverdue.length} at 14+ days
         </p>
       </section>
 

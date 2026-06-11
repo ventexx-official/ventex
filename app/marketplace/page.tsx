@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-/* ─────────────────── Live Countdown Timer ─────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Live Countdown Timer Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function DealCountdown({ endDate }: { endDate: string }) {
   const [timeLeft, setTimeLeft] = useState('');
   const [expired, setExpired] = useState(false);
@@ -61,7 +61,7 @@ function DealCountdown({ endDate }: { endDate: string }) {
   );
 }
 
-/* ─────────────── Deal Banner Countdown ─────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Deal Banner Countdown Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function BannerCountdown({ endDate }: { endDate: string }) {
   const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
   const [expired, setExpired] = useState(false);
@@ -95,7 +95,7 @@ function BannerCountdown({ endDate }: { endDate: string }) {
   );
 }
 
-/* ─────────────────── Main Page ─────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Main Page Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 export default function MarketplacePage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -179,7 +179,7 @@ export default function MarketplacePage() {
     }
   }, [activeTab, user]);
 
-  // Active deals — re-evaluated each tick to auto-remove expired ones
+  // Active deals Ã¢â‚¬â€ re-evaluated each tick to auto-remove expired ones
   const activeDeals = useMemo(() => {
     const now = new Date();
     return products.filter(p => p.discount_price && p.deal_end_date && new Date(p.deal_end_date) > now);
@@ -211,7 +211,7 @@ export default function MarketplacePage() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
       {/* HEADER */}
-      <div className="bg-white dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
+      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
@@ -228,7 +228,7 @@ export default function MarketplacePage() {
               placeholder="Search products..." 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-medium focus:outline-none focus:bg-white dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
+              className="w-full pl-12 pr-4 py-3.5 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-medium focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
             />
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function MarketplacePage() {
 
       <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-7xl">
-          Ventex Premium is for marketplace access — buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
+          Ventex Premium is for marketplace access Ã¢â‚¬â€ buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
         </div>
       </div>
 
@@ -246,7 +246,7 @@ export default function MarketplacePage() {
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="max-w-7xl mx-auto relative z-10">
             <h2 className="text-lg font-black uppercase tracking-tight flex items-center gap-2 mb-6 text-emerald-400">
-              <Sparkles className="w-5 h-5" /> Live Deals — Ends Soon
+              <Sparkles className="w-5 h-5" /> Live Deals Ã¢â‚¬â€ Ends Soon
             </h2>
             <div className="flex gap-4 overflow-x-auto pb-4 snap-x" style={{ scrollbarWidth: 'none' }}>
               {activeDeals.map(deal => (
@@ -265,8 +265,8 @@ export default function MarketplacePage() {
                   </div>
                   <h3 className="font-bold text-white text-sm truncate">{deal.name}</h3>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xl font-black text-emerald-400">₹{deal.discount_price?.toLocaleString()}</span>
-                    <span className="text-xs text-[#888888] line-through font-medium">₹{deal.price?.toLocaleString()}</span>
+                    <span className="text-xl font-black text-emerald-400">Ã¢â€šÂ¹{deal.discount_price?.toLocaleString()}</span>
+                    <span className="text-xs text-[#888888] line-through font-medium">Ã¢â€šÂ¹{deal.price?.toLocaleString()}</span>
                   </div>
                   <div className="mt-3 pt-3 border-t-[0.5px] border-[#444444] flex items-center justify-between">
                     {deal.deal_end_date && <BannerCountdown endDate={deal.deal_end_date} />}
@@ -349,25 +349,25 @@ export default function MarketplacePage() {
                 </span>
                 <div className="relative">
                   <input type="checkbox" className="sr-only peer" checked={dealsOnly} onChange={(e) => setDealsOnly(e.target.checked)} />
-                  <div className="w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-[#333333] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#222222] dark:peer-checked:bg-emerald-500"></div>
+                  <div className="w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-[#333333] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--card-bg)] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#222222] dark:peer-checked:bg-emerald-500"></div>
                 </div>
               </label>
             </div>
 
             {/* Price Range */}
             <div className="border-t-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-6">
-              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (₹)</label>
+              <label className="text-xs font-bold text-[#888888] uppercase tracking-widest mb-3 block">Price Range (Ã¢â€šÂ¹)</label>
               <div className="flex items-center gap-3">
                 <input 
                   type="number" placeholder="Min" value={priceMin}
                   onChange={(e) => setPriceMin(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
+                  className="w-full px-3 py-2 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
                 />
                 <span className="text-[#888888]">-</span>
                 <input 
                   type="number" placeholder="Max" value={priceMax}
                   onChange={(e) => setPriceMax(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
+                  className="w-full px-3 py-2 bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-lg text-sm text-[#222222] dark:text-white focus:outline-none focus:border-[#222222]" 
                 />
               </div>
             </div>
@@ -416,12 +416,12 @@ export default function MarketplacePage() {
               <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-3xl p-12 text-center">
+            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-3xl p-12 text-center">
               <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
               <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">{products.length === 0 ? 'No products listed yet.' : 'No products found'}</h3>
               <p className="text-[#888888] mb-6">{products.length === 0 ? 'Are you a founder with a product to sell?' : 'Try adjusting your filters or search query.'}</p>
               {products.length === 0 ? (
-                <Link href="/founder/store/new-product" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
+                <Link href="/founder/store/new-product" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
                   List your product
                 </Link>
               ) : (
@@ -430,7 +430,7 @@ export default function MarketplacePage() {
                     setSearchQuery(''); setSelectedCategory('All'); setSelectedSector('All'); 
                     setSelectedType('All'); setDealsOnly(false); setMinRating(0); setPriceMin(''); setPriceMax('');
                   }}
-                  className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
+                  className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
                 >
                   Clear all filters
                 </button>
@@ -461,7 +461,7 @@ export default function MarketplacePage() {
                   const isJob = listingType === 'job';
 
                   return (
-                    <div key={product.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+                    <div key={product.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
                       {isDeal && (
                         <span className="absolute top-4 left-4 bg-[#222222] text-white text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
                           <Tag className="w-3 h-3" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
@@ -506,7 +506,7 @@ export default function MarketplacePage() {
                           )}
                         </div>
 
-                        {/* ── Live countdown timer on card ── */}
+                        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Live countdown timer on card Ã¢â€â‚¬Ã¢â€â‚¬ */}
                         {isDeal && product.deal_end_date && (
                           <DealCountdown endDate={product.deal_end_date} />
                         )}
@@ -520,10 +520,10 @@ export default function MarketplacePage() {
                             ) : null}
                             <div className="flex items-baseline gap-2">
                               <span className="text-lg font-black text-[#222222] dark:text-white">
-                                ₹{(product.discount_price || product.price).toLocaleString()}
+                                Ã¢â€šÂ¹{(product.discount_price || product.price).toLocaleString()}
                               </span>
                               {isDeal && !isCustom && (
-                                <span className="text-xs text-[#888888] line-through font-medium">₹{product.price.toLocaleString()}</span>
+                                <span className="text-xs text-[#888888] line-through font-medium">Ã¢â€šÂ¹{product.price.toLocaleString()}</span>
                               )}
                             </div>
                           </div>
@@ -537,7 +537,7 @@ export default function MarketplacePage() {
                               Request
                             </Link>
                           ) : (
-                            <Link href={`/marketplace/${product.id}`} className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+                            <Link href={`/marketplace/${product.id}`} className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
                               Buy Now
                             </Link>
                           )}
@@ -554,10 +554,10 @@ export default function MarketplacePage() {
           /* PURCHASES TAB */
           <div>
               {!user ? (
-                <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
                   <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">Sign in to view your purchases</h3>
-                  <Link href="/login" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
+                  <Link href="/login" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
                     Sign In
                   </Link>
                 </div>
@@ -566,18 +566,18 @@ export default function MarketplacePage() {
                   <div className="w-8 h-8 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin"></div>
                 </div>
               ) : purchases.length === 0 ? (
-                <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
+                <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-12 text-center">
                   <ShoppingBag className="w-12 h-12 text-[#e5e5e5] dark:text-[#333333] mx-auto mb-4" />
                   <h3 className="text-xl font-bold text-[#222222] dark:text-white mb-2">No purchases yet</h3>
                   <p className="text-[#888888]">When you buy products on Ventex, they will appear here.</p>
-                  <button onClick={() => setActiveTab('Explore')} className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
+                  <button onClick={() => setActiveTab('Explore')} className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
                     Explore Marketplace
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {purchases.map(product => (
-                    <div key={product.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+                    <div key={product.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
                       <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
                         {product.images_urls?.[0] ? (
                           <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

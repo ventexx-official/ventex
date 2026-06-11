@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Investor Leaderboard — Ventex",
+  title: "Investor Leaderboard Ã¢â‚¬â€ Ventex",
   description: "Ranked Ventex investors by response rate, pitch reviews, and intros made.",
 };
 

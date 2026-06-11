@@ -276,7 +276,7 @@ export default function AdminFlagged() {
                       </div>
                     </div>
 
-                    {/* Actions — only for pending/escalated */}
+                    {/* Actions Ã¢â‚¬â€ only for pending/escalated */}
                     {(isPending || isEscalated) && (
                       <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
                         {isPending && (
@@ -320,9 +320,9 @@ export default function AdminFlagged() {
                     </div>
                     <div className="flex gap-4 text-[10px] text-neutral-600 font-mono flex-wrap">
                       <span>Flag ID: {item.id}</span>
-                      <span>·</span>
+                      <span>Ã‚Â·</span>
                       <span>User ID: {item.user_id}</span>
-                      <span>·</span>
+                      <span>Ã‚Â·</span>
                       <span>Type: {item.content_type}</span>
                     </div>
                   </div>

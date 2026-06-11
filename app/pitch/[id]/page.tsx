@@ -55,9 +55,9 @@ function timeAgo(dateStr: string): string {
 // Helper
 function formatCurrency(amount: number) {
   if (!amount) return 'N/A';
-  if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
-  if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
-  return `₹${amount.toLocaleString()}`;
+  if (amount >= 10000000) return `â‚¹${(amount / 10000000).toFixed(1)}Cr`;
+  if (amount >= 100000) return `â‚¹${(amount / 100000).toFixed(1)}L`;
+  return `â‚¹${amount.toLocaleString()}`;
 }
 
 function formatAmount(amount: number) {
@@ -260,10 +260,10 @@ export default function PitchDetail() {
 
   const handleWhatsAppShare = () => {
     if (!pitch || typeof window === 'undefined') return;
-    const text = `🚀 *${pitch.title}* — ${pitch.tagline || pitch.short_description || ''}
-💰 Seeking ₹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
-📍 ${pitch.industry || 'Startup'} · ${pitch.company_stage || ''} · ${pitch.country || ''}
-👀 ${window.location.href}
+    const text = `ðŸš€ *${pitch.title}* â€” ${pitch.tagline || pitch.short_description || ''}
+ðŸ’° Seeking â‚¹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
+ðŸ“ ${pitch.industry || 'Startup'} Â· ${pitch.company_stage || ''} Â· ${pitch.country || ''}
+ðŸ‘€ ${window.location.href}
 via Ventex`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -637,7 +637,7 @@ via Ventex`;
       <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center flex-col text-center px-4">
         <h1 className="text-2xl font-bold text-[#222222] dark:text-white mb-2">Pitch not found</h1>
         <p className="text-[#888888] mb-6">The pitch you are looking for does not exist or has been removed.</p>
-        <Link href="/discover" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium">Browse startups</Link>
+        <Link href="/discover" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium">Browse startups</Link>
       </div>
     );
   }
@@ -665,7 +665,7 @@ via Ventex`;
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
         
         {/* HERO CARD */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-8 relative">
+        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-8 relative">
           {pitch.status === 'live' && pitch.is_raising === false && (
             <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#F2F2F0] dark:bg-[#333333] px-3 py-1 rounded-full">
               <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
@@ -673,7 +673,7 @@ via Ventex`;
             </div>
           )}
           {pitch.is_raising && (
-            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#222222] dark:bg-white px-3 py-1 rounded-full">
+            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[#222222] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
               <span className="text-[10px] font-bold text-white dark:text-[#222222] uppercase tracking-wider">Raising</span>
             </div>
           )}
@@ -732,7 +732,7 @@ via Ventex`;
           {showRunway && runwayCountdown && (
             <div className="mb-8">
               <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
-                ⏰ Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
+                â° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
               </p>
               <div className="w-full h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
                 <div
@@ -749,7 +749,7 @@ via Ventex`;
                  if (!currentUser) router.push('/login');
                  else setIsInterestModalOpen(true);
                }}
-               className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
+               className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
              >
                Express interest
              </button>
@@ -785,21 +785,21 @@ via Ventex`;
             onClick={handleWhatsAppShare}
             className="flex-1 bg-[#25D366] text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
           >
-            Share on WhatsApp 💬
+            Share on WhatsApp ðŸ’¬
           </button>
           <button
             type="button"
             onClick={handleCopyLink}
             className="flex-1 bg-[#e5e5e5] dark:bg-[#333333] text-[#222222] dark:text-white px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
           >
-            {linkCopied ? 'Copied! ✓' : 'Copy link 🔗'}
+            {linkCopied ? 'Copied! âœ“' : 'Copy link ðŸ”—'}
           </button>
         </aside>
 
         {/* AI SUMMARY BAR */}
         {videoEmbedUrl ? (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
-            <div className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider mb-3">60-second founder pitch 🎬</div>
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
+            <div className="text-xs font-bold text-[#222222] dark:text-white uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
             {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
               <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
             ) : (
@@ -813,23 +813,23 @@ via Ventex`;
             )}
           </div>
         ) : isPitchOwner ? (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center md:col-span-2">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-2 border-dashed border-[#d4d4d4] dark:border-[#333333] p-6 text-center md:col-span-2">
             <div className="text-sm font-bold text-[#222222] dark:text-white mb-2">Add your 60-second founder pitch</div>
             <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[#222222] dark:text-white underline underline-offset-4">
-              Edit pitch →
+              Edit pitch â†’
             </Link>
           </div>
         ) : null}
 
         {matchedInvestors.length > 0 && (
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6 md:col-span-2">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-4">Best matched investors</h2>
             <div className="grid grid-cols-1 gap-3">
               {matchedInvestors.map((investor) => (
                 <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[#e5e5e5] dark:border-[#333333] p-4 hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors">
                   <div className="font-bold text-sm text-[#222222] dark:text-white">{investor.full_name || 'Investor'}</div>
                   <p className="mt-1 text-xs text-[#888888] line-clamp-2">
-                    Invests in {pitch.industry || 'your sector'} · {pitch.company_stage || 'this stage'}
+                    Invests in {pitch.industry || 'your sector'} Â· {pitch.company_stage || 'this stage'}
                   </p>
                 </Link>
               ))}
@@ -850,7 +850,7 @@ via Ventex`;
         {/* CONTENT SECTIONS */}
         <div className="space-y-6 md:col-span-2">
           {/* Problem & Solution */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
             <div className="p-5 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] sm:p-6">
               <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Problem & Solution</h2>
               <div className="flex gap-4 items-start mb-8">
@@ -861,7 +861,7 @@ via Ventex`;
                 </div>
               </div>
               <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-[#222222] dark:bg-white flex items-center justify-center flex-shrink-0 font-bold text-white dark:text-[#222222] text-sm">S</div>
+                <div className="w-8 h-8 rounded-full bg-[#222222] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-white dark:text-[#222222] text-sm">S</div>
                 <div>
                   <h3 className="font-bold text-[#222222] dark:text-white mb-2 text-sm">Our Solution</h3>
                   <p className="text-[#888888] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
@@ -871,7 +871,7 @@ via Ventex`;
           </div>
 
           {/* Market Opportunity */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 sm:p-6">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Market opportunity</h2>
             <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
               <div className="bg-[#F2F2F0] dark:bg-[#333333] rounded-xl p-4 text-center">
@@ -894,7 +894,7 @@ via Ventex`;
           </div>
 
           {/* Competition */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Competition</h2>
             <div className="space-y-6">
               <div>
@@ -913,7 +913,7 @@ via Ventex`;
           </div>
 
           {/* Business Model */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Business model</h2>
             <div className="space-y-6">
               <div>
@@ -928,7 +928,7 @@ via Ventex`;
           </div>
 
           {/* Team (Mocked) */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Team</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 flex gap-4">
@@ -955,7 +955,7 @@ via Ventex`;
           </div>
 
           {/* Traction & Financials (Premium Gated) */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Traction & Financials</h2>
             
             <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
@@ -984,14 +984,14 @@ via Ventex`;
             </div>
 
             {!investorPremium && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-white dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
+                <div className="bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
                   <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">Investor Account required</h3>
                   <p className="text-sm text-[#888888] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
-                  <Link href="/pricing" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+                  <Link href="/pricing" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
                     View Investor Accounts
                   </Link>
                 </div>
@@ -1001,7 +1001,7 @@ via Ventex`;
 
           {/* Product Listings (If exists) */}
           {products.length > 0 && (
-            <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold text-[#222222] dark:text-white">Products by this startup</h2>
                 <span className="text-[#888888] text-sm font-medium">{products.length} listed</span>
@@ -1019,7 +1019,7 @@ via Ventex`;
                         <button 
                           onClick={() => handleBuyProduct(p)}
                           disabled={isCheckingOut}
-                          className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+                          className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
                         >
                           {isCheckingOut ? '...' : 'Buy now'}
                         </button>
@@ -1032,7 +1032,7 @@ via Ventex`;
           )}
 
           {/* Documents */}
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 relative overflow-hidden">
             <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Documents</h2>
             
             <div className={`flex items-center justify-between border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
@@ -1047,7 +1047,7 @@ via Ventex`;
               </div>
               <button 
                 onClick={handleOpenDeck}
-                className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
+                className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
                 disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
               >
                 View Pitch Deck
@@ -1055,14 +1055,14 @@ via Ventex`;
             </div>
 
             {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-white dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
+                <div className="bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
                   <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mb-4">
                     <Lock className="w-5 h-5 text-[#222222] dark:text-white" />
                   </div>
                   <h3 className="text-lg font-bold text-[#222222] dark:text-white mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
                   <p className="text-sm text-[#888888] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
-                  <Link href="/pricing" className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+                  <Link href="/pricing" className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
                     View Investor Accounts
                   </Link>
                 </div>
@@ -1103,7 +1103,7 @@ via Ventex`;
 
           {/* Q&A Section */}
           {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
-            <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
+            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-6">
               <h2 className="text-lg font-bold text-[#222222] dark:text-white mb-6">Founder Q&A</h2>
               <div className="space-y-6">
                 {QUESTIONS.map((q) => {
@@ -1142,7 +1142,7 @@ via Ventex`;
         </div>
 
         {/* COMMUNITY COMMENTS */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
+        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[16px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
           <h2 className="text-xl font-bold text-[#222222] dark:text-white mb-8 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pb-4">
             Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
           </h2>
@@ -1159,7 +1159,7 @@ via Ventex`;
               <div className="flex-1">
                 <textarea
                   ref={textareaRef}
-                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 text-sm bg-white dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
+                  className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl p-4 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
                   placeholder="Ask a question or leave feedback for the founders..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
@@ -1170,7 +1170,7 @@ via Ventex`;
                   <button
                     onClick={handlePostComment}
                     disabled={!newComment.trim() || posting}
-                    className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
                     {posting ? 'Posting...' : 'Post'}
@@ -1229,7 +1229,7 @@ via Ventex`;
                       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                         <span className="font-bold text-[#222222] dark:text-white text-sm">{name}</span>
                         {user?.role === 'mentor' && (
-                          <span className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
+                          <span className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
                         )}
                         {user?.role === 'investor' && (
                           <span className="bg-[#888888] text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
@@ -1265,13 +1265,13 @@ via Ventex`;
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-white/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5e5e5] bg-[var(--card-bg)]/95 p-3 shadow-2xl backdrop-blur dark:border-[#333333] dark:bg-[#1a1a1a]/95 md:hidden">
         <button
           onClick={() => {
             if (!currentUser) router.push('/login');
             else setIsInterestModalOpen(true);
           }}
-          className="min-h-11 w-full rounded-full bg-[#222222] px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:bg-black dark:bg-white dark:text-[#222222] dark:hover:bg-gray-200"
+          className="min-h-11 w-full rounded-full bg-[#222222] px-6 py-3 text-center text-sm font-bold text-white transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[#222222] dark:hover:bg-gray-200"
         >
           Express interest
         </button>
@@ -1279,7 +1279,7 @@ via Ventex`;
 
       {isNdaModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-[#1a1a1a]">
+          <div className="w-full max-w-lg rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl dark:bg-[#1a1a1a]">
             <h3 className="text-lg font-bold text-[#222222] dark:text-white">Data room NDA terms</h3>
             <p className="mt-3 text-sm leading-6 text-[#888888]">
               By accessing this data room you agree all information is confidential.
@@ -1288,8 +1288,8 @@ via Ventex`;
               <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[#e5e5e5] px-5 py-2.5 text-sm font-bold text-[#222222] dark:border-[#333333] dark:text-white">
                 Cancel
               </button>
-              <button onClick={handleAcceptNda} className="rounded-full bg-[#222222] px-5 py-2.5 text-sm font-bold text-white dark:bg-white dark:text-[#222222]">
-                I Agree — View Documents
+              <button onClick={handleAcceptNda} className="rounded-full bg-[#222222] px-5 py-2.5 text-sm font-bold text-white dark:bg-[var(--card-bg)] dark:text-[#222222]">
+                I Agree â€” View Documents
               </button>
             </div>
           </div>
@@ -1307,13 +1307,13 @@ via Ventex`;
               </div>
               <button 
                 onClick={() => setIsDeckModalOpen(false)}
-                className="text-[#888888] hover:text-white transition-colors p-2 bg-white/10 rounded-full hover:bg-white/20"
+                className="text-[#888888] hover:text-white transition-colors p-2 bg-[var(--card-bg)]/10 rounded-full hover:bg-[var(--card-bg)]/20"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="flex-grow relative bg-white">
+            <div className="flex-grow relative bg-[var(--card-bg)]">
               <PitchDeckViewer 
                 pitchId={pitch.id} 
                 investorName={currentProfile?.full_name || currentUser?.email?.split('@')[0] || 'Investor'} 
@@ -1326,7 +1326,7 @@ via Ventex`;
       {/* Express Interest Modal Overlay */}
       {isInterestModalOpen && pitch.id && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-[#222222] dark:text-white font-bold text-lg">Express Interest in {pitch.title}</h3>
               <button 
@@ -1376,7 +1376,7 @@ via Ventex`;
                 <button
                   onClick={handleSendInterest}
                   disabled={sendingInterest || !interestMessage.trim()}
-                  className="px-6 py-2.5 rounded-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 rounded-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {sendingInterest ? 'Sending...' : 'Send interest'}
                 </button>

@@ -55,7 +55,7 @@ export default function InvestorSettingsPage() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] px-4 py-10">
-      <main className="mx-auto max-w-3xl rounded-3xl border border-[#e5e5e5] bg-white p-6 md:p-8">
+      <main className="mx-auto max-w-3xl rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-6 md:p-8">
         <h1 className="text-3xl font-black tracking-tighter text-[#222222]">Investor thesis</h1>
         <p className="mt-2 text-sm font-medium text-[#666666]">This powers founder-side investor matching.</p>
 

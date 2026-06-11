@@ -60,7 +60,7 @@ function PaymentSuccessContent() {
             
             <Link 
               href="/founder/dashboard"
-              className="w-full py-4 bg-white border-[0.5px] border-[#e5e5e5] text-[#222222] rounded-2xl font-bold text-sm transition-all hover:bg-[#F2F2F0] active:scale-95 flex items-center justify-center"
+              className="w-full py-4 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] text-[#222222] rounded-2xl font-bold text-sm transition-all hover:bg-[#F2F2F0] active:scale-95 flex items-center justify-center"
             >
               Go to Dashboard
             </Link>
@@ -74,7 +74,7 @@ function PaymentSuccessContent() {
 export default function PaymentSuccessPage() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] shadow-2xl text-center">
+      <div className="max-w-md w-full bg-[var(--card-bg)] rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] shadow-2xl text-center">
         <Suspense fallback={<Loader2 className="w-12 h-12 text-[#222222] animate-spin mb-4 mx-auto" />}>
           <PaymentSuccessContent />
         </Suspense>

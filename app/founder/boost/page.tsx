@@ -168,7 +168,7 @@ export default function FounderBoostPage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
       {/* Sidebar */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && (
             <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
@@ -181,12 +181,12 @@ export default function FounderBoostPage() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function FounderBoostPage() {
               href="/founder/dashboard"
               className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
             >
-              ← Back to Dashboard
+              Ã¢â€ Â Back to Dashboard
             </Link>
           </header>
 
@@ -250,7 +250,7 @@ export default function FounderBoostPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left side: Booster Tiers Selector */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
                   01. Select Startup Pitch
                 </h3>
@@ -273,7 +273,7 @@ export default function FounderBoostPage() {
                       className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222]"
                     >
                       {pitches.map(p => (
-                        <option key={p.id} value={p.id}>{p.title} {p.featured ? "🌟 (Boosted)" : ""}</option>
+                        <option key={p.id} value={p.id}>{p.title} {p.featured ? "Ã°Å¸Å’Å¸ (Boosted)" : ""}</option>
                       ))}
                     </select>
                   </div>
@@ -293,7 +293,7 @@ export default function FounderBoostPage() {
                       className={`text-left p-6 rounded-3xl border transition-all duration-300 flex flex-col justify-between ${
                         isSelected
                           ? "bg-[#222222] border-[#222222] text-white shadow-xl scale-[1.02]"
-                          : "bg-white border-[#e5e5e5] text-[#222222] hover:border-[#888888]"
+                          : "bg-[var(--card-bg)] border-[#e5e5e5] text-[#222222] hover:border-[#888888]"
                       }`}
                     >
                       <div className="space-y-3">
@@ -322,7 +322,7 @@ export default function FounderBoostPage() {
               </div>
 
               {/* Tier Benefits */}
-              <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-4 shadow-sm">
                 <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
                   Included Benefits & Coverage
                 </h3>
@@ -339,15 +339,15 @@ export default function FounderBoostPage() {
 
             {/* Right side: Mock Card Preview & Checkout */}
             <div className="space-y-6">
-              <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-6 shadow-sm">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 space-y-6 shadow-sm">
                 <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">
                   Live Preview
                 </h3>
 
                 {/* Mock Card */}
                 <div className={`relative rounded-3xl p-6 transition-all duration-500 overflow-hidden ${
-                  selectedTier === "silver" ? "bg-white border-[2px] border-slate-300 shadow-lg" :
-                  selectedTier === "gold" ? "bg-white border-[3px] border-amber-400 shadow-xl shadow-amber-400/5 animate-pulse" :
+                  selectedTier === "silver" ? "bg-[var(--card-bg)] border-[2px] border-slate-300 shadow-lg" :
+                  selectedTier === "gold" ? "bg-[var(--card-bg)] border-[3px] border-amber-400 shadow-xl shadow-amber-400/5 animate-pulse" :
                   "bg-[#222222] text-white shadow-2xl shadow-indigo-500/10 border border-indigo-500/30"
                 }`}>
                   {/* Floating Glowing Badge */}
@@ -362,7 +362,7 @@ export default function FounderBoostPage() {
 
                   <div className="space-y-4">
                     <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
-                      selectedTier === "platinum" ? "bg-white/10 text-indigo-300" : "bg-[#F2F2F0] text-[#888888]"
+                      selectedTier === "platinum" ? "bg-[var(--card-bg)]/10 text-indigo-300" : "bg-[#F2F2F0] text-[#888888]"
                     }`}>
                       {activePitch?.industry || "AI / Deeptech"}
                     </span>

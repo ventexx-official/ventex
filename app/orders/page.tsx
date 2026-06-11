@@ -208,7 +208,7 @@ export default function OrdersDashboard() {
         </Link>
 
         {/* Dashboard Header Header */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-600 to-indigo-600"></div>
           <div className="space-y-2">
             <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
@@ -228,7 +228,7 @@ export default function OrdersDashboard() {
               placeholder="Search products or sellers..." 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-white dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
+              className="w-full pl-11 pr-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[#222222] focus:border-[#222222] dark:focus:border-white transition-all text-[#222222] dark:text-white placeholder-[#888888]"
             />
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function OrdersDashboard() {
         <div className="flex flex-col md:flex-row gap-8 items-start">
           
           {/* Sidebar Navigation */}
-          <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-white dark:bg-[#1a1a1a] rounded-2xl md:rounded-3xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-x-auto md:overflow-x-visible">
+          <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-2xl md:rounded-3xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-x-auto md:overflow-x-visible">
             {[
               { id: 'all', label: 'All Purchases', count: orders.length },
               { 
@@ -259,7 +259,7 @@ export default function OrdersDashboard() {
                 <span>{tab.label}</span>
                 <span className={`ml-2 text-[10px] px-2 py-0.5 rounded-full font-bold ${
                   activeTab === tab.id 
-                    ? 'bg-white/20 text-white' 
+                    ? 'bg-[var(--card-bg)]/20 text-white' 
                     : 'bg-[#F2F2F0] dark:bg-[#222222] text-[#888888]'
                 }`}>
                   {tab.count}
@@ -272,7 +272,7 @@ export default function OrdersDashboard() {
           <main className="flex-1 w-full space-y-6">
             {filteredOrders.length === 0 ? (
               /* Empty state card */
-              <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-12 text-center border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-md">
+              <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-12 text-center border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-md">
                 <ShoppingBag className="w-12 h-12 text-[#cccccc] dark:text-[#333333] mx-auto mb-4" />
                 <h3 className="text-lg font-black text-[#222222] dark:text-white uppercase tracking-tight mb-1">
                   No purchases found
@@ -285,7 +285,7 @@ export default function OrdersDashboard() {
                 {!searchQuery && (
                   <Link 
                     href="/marketplace" 
-                    className="inline-block bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+                    className="inline-block bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
                   >
                     Browse Marketplace
                   </Link>
@@ -311,14 +311,14 @@ export default function OrdersDashboard() {
                       case 'refunded':
                         return { label: 'Refunded', bg: 'bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 border-blue-200/55' };
                       default:
-                        return { label: order.status, bg: 'bg-gray-50 dark:bg-gray-900 text-gray-500 border-gray-200/55' };
+                        return { label: order.status, bg: 'bg-[var(--bg2)] dark:bg-[var(--card-bg)] text-[var(--text3)] border-gray-200/55' };
                     }
                   })();
 
                   return (
                     <div 
                       key={order.id} 
-                      className="bg-white dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
+                      className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
                     >
                       {/* Top Row: Visual & Info */}
                       <div className="space-y-4">
@@ -355,7 +355,7 @@ export default function OrdersDashboard() {
                           </div>
                           <div className="space-y-0.5">
                             <span className="text-[9px] font-medium block text-neutral-400">Total Paid</span>
-                            <span className="text-xs font-black text-[#222222] dark:text-white">₹{order.amount_paid.toLocaleString()}</span>
+                            <span className="text-xs font-black text-[#222222] dark:text-white">Ã¢â€šÂ¹{order.amount_paid.toLocaleString()}</span>
                           </div>
                         </div>
                       </div>
@@ -377,7 +377,7 @@ export default function OrdersDashboard() {
                           {order.status === 'paid' && (
                             isReviewed ? (
                               <span className="inline-flex items-center gap-1 text-[10px] text-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 px-3 py-2 rounded-xl border border-emerald-100 dark:border-emerald-900/30 font-bold">
-                                <Star className="w-3 h-3 fill-emerald-500 text-emerald-500" /> Reviewed ✓
+                                <Star className="w-3 h-3 fill-emerald-500 text-emerald-500" /> Reviewed Ã¢Å“â€œ
                               </span>
                             ) : (
                               <button
@@ -418,7 +418,7 @@ export default function OrdersDashboard() {
       {/* RATING & REVIEW MODAL */}
       {reviewOrder && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
             
             <button 
               onClick={() => {
@@ -474,7 +474,7 @@ export default function OrdersDashboard() {
               <button 
                 onClick={handleSubmitReview}
                 disabled={submittingReview || !comment.trim()}
-                className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submittingReview ? 'Submitting Review...' : 'Submit Review'}
               </button>

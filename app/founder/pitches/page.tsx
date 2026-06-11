@@ -116,7 +116,7 @@ export default function MyPitchesPage() {
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
-          <div className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8">
+          <div className="relative bg-[var(--card-bg)] rounded-3xl shadow-2xl max-w-md w-full p-8">
             <button onClick={() => setConfirmDelete(null)} className="absolute top-4 right-4 p-1.5 hover:bg-[#F2F2F0] rounded-lg text-[#888888]"><X className="w-4 h-4" /></button>
             <div className="flex items-center justify-center w-14 h-14 bg-red-50 rounded-2xl mx-auto mb-5">
               <AlertTriangle className="w-7 h-7 text-red-500" />
@@ -136,7 +136,7 @@ export default function MyPitchesPage() {
       )}
 
       {/* SIDEBAR */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5">
           {!sidebarCollapsed && <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>}
           <button onClick={() => setSidebarCollapsed(v => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F2F2F0] text-[#888888] hover:text-[#222222] ml-auto">
@@ -147,12 +147,12 @@ export default function MyPitchesPage() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 pb-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || 'Founder'}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -215,13 +215,13 @@ export default function MyPitchesPage() {
                 placeholder="Search pitches..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border-[0.5px] border-[#e5e5e5] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] text-[#222222]"
+                className="w-full pl-10 pr-4 py-2.5 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] text-[#222222]"
               />
             </div>
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="bg-white border-[0.5px] border-[#e5e5e5] rounded-xl px-4 py-2.5 text-sm text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
+              className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl px-4 py-2.5 text-sm text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
             >
               <option value="all">All statuses</option>
               <option value="draft">Draft</option>
@@ -234,7 +234,7 @@ export default function MyPitchesPage() {
           {/* Pitch List */}
           <div className="space-y-3" ref={menuRef}>
             {filtered.length === 0 ? (
-              <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] p-16 text-center">
+              <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-16 text-center">
                 <FileText className="w-10 h-10 text-[#e5e5e5] mx-auto mb-4" />
                 <h3 className="font-bold text-[#222222] mb-2">{search || statusFilter !== 'all' ? 'No pitches match your filters' : "You haven't created any pitches yet"}</h3>
                 <p className="text-sm text-[#888888] mb-6">{search ? 'Try a different search term.' : 'Start building your investor-ready pitch profile.'}</p>
@@ -248,7 +248,7 @@ export default function MyPitchesPage() {
               filtered.map((pitch) => (
                 <div
                   key={pitch.id}
-                  className={`bg-white p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
+                  className={`bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
                 >
                   <div className="flex items-center gap-4 min-w-0 flex-1">
                     <div className="w-12 h-12 bg-[#F2F2F0] rounded-2xl flex items-center justify-center overflow-hidden border-[0.5px] border-[#e5e5e5] flex-shrink-0">
@@ -279,7 +279,7 @@ export default function MyPitchesPage() {
                         <MoreVertical className="w-4 h-4" />
                       </button>
                       {openMenuId === pitch.id && (
-                        <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-2xl shadow-xl border-[0.5px] border-[#e5e5e5] z-50 py-1">
+                        <div className="absolute right-0 top-full mt-1 w-48 bg-[var(--card-bg)] rounded-2xl shadow-xl border-[0.5px] border-[#e5e5e5] z-50 py-1">
                           <Link href={`/founder/create-pitch?id=${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0]"><Edit2 className="w-4 h-4 text-[#888888]" />Edit pitch</Link>
                           <Link href={`/pitch/${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0]"><ExternalLink className="w-4 h-4 text-[#888888]" />View public page</Link>
                           <button onClick={() => handleDuplicate(pitch)} className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-[#222222] hover:bg-[#F2F2F0]"><Copy className="w-4 h-4 text-[#888888]" />Duplicate</button>
@@ -323,7 +323,6 @@ function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const styles: any = { live: 'bg-emerald-100 text-emerald-700', pending: 'bg-amber-100 text-amber-700', rejected: 'bg-red-100 text-red-700', draft: 'bg-gray-100 text-gray-500' };
+  const styles: any = { live: 'bg-emerald-100 text-emerald-700', pending: 'bg-amber-100 text-amber-700', rejected: 'bg-red-100 text-red-700', draft: 'bg-[var(--bg3)] text-[var(--text3)]' };
   return <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${styles[status] || styles.draft}`}>{status}</span>;
 }
-

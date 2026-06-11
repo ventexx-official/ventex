@@ -54,19 +54,19 @@ export default function ContactPage() {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
-            <section className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
               <Mail className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Support Email</h2>
               <a className="text-sm font-bold underline underline-offset-4" href={`mailto:${supportEmail}`}>{supportEmail}</a>
               <p className="mt-3 text-xs leading-5 text-[#666666] dark:text-gray-400">Target response time: 2 business days.</p>
             </section>
-            <section className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
               <ShieldCheck className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Grievance Officer</h2>
               <p className="text-sm font-bold">Ventex Support Desk</p>
               <p className="mt-3 text-xs leading-5 text-[#666666] dark:text-gray-400">Use the form for escalation, privacy, and compliance requests.</p>
             </section>
-            <section className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
+            <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
               <MapPin className="mb-4 h-6 w-6" />
               <h2 className="mb-2 text-lg font-black">Business Address</h2>
               <p className="text-sm font-bold">Ventex, Global Remote</p>
@@ -74,7 +74,7 @@ export default function ContactPage() {
             </section>
           </div>
 
-          <form onSubmit={submit} className="rounded-lg border border-black/10 bg-white p-6 dark:border-white/10 dark:bg-[#1a1a1a] space-y-4">
+          <form onSubmit={submit} className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a] space-y-4">
             <h2 className="text-xl font-black">Send a message</h2>
             {success ? <div className="rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-700">{success}</div> : null}
             {error ? <div className="rounded-xl bg-red-50 p-3 text-sm font-bold text-red-700">{error}</div> : null}

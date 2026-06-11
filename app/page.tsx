@@ -15,7 +15,7 @@ const features = [
   {
     icon: Megaphone,
     title: 'Integrated pitch profilers',
-    desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries — ready for investors.',
+    desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries Ã¢â‚¬â€ ready for investors.',
   },
   {
     icon: TrendingUp,
@@ -35,18 +35,18 @@ const features = [
   {
     icon: Zap,
     title: 'Momentum loops',
-    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving — every week.',
+    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving Ã¢â‚¬â€ every week.',
   },
   {
     icon: Globe,
     title: 'Built for founders worldwide',
-    desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities — sell from anywhere, raise from anyone.',
+    desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities Ã¢â‚¬â€ sell from anywhere, raise from anyone.',
   },
 ];
 
 const steps = [
   ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents. Go live in minutes.'],
-  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces — and reach out.'],
+  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces Ã¢â‚¬â€ and reach out.'],
   ['03', 'Sell and scale', 'List products, unlock deal rooms, build social proof, and convert attention into revenue or real funding.'],
 ];
 
@@ -108,7 +108,7 @@ export default async function Home() {
             <div className="text-left stagger-2">
               <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8" style={{ borderColor: 'var(--border2)' }}>
                 <span className="h-1.5 w-1.5 animate-[pulseDot_2s_infinite] rounded-full bg-emerald-500" />
-                v1.0 · Early Access Now Open
+                v1.0 Ã‚Â· Early Access Now Open
               </div>
 
               <h1 className="max-w-2xl text-balance text-[clamp(32px,6vw,64px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
@@ -116,16 +116,16 @@ export default async function Home() {
               </h1>
 
               <p className="max-w-[520px] text-[19px] leading-[1.55] text-[var(--text2)] mb-10 transition-colors duration-400">
-                The platform for founders, investors and startup-builders — Anywhere.
+                The platform for founders, investors and startup-builders Ã¢â‚¬â€ Anywhere.
               </p>
 
               <div className="flex flex-wrap items-center gap-5">
-                <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">→</span></Link>
+                <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">Ã¢â€ â€™</span></Link>
                 <Link href="/discover" className="btn-secondary transition-colors">Explore pitches</Link>
               </div>
 
               <div className="mono mt-10 text-[11px] text-[var(--text3)] hidden sm:block">
-                {'//'} Trusted by founders, investors and startup-builders — worldwide.
+                {'//'} Trusted by founders, investors and startup-builders Ã¢â‚¬â€ worldwide.
               </div>
             </div>
 
@@ -277,9 +277,9 @@ export default async function Home() {
           <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
           <div className="mt-5 h-5 overflow-hidden">
             <div className="mono flex w-max whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
-              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
-              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
-              <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
+              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
+              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
+              <span className="pr-8">Early access Ã‚Â· Founding member Ã‚Â· Worldwide Ã‚Â· Pitch Ã‚Â· Fund Ã‚Â· Sell Ã‚Â·</span>
             </div>
           </div>
           <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>

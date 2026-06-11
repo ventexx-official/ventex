@@ -58,7 +58,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-black italic tracking-tighter text-[#222222] dark:text-white uppercase">
             Ventex
@@ -78,7 +78,7 @@ export default function Login() {
             <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Email address</label>
             <input
               type="email"
-              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-white dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -92,7 +92,7 @@ export default function Login() {
             </div>
             <input
               type="password"
-              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-white dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+              className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -102,7 +102,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
+            className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
@@ -116,7 +116,7 @@ export default function Login() {
 
         <button
           onClick={handleGoogleAuth}
-          className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-white dark:bg-[#111111] text-[#222222] dark:text-white py-2.5 rounded-md text-sm font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors"
+          className="w-full flex items-center justify-center gap-2 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white py-2.5 rounded-md text-sm font-bold hover:bg-[#F2F2F0] dark:hover:bg-[#333333] transition-colors"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

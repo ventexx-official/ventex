@@ -171,7 +171,7 @@ function OrderConfirmationDetails() {
         
         {!sessionId || orders.length === 0 ? (
           /* Empty or Invalid State */
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-12 text-center border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-12 text-center border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-xl">
             <div className="w-20 h-20 bg-red-50 dark:bg-red-950/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <X className="w-10 h-10 text-red-500" />
             </div>
@@ -179,7 +179,7 @@ function OrderConfirmationDetails() {
             <p className="text-[#888888] mb-8 max-w-sm mx-auto">We couldn't retrieve the details for this checkout session. Please check your account dashboard for order history.</p>
             <Link 
               href="/marketplace" 
-              className="inline-flex items-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors"
+              className="inline-flex items-center gap-2 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors"
             >
               Browse Marketplace <ArrowRight className="w-4 h-4" />
             </Link>
@@ -189,7 +189,7 @@ function OrderConfirmationDetails() {
           <div className="space-y-8">
             
             {/* Header Success Card */}
-            <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden">
+            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-10 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] text-center shadow-xl relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
               
               <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-950/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
@@ -208,13 +208,13 @@ function OrderConfirmationDetails() {
                 </div>
                 <div className="text-left">
                   <span className="text-[10px] font-black uppercase text-[#888888] tracking-widest block">Total Paid</span>
-                  <span className="text-sm font-black text-[#222222] dark:text-white">₹{orderTotal.toLocaleString()}</span>
+                  <span className="text-sm font-black text-[#222222] dark:text-white">Ã¢â€šÂ¹{orderTotal.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
             {/* Purchased Items & Delivery Area */}
-            <div className="bg-white dark:bg-[#1a1a1a] rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-md space-y-6">
+            <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] dark:border-[#333333] shadow-md space-y-6">
               <h2 className="text-lg font-black text-[#222222] dark:text-white uppercase tracking-tight pb-4 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333]">Your Products</h2>
               
               <div className="divide-y-[0.5px] divide-[#e5e5e5] dark:divide-[#333333]">
@@ -240,10 +240,10 @@ function OrderConfirmationDetails() {
                             {product.name}
                           </h3>
                           <p className="text-xs text-[#888888] mt-0.5">
-                            By {order.seller?.full_name || 'Anonymous'} · <span className="font-semibold text-emerald-500 uppercase tracking-widest text-[9px] bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded">{product.category}</span>
+                            By {order.seller?.full_name || 'Anonymous'} Ã‚Â· <span className="font-semibold text-emerald-500 uppercase tracking-widest text-[9px] bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded">{product.category}</span>
                           </p>
                           <p className="text-xs font-black text-[#222222] dark:text-white mt-2">
-                            ₹{order.amount_paid.toLocaleString()}
+                            Ã¢â€šÂ¹{order.amount_paid.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -264,7 +264,7 @@ function OrderConfirmationDetails() {
                         {/* Review System */}
                         {hasSubmitted ? (
                           <span className="text-xs text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-950/20 px-4 py-2.5 rounded-xl border border-emerald-200 dark:border-emerald-900/40 flex items-center gap-1.5">
-                            <Star className="w-3.5 h-3.5 fill-emerald-500 text-emerald-500" /> Reviewed ✓
+                            <Star className="w-3.5 h-3.5 fill-emerald-500 text-emerald-500" /> Reviewed Ã¢Å“â€œ
                           </span>
                         ) : (
                           <button 
@@ -290,13 +290,13 @@ function OrderConfirmationDetails() {
               <div className="flex gap-4">
                 <Link 
                   href="/orders" 
-                  className="bg-white dark:bg-[#1a1a1a] text-[#222222] dark:text-white border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors shadow-sm"
+                  className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] text-[#222222] dark:text-white border-[0.5px] border-[#e5e5e5] dark:border-[#333333] px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors shadow-sm"
                 >
                   View Order History
                 </Link>
                 <Link 
                   href="/marketplace" 
-                  className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md flex items-center gap-1.5"
+                  className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md flex items-center gap-1.5"
                 >
                   Marketplace <ChevronRight className="w-4 h-4" />
                 </Link>
@@ -311,7 +311,7 @@ function OrderConfirmationDetails() {
       {/* RATING & REVIEW MODAL */}
       {reviewItem && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
             
             <button 
               onClick={() => {
@@ -367,7 +367,7 @@ function OrderConfirmationDetails() {
               <button 
                 onClick={handleSubmitReview}
                 disabled={submittingReview || !comment.trim()}
-                className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submittingReview ? 'Submitting Review...' : 'Submit Review'}
               </button>
@@ -392,4 +392,3 @@ export default function OrderConfirmationPage() {
     </Suspense>
   );
 }
-

@@ -25,7 +25,7 @@ export default function SchemesHelperPage() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] px-4 py-10">
       <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-[380px_1fr]">
-        <form onSubmit={submit} className="h-fit rounded-3xl border border-[#e5e5e5] bg-white p-6">
+        <form onSubmit={submit} className="h-fit rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-6">
           <h1 className="text-3xl font-black tracking-tighter text-[#222222]">DPIIT Scheme Helper</h1>
           <p className="mt-2 text-sm font-medium text-[#666666]">Answer five questions to shortlist Indian startup schemes.</p>
           <Field label="Industry sector" value={form.sector} onChange={(v) => update('sector', v)} />
@@ -40,11 +40,11 @@ export default function SchemesHelperPage() {
 
         <section className="space-y-4">
           {schemes.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-white p-10 text-center text-sm font-bold text-[#888888]">
+            <div className="rounded-3xl border border-dashed border-[#d4d4d4] bg-[var(--card-bg)] p-10 text-center text-sm font-bold text-[#888888]">
               Your matched schemes will appear here.
             </div>
           ) : schemes.map((scheme) => (
-            <article key={scheme.name} className="rounded-3xl border border-[#e5e5e5] bg-white p-6">
+            <article key={scheme.name} className="rounded-3xl border border-[#e5e5e5] bg-[var(--card-bg)] p-6">
               <h2 className="text-xl font-black text-[#222222]">{scheme.name}</h2>
               <p className="mt-2 text-sm font-medium text-[#444444]">{scheme.benefit}</p>
               <p className="mt-3 text-xs font-bold uppercase tracking-widest text-[#888888]">Eligibility</p>

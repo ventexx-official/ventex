@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     .eq('id', params.id)
     .maybeSingle();
 
-  const title = product?.name ? `${product.name} — Ventex Marketplace` : 'Product on Ventex Marketplace';
+  const title = product?.name ? `${product.name} â€” Ventex Marketplace` : 'Product on Ventex Marketplace';
   const description = product?.description || `Explore ${product?.category || 'premium'} startup assets, tools, and services.`;
 
   return {

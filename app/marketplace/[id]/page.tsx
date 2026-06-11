@@ -239,7 +239,7 @@ export default function ProductDetailPage() {
     // Scan for off-platform contact/payment patterns
     const flagged = await scanOffPlatformAttempt(requirements, 'project_requirements');
     if (flagged) {
-      alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+      alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
       return;
     }
 
@@ -480,7 +480,7 @@ export default function ProductDetailPage() {
     // Scan for off-platform contact/payment patterns
     const flagged = await scanOffPlatformAttempt(newQuestion, 'qa_question');
     if (flagged) {
-      alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+      alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
       return;
     }
 
@@ -679,7 +679,7 @@ export default function ProductDetailPage() {
       )}
       <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-6xl">
-          Ventex Premium is for marketplace access — buying software, hiring, and custom build requests. For investment features, see <Link href="/pricing" className="underline underline-offset-4">Investor Accounts</Link>.
+          Ventex Premium is for marketplace access â€” buying software, hiring, and custom build requests. For investment features, see <Link href="/pricing" className="underline underline-offset-4">Investor Accounts</Link>.
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-4 md:px-6 pt-12 space-y-12">
@@ -689,7 +689,7 @@ export default function ProductDetailPage() {
           
           {/* Left: Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-video bg-white dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden flex items-center justify-center relative">
+            <div className="aspect-video bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden flex items-center justify-center relative">
               {isDeal && (
                 <span className="absolute top-4 left-4 bg-[#222222] text-white text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
                   <Tag className="w-3.5 h-3.5" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
@@ -730,7 +730,7 @@ export default function ProductDetailPage() {
             </h1>
 
             {/* Seller Row */}
-            <div className="flex items-center gap-4 bg-white dark:bg-[#1a1a1a] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] mb-8">
+            <div className="flex items-center gap-4 bg-[var(--card-bg)] dark:bg-[#1a1a1a] p-4 rounded-2xl border-[0.5px] border-[#e5e5e5] dark:border-[#333333] mb-8">
               <div className="w-12 h-12 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
                 {product.seller?.avatar_url ? (
                   <img src={product.seller.avatar_url} alt="" className="w-full h-full object-cover" />
@@ -757,16 +757,16 @@ export default function ProductDetailPage() {
               {isCustom ? (
                 <div>
                   <p className="text-[#888888] text-[11px] font-bold uppercase tracking-widest mb-1">Custom Project Starts From</p>
-                  <span className="text-4xl font-black text-[#222222] dark:text-white">₹{product.price?.toLocaleString()}</span>
+                  <span className="text-4xl font-black text-[#222222] dark:text-white">â‚¹{product.price?.toLocaleString()}</span>
                 </div>
               ) : (
                 <div className="flex items-end gap-3">
                   <span className="text-4xl font-black text-[#222222] dark:text-white">
-                    ₹{(product.discount_price || product.price)?.toLocaleString()}
+                    â‚¹{(product.discount_price || product.price)?.toLocaleString()}
                   </span>
                   {isDeal && (
                     <span className="text-lg text-[#888888] line-through font-medium mb-1">
-                      ₹{product.price?.toLocaleString()}
+                      â‚¹{product.price?.toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -783,7 +783,7 @@ export default function ProductDetailPage() {
             <div className="mt-auto space-y-3">
               {isCustom ? (
                 <>
-                  <button onClick={handleRequestWork} className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
+                  <button onClick={handleRequestWork} className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
                     Request Work
                   </button>
                   <p className="text-xs text-center text-[#888888] font-medium">Ventex Premium required to discuss marketplace requirements.</p>
@@ -795,12 +795,12 @@ export default function ProductDetailPage() {
                     disabled={isAddingToCart || addedToCart}
                     className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[#222222] dark:text-white py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[#F2F2F0] dark:hover:bg-[#222222] transition-colors disabled:opacity-50"
                   >
-                    {addedToCart ? 'Added ✓' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
+                    {addedToCart ? 'Added âœ“' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
                   </button>
                   <button 
                     onClick={handleBuyNow}
                     disabled={isAddingToCart || addedToCart || isCheckingOut}
-                    className="flex-1 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                    className="flex-1 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
                   >
                     {isCheckingOut ? 'Checking out...' : 'Buy Now'}
                   </button>
@@ -811,7 +811,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* TABS */}
-        <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
+        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-hidden">
           <div className="flex border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] overflow-x-auto hide-scrollbar">
             {['description', 'reviews', 'qa'].map((tab) => (
               <button
@@ -852,7 +852,7 @@ export default function ProductDetailPage() {
                 <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="space-y-1">
                     <p className="text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-tight flex items-center gap-1.5">
-                      🔧 Review System Demo Sandbox
+                      ðŸ”§ Review System Demo Sandbox
                     </p>
                     <p className="text-xs text-amber-700 dark:text-amber-500 font-medium">
                       Simulate a mock purchaser account and seeded verified reviews to test the interface without database setups.
@@ -863,7 +863,7 @@ export default function ProductDetailPage() {
                     className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0 ${
                       isDemoMode 
                         ? 'bg-amber-600 text-white hover:bg-amber-700' 
-                        : 'bg-white dark:bg-[#222222] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
+                        : 'bg-[var(--card-bg)] dark:bg-[#222222] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
                     }`}
                   >
                     {isDemoMode ? 'Deactivate Demo' : 'Activate Demo'}
@@ -892,14 +892,14 @@ export default function ProductDetailPage() {
                       const pct = getPercentage(stars as any);
                       return (
                         <div key={stars} className="flex items-center gap-3 text-xs">
-                          <span className="w-8 text-right font-bold text-gray-500 dark:text-gray-400">{stars}★</span>
+                          <span className="w-8 text-right font-bold text-[var(--text3)] dark:text-gray-400">{stars}â˜…</span>
                           <div className="flex-grow h-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full overflow-hidden">
                             <div 
                               className="h-full bg-amber-400 rounded-full transition-all duration-500" 
                               style={{ width: `${pct}%` }}
                             ></div>
                           </div>
-                          <span className="w-8 text-right font-bold text-gray-400 dark:text-gray-500">{pct}%</span>
+                          <span className="w-8 text-right font-bold text-gray-400 dark:text-[var(--text3)]">{pct}%</span>
                         </div>
                       );
                     })}
@@ -915,12 +915,12 @@ export default function ProductDetailPage() {
                             setReviewComment('');
                             setIsReviewModalOpen(true);
                           }}
-                          className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+                          className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
                         >
                           Write a Review
                         </button>
                         <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">
-                          ✓ Fulfilled Order Available
+                          âœ“ Fulfilled Order Available
                         </p>
                       </div>
                     ) : (
@@ -943,7 +943,7 @@ export default function ProductDetailPage() {
                     <p className="text-[#888888] text-center py-8">No reviews yet.</p>
                   ) : (
                     reviews.map(review => (
-                      <div key={review.id} className="space-y-3 p-4 bg-white dark:bg-[#1f1f1f] rounded-2xl border border-[#e5e5e5]/40 dark:border-[#333333]/40 shadow-sm">
+                      <div key={review.id} className="space-y-3 p-4 bg-[var(--card-bg)] dark:bg-[#1f1f1f] rounded-2xl border border-[#e5e5e5]/40 dark:border-[#333333]/40 shadow-sm">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-[#F2F2F0] rounded-full flex items-center justify-center overflow-hidden">
@@ -953,7 +953,7 @@ export default function ProductDetailPage() {
                               <p className="text-sm font-bold text-[#222222] dark:text-white flex items-center gap-2">
                                 {review.buyer?.full_name || 'Anonymous'}
                                 <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded flex items-center gap-1">
-                                  <CheckCircle2 className="w-3 h-3" /> Verified Purchase ✓
+                                  <CheckCircle2 className="w-3 h-3" /> Verified Purchase âœ“
                                 </span>
                               </p>
                               <p className="text-xs text-[#888888]">{new Date(review.created_at).toLocaleDateString()}</p>
@@ -991,12 +991,12 @@ export default function ProductDetailPage() {
                         value={newQuestion}
                         onChange={(e) => setNewQuestion(e.target.value)}
                         placeholder="What would you like to know about this product?" 
-                        className="flex-grow px-4 py-2.5 rounded-xl border-[0.5px] border-[#e5e5e5] dark:border-[#444444] text-sm bg-white dark:bg-[#111111] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:text-white"
+                        className="flex-grow px-4 py-2.5 rounded-xl border-[0.5px] border-[#e5e5e5] dark:border-[#444444] text-sm bg-[var(--card-bg)] dark:bg-[#111111] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:text-white"
                       />
                       <button 
                         onClick={submitQuestion}
                         disabled={!newQuestion.trim() || submittingQuestion}
-                        className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
+                        className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
                       >
                         {submittingQuestion ? 'Posting...' : 'Ask'}
                       </button>
@@ -1005,7 +1005,7 @@ export default function ProductDetailPage() {
                 ) : (
                   <div className="bg-[#F2F2F0] dark:bg-[#222222] p-6 rounded-2xl text-center">
                     <p className="text-sm text-[#888888] mb-3">Please log in to ask a question.</p>
-                    <Link href="/login" className="inline-block bg-white dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] px-6 py-2 rounded-xl text-sm font-bold text-[#222222] dark:text-white">
+                    <Link href="/login" className="inline-block bg-[var(--card-bg)] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#444444] px-6 py-2 rounded-xl text-sm font-bold text-[#222222] dark:text-white">
                       Login
                     </Link>
                   </div>
@@ -1048,7 +1048,7 @@ export default function ProductDetailPage() {
             <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-6">More in {product.category}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {relatedProducts.map(rel => (
-                <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
+                <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
                   <div className="aspect-video bg-[#F2F2F0] dark:bg-[#222222] relative overflow-hidden">
                     {rel.images_urls?.[0] ? (
                       <img src={rel.images_urls[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -1062,7 +1062,7 @@ export default function ProductDetailPage() {
                     <h3 className="font-bold text-[#222222] dark:text-white text-sm mb-1 line-clamp-1">{rel.name}</h3>
                     <p className="text-xs text-[#888888] mb-3 line-clamp-1">By {rel.seller?.full_name}</p>
                     <div className="mt-auto flex items-baseline gap-2">
-                      <span className="font-black text-[#222222] dark:text-white">₹{(rel.discount_price || rel.price).toLocaleString()}</span>
+                      <span className="font-black text-[#222222] dark:text-white">â‚¹{(rel.discount_price || rel.price).toLocaleString()}</span>
                     </div>
                   </div>
                 </Link>
@@ -1076,7 +1076,7 @@ export default function ProductDetailPage() {
       {/* REQUEST MODAL */}
       {isRequestModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             <button onClick={() => setIsRequestModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
               <X className="w-4 h-4 text-[#888888]" />
             </button>
@@ -1092,14 +1092,14 @@ export default function ProductDetailPage() {
                 placeholder="Project description"
                 className="w-full px-4 py-3 bg-[#F2F2F0] dark:bg-[#111111] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[#222222] dark:text-white mb-3 resize-none"
               ></textarea>
-              <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (₹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
+              <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (â‚¹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
               <input value={requestTimeline} onChange={(e) => setRequestTimeline(e.target.value)} placeholder="Timeline needed" className="mb-3 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
               <input value={requestEmail} onChange={(e) => setRequestEmail(e.target.value)} placeholder="Contact email" type="email" className="mb-6 w-full rounded-xl border-[0.5px] border-[#e5e5e5] bg-[#F2F2F0] px-4 py-3 text-sm text-[#222222] outline-none dark:border-[#333333] dark:bg-[#111111] dark:text-white" />
               
               <button 
                 onClick={submitRequest}
                 disabled={submittingRequest || !requirements.trim()}
-                className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingRequest ? 'Sending...' : 'Send Request'}
               </button>
@@ -1111,7 +1111,7 @@ export default function ProductDetailPage() {
       {/* REVIEW MODAL */}
       {isReviewModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[#e5e5e5] dark:border-[#333333] animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[#e5e5e5] dark:border-[#333333] animate-in fade-in zoom-in-95 duration-200">
             <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[#F2F2F0] dark:bg-[#333333] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
               <X className="w-4 h-4 text-[#888888]" />
             </button>
@@ -1168,7 +1168,7 @@ export default function ProductDetailPage() {
               <button 
                 onClick={submitReview}
                 disabled={submittingReview || reviewRating === 0 || reviewComment.trim().length < 10 || reviewComment.length > 500}
-                className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+                className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
               >
                 {submittingReview ? 'Submitting...' : 'Submit Review'}
               </button>

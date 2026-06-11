@@ -20,9 +20,9 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-/* ─────────────────────────────────────────────
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
    Inner component (needs useSearchParams)
-───────────────────────────────────────────── */
+Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function BecomeSellerInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -32,7 +32,7 @@ function BecomeSellerInner() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Step 1 — Phone
+  // Step 1 Ã¢â‚¬â€ Phone
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -42,11 +42,11 @@ function BecomeSellerInner() {
   const [countdown, setCountdown] = useState(0);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Step 2 — Stripe
+  // Step 2 Ã¢â‚¬â€ Stripe
   const [stripeLoading, setStripeLoading] = useState(false);
   const [stripeError, setStripeError] = useState("");
 
-  /* ── Auth check ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Auth check Ã¢â€â‚¬Ã¢â€â‚¬ */
   useEffect(() => {
     const init = async () => {
       const { data: { session: s } } = await supabase.auth.getSession();
@@ -79,7 +79,7 @@ function BecomeSellerInner() {
     init();
   }, [router]);
 
-  /* ── Handle Stripe return URL params ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Handle Stripe return URL params Ã¢â€â‚¬Ã¢â€â‚¬ */
   useEffect(() => {
     const stepParam = searchParams.get("step");
     const error = searchParams.get("error");
@@ -101,14 +101,14 @@ function BecomeSellerInner() {
     }
   }, [searchParams, session]);
 
-  /* ── Countdown timer for OTP resend ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Countdown timer for OTP resend Ã¢â€â‚¬Ã¢â€â‚¬ */
   useEffect(() => {
     if (countdown <= 0) return;
     const t = setTimeout(() => setCountdown(c => c - 1), 1000);
     return () => clearTimeout(t);
   }, [countdown]);
 
-  /* ── Send OTP (placeholder) ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Send OTP (placeholder) Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleSendOtp = async () => {
     setPhoneError("");
     const cleaned = phone.replace(/\D/g, "");
@@ -117,14 +117,14 @@ function BecomeSellerInner() {
       return;
     }
     setPhoneLoading(true);
-    // TODO: Integrate Twilio — call POST /api/seller/send-otp
+    // TODO: Integrate Twilio Ã¢â‚¬â€ call POST /api/seller/send-otp
     await new Promise(r => setTimeout(r, 1200)); // Simulate network
     setOtpSent(true);
     setCountdown(60);
     setPhoneLoading(false);
   };
 
-  /* ── Verify OTP (placeholder) ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Verify OTP (placeholder) Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleVerifyOtp = async () => {
     const code = otp.join("");
     if (code.length < 6) {
@@ -133,7 +133,7 @@ function BecomeSellerInner() {
     }
     setVerifyLoading(true);
     setPhoneError("");
-    // TODO: Verify with Twilio — for now accept any 6-digit code
+    // TODO: Verify with Twilio Ã¢â‚¬â€ for now accept any 6-digit code
     await new Promise(r => setTimeout(r, 1000));
 
     const { error } = await supabase
@@ -152,7 +152,7 @@ function BecomeSellerInner() {
     setStep(2);
   };
 
-  /* ── OTP input handlers ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ OTP input handlers Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleOtpChange = (idx: number, val: string) => {
     if (!/^\d*$/.test(val)) return;
     const next = [...otp];
@@ -176,7 +176,7 @@ function BecomeSellerInner() {
     otpRefs.current[Math.min(digits.length, 5)]?.focus();
   };
 
-  /* ── Connect Stripe ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Connect Stripe Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleConnectStripe = async () => {
     setStripeLoading(true);
     setStripeError("");
@@ -195,7 +195,7 @@ function BecomeSellerInner() {
     }
   };
 
-  /* ── Loading skeleton ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Loading skeleton Ã¢â€â‚¬Ã¢â€â‚¬ */
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center">
@@ -212,8 +212,8 @@ function BecomeSellerInner() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0]">
-      {/* ── Top nav ── */}
-      <header className="bg-white border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between">
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ Top nav Ã¢â€â‚¬Ã¢â€â‚¬ */}
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between">
         <Link href="/founder/dashboard" className="flex items-center gap-2 text-[#888888] hover:text-[#222222] transition-colors text-sm font-bold">
           <ChevronLeft className="w-4 h-4" />
           Back to Dashboard
@@ -224,7 +224,7 @@ function BecomeSellerInner() {
 
       <main className="max-w-2xl mx-auto px-4 py-12">
 
-        {/* ── Hero ── */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Hero Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-[#222222] text-white text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-5">
             <Sparkles className="w-3.5 h-3.5" />
@@ -238,7 +238,7 @@ function BecomeSellerInner() {
           </p>
         </div>
 
-        {/* ── Step progress bar ── */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Step progress bar Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <div className="flex items-center justify-center gap-0 mb-10">
           {steps.map((s, idx) => {
             const done = step > s.num;
@@ -250,7 +250,7 @@ function BecomeSellerInner() {
                     w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 font-black text-sm
                     ${done ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" :
                       active ? "bg-[#222222] text-white shadow-lg shadow-black/20 scale-110" :
-                      "bg-white border-[0.5px] border-[#e5e5e5] text-[#cccccc]"}
+                      "bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] text-[#cccccc]"}
                   `}>
                     {done ? <CheckCircle className="w-5 h-5" /> : <s.icon className="w-4 h-4" />}
                   </div>
@@ -269,15 +269,15 @@ function BecomeSellerInner() {
           })}
         </div>
 
-        {/* ════════════════════════════════
-            STEP 1 — Phone Verification
-        ════════════════════════════════ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+            STEP 1 Ã¢â‚¬â€ Phone Verification
+        Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 1 && (
-          <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
             {/* Card header */}
             <div className="bg-gradient-to-br from-[#222222] to-[#444444] p-8 text-white">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-[var(--card-bg)]/10 rounded-2xl flex items-center justify-center">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
@@ -300,7 +300,7 @@ function BecomeSellerInner() {
                     </label>
                     <div className="flex gap-3">
                       <div className="flex items-center gap-2 px-4 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] flex-shrink-0">
-                        <span className="text-base">🌍</span>
+                        <span className="text-base">Ã°Å¸Å’Â</span>
                         <span>+1</span>
                       </div>
                       <input
@@ -310,7 +310,7 @@ function BecomeSellerInner() {
                         onChange={e => setPhone(e.target.value)}
                         onKeyDown={e => e.key === "Enter" && handleSendOtp()}
                         placeholder="(555) 000-0000"
-                        className="flex-1 px-4 py-3.5 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] placeholder:text-[#cccccc] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                        className="flex-1 px-4 py-3.5 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] placeholder:text-[#cccccc] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                   </div>
@@ -336,7 +336,7 @@ function BecomeSellerInner() {
                     className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {phoneLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</>
+                      <><Loader2 className="w-4 h-4 animate-spin" /> SendingÃ¢â‚¬Â¦</>
                     ) : (
                       <><Phone className="w-4 h-4" /> Send OTP Code</>
                     )}
@@ -372,7 +372,7 @@ function BecomeSellerInner() {
                           onKeyDown={e => handleOtpKeyDown(idx, e)}
                           className={`
                             w-12 h-14 text-center text-xl font-black rounded-2xl border-[0.5px] transition-all
-                            focus:outline-none focus:border-[#222222] focus:bg-white focus:scale-105 focus:shadow-lg
+                            focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] focus:scale-105 focus:shadow-lg
                             ${digit ? "border-[#222222] bg-[#222222] text-white scale-105" : "border-[#e5e5e5] bg-[#F2F2F0] text-[#222222]"}
                           `}
                         />
@@ -394,7 +394,7 @@ function BecomeSellerInner() {
                     className="w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-black/10"
                   >
                     {verifyLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</>
+                      <><Loader2 className="w-4 h-4 animate-spin" /> VerifyingÃ¢â‚¬Â¦</>
                     ) : (
                       <><Shield className="w-4 h-4" /> Verify Code</>
                     )}
@@ -419,7 +419,7 @@ function BecomeSellerInner() {
                     onClick={() => { setOtpSent(false); setOtp(["","","","","",""]); setPhoneError(""); }}
                     className="w-full text-xs font-bold text-[#888888] hover:text-[#222222] transition-colors"
                   >
-                    ← Change phone number
+                    Ã¢â€ Â Change phone number
                   </button>
                 </div>
               )}
@@ -427,14 +427,14 @@ function BecomeSellerInner() {
           </div>
         )}
 
-        {/* ════════════════════════════════
-            STEP 2 — Stripe Connect
-        ════════════════════════════════ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+            STEP 2 Ã¢â‚¬â€ Stripe Connect
+        Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 2 && (
-          <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
             <div className="bg-gradient-to-br from-[#635BFF] to-[#8B5CF6] p-8 text-white">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-[var(--card-bg)]/10 rounded-2xl flex items-center justify-center">
                   <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
@@ -494,7 +494,7 @@ function BecomeSellerInner() {
                 className="w-full py-4 bg-[#635BFF] hover:bg-[#5249e5] text-white rounded-2xl font-black text-sm active:scale-95 transition-all disabled:opacity-60 disabled:pointer-events-none flex items-center justify-center gap-2 shadow-lg shadow-[#635BFF]/20"
               >
                 {stripeLoading ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Stripe…</>
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to StripeÃ¢â‚¬Â¦</>
                 ) : (
                   <><CreditCard className="w-4 h-4" /> Connect with Stripe <ArrowRight className="w-4 h-4" /></>
                 )}
@@ -508,13 +508,13 @@ function BecomeSellerInner() {
           </div>
         )}
 
-        {/* ════════════════════════════════
-            STEP 3 — Complete!
-        ════════════════════════════════ */}
+        {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+            STEP 3 Ã¢â‚¬â€ Complete!
+        Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
         {step === 3 && (
-          <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden text-center">
+          <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden text-center">
             <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-10 text-white">
-              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-5 animate-pulse">
+              <div className="w-20 h-20 bg-[var(--card-bg)]/20 rounded-full flex items-center justify-center mx-auto mb-5 animate-pulse">
                 <CheckCircle className="w-10 h-10" />
               </div>
               <h2 className="text-3xl font-black mb-2">You're ready to sell!</h2>
@@ -527,9 +527,9 @@ function BecomeSellerInner() {
               {/* Checklist */}
               <div className="space-y-3 text-left">
                 {[
-                  "Phone number verified ✓",
-                  "Stripe Connect account linked ✓",
-                  "Seller status activated ✓",
+                  "Phone number verified Ã¢Å“â€œ",
+                  "Stripe Connect account linked Ã¢Å“â€œ",
+                  "Seller status activated Ã¢Å“â€œ",
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl">
                     <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -551,7 +551,7 @@ function BecomeSellerInner() {
                 href="/marketplace/sell/create"
                 className="block w-full py-4 bg-[#222222] text-white rounded-2xl font-black text-sm hover:bg-black active:scale-95 transition-all text-center shadow-lg shadow-black/10"
               >
-                List your first product →
+                List your first product Ã¢â€ â€™
               </Link>
 
               <Link
@@ -564,7 +564,7 @@ function BecomeSellerInner() {
           </div>
         )}
 
-        {/* ── Footer note ── */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Footer note Ã¢â€â‚¬Ã¢â€â‚¬ */}
         {step < 3 && (
           <p className="text-center text-xs text-[#cccccc] font-medium mt-8">
             Need help?{" "}
@@ -578,9 +578,9 @@ function BecomeSellerInner() {
   );
 }
 
-/* ─────────────────────────────────────────────
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
    Page export wrapped in Suspense
-───────────────────────────────────────────── */
+Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 export default function BecomeSellerPage() {
   return (
     <Suspense fallback={
@@ -592,4 +592,3 @@ export default function BecomeSellerPage() {
     </Suspense>
   );
 }
-

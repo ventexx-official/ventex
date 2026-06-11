@@ -231,7 +231,7 @@ export default function DealRoomChat() {
   if (interest?.status !== 'accepted') {
     return (
       <div className="min-h-screen bg-[#F2F2F0] flex items-center justify-center p-4">
-        <div className="bg-white max-w-md w-full rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] shadow-2xl text-center space-y-6">
+        <div className="bg-[var(--card-bg)] max-w-md w-full rounded-[32px] p-8 border-[0.5px] border-[#e5e5e5] shadow-2xl text-center space-y-6">
           <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto">
             <Lock className="w-8 h-8 text-amber-500" />
           </div>
@@ -257,7 +257,7 @@ export default function DealRoomChat() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] flex flex-col">
       {/* HEADER */}
-      <header className="bg-white border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between flex-shrink-0 z-10">
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between flex-shrink-0 z-10">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => router.back()}
@@ -304,7 +304,7 @@ export default function DealRoomChat() {
       <div className="flex-grow overflow-y-auto px-6 py-6 space-y-4">
         {messages.length === 0 ? (
           <div className="max-w-md mx-auto text-center space-y-3 py-12">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto border-[0.5px] border-[#e5e5e5]">
+            <div className="w-12 h-12 bg-[var(--card-bg)] rounded-full flex items-center justify-center mx-auto border-[0.5px] border-[#e5e5e5]">
               <MessageSquare className="w-5 h-5 text-[#888888]" />
             </div>
             <h3 className="font-bold text-[#222222] text-sm uppercase tracking-tight">Deal Room Initialized</h3>
@@ -322,7 +322,7 @@ export default function DealRoomChat() {
                 className={`flex gap-3 max-w-[80%] md:max-w-[60%] ${isMe ? 'ml-auto flex-row-reverse' : ''}`}
               >
                 {!isMe && (
-                  <div className="w-8 h-8 rounded-lg bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                     {message.sender?.avatar_url ? (
                       <img src={message.sender.avatar_url} alt="" className="w-full h-full object-cover" />
                     ) : (
@@ -334,7 +334,7 @@ export default function DealRoomChat() {
                   <div className={`p-4 rounded-3xl text-sm leading-relaxed shadow-sm ${
                     isMe 
                       ? 'bg-[#222222] text-white rounded-tr-none' 
-                      : 'bg-white text-[#222222] border-[0.5px] border-[#e5e5e5] rounded-tl-none'
+                      : 'bg-[var(--card-bg)] text-[#222222] border-[0.5px] border-[#e5e5e5] rounded-tl-none'
                   }`}>
                     <p className="whitespace-pre-wrap">{message.content}</p>
                   </div>
@@ -352,7 +352,7 @@ export default function DealRoomChat() {
       </div>
 
       {/* CHAT INPUT AREA */}
-      <div className="bg-white border-t-[0.5px] border-[#e5e5e5] p-4 flex-shrink-0">
+      <div className="bg-[var(--card-bg)] border-t-[0.5px] border-[#e5e5e5] p-4 flex-shrink-0">
         <div className="max-w-4xl mx-auto space-y-3">
           {moderationWarning && (
             <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex gap-3 items-center animate-in slide-in-from-bottom-2 duration-200">

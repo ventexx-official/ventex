@@ -99,7 +99,7 @@ export default function CartPage() {
   const discountAmount = useMemo(() => Math.round((subtotal * discountPct) / 100), [subtotal, discountPct]);
   const total = subtotal - discountAmount;
 
-  /* ── Real promo validation ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Real promo validation Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleApplyPromo = async () => {
     if (!promoCode.trim()) return;
     setApplyingPromo(true);
@@ -140,7 +140,7 @@ export default function CartPage() {
     setPromoCode('');
   };
 
-  /* ── Checkout ── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬ Checkout Ã¢â€â‚¬Ã¢â€â‚¬ */
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
     setCheckingOut(true);
@@ -199,7 +199,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] pb-24">
       {/* HEADER */}
-      <div className="bg-white dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
+      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333] pt-12 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-black text-[#222222] dark:text-white uppercase tracking-tighter flex items-center gap-3">
             <ShoppingBag className="w-8 h-8" />
@@ -210,7 +210,7 @@ export default function CartPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         {cartItems.length === 0 ? (
-          <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
+          <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
             <div className="w-24 h-24 bg-[#F2F2F0] dark:bg-[#222222] rounded-full flex items-center justify-center mx-auto mb-6">
               <ShoppingBag className="w-10 h-10 text-[#888888]" />
             </div>
@@ -218,7 +218,7 @@ export default function CartPage() {
             <p className="text-[#888888] mb-8 max-w-md mx-auto">Looks like you haven't added any products, templates, or services to your cart yet.</p>
             <Link 
               href="/marketplace" 
-              className="inline-flex items-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10"
+              className="inline-flex items-center gap-2 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10"
             >
               Browse Products <ArrowRight className="w-4 h-4" />
             </Link>
@@ -236,7 +236,7 @@ export default function CartPage() {
                 const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
 
                 return (
-                  <div key={item.id} className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
+                  <div key={item.id} className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
                     {/* Image */}
                     <div className="w-full sm:w-32 aspect-video sm:aspect-square bg-[#F2F2F0] dark:bg-[#222222] rounded-xl overflow-hidden flex-shrink-0 relative">
                       {product.images_urls?.[0] ? (
@@ -281,9 +281,9 @@ export default function CartPage() {
                           <span className="text-xs font-bold text-[#888888] uppercase tracking-widest">Qty</span>
                           {isHardware ? (
                             <div className="flex items-center bg-[#F2F2F0] dark:bg-[#222222] rounded-lg p-1 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
-                              <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-white dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Minus className="w-3.5 h-3.5" /></button>
+                              <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Minus className="w-3.5 h-3.5" /></button>
                               <span className="w-8 text-center text-sm font-bold text-[#222222] dark:text-white">{item.quantity}</span>
-                              <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-white dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Plus className="w-3.5 h-3.5" /></button>
+                              <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[#222222] dark:text-white"><Plus className="w-3.5 h-3.5" /></button>
                             </div>
                           ) : (
                             <div className="bg-[#F2F2F0] dark:bg-[#222222] rounded-lg px-4 py-1.5 border-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
@@ -296,11 +296,11 @@ export default function CartPage() {
                         <div className="text-right">
                           {isDeal && (
                             <div className="text-xs text-[#888888] line-through font-medium mb-0.5">
-                              ₹{(product.price * item.quantity).toLocaleString()}
+                              Ã¢â€šÂ¹{(product.price * item.quantity).toLocaleString()}
                             </div>
                           )}
                           <div className="text-xl font-black text-[#222222] dark:text-white">
-                            ₹{(itemPrice * item.quantity).toLocaleString()}
+                            Ã¢â€šÂ¹{(itemPrice * item.quantity).toLocaleString()}
                           </div>
                         </div>
                       </div>
@@ -312,20 +312,20 @@ export default function CartPage() {
 
             {/* ORDER SUMMARY */}
             <div className="w-full lg:w-[400px] flex-shrink-0">
-              <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
+              <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
                 <h2 className="text-xl font-black text-[#222222] dark:text-white uppercase tracking-tight mb-6">Order Summary</h2>
                 
                 <div className="space-y-4 mb-6 pb-6 border-b-[0.5px] border-[#e5e5e5] dark:border-[#333333]">
                   <div className="flex justify-between text-sm">
                     <span className="text-[#888888] font-medium">Subtotal ({cartItems.length} items)</span>
-                    <span className="text-[#222222] dark:text-white font-bold">₹{subtotal.toLocaleString()}</span>
+                    <span className="text-[#222222] dark:text-white font-bold">Ã¢â€šÂ¹{subtotal.toLocaleString()}</span>
                   </div>
                   {discountPct > 0 && (
                     <div className="flex justify-between text-sm text-emerald-500">
                       <span className="font-medium flex items-center gap-1.5">
                         <Tag className="w-3.5 h-3.5" /> Promo ({discountPct}% off)
                       </span>
-                      <span className="font-bold">-₹{discountAmount.toLocaleString()}</span>
+                      <span className="font-bold">-Ã¢â€šÂ¹{discountAmount.toLocaleString()}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm">
@@ -338,9 +338,9 @@ export default function CartPage() {
                   <span className="text-sm font-bold text-[#222222] dark:text-white uppercase tracking-widest">Total</span>
                   <div className="text-right">
                     {discountPct > 0 && (
-                      <div className="text-xs text-[#888888] line-through font-medium">₹{subtotal.toLocaleString()}</div>
+                      <div className="text-xs text-[#888888] line-through font-medium">Ã¢â€šÂ¹{subtotal.toLocaleString()}</div>
                     )}
-                    <span className="text-3xl font-black text-[#222222] dark:text-white tracking-tight">₹{total.toLocaleString()}</span>
+                    <span className="text-3xl font-black text-[#222222] dark:text-white tracking-tight">Ã¢â€šÂ¹{total.toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -382,7 +382,7 @@ export default function CartPage() {
                         <button 
                           onClick={handleApplyPromo}
                           disabled={applyingPromo || !promoCode.trim()}
-                          className="px-4 py-3 bg-[#222222] dark:bg-white text-white dark:text-[#222222] rounded-xl text-sm font-bold hover:bg-black dark:hover:bg-gray-100 transition-colors disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
+                          className="px-4 py-3 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] rounded-xl text-sm font-bold hover:bg-black dark:hover:bg-[var(--bg3)] transition-colors disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
                         >
                           {applyingPromo ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                           {applyingPromo ? '' : 'Apply'}
@@ -401,7 +401,7 @@ export default function CartPage() {
                 <button 
                   onClick={handleCheckout}
                   disabled={checkingOut || cartItems.length === 0}
-                  className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
                 >
                   {checkingOut ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> Creating Session...</>

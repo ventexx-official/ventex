@@ -6,11 +6,11 @@ import ArenaNotifyModal from "@/components/ArenaNotifyModal";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "The Arena — Live Startup Pitch Battle",
+  title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
   description: "Monthly live pitch event where India's boldest founders pitch to real investors. Apply to pitch or watch live.",
   alternates: { canonical: "https://ventexx.com/arena" },
   openGraph: {
-    title: "The Arena — Live Startup Pitch Battle",
+    title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
     description: "Where founders face the fire.",
     url: "https://ventexx.com/arena",
     type: "website",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Arena — Live Startup Pitch Battle",
+    title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
     description: "Monthly live pitch event where India's boldest founders pitch to real investors.",
     images: [OG_IMAGE_URL],
   },
@@ -37,7 +37,7 @@ export default function ArenaPage() {
             A monthly live pitch event. India&apos;s boldest founders. Real investors. Live and on record.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
-            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch →</Link>
+            <Link href="/arena/apply" className="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply to Pitch Ã¢â€ â€™</Link>
             <ArenaNotifyModal />
           </div>
         </div>
@@ -67,7 +67,7 @@ export default function ArenaPage() {
               ["03", "Go live", "streamed live"],
               ["04", "Get amplified", "Best moments become Reels and Shorts"],
             ].map(([number, title, desc]) => (
-              <article key={number} className="rounded-lg border border-amber-300/20 bg-white/[.04] p-5">
+              <article key={number} className="rounded-lg border border-amber-300/20 bg-[var(--card-bg)]/[.04] p-5">
                 <div className="mono text-3xl font-black text-amber-200/50">{number}</div>
                 <h3 className="mt-5 font-black">{title}</h3>
                 <p className="mt-3 text-sm leading-6 text-orange-50/65">{desc}</p>
@@ -89,7 +89,7 @@ export default function ArenaPage() {
           <div>
             <h2 className="text-3xl font-black tracking-[-.03em]">Think you&apos;re ready for The Arena?</h2>
             <p className="mt-4 text-sm leading-7 text-orange-50/75">Applications open for Season 1. Free to apply. Limited spots.</p>
-            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now →</Link>
+            <Link href="/arena/apply" className="mt-7 inline-flex rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-[#160b04]">Apply Now Ã¢â€ â€™</Link>
           </div>
           <ArenaWaitlistForm />
         </div>

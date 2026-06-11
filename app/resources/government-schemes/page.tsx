@@ -37,7 +37,7 @@ export default function GovernmentSchemesPage() {
         {schemes.map((scheme) => (
           <article
             key={scheme.name}
-            className="bg-white dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444]"
+            className="bg-[var(--card-bg)] dark:bg-[#222222] p-6 rounded-[12px] border-[0.5px] border-[#e5e5e5] dark:border-[#444444]"
           >
             <h2 className="font-bold text-[#222222] dark:text-white mb-2">{scheme.name}</h2>
             <p className="text-[#888888] text-sm leading-relaxed mb-4 line-clamp-2">

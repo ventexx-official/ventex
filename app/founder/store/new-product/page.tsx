@@ -269,7 +269,7 @@ export default function NewProductPage() {
         work_mode: workMode,
         location: workMode === "Remote" ? null : jobLocation,
         compensation_type: compensationType,
-        salary_range: salaryMin || salaryMax ? `₹${salaryMin || 0} - ₹${salaryMax || 0}/month` : null,
+        salary_range: salaryMin || salaryMax ? `Ã¢â€šÂ¹${salaryMin || 0} - Ã¢â€šÂ¹${salaryMax || 0}/month` : null,
         equity_pct: equityPct ? Number(equityPct) : null,
         apply_url: applyTarget.startsWith('http') ? applyTarget : null,
         apply_email: applyTarget.includes('@') ? applyTarget : null,
@@ -309,7 +309,7 @@ export default function NewProductPage() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] pb-24">
       {/* Top Header Nav */}
-      <header className="bg-white border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+      <header className="bg-[var(--card-bg)] border-b-[0.5px] border-[#e5e5e5] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <Link href="/founder/store" className="flex items-center gap-2 text-[#888888] hover:text-[#222222] transition-colors text-sm font-bold">
           <ChevronLeft className="w-4 h-4" />
           Back to Store
@@ -339,7 +339,7 @@ export default function NewProductPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-8 bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
             {/* 1. Basic details */}
             <section className="space-y-4">
               <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">01. Listing Type & Name</h3>
@@ -400,7 +400,7 @@ export default function NewProductPage() {
                   placeholder="e.g. Ventex SaaS Starter Kit"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                 />
               </div>
             </section>
@@ -461,7 +461,7 @@ export default function NewProductPage() {
                     {[
                       { id: "bold", label: "B", title: "Bold Text" },
                       { id: "italic", label: "I", title: "Italic Text" },
-                      { id: "bullet", label: "•", title: "Bullet List" },
+                      { id: "bullet", label: "Ã¢â‚¬Â¢", title: "Bullet List" },
                       { id: "link", label: "Link", title: "Add Hyperlink" }
                     ].map(btn => (
                       <button
@@ -469,7 +469,7 @@ export default function NewProductPage() {
                         type="button"
                         onClick={() => insertMarkdown(btn.id)}
                         title={btn.title}
-                        className="px-2 py-0.5 bg-white hover:bg-black hover:text-white rounded text-[10px] font-black border-[0.5px] border-[#e5e5e5] transition-all"
+                        className="px-2 py-0.5 bg-[var(--card-bg)] hover:bg-black hover:text-white rounded text-[10px] font-black border-[0.5px] border-[#e5e5e5] transition-all"
                       >
                         {btn.label}
                       </button>
@@ -484,7 +484,7 @@ export default function NewProductPage() {
                   placeholder="Summarize your product, tech stack, libraries used and what problem it resolves..."
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-semibold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all whitespace-pre-wrap leading-relaxed"
+                  className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-semibold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all whitespace-pre-wrap leading-relaxed"
                 />
               </div>
             </section>
@@ -543,31 +543,31 @@ export default function NewProductPage() {
                         type="button"
                         onClick={() => moveImage(idx, "up")}
                         disabled={idx === 0}
-                        className="p-1 bg-white hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
+                        className="p-1 bg-[var(--card-bg)] hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
                       >
-                        ←
+                        Ã¢â€ Â
                       </button>
                       <button
                         type="button"
                         onClick={() => moveImage(idx, "down")}
                         disabled={idx === imagePreviews.length - 1}
-                        className="p-1 bg-white hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
+                        className="p-1 bg-[var(--card-bg)] hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
                       >
-                        →
+                        Ã¢â€ â€™
                       </button>
                       <button
                         type="button"
                         onClick={() => removeImage(idx)}
                         className="p-1 bg-red-500 hover:bg-red-600 rounded text-xs text-white"
                       >
-                        ✕
+                        Ã¢Å“â€¢
                       </button>
                     </div>
                   </div>
                 ))}
 
                 {imagePreviews.length < 5 && (
-                  <label className="aspect-square bg-[#F2F2F0] border-dashed border-2 border-[#e5e5e5] hover:border-[#222222] rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-white">
+                  <label className="aspect-square bg-[#F2F2F0] border-dashed border-2 border-[#e5e5e5] hover:border-[#222222] rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-[var(--card-bg)]">
                     <Upload className="w-6 h-6 text-[#888888]" />
                     <span className="text-[10px] font-black text-[#888888] uppercase tracking-widest mt-1">Upload</span>
                     <input
@@ -587,7 +587,7 @@ export default function NewProductPage() {
                 <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2">Freelance Service Details</h3>
                 <select value={rateType} onChange={(e) => setRateType(e.target.value)} className="w-full bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl px-4 py-3 text-sm font-bold text-[#222222]"><option>Hourly</option><option>Fixed price</option></select>
                 <div className="grid grid-cols-2 gap-3">
-                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Rate amount ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Rate amount Ã¢â€šÂ¹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
                   <input value={rateUsd} onChange={(e) => setRateUsd(e.target.value)} placeholder="Rate amount $" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
                 </div>
                 <select value={deliveryTime} onChange={(e) => setDeliveryTime(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">
@@ -608,8 +608,8 @@ export default function NewProductPage() {
                 {workMode !== "Remote" && <input value={jobLocation} onChange={(e) => setJobLocation(e.target.value)} placeholder="Location" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />}
                 <select value={compensationType} onChange={(e) => setCompensationType(e.target.value)} className="w-full bg-[#F2F2F0] border rounded-2xl px-4 py-3 text-sm font-bold">{["Salary", "Equity", "Salary + Equity"].map((item) => <option key={item}>{item}</option>)}</select>
                 <div className="grid grid-cols-3 gap-3">
-                  <input value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} placeholder="Salary min ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
-                  <input value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} placeholder="Salary max ₹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} placeholder="Salary min Ã¢â€šÂ¹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
+                  <input value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} placeholder="Salary max Ã¢â€šÂ¹" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
                   <input value={equityPct} onChange={(e) => setEquityPct(e.target.value)} placeholder="Equity %" className="px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
                 </div>
                 <input value={applyTarget} onChange={(e) => setApplyTarget(e.target.value)} placeholder="Apply link or email" className="w-full px-4 py-3 bg-[#F2F2F0] border rounded-2xl text-sm font-bold" />
@@ -626,16 +626,16 @@ export default function NewProductPage() {
                 {type === "fixed_price" ? (
                   <>
                     <div className="space-y-2">
-                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Base Price (₹)</label>
+                      <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Base Price (Ã¢â€šÂ¹)</label>
                       <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">₹</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">Ã¢â€šÂ¹</span>
                         <input
                           type="number"
                           required={type === "fixed_price"}
                           placeholder="9,999"
                           value={price}
                           onChange={e => setPrice(e.target.value)}
-                          className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                          className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
                       </div>
                     </div>
@@ -693,16 +693,16 @@ export default function NewProductPage() {
                   {hasDeal && (
                     <div className="grid grid-cols-2 gap-4 pt-3 border-t-[0.5px] border-[#e5e5e5] animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="space-y-2">
-                        <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Deal Discount Price (₹)</label>
+                        <label className="block text-xs font-black text-[#888888] uppercase tracking-widest">Deal Discount Price (Ã¢â€šÂ¹)</label>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">₹</span>
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-[#888888]">Ã¢â€šÂ¹</span>
                           <input
                             type="number"
                             required={hasDeal}
                             placeholder="6,999"
                             value={dealPrice}
                             onChange={e => setDealPrice(e.target.value)}
-                            className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                            className="w-full pl-8 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                           />
                         </div>
                       </div>
@@ -718,7 +718,7 @@ export default function NewProductPage() {
                             required={hasDeal}
                             value={dealEndDate}
                             onChange={e => setDealEndDate(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                            className="w-full pl-10 pr-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                           />
                         </div>
                       </div>
@@ -754,7 +754,7 @@ export default function NewProductPage() {
                 className="flex-1 py-4 bg-[#222222] hover:bg-black text-white rounded-2xl font-black text-sm active:scale-95 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
               >
                 {submitting ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Submitting listing…</>
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Submitting listingÃ¢â‚¬Â¦</>
                 ) : (
                   "Create Listing"
                 )}
@@ -766,4 +766,3 @@ export default function NewProductPage() {
     </div>
   );
 }
-

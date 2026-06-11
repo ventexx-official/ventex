@@ -42,7 +42,7 @@ export default function InvestorLeaderboardPage() {
               </div>
               <div className="text-right text-sm text-[var(--text2)]">
                 <div>{investor.response_rate || 0}% response</div>
-                <div>{investor.pitches_reviewed_count || 0} reviewed · {investor.intros_made_count || 0} intros</div>
+                <div>{investor.pitches_reviewed_count || 0} reviewed Ã‚Â· {investor.intros_made_count || 0} intros</div>
               </div>
             </article>
           ))}

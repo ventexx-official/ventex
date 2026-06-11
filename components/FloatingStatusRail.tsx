@@ -58,7 +58,7 @@ export default function FloatingStatusRail() {
   if (hideRail) return null;
 
   return (
-    <div className="floating-status-rail stagger-5 hidden md:flex items-center gap-4">
+    <div className="floating-status-rail stagger-5 hidden md:flex items-center justify-center gap-4">
       {pathname === '/' ? (
         <div className="flex items-center gap-1 bg-[rgba(0,0,0,0.05)] dark:bg-[rgba(255,255,255,0.05)] p-1 rounded-[100px] mr-2">
           {sections.map((section) => (

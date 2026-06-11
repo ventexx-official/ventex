@@ -3,7 +3,7 @@ import { Eye, ShieldCheck, Lock, Landmark, Mail } from "lucide-react";
 import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Startup Platform",
+  title: "Privacy Policy Ã¢â‚¬â€ Startup Platform",
   description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
   alternates: {
     canonical: "/privacy",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Privacy Policy — Startup Platform",
+    title: "Privacy Policy Ã¢â‚¬â€ Startup Platform",
     description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
     url: `${BASE_URL}/privacy`,
     type: "website",
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="text-neutral-500 text-sm font-mono">
-            Last Updated: May 2026 · India DPDP Act 2023 Compliant
+            Last Updated: May 2026 Ã‚Â· India DPDP Act 2023 Compliant
           </p>
         </div>
 

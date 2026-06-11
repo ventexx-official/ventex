@@ -30,7 +30,7 @@ export default function WinnersPage() {
           {winners.map((winner) => (
             <Link key={winner.id} href={`/pitch/${winner.pitch_id}`} className="card p-5">
               <h2 className="font-black">{winner.pitch?.title || "Winner"}</h2>
-              <p className="mt-2 text-sm text-[var(--text2)]">{winner.vote_count || 0} votes · {winner.outcome || "Featured winner"}</p>
+              <p className="mt-2 text-sm text-[var(--text2)]">{winner.vote_count || 0} votes Ã‚Â· {winner.outcome || "Featured winner"}</p>
             </Link>
           ))}
         </div>

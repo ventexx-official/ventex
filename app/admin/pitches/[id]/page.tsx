@@ -595,7 +595,7 @@ export default function PitchReviewDetails() {
               <div className="flex justify-between items-center p-3 bg-neutral-950 border border-neutral-900 rounded-xl text-xs">
                 <span className="text-neutral-400">LTV / CAC Ratio</span>
                 <span className="font-bold text-white font-mono">
-                  {pitch.ltv || "—"} / {pitch.cac || "—"}
+                  {pitch.ltv || "â€”"} / {pitch.cac || "â€”"}
                 </span>
               </div>
               <div className="flex justify-between items-center p-3 bg-neutral-950 border border-neutral-900 rounded-xl text-xs">

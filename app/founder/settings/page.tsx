@@ -143,7 +143,7 @@ export default function FounderSettingsPage() {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
       {/* Sidebar */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && (
             <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
@@ -156,12 +156,12 @@ export default function FounderSettingsPage() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {avatarUrl ? <img src={avatarUrl} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{fullName || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function FounderSettingsPage() {
           )}
 
           {/* Settings Form */}
-          <form onSubmit={handleSave} className="space-y-8 bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
+          <form onSubmit={handleSave} className="space-y-8 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8 shadow-sm">
             {/* Profile Information */}
             <section className="space-y-6">
               <h3 className="text-xs font-black uppercase text-[#888888] tracking-widest border-b-[0.5px] border-[#e5e5e5] pb-2 flex items-center gap-2">
@@ -245,7 +245,7 @@ export default function FounderSettingsPage() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Enter your name"
-                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                     />
                   </div>
 
@@ -256,7 +256,7 @@ export default function FounderSettingsPage() {
                       value={avatarUrl}
                       onChange={(e) => setAvatarUrl(e.target.value)}
                       placeholder="https://api.dicebear.com/..."
-                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                      className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                     />
                   </div>
                 </div>
@@ -280,7 +280,7 @@ export default function FounderSettingsPage() {
                     onClick={() => setIsSeller(!isSeller)}
                     className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${isSeller ? "bg-[#222222]" : "bg-gray-300"}`}
                   >
-                    <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${isSeller ? "translate-x-6" : ""}`} />
+                    <div className={`bg-[var(--card-bg)] w-4 h-4 rounded-full shadow-md transform duration-300 ${isSeller ? "translate-x-6" : ""}`} />
                   </button>
                 </div>
 
@@ -293,7 +293,7 @@ export default function FounderSettingsPage() {
                         value={stripeConnectId}
                         onChange={(e) => setStripeConnectId(e.target.value)}
                         placeholder="acct_xxxxxxxxxxxx"
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                       <p className="text-[10px] text-[#888888] font-bold">
                         Provide your Stripe Account ID to route checkout payments and payouts automatically.
@@ -369,4 +369,3 @@ function NavItemMobile({ icon: Icon, label, active, href = "#" }: any) {
     </Link>
   );
 }
-

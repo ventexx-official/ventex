@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-/* ─────────────────────── Types ─────────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Types Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 interface Product {
   id: string;
   name: string;
@@ -51,7 +51,7 @@ interface PromoCode {
   product?: { name: string } | null;
 }
 
-/* ─────────────────── CountdownBadge ───────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ CountdownBadge Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function CountdownBadge({ endDate }: { endDate: string }) {
   const [timeLeft, setTimeLeft] = useState("");
 
@@ -79,7 +79,7 @@ function CountdownBadge({ endDate }: { endDate: string }) {
   );
 }
 
-/* ─────────────────── Main Page ─────────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Main Page Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 export default function FounderDealsPage() {
   const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -108,7 +108,7 @@ export default function FounderDealsPage() {
   const [promoError, setPromoError] = useState("");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
-  /* ─── Auth + initial fetch ─── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Auth + initial fetch Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
   useEffect(() => {
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -156,7 +156,7 @@ export default function FounderDealsPage() {
     setLoadingPromos(false);
   };
 
-  /* ─── Deal handlers ─── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Deal handlers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
   const activeDeals = products.filter(
     (p) => p.discount_price && p.deal_end_date && new Date(p.deal_end_date) > new Date()
   );
@@ -226,7 +226,7 @@ export default function FounderDealsPage() {
     setEndingDealId(null);
   }, []);
 
-  /* ─── Promo code handlers ─── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Promo code handlers Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
   const generateCode = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const prefix = newPromo.code.trim().toUpperCase() || "DEAL";
@@ -284,7 +284,7 @@ export default function FounderDealsPage() {
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
-  /* ─── Layout vars ─── */
+  /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Layout vars Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
   const sidebarW = sidebarCollapsed ? "md:w-[72px]" : "md:w-[240px]";
   const mainML = sidebarCollapsed ? "md:ml-[72px]" : "md:ml-[240px]";
 
@@ -298,8 +298,8 @@ export default function FounderDealsPage() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-[#F2F2F0]">
-      {/* ── SIDEBAR ── */}
-      <aside className={`bg-white border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
+      <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[#e5e5e5] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
         <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[#e5e5e5] md:border-b-0">
           {!sidebarCollapsed && (
             <Link href="/" className="text-xl font-black italic tracking-tighter text-[#222222] uppercase">Ventex</Link>
@@ -312,12 +312,12 @@ export default function FounderDealsPage() {
         {!sidebarCollapsed && (
           <div className="hidden md:block px-4 py-4">
             <div className="flex items-center gap-3 p-3 bg-[#F2F2F0] rounded-2xl">
-              <div className="w-9 h-9 rounded-full bg-white border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] flex items-center justify-center overflow-hidden flex-shrink-0">
                 {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[#888888]" />}
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-[#222222] truncate">{userProfile?.full_name || "Founder"}</p>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-white px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-[#888888] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[#e5e5e5]">Founder</span>
               </div>
             </div>
           </div>
@@ -343,7 +343,7 @@ export default function FounderDealsPage() {
         </nav>
       </aside>
 
-      {/* ── MAIN ── */}
+      {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN Ã¢â€â‚¬Ã¢â€â‚¬ */}
       <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
         <div className="max-w-5xl mx-auto space-y-8">
 
@@ -357,24 +357,24 @@ export default function FounderDealsPage() {
               href="/founder/store"
               className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
             >
-              ← Back to Store
+              Ã¢â€ Â Back to Store
             </Link>
           </header>
 
           {/* Tab Bar */}
-          <div className="flex gap-1 bg-white border-[0.5px] border-[#e5e5e5] rounded-2xl p-1.5 w-fit shadow-sm">
+          <div className="flex gap-1 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-2xl p-1.5 w-fit shadow-sm">
             {(["deals", "promo"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? "bg-[#222222] text-white shadow-md" : "text-[#888888] hover:text-[#222222]"}`}
               >
-                {tab === "deals" ? "⚡ Active Deals" : "🎟️ Promo Codes"}
+                {tab === "deals" ? "Ã¢Å¡Â¡ Active Deals" : "Ã°Å¸Å½Å¸Ã¯Â¸Â Promo Codes"}
               </button>
             ))}
           </div>
 
-          {/* ═══════════════════ DEALS TAB ═══════════════════ */}
+          {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â DEALS TAB Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
           {activeTab === "deals" && (
             <div className="space-y-6">
 
@@ -386,7 +386,7 @@ export default function FounderDealsPage() {
                 </div>
 
                 {activeDeals.length === 0 ? (
-                  <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] p-12 text-center shadow-sm">
+                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-12 text-center shadow-sm">
                     <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <Sparkles className="w-7 h-7 text-amber-500" />
                     </div>
@@ -398,7 +398,7 @@ export default function FounderDealsPage() {
                     {activeDeals.map((product) => {
                       const pct = Math.round((1 - product.discount_price! / product.price) * 100);
                       return (
-                        <div key={product.id} className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
                           <div className="flex items-center gap-4">
                             <div className="w-14 h-14 rounded-2xl bg-[#F2F2F0] overflow-hidden flex-shrink-0">
                               {product.images_urls?.[0] ? (
@@ -413,8 +413,8 @@ export default function FounderDealsPage() {
                               <p className="font-bold text-[#222222] text-sm">{product.name}</p>
                               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                                 <span className="bg-red-100 text-red-600 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">{pct}% OFF</span>
-                                <span className="text-sm font-black text-emerald-600">₹{(product.discount_price! / 100).toLocaleString()}</span>
-                                <span className="text-xs text-[#888888] line-through">₹{(product.price / 100).toLocaleString()}</span>
+                                <span className="text-sm font-black text-emerald-600">Ã¢â€šÂ¹{(product.discount_price! / 100).toLocaleString()}</span>
+                                <span className="text-xs text-[#888888] line-through">Ã¢â€šÂ¹{(product.price / 100).toLocaleString()}</span>
                                 {product.deal_end_date && <CountdownBadge endDate={product.deal_end_date} />}
                               </div>
                             </div>
@@ -442,7 +442,7 @@ export default function FounderDealsPage() {
                 </div>
 
                 {eligibleProducts.length === 0 ? (
-                  <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] p-8 text-center shadow-sm">
+                  <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] p-8 text-center shadow-sm">
                     <p className="text-sm text-[#888888]">All your live products already have active deals.</p>
                   </div>
                 ) : (
@@ -452,7 +452,7 @@ export default function FounderDealsPage() {
                       const isOpen = openDealForm === product.id;
 
                       return (
-                        <div key={product.id} className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                        <div key={product.id} className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
                           <button
                             onClick={() => setOpenDealForm(isOpen ? null : product.id)}
                             className="w-full flex items-center justify-between p-5 text-left hover:bg-[#F9F9F8] transition-colors"
@@ -469,7 +469,7 @@ export default function FounderDealsPage() {
                               </div>
                               <div>
                                 <p className="font-bold text-[#222222] text-sm">{product.name}</p>
-                                <p className="text-xs text-[#888888] mt-0.5">Original price: ₹{(product.price / 100).toLocaleString()}</p>
+                                <p className="text-xs text-[#888888] mt-0.5">Original price: Ã¢â€šÂ¹{(product.price / 100).toLocaleString()}</p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
@@ -483,20 +483,20 @@ export default function FounderDealsPage() {
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                   <label className="block text-xs font-black text-[#888888] uppercase tracking-widest mb-2">
-                                    Deal Price (₹)
+                                    Deal Price (Ã¢â€šÂ¹)
                                   </label>
                                   <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888888] font-bold text-sm">₹</span>
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#888888] font-bold text-sm">Ã¢â€šÂ¹</span>
                                     <input
                                       type="number"
                                       min="0"
                                       step="0.01"
-                                      placeholder={`Max: ₹${(product.price / 100 - 0.01).toFixed(2)}`}
+                                      placeholder={`Max: Ã¢â€šÂ¹${(product.price / 100 - 0.01).toFixed(2)}`}
                                       value={form.price}
                                       onChange={(e) =>
                                         setDealForms((prev) => ({ ...prev, [product.id]: { ...prev[product.id], price: e.target.value } }))
                                       }
-                                      className="w-full pl-8 pr-4 py-3 bg-white border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
+                                      className="w-full pl-8 pr-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
                                     />
                                   </div>
                                   {form.price && !isNaN(Number(form.price)) && Number(form.price) > 0 && (
@@ -516,7 +516,7 @@ export default function FounderDealsPage() {
                                     onChange={(e) =>
                                       setDealForms((prev) => ({ ...prev, [product.id]: { ...prev[product.id], endDate: e.target.value } }))
                                     }
-                                    className="w-full px-4 py-3 bg-white border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
+                                    className="w-full px-4 py-3 bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222]"
                                   />
                                 </div>
                               </div>
@@ -541,12 +541,12 @@ export default function FounderDealsPage() {
             </div>
           )}
 
-          {/* ═══════════════════ PROMO TAB ═══════════════════ */}
+          {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â PROMO TAB Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
           {activeTab === "promo" && (
             <div className="space-y-6">
 
               {/* Create promo form */}
-              <section className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+              <section className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
                 <div className="px-6 py-5 border-b-[0.5px] border-[#e5e5e5]">
                   <h2 className="text-base font-black text-[#222222] uppercase tracking-tight flex items-center gap-2">
                     <Ticket className="w-5 h-5 text-indigo-500" /> Generate Promo Code
@@ -565,14 +565,14 @@ export default function FounderDealsPage() {
                           placeholder="e.g. LAUNCH50"
                           value={newPromo.code}
                           onChange={(e) => setNewPromo((p) => ({ ...p, code: e.target.value.toUpperCase() }))}
-                          className="flex-1 px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] uppercase focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-white transition-all"
+                          className="flex-1 px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] uppercase focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
                         <button
                           onClick={generateCode}
                           title="Auto-generate code"
-                          className="px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs font-bold text-[#888888] hover:text-[#222222] hover:bg-white transition-all flex-shrink-0"
+                          className="px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs font-bold text-[#888888] hover:text-[#222222] hover:bg-[var(--card-bg)] transition-all flex-shrink-0"
                         >
-                          ✨ Auto
+                          Ã¢Å“Â¨ Auto
                         </button>
                       </div>
                     </div>
@@ -586,7 +586,7 @@ export default function FounderDealsPage() {
                           placeholder="e.g. 20"
                           value={newPromo.discount_pct}
                           onChange={(e) => setNewPromo((p) => ({ ...p, discount_pct: e.target.value }))}
-                          className="w-full pl-4 pr-10 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-white transition-all"
+                          className="w-full pl-4 pr-10 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                         />
                         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#888888] font-black text-sm">%</span>
                       </div>
@@ -602,7 +602,7 @@ export default function FounderDealsPage() {
                         placeholder="Unlimited"
                         value={newPromo.max_uses}
                         onChange={(e) => setNewPromo((p) => ({ ...p, max_uses: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                     <div>
@@ -612,7 +612,7 @@ export default function FounderDealsPage() {
                         value={newPromo.expires_at}
                         min={new Date().toISOString().slice(0, 16)}
                         onChange={(e) => setNewPromo((p) => ({ ...p, expires_at: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       />
                     </div>
                     <div>
@@ -622,7 +622,7 @@ export default function FounderDealsPage() {
                       <select
                         value={newPromo.product_id}
                         onChange={(e) => setNewPromo((p) => ({ ...p, product_id: e.target.value }))}
-                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-white transition-all"
+                        className="w-full px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-sm font-bold text-[#222222] focus:outline-none focus:ring-1 focus:ring-[#222222] focus:bg-[var(--card-bg)] transition-all"
                       >
                         <option value="">All products</option>
                         {products.map((p) => (
@@ -659,7 +659,7 @@ export default function FounderDealsPage() {
                   <span className="text-xs font-bold text-[#888888]">{promoCodes.length} total</span>
                 </div>
 
-                <div className="bg-white rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
+                <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[#e5e5e5] shadow-sm overflow-hidden">
                   {loadingPromos ? (
                     <div className="p-12 flex justify-center">
                       <div className="w-6 h-6 border-2 border-[#e5e5e5] border-t-[#222222] rounded-full animate-spin" />
@@ -734,17 +734,17 @@ export default function FounderDealsPage() {
                                 <td className="px-5 py-4 text-xs text-[#888888] font-medium">
                                   {promo.expires_at
                                     ? new Date(promo.expires_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
-                                    : "—"}
+                                    : "Ã¢â‚¬â€"}
                                 </td>
                                 <td className="px-5 py-4">
                                   {isExpired ? (
-                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Expired</span>
+                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[var(--bg3)] text-[var(--text3)]">Expired</span>
                                   ) : isExhausted ? (
                                     <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-red-100 text-red-600">Exhausted</span>
                                   ) : isEffectivelyActive ? (
                                     <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-700">Active</span>
                                   ) : (
-                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gray-100 text-gray-600">Paused</span>
+                                    <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[var(--bg3)] text-[var(--text2)]">Paused</span>
                                   )}
                                 </td>
                                 <td className="px-5 py-4 text-right">
@@ -752,7 +752,7 @@ export default function FounderDealsPage() {
                                     {!isExpired && !isExhausted && (
                                       <button
                                         onClick={() => handleTogglePromo(promo.id, promo.is_active)}
-                                        className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${promo.is_active ? "bg-gray-100 text-gray-600 hover:bg-gray-200" : "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"}`}
+                                        className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${promo.is_active ? "bg-[var(--bg3)] text-[var(--text2)] hover:bg-gray-200" : "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"}`}
                                       >
                                         {promo.is_active ? "Pause" : "Resume"}
                                       </button>
@@ -783,7 +783,7 @@ export default function FounderDealsPage() {
   );
 }
 
-/* ─────────────── Nav components ─────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Nav components Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function NavItem({ icon: Icon, label, active, href = "#", collapsed }: any) {
   return (
     <Link

@@ -62,12 +62,12 @@ export default function AuthCallback() {
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex flex-col items-center justify-center p-4">
       {error ? (
-        <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
+        <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
            <h1 className="text-xl font-bold text-red-600 mb-2">Auth Error</h1>
            <p className="text-sm text-[#888888] mb-6">{error}</p>
            <button 
              onClick={() => router.push('/login')}
-             className="bg-[#222222] dark:bg-white text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium"
+             className="bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] px-6 py-2 rounded-full font-medium"
            >
              Return to login
            </button>

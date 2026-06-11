@@ -29,7 +29,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen bg-[#F2F2F0] dark:bg-[#111111] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+      <div className="bg-[var(--card-bg)] dark:bg-[#1a1a1a] border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-black italic tracking-tighter text-[#222222] dark:text-white uppercase">
             Ventex
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
               <label className="block text-sm font-bold text-[#222222] dark:text-white mb-1.5">Email address</label>
               <input
                 type="email"
-                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-white dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
+                className="w-full border-[0.5px] border-[#e5e5e5] dark:border-[#333333] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] dark:bg-[#111111] text-[#222222] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -66,7 +66,7 @@ export default function ForgotPassword() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#222222] dark:bg-white text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
+              className="w-full bg-[#222222] dark:bg-[var(--card-bg)] text-white dark:text-[#222222] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
             >
               {loading ? 'Sending...' : 'Send reset link'}
             </button>

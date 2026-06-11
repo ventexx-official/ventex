@@ -136,7 +136,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
   if (errorMsg || !profile) {
     return (
       <div className="min-h-screen bg-[#F2F2F0] px-4 py-10">
-        <div className="max-w-3xl mx-auto bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8">
+        <div className="max-w-3xl mx-auto bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8">
           <div className="text-xl font-black text-[#222222] tracking-tight">Profile unavailable</div>
           <div className="text-sm text-[#888888] mt-2">{errorMsg || 'This profile does not exist.'}</div>
           <button
@@ -153,7 +153,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
   return (
     <div className="min-h-screen bg-[#F2F2F0] px-4 py-8">
       <div className="max-w-5xl mx-auto space-y-8">
-        <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8">
+        <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 md:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center gap-6">
             <div className="w-20 h-20 rounded-full overflow-hidden bg-[#111111] flex items-center justify-center flex-shrink-0">
               {profile.avatar_url ? (
@@ -188,7 +188,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventex Live Participant'].map((badge) => (
-                      <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[#222222] text-white' : 'bg-white text-[#888888]'}`}>
+                      <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[#222222] text-white' : 'bg-[var(--card-bg)] text-[#888888]'}`}>
                         {badge}
                       </span>
                     ))}
@@ -230,7 +230,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
             </div>
 
             {pitches.length === 0 ? (
-              <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 text-sm text-[#888888]">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 text-sm text-[#888888]">
                 No pitches to show.
               </div>
             ) : (
@@ -239,7 +239,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
                   <Link
                     key={p.id}
                     href={`/pitch/${p.id}`}
-                    className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 hover:shadow-md transition-shadow"
+                    className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
@@ -270,7 +270,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
                         </span>
                       ) : null}
                       {isOwnProfile && p.status ? (
-                        <span className="text-[11px] font-bold text-[#666666] bg-white px-2 py-1 rounded-full border border-[#e5e5e5]">
+                        <span className="text-[11px] font-bold text-[#666666] bg-[var(--card-bg)] px-2 py-1 rounded-full border border-[#e5e5e5]">
                           {p.status}
                         </span>
                       ) : null}
@@ -292,7 +292,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
             </div>
 
             {savedPitches.length === 0 ? (
-              <div className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 text-sm text-[#888888]">
+              <div className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 text-sm text-[#888888]">
                 No saved pitches yet.
               </div>
             ) : (
@@ -301,7 +301,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
                   <Link
                     key={p.id}
                     href={`/pitch/${p.id}`}
-                    className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 hover:shadow-md transition-shadow"
+                    className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
@@ -340,7 +340,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
         )}
 
         {role === 'investor' && (
-          <section className="bg-white border-[0.5px] border-[#e5e5e5] rounded-3xl p-6">
+          <section className="bg-[var(--card-bg)] border-[0.5px] border-[#e5e5e5] rounded-3xl p-6">
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-sm font-black uppercase tracking-widest text-[#888888]">Investment Thesis</h2>
               {isOwnProfile ? (

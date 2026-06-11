@@ -33,7 +33,7 @@ export default function ArenaApplyPage() {
   if (submitted) {
     return (
       <main className="min-h-screen bg-[#090504] px-4 py-20 text-white">
-        <div className="mx-auto max-w-2xl rounded-lg border border-amber-300/25 bg-white/[.04] p-8 text-center">
+        <div className="mx-auto max-w-2xl rounded-lg border border-amber-300/25 bg-[var(--card-bg)]/[.04] p-8 text-center">
           <h1 className="text-3xl font-black">Application received. You&apos;ll hear from us if selected.</h1>
         </div>
       </main>
@@ -42,7 +42,7 @@ export default function ArenaApplyPage() {
 
   return (
     <main className="min-h-screen bg-[#090504] px-4 py-16 text-white">
-      <form onSubmit={submit} className="mx-auto max-w-3xl rounded-lg border border-amber-300/25 bg-white/[.04] p-6 shadow-[0_0_60px_rgba(245,158,11,.1)] sm:p-8">
+      <form onSubmit={submit} className="mx-auto max-w-3xl rounded-lg border border-amber-300/25 bg-[var(--card-bg)]/[.04] p-6 shadow-[0_0_60px_rgba(245,158,11,.1)] sm:p-8">
         <p className="mono text-xs font-black uppercase tracking-[.16em] text-amber-200/70">The Arena application</p>
         <h1 className="mt-3 text-4xl font-black tracking-[-.04em]">Apply to Pitch</h1>
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
