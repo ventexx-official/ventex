@@ -276,7 +276,7 @@ export default function AdminFlagged() {
                       </div>
                     </div>
 
-                    {/* Actions Ã¢â‚¬â€ only for pending/escalated */}
+                    {/* Actions  -  only for pending/escalated */}
                     {(isPending || isEscalated) && (
                       <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.stopPropagation()}>
                         {isPending && (

@@ -49,7 +49,7 @@ export default function LivePage() {
     <main className="min-h-screen bg-[#F2F2F0] px-4 py-16 text-[#222222]">
       <div className="mx-auto max-w-6xl space-y-10">
         <header>
-          <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventex Live Ã¢â‚¬â€ Monthly Pitch Night. Watch founders pitch to real investors.</h1>
+          <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventex Live  -  Monthly Pitch Night. Watch founders pitch to real investors.</h1>
           <p className="mt-4 text-sm font-bold text-[#666666]">Next event countdown appears here once the admin sets the event date.</p>
         </header>
 

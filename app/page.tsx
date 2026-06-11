@@ -15,7 +15,7 @@ const features = [
   {
     icon: Megaphone,
     title: 'Integrated pitch profilers',
-    desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries Ã¢â‚¬â€ ready for investors.',
+    desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries  -  ready for investors.',
   },
   {
     icon: TrendingUp,
@@ -35,18 +35,18 @@ const features = [
   {
     icon: Zap,
     title: 'Momentum loops',
-    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving Ã¢â‚¬â€ every week.',
+    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving  -  every week.',
   },
   {
     icon: Globe,
     title: 'Built for founders worldwide',
-    desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities Ã¢â‚¬â€ sell from anywhere, raise from anyone.',
+    desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities  -  sell from anywhere, raise from anyone.',
   },
 ];
 
 const steps = [
   ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents. Go live in minutes.'],
-  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces Ã¢â‚¬â€ and reach out.'],
+  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces  -  and reach out.'],
   ['03', 'Sell and scale', 'List products, unlock deal rooms, build social proof, and convert attention into revenue or real funding.'],
 ];
 
@@ -116,7 +116,7 @@ export default async function Home() {
               </h1>
 
               <p className="max-w-[520px] text-[19px] leading-[1.55] text-[var(--text2)] mb-10 transition-colors duration-400">
-                The platform for founders, investors and startup-builders Ã¢â‚¬â€ Anywhere.
+                The platform for founders, investors and startup-builders  -  Anywhere.
               </p>
 
               <div className="flex flex-wrap items-center gap-5">
@@ -125,7 +125,7 @@ export default async function Home() {
               </div>
 
               <div className="mono mt-10 text-[11px] text-[var(--text3)] hidden sm:block">
-                {'//'} Trusted by founders, investors and startup-builders Ã¢â‚¬â€ worldwide.
+                {'//'} Trusted by founders, investors and startup-builders  -  worldwide.
               </div>
             </div>
 

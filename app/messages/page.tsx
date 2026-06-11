@@ -141,7 +141,7 @@ function MessagesContent() {
     const amount = Number(prompt("Enter final agreed amount"));
     if (!amount || Number.isNaN(amount)) return;
     const fee = amount * 0.02;
-    const ok = confirm(`Platform fee: Rs ${fee.toLocaleString("en-IN")} (2% of Rs ${amount.toLocaleString("en-IN")}) Ã¢â‚¬â€ activates post early access\n\nI agree to pay Rs ${fee.toLocaleString("en-IN")} to Ventex when fee collection activates`);
+    const ok = confirm(`Platform fee: Rs ${fee.toLocaleString("en-IN")} (2% of Rs ${amount.toLocaleString("en-IN")})  -  activates post early access\n\nI agree to pay Rs ${fee.toLocaleString("en-IN")} to Ventex when fee collection activates`);
     if (!ok) return;
     await supabase.from("deals").upsert({
       pitch_id: selected.pitch_id,
@@ -232,7 +232,7 @@ function MessagesContent() {
                 </div>
               ) : null}
               <div className="flex gap-2 border-t p-4" style={{ borderColor: "var(--border)" }}>
-                <input disabled={enforcement.isLocked || enforcement.isBanned} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") sendMessage(); }} className="min-h-11 flex-1 border bg-[var(--bg)] px-4 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60" style={{ borderColor: "var(--border)" }} placeholder={enforcement.isLocked || enforcement.isBanned ? "Conversation paused Ã¢â‚¬â€ pending platform fee settlement" : "Write a message..."} />
+                <input disabled={enforcement.isLocked || enforcement.isBanned} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") sendMessage(); }} className="min-h-11 flex-1 border bg-[var(--bg)] px-4 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60" style={{ borderColor: "var(--border)" }} placeholder={enforcement.isLocked || enforcement.isBanned ? "Conversation paused  -  pending platform fee settlement" : "Write a message..."} />
                 <button disabled={enforcement.isLocked || enforcement.isBanned} onClick={() => sendMessage()} className="btn-primary inline-flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"><Send className="h-4 w-4" /> Send</button>
               </div>
             </>

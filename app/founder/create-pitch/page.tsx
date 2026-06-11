@@ -1058,7 +1058,7 @@ export default function CreatePitch() {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-emerald-50 border-[0.5px] border-emerald-200 rounded-xl p-4 flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">!</div>
-              <p className="text-sm text-emerald-800 font-medium">Investors love this section Ã¢â‚¬â€ we recommend filling it.</p>
+              <p className="text-sm text-emerald-800 font-medium">Investors love this section  -  we recommend filling it.</p>
             </div>
             <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[#e5e5e5] shadow-sm">
               <div className="space-y-10">

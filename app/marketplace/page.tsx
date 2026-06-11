@@ -179,7 +179,7 @@ export default function MarketplacePage() {
     }
   }, [activeTab, user]);
 
-  // Active deals Ã¢â‚¬â€ re-evaluated each tick to auto-remove expired ones
+  // Active deals  -  re-evaluated each tick to auto-remove expired ones
   const activeDeals = useMemo(() => {
     const now = new Date();
     return products.filter(p => p.discount_price && p.deal_end_date && new Date(p.deal_end_date) > now);
@@ -236,7 +236,7 @@ export default function MarketplacePage() {
 
       <div className="border-b-[0.5px] border-[#e5e5e5] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:border-[#333333] dark:bg-emerald-950 dark:text-emerald-100">
         <div className="mx-auto max-w-7xl">
-          Ventex Premium is for marketplace access Ã¢â‚¬â€ buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
+          Ventex Premium is for marketplace access  -  buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
         </div>
       </div>
 
@@ -246,7 +246,7 @@ export default function MarketplacePage() {
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="max-w-7xl mx-auto relative z-10">
             <h2 className="text-lg font-black uppercase tracking-tight flex items-center gap-2 mb-6 text-emerald-400">
-              <Sparkles className="w-5 h-5" /> Live Deals Ã¢â‚¬â€ Ends Soon
+              <Sparkles className="w-5 h-5" /> Live Deals  -  Ends Soon
             </h2>
             <div className="flex gap-4 overflow-x-auto pb-4 snap-x" style={{ scrollbarWidth: 'none' }}>
               {activeDeals.map(deal => (

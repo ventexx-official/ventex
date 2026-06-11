@@ -734,7 +734,7 @@ export default function FounderDealsPage() {
                                 <td className="px-5 py-4 text-xs text-[#888888] font-medium">
                                   {promo.expires_at
                                     ? new Date(promo.expires_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
-                                    : "Ã¢â‚¬â€"}
+                                    : " - "}
                                 </td>
                                 <td className="px-5 py-4">
                                   {isExpired ? (

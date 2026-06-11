@@ -90,7 +90,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `Welcome to Ventex, ${data.name || 'there'}! Ã°Å¸Å¡â‚¬`,
         html: buildEmail({
           heading: `Welcome to Ventex, ${data.name || 'there'}!`,
-          body: `<p>You're in. Ventex is where serious startups meet serious investors Ã¢â‚¬â€ and you've just become part of it.</p>
+          body: `<p>You're in. Ventex is where serious startups meet serious investors  -  and you've just become part of it.</p>
                  <p>Start by exploring the pitch hub, browsing the marketplace, or submitting your first pitch.</p>`,
           ctaText: 'Explore Ventex',
           ctaUrl: `${VENTEX_URL}/discover`,
@@ -128,7 +128,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `Ã¢Å“â€¦ ${data.startupName} accepted your interest`,
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
-          body: `<p>Great news Ã¢â‚¬â€ the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
+          body: `<p>Great news  -  the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
                  <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Ventex.</p>`,
           ctaText: 'Enter Deal Room',
           ctaUrl: `${VENTEX_URL}/deal-room/${data.interestId}`,
@@ -161,7 +161,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount Paid</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Order ID</td><td style="font-size:12px;padding-top:8px;color:#888;">${data.orderId || 'Ã¢â‚¬â€'}</td></tr>
+                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Order ID</td><td style="font-size:12px;padding-top:8px;color:#888;">${data.orderId || ' - '}</td></tr>
                  </table>
                  <p>You can access your download or track your order in your account.</p>`,
           ctaText: 'View My Order',

@@ -6,11 +6,11 @@ import ArenaNotifyModal from "@/components/ArenaNotifyModal";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
+  title: "The Arena  -  Live Startup Pitch Battle",
   description: "Monthly live pitch event where India's boldest founders pitch to real investors. Apply to pitch or watch live.",
   alternates: { canonical: "https://ventexx.com/arena" },
   openGraph: {
-    title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
+    title: "The Arena  -  Live Startup Pitch Battle",
     description: "Where founders face the fire.",
     url: "https://ventexx.com/arena",
     type: "website",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Arena Ã¢â‚¬â€ Live Startup Pitch Battle",
+    title: "The Arena  -  Live Startup Pitch Battle",
     description: "Monthly live pitch event where India's boldest founders pitch to real investors.",
     images: [OG_IMAGE_URL],
   },

@@ -25,14 +25,14 @@ const jetBrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ventexx.com'),
-  title: "Ventex Ã¢â‚¬â€ Where Startups Pitch, Fund and Sell",
+  title: "Ventex  -  Where Startups Pitch, Fund and Sell",
   description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
   robots: "index, follow",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Ventex Ã¢â‚¬â€ Where Startups Pitch, Fund and Sell",
+    title: "Ventex  -  Where Startups Pitch, Fund and Sell",
     description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
     url: "https://ventexx.com",
     siteName: "Ventex",

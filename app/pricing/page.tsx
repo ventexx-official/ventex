@@ -33,7 +33,7 @@ const groups = [
 ];
 
 const faqs = [
-  ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace Ã¢â‚¬â€ buy software, hire developers, and request custom builds. It does not include investor features.'],
+  ['What is Ventex Premium?', 'Premium gives you access to the Ventex Marketplace  -  buy software, hire developers, and request custom builds. It does not include investor features.'],
   ['What is an Investor Account?', 'Investor accounts are for discovering startups, viewing pitches, and connecting with founders for funding. Separate from Premium.'],
   ['Can I be both a founder and an investor?', 'Yes. You can hold multiple roles under one account.'],
   ['Is every plan free during early access?', 'Yes. All features are unlocked during early access. No card required.'],
@@ -123,7 +123,7 @@ export default function PricingPage() {
         <section className="mt-12 rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 dark:bg-[#1a1a1a]">
           <h2 className="text-2xl font-black">When you raise, we take 2%.</h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-[#666666] dark:text-gray-300">
-            No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee Ã¢â‚¬â€ only on success. Free during early access.
+            No upfront fees. When a founder closes a round through Ventex, we charge a 2% platform fee  -  only on success. Free during early access.
           </p>
         </section>
 

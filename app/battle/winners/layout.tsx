@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pitch of the Month Winners Ã¢â‚¬â€ Ventex",
+  title: "Pitch of the Month Winners  -  Ventex",
   description: "Past monthly battle winners, vote counts, and outcomes on Ventex.",
 };
 

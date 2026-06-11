@@ -307,7 +307,7 @@ export default function FounderDashboard() {
     if (error) {
       alert(`Delete failed: ${error.message}`);
     } else if (!data || data.length === 0) {
-      // RLS silently blocked Ã¢â‚¬â€ patch founder_id and retry
+      // RLS silently blocked  -  patch founder_id and retry
       if (session?.user?.id) {
         await supabase.from('pitches').update({ founder_id: session.user.id }).eq('id', pitchId);
         const { data: retryData, error: retryError } = await supabase
@@ -790,7 +790,7 @@ export default function FounderDashboard() {
                 )}
                 {pitches.length > 5 && (
                   <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors">
-                    + {pitches.length - 5} more pitches Ã¢â‚¬â€ View all Ã¢â€ â€™
+                    + {pitches.length - 5} more pitches  -  View all Ã¢â€ â€™
                   </Link>
                 )}
               </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const roadmap = [
-  "The Arena Ã¢â‚¬â€ monthly live pitch events with founder applications and investor judges.",
+  "The Arena  -  monthly live pitch events with founder applications and investor judges.",
   "Deeper marketplace workflows for freelance services, jobs, and custom builds.",
   "Founder growth tools including referrals, badges, weekly digests, and public proof assets.",
 ];
@@ -24,7 +24,7 @@ export default function AboutPage() {
           <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
             <h2 className="text-2xl font-black tracking-[-.03em]">Our Mission</h2>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text2)]">
-              To build the most trusted startup infrastructure globally Ã¢â‚¬â€ where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
+              To build the most trusted startup infrastructure globally  -  where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
             </p>
           </section>
 
