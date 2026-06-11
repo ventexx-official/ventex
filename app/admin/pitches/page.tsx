@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
 import {
   FileText,
   Search,
@@ -12,7 +11,8 @@ import {
   Building2,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  RefreshCw
 } from "lucide-react";
 import Link from "next/link";
 
@@ -32,7 +32,6 @@ interface Pitch {
 }
 
 export default function PitchesQueue() {
-  const _router = useRouter();
   const [pitches, setPitches] = useState<Pitch[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -118,11 +117,19 @@ export default function PitchesQueue() {
   return (
     <div className="space-y-6">
       {/* Title section */}
-      <div>
-        <h2 className="text-xl font-bold text-white tracking-tight">Pitch deck review queue</h2>
-        <p className="text-sm text-neutral-400 mt-1">
-          Moderate new startup pitches before publishing them to the public discover feed.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-white tracking-tight">Pitch deck review queue</h2>
+          <p className="text-sm text-neutral-400 mt-1">
+            Moderate new startup pitches before publishing them to the public discover feed.
+          </p>
+        </div>
+        <button
+          onClick={fetchPitches}
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white rounded-lg hover:bg-neutral-800 transition-colors"
+        >
+          <RefreshCw size={13} /> Refresh
+        </button>
       </div>
 
       {/* Tabs and search */}

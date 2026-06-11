@@ -46,9 +46,10 @@ export default function AdminUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      // Fetch users + auth emails via admin rpc if available, otherwise fetch users table
       const [{ data: usersData }, { data: pitches }, { data: products }] =
         await Promise.all([
-          supabase.from("users").select("*").order("created_at", { ascending: false }),
+          supabase.from("users").select("*, email").order("created_at", { ascending: false }),
           supabase.from("pitches").select("founder_id"),
           supabase.from("products").select("seller_id"),
         ]);
@@ -94,7 +95,8 @@ export default function AdminUsers() {
   const filtered = users.filter((u) => {
     const matchesSearch =
       u.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.id?.toLowerCase().includes(searchTerm.toLowerCase());
+      u.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = roleFilter === "all" || u.role === roleFilter;
     return matchesSearch && matchesRole;
   });
@@ -151,18 +153,22 @@ export default function AdminUsers() {
           <option value="all">All Roles</option>
           <option value="admin">Admin</option>
           <option value="founder">Founder</option>
-          <option value="seller">Seller</option>
+          <option value="investor">Investor</option>
+          <option value="buyer">Buyer</option>
+          <option value="explorer">Explorer</option>
           <option value="visitor">Visitor</option>
         </select>
       </div>
 
       {/* Stats bar */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {[
           { label: "Total Users", val: users.length, color: "text-white" },
-          { label: "Banned", val: users.filter((u) => u.banned).length, color: "text-red-400" },
-          { label: "Founders", val: users.filter((u) => u.role === "founder" || u.role === "seller").length, color: "text-blue-400" },
+          { label: "Investors", val: users.filter((u) => u.role === "investor").length, color: "text-amber-400" },
+          { label: "Founders", val: users.filter((u) => u.role === "founder").length, color: "text-blue-400" },
+          { label: "Buyers", val: users.filter((u) => u.role === "buyer" || u.role === "explorer").length, color: "text-violet-400" },
           { label: "Verified", val: users.filter((u) => u.verified_founder).length, color: "text-emerald-400" },
+          { label: "Banned", val: users.filter((u) => u.banned).length, color: "text-red-400" },
         ].map(({ label, val, color }) => (
           <div key={label} className="bg-[#0F0F13] border border-neutral-900 rounded-xl p-4 text-center">
             <p className={`text-2xl font-black font-mono ${color}`}>{val}</p>
@@ -246,7 +252,7 @@ export default function AdminUsers() {
                 {/* Expanded Details */}
                 {user.expanded && (
                   <div className="px-6 pb-5 bg-neutral-950/20 border-t border-neutral-900">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-4">
                       {/* Account Info */}
                       <div className="space-y-3">
                         <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Account Details</h4>
@@ -312,6 +318,38 @@ export default function AdminUsers() {
                           >
                             {isLoading ? <Loader2 size={12} className="animate-spin" /> : user.verified_founder ? <BadgeMinus size={12} /> : <BadgeCheck size={12} />}
                             {user.verified_founder ? "Remove Verified Badge" : "Verify Founder Badge"}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Premium Access */}
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest font-mono">Premium Access</h4>
+                        <div className="space-y-2">
+                          <button
+                            onClick={() => updateUser(user.id, { ventex_access: !user.ventex_access })}
+                            disabled={isLoading}
+                            className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
+                              user.ventex_access
+                                ? "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800"
+                                : "bg-violet-950/20 border-violet-900/40 text-violet-400 hover:bg-violet-950/40"
+                            }`}
+                          >
+                            {isLoading ? <Loader2 size={12} className="animate-spin" /> : null}
+                            {user.ventex_access ? "Revoke Ventex Pro" : "Grant Ventex Pro"}
+                          </button>
+
+                          <button
+                            onClick={() => updateUser(user.id, { investor_premium: !user.investor_premium })}
+                            disabled={isLoading}
+                            className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
+                              user.investor_premium
+                                ? "bg-neutral-900 border-neutral-800 text-neutral-400 hover:bg-neutral-800"
+                                : "bg-amber-950/20 border-amber-900/40 text-amber-400 hover:bg-amber-950/40"
+                            }`}
+                          >
+                            {isLoading ? <Loader2 size={12} className="animate-spin" /> : <Crown size={12} />}
+                            {user.investor_premium ? "Revoke Investor Premium" : "Grant Investor Premium"}
                           </button>
                         </div>
                       </div>

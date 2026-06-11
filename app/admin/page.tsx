@@ -52,7 +52,9 @@ export default function AdminOverview() {
       const userBreakdown = {
         total: users?.length || 0,
         admins: users?.filter((u) => u.role === "admin").length || 0,
-        founders: users?.filter((u) => u.role === "founder" || u.role === "seller").length || 0,
+        founders: users?.filter((u) => u.role === "founder").length || 0,
+        investors: users?.filter((u) => u.role === "investor").length || 0,
+        buyers: users?.filter((u) => u.role === "buyer" || u.role === "explorer").length || 0,
         visitors: users?.filter((u) => u.role === "visitor" || (!u.role)).length || 0,
         banned: users?.filter((u) => u.banned).length || 0
       };
@@ -255,8 +257,16 @@ export default function AdminOverview() {
               <span className="font-bold text-white font-mono">{stats.userBreakdown.admins}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-neutral-400">Founders / Sellers</span>
+              <span className="text-neutral-400">Founders</span>
               <span className="font-bold text-white font-mono">{stats.userBreakdown.founders}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-neutral-400">Investors</span>
+              <span className="font-bold text-amber-400 font-mono">{stats.userBreakdown.investors}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-neutral-400">Buyers / Explorers</span>
+              <span className="font-bold text-violet-400 font-mono">{stats.userBreakdown.buyers}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-neutral-400">Standard Visitors</span>

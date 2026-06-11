@@ -307,11 +307,28 @@ export default function PitchReviewDetails() {
             </>
           )}
           {pitch.status !== "pending" && (
-            <div className="px-4 py-2 border border-neutral-900 bg-neutral-900/30 rounded-xl">
-              <span className="text-xs text-neutral-400">Current Status: </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-white">
-                {pitch.status}
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="px-4 py-2 border border-neutral-900 bg-neutral-900/30 rounded-xl">
+                <span className="text-xs text-neutral-400">Current Status: </span>
+                <span className={`text-xs font-bold uppercase tracking-wider ${
+                  pitch.status === "live" ? "text-emerald-400" : pitch.status === "rejected" ? "text-red-400" : "text-white"
+                }`}>
+                  {pitch.status}
+                </span>
+              </div>
+              <button
+                onClick={async () => {
+                  if (!confirm("Reset this pitch to pending review?")) return;
+                  setActionLoading(true);
+                  const { error } = await supabase.from("pitches").update({ status: "pending" }).eq("id", pitch.id);
+                  if (error) { alert(`Error: ${error.message}`); } else { setPitch({ ...pitch, status: "pending" }); }
+                  setActionLoading(false);
+                }}
+                disabled={actionLoading}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-300 rounded-xl transition-all"
+              >
+                Reset to Pending
+              </button>
             </div>
           )}
         </div>
