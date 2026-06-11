@@ -4,22 +4,22 @@ const testimonials = [
   {
     name: 'Arjun Mehta',
     role: 'Founder, Finlo AI',
-    quote: 'Ventex centralized our entire data room securely and helped us close our pre-seed round 3x faster. The diligence features are unmatched.',
-    raised: '₹40L pre-seed closed',
+    quote: 'Ventex gave us our first 3 investor meetings within a week of listing. The pitch score feature alone told us exactly where to improve.',
+    raised: '₹40L raised',
     avatar: 'AM',
   },
   {
     name: 'Priya Nair',
     role: 'Founder, Stackr',
-    quote: 'We connected directly with Apex Capital via the verified network. The frictionless term sheet signing within the deal room saved us weeks of legal back-and-forth.',
-    raised: '₹1.5Cr Seed secured',
+    quote: 'I was skeptical at first but the deal room feature is genuinely next-level. Our lead investor signed the term sheet through the platform.',
+    raised: 'Seed round closed',
     avatar: 'PN',
   },
   {
     name: 'Rohit Verma',
     role: 'Founder, Loopkit',
-    quote: 'Generated ₹25L in pure MRR by licensing our enterprise API directly through the Ventex ecosystem marketplace. Zero friction, total liquidity.',
-    raised: '₹25L product revenue',
+    quote: 'Sold our first SaaS product through the Ventex marketplace in 48 hours. The Stripe integration is seamless and the commission is fair.',
+    raised: '₹12L in product sales',
     avatar: 'RV',
   },
 ];
