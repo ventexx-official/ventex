@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import RevealBoot from './RevealBoot';
+import FloatingStatusRail from './FloatingStatusRail';
+import StratosphereBackground from './StratosphereBackground';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -14,12 +16,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <StratosphereBackground />
       <RevealBoot />
       {!hideNav && <Navbar />}
-      <main className="flex-grow">
+      <main className="flex-grow z-10 relative">
         {children}
       </main>
       {!hideNav && <Footer />}
+      <FloatingStatusRail />
     </div>
   );
 }

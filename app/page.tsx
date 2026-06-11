@@ -104,31 +104,51 @@ export default async function Home() {
 
       <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
         <div className="absolute inset-0 bg-[var(--bg)]/60" />
-        <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center">
-          <div className="reveal mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)]" style={{ borderColor: 'var(--border2)' }}>
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            v1.0 · Early Access Now Open
-          </div>
+        
+        <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl items-center px-4 py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[64px] items-center w-full">
+            <div className="text-left stagger-2">
+              <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8" style={{ borderColor: 'var(--border2)' }}>
+                <span className="h-1.5 w-1.5 animate-[pulseDot_2s_infinite] rounded-full bg-emerald-500" />
+                v1.0 · Early Access Now Open
+              </div>
 
-          <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
-            Where startups<br />pitch, fund and sell.
-          </h1>
+              <h1 className="max-w-2xl text-balance text-[clamp(32px,6vw,64px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
+                Where startups<br />pitch, fund and sell.
+              </h1>
 
-          <p className="reveal mt-6 max-w-[520px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            The platform for founders, investors and startup-builders — Anywhere.
-          </p>
+              <p className="max-w-[520px] text-[19px] leading-[1.55] text-[var(--text2)] mb-10 transition-colors duration-400">
+                The platform for founders, investors and startup-builders — Anywhere.
+              </p>
 
-          <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
-            <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2">Create your pitch <span aria-hidden="true">→</span></Link>
-            <Link href="/discover" className="btn-secondary">Explore pitches</Link>
-          </div>
+              <div className="flex flex-wrap items-center gap-5">
+                <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">→</span></Link>
+                <Link href="/discover" className="btn-secondary transition-colors">Explore pitches</Link>
+              </div>
 
-          <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
-            {'//'} Trusted by founders, investors and startup-builders — worldwide.
-          </div>
+              <div className="mono mt-10 text-[11px] text-[var(--text3)] hidden sm:block">
+                {'//'} Trusted by founders, investors and startup-builders — worldwide.
+              </div>
+            </div>
 
-          <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
-            <span className="block h-6 w-px bg-[var(--text)]" style={{ animation: 'line-drop 1.6s ease-in-out infinite' }} />
+            <div className="glass-ledger-card stagger-3 mt-10 md:mt-0 w-full">
+              <span className="mono text-[11px] font-bold text-[#e0a96d] tracking-[0.1em] uppercase mb-2 block">Ventex Matrix</span>
+              <h3 className="text-[20px] font-bold tracking-[-0.02em] text-[var(--text)] mb-6 transition-colors duration-400">Live startups raising now.</h3>
+              <div className="ledger-inner-stack">
+                  <div className="flex justify-between items-center py-3 border-b border-[var(--border)] transition-colors duration-400">
+                      <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Target Allocation</span>
+                      <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[#e0a96d]">Rs. 50.0L</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-[var(--border)] transition-colors duration-400">
+                      <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Equity Pool Offered</span>
+                      <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[var(--text)] transition-colors duration-400">10%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                      <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Calculated Base Evaluation</span>
+                      <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[var(--text)] transition-colors duration-400">Rs. 5.0Cr</span>
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

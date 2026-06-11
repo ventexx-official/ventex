@@ -141,8 +141,8 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 border-b backdrop-blur-xl transition-all duration-300 ${scrolled ? 'shadow-[0_1px_20px_rgba(0,0,0,.05)]' : ''}`}
-      style={{ background: 'color-mix(in srgb, var(--bg) 82%, transparent)', borderColor: 'var(--border)' }}
+      className={`sticky top-0 z-50 border-b backdrop-blur-[24px] transition-all duration-300 ${scrolled ? 'shadow-[0_10px_30px_rgba(0,0,0,.08)]' : ''}`}
+      style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -157,7 +157,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-2 text-[13px] font-medium transition-colors ${
+                className={`px-3 py-2 text-[13px] font-medium transition-all duration-300 hover:-translate-y-0.5 ${
                   isActive(link.href)
                     ? 'text-[var(--text)]'
                     : 'text-[var(--text2)] hover:text-[var(--text)]'

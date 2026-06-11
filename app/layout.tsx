@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { BASE_URL, OG_IMAGE_URL } from "@/lib/site";
 import { Analytics } from '@vercel/analytics/react'
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-inter", // Keep variable name to avoid massive CSS changes, but it's Jakarta now
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space",
   display: "swap",
 });
 
@@ -56,7 +62,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${jetBrainsMono.variable} antialiased`}>
+      <body className={`${jakarta.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>
         <Layout>
           {children}
         </Layout>
