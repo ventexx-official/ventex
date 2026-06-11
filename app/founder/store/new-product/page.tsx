@@ -545,7 +545,7 @@ export default function NewProductPage() {
                         disabled={idx === 0}
                         className="p-1 bg-[var(--card-bg)] hover:bg-[#F2F2F0] rounded text-xs text-[#222222] font-black disabled:opacity-40"
                       >
-                        Ã¢â€ Â
+                        ↑
                       </button>
                       <button
                         type="button"
@@ -560,7 +560,7 @@ export default function NewProductPage() {
                         onClick={() => removeImage(idx)}
                         className="p-1 bg-red-500 hover:bg-red-600 rounded text-xs text-white"
                       >
-                        Ã¢Å“â€¢
+                        ✖
                       </button>
                     </div>
                   </div>

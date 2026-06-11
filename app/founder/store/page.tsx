@@ -266,7 +266,7 @@ export default function FounderStorePage() {
     { label: "Total Sales", value: stats.totalSales, icon: ShoppingBag, desc: "Units sold", color: "text-blue-500 bg-blue-50" },
     { label: "Total Revenue", value: `₹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
     { label: "Active Listings", value: stats.activeListings, icon: Package, desc: "Live in store", color: "text-indigo-500 bg-indigo-50" },
-    { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} Ã¢Ëœâ€¦` : " - ", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
+    { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} ★` : " - ", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
   ];
 
   return (

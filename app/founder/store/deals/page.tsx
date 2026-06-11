@@ -357,7 +357,7 @@ export default function FounderDealsPage() {
               href="/founder/store"
               className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
             >
-              Ã¢â€ Â Back to Store
+              ← Back to Store
             </Link>
           </header>
 
@@ -369,12 +369,12 @@ export default function FounderDealsPage() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? "bg-[#222222] text-white shadow-md" : "text-[#888888] hover:text-[#222222]"}`}
               >
-                {tab === "deals" ? "Ã¢Å¡Â¡ Active Deals" : "Ã°Å¸Å½Å¸Ã¯Â¸Â Promo Codes"}
+                {tab === "deals" ? "⚡ Active Deals" : "🎟️ Promo Codes"}
               </button>
             ))}
           </div>
 
-          {/* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â DEALS TAB Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â */}
+          {/* ==================== DEALS TAB ==================== */}
           {activeTab === "deals" && (
             <div className="space-y-6">
 
@@ -572,7 +572,7 @@ export default function FounderDealsPage() {
                           title="Auto-generate code"
                           className="px-4 py-3 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-xl text-xs font-bold text-[#888888] hover:text-[#222222] hover:bg-[var(--card-bg)] transition-all flex-shrink-0"
                         >
-                          Ã¢Å“Â¨ Auto
+                          ✨ Auto
                         </button>
                       </div>
                     </div>

@@ -600,7 +600,7 @@ export default function FounderDashboard() {
                         <span className={`text-[10px] font-black uppercase tracking-wider ${
                           isPendingResponse ? 'text-red-600' : 'text-amber-600'
                         }`}>
-                          {isPendingResponse ? 'Ã¢Å¡Â Ã¯Â¸Â Payout Frozen - Action Required' : 'Ã¢ÂÂ³ Response Under Admin Review'}
+                          {isPendingResponse ? '⚠️ Payout Frozen - Action Required' : '⏳ Response Under Admin Review'}
                         </span>
                         <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
                           isPendingResponse ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'

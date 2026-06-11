@@ -300,7 +300,7 @@ function BecomeSellerInner() {
                     </label>
                     <div className="flex gap-3">
                       <div className="flex items-center gap-2 px-4 bg-[#F2F2F0] border-[0.5px] border-[#e5e5e5] rounded-2xl text-sm font-bold text-[#222222] flex-shrink-0">
-                        <span className="text-base">Ã°Å¸Å’Â</span>
+                        <span className="text-base">🌐</span>
                         <span>+1</span>
                       </div>
                       <input

@@ -112,7 +112,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'investor_interest':
       return {
-        subject: `Ã°Å¸Â¤Â An investor expressed interest in "${data.startupName}"`,
+        subject: `🤝 An investor expressed interest in "${data.startupName}"`,
         html: buildEmail({
           heading: `An investor is interested in ${data.startupName}`,
           body: `<p><strong>${data.investorName || 'A premium investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
@@ -183,7 +183,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'pitch_rejected':
       return {
-        subject: `Ã¢ÂÅ’ Update on your pitch "${data.pitchName}"`,
+        subject: `❌ Update on your pitch "${data.pitchName}"`,
         html: buildEmail({
           heading: `Pitch Review Result: Action Required`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> was reviewed by the admin and could not be approved at this time.</p>

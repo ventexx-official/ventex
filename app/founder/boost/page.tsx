@@ -227,7 +227,7 @@ export default function FounderBoostPage() {
               href="/founder/dashboard"
               className="flex items-center gap-2 text-sm font-bold text-[#888888] hover:text-[#222222] transition-colors"
             >
-              Ã¢â€ Â Back to Dashboard
+              ← Back to Dashboard
             </Link>
           </header>
 
