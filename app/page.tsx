@@ -15,13 +15,13 @@ function formatCurrency(amount: number) {
 const features = [
   {
     icon: Megaphone,
-    title: 'Investor-grade pitch profiles',
-    desc: 'Turn a rough startup idea into a structured profile with traction, documents, video, Q&A, and AI summaries.',
+    title: 'Integrated pitch profilers',
+    desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries — ready for investors.',
   },
   {
     icon: TrendingUp,
     title: 'Funding-ready signals',
-    desc: 'Runway countdowns, response badges, XP, pitch scores, and investor matching help strong founders stand out.',
+    desc: 'Funding-ready indicators, response badges, XP, pitch scores, and investor matching help strong founders stand out from the crowd.',
   },
   {
     icon: Shield,
@@ -31,24 +31,24 @@ const features = [
   {
     icon: Users,
     title: 'Investor and catalyst network',
-    desc: 'Find investors, mentors, and operators by sector, stage, thesis, and response behavior.',
+    desc: 'Pitch to investors, founders and operators. Find them by sector, stage, thesis, and response behavior.',
   },
   {
     icon: Zap,
     title: 'Momentum loops',
-    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible every week.',
+    desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving — every week.',
   },
   {
     icon: Globe,
     title: 'Built for founders worldwide',
-    desc: 'Global resources, founder workflows, and marketplace tooling built around startup realities.',
+    desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities — sell from anywhere, raise from anyone.',
   },
 ];
 
 const steps = [
-  ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents.'],
-  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces.'],
-  ['03', 'Sell and scale', 'List products, unlock deal rooms, build proof, and convert attention into revenue or funding.'],
+  ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents. Go live in minutes.'],
+  ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces — and reach out.'],
+  ['03', 'Sell and scale', 'List products, unlock deal rooms, build social proof, and convert attention into revenue or real funding.'],
 ];
 
 export default async function Home() {
@@ -111,20 +111,20 @@ export default async function Home() {
           </div>
 
           <h1 className="mt-8 max-w-5xl text-balance text-[clamp(32px,8vw,72px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)]">
-            The platform where startups get funded, backed, and scaled.
+            Where startups<br />pitch, fund and sell.
           </h1>
 
           <p className="reveal mt-6 max-w-[520px] text-[15px] leading-7 text-[var(--text2)]" data-delay="200">
-            Ventex is where serious founders meet verified investors. Pitch with structure, protect your data room, sell your products — all in one ecosystem built for the way startups actually work.
+            The platform for founders, investors and startup-builders — Anywhere.
           </p>
 
           <div className="reveal mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center" data-delay="300">
-            <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2">Submit your pitch <span aria-hidden="true">→</span></Link>
-            <Link href="/discover" className="btn-secondary">Browse startups</Link>
+            <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2">Create your pitch <span aria-hidden="true">→</span></Link>
+            <Link href="/discover" className="btn-secondary">Explore pitches</Link>
           </div>
 
           <div className="reveal mono mt-10 hidden text-[11px] text-[var(--text3)] sm:block" data-delay="300">
-            {'//'} Trusted by founders raising from ₹10L to ₹5Cr — worldwide.
+            {'//'} Trusted by founders, investors and startup-builders — worldwide.
           </div>
 
           <div className="absolute bottom-8 left-1/2 h-12 w-px -translate-x-1/2 overflow-hidden bg-[var(--border)]">
