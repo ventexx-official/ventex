@@ -49,7 +49,7 @@ export default function AdminUsers() {
       // Fetch users + auth emails via admin rpc if available, otherwise fetch users table
       const [{ data: usersData }, { data: pitches }, { data: products }] =
         await Promise.all([
-          supabase.from("users").select("*, email").order("created_at", { ascending: false }),
+          supabase.from("users").select("id, full_name, role, avatar_url, banned, verified_founder, ventex_access, investor_premium, is_seller, created_at").order("created_at", { ascending: false }),
           supabase.from("pitches").select("founder_id"),
           supabase.from("products").select("seller_id"),
         ]);
@@ -95,8 +95,7 @@ export default function AdminUsers() {
   const filtered = users.filter((u) => {
     const matchesSearch =
       u.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.email?.toLowerCase().includes(searchTerm.toLowerCase());
+      u.id?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = roleFilter === "all" || u.role === roleFilter;
     return matchesSearch && matchesRole;
   });
