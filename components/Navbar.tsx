@@ -142,16 +142,18 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-4 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled ? 'translate-y-1' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative flex items-center justify-between h-14">
+        <div className="grid grid-cols-3 items-center h-14">
           {/* Left Pill - Logo */}
-          <div className="pointer-events-auto flex items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+          <div className="flex justify-start">
+            <div className="pointer-events-auto flex w-max items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
               Ventex
             </Link>
           </div>
 
           {/* Center Pill - Desktop Nav Links */}
-          <div className="hidden md:flex absolute left-1/2 top-0 -translate-x-1/2 pointer-events-auto items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+          <div className="hidden md:flex justify-center">
+            <div className="pointer-events-auto flex w-max items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-1" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             {navLinks.map(link => (
               <Link
                 key={link.href}
@@ -165,10 +167,12 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-          </div>
+              </div>
+            </div>
 
           {/* Right Pill - Actions */}
-          <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+          <div className="flex justify-end gap-2">
+            <div className="pointer-events-auto flex w-max items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
             {user ? (
               <>
                 <Link
@@ -247,17 +251,19 @@ export default function Navbar() {
                 <Link href="/signup" className="btn-primary ml-2 hidden sm:flex">Get Started →</Link>
               </>
             )}
+            </div>
           </div>
 
-          {/* Mobile Hamburger */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            {/* Mobile Hamburger */}
+            <div className="md:hidden pointer-events-auto flex items-center justify-center h-14 w-14 rounded-full border shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-[var(--text)] hover:bg-[var(--bg3)] transition-colors focus:outline-none"
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
