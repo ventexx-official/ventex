@@ -10,1381 +10,1381 @@ import { awardXp } from '@/lib/award-xp';
 import { levelEmoji } from '@/lib/xp';
 import { getVideoEmbedUrl } from '@/lib/video';
 import {
-  getRunwayCountdown,
-  getRunwayProgress,
-  shouldShowRunway,
+ getRunwayCountdown,
+ getRunwayProgress,
+ shouldShowRunway,
 } from '@/lib/runway';
 import { getDealEnforcementState } from '@/lib/deal-enforcement';
 
 const QUESTIONS = [
-  { id: 'q1', text: "What does your company do?" },
-  { id: 'q2', text: "What problem do you solve?" },
-  { id: 'q3', text: "How does your product/service work? List main features." },
-  { id: 'q4', text: "What is the development stage and roadmap?" },
-  { id: 'q5', text: "What is your go-to-market strategy?" },
-  { id: 'q6', text: "What is your business and revenue model?" },
-  { id: 'q7', text: "What traction have you achieved?", premium: true },
-  { id: 'q8', text: "What is your competitive advantage and moat?" },
-  { id: 'q9', text: "Why is now the right time?" }
+ { id: 'q1', text: "What does your company do?" },
+ { id: 'q2', text: "What problem do you solve?" },
+ { id: 'q3', text: "How does your product/service work? List main features." },
+ { id: 'q4', text: "What is the development stage and roadmap?" },
+ { id: 'q5', text: "What is your go-to-market strategy?" },
+ { id: 'q6', text: "What is your business and revenue model?" },
+ { id: 'q7', text: "What traction have you achieved?", premium: true },
+ { id: 'q8', text: "What is your competitive advantage and moat?" },
+ { id: 'q9', text: "Why is now the right time?" }
 ];
 
 // Fire-and-forget email helper (available for future use)
 async function _sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
-  try {
-    await fetch('/api/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, recipientEmail, data }),
-    });
-  } catch (e) {
-    console.error('[sendEmail]', e);
-  }
+ try {
+ await fetch('/api/emails', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({ type, recipientEmail, data }),
+ });
+ } catch (e) {
+ console.error('[sendEmail]', e);
+ }
 }
 
 function timeAgo(dateStr: string): string {
-  const now = Date.now();
-  const then = new Date(dateStr).getTime();
-  const diff = Math.floor((now - then) / 1000);
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
-  return new Date(dateStr).toLocaleDateString();
+ const now = Date.now();
+ const then = new Date(dateStr).getTime();
+ const diff = Math.floor((now - then) / 1000);
+ if (diff < 60) return 'just now';
+ if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+ if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+ if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+ return new Date(dateStr).toLocaleDateString();
 }
 
 // Helper
 function formatCurrency(amount: number) {
-  if (!amount) return 'N/A';
-  if (amount >= 10000000) return `â‚¹${(amount / 10000000).toFixed(1)}Cr`;
-  if (amount >= 100000) return `â‚¹${(amount / 100000).toFixed(1)}L`;
-  return `â‚¹${amount.toLocaleString()}`;
+ if (!amount) return 'N/A';
+ if (amount >= 10000000) return `â‚¹${(amount / 10000000).toFixed(1)}Cr`;
+ if (amount >= 100000) return `â‚¹${(amount / 100000).toFixed(1)}L`;
+ return `â‚¹${amount.toLocaleString()}`;
 }
 
 function formatAmount(amount: number) {
-  if (!amount) return 'N/A';
-  return amount.toLocaleString('en-IN');
+ if (!amount) return 'N/A';
+ return amount.toLocaleString('en-IN');
 }
 
 export default function PitchDetail() {
-  const params = useParams();
-  const id = params?.id as string;
-  const router = useRouter();
-  const [pitch, setPitch] = useState<any>(null);
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Subscription state
-  const [investorPremium, setInvestorPremium] = useState(false);
-  const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
-  const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
-  
-  // Interest modal state
-  const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
-  const [interestAmount, setInterestAmount] = useState('');
-  const [interestMessage, setInterestMessage] = useState('');
-  const [sendingInterest, setSendingInterest] = useState(false);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [founderProfile, setFounderProfile] = useState<{
-    full_name: string | null;
-    level: string | null;
-  } | null>(null);
-  const [linkCopied, setLinkCopied] = useState(false);
-  const [savingPitch, setSavingPitch] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [matchedInvestors, setMatchedInvestors] = useState<any[]>([]);
-  const [pitchDeal, setPitchDeal] = useState<any>(null);
-
-  const handleSendInterest = async () => {
-    if (!currentUser) {
-      alert("Please log in to express interest.");
-      return;
-    }
-    if (interestMessage.length > 500) {
-      alert("Message must be 500 characters or less.");
-      return;
-    }
-    setSendingInterest(true);
-    try {
-      const { count: priorInterests } = await supabase
-        .from('investor_interests')
-        .select('*', { count: 'exact', head: true })
-        .eq('pitch_id', pitch.id);
-
-      const isFirstInterest = (priorInterests ?? 0) === 0;
-
-      const { data: _interestData, error } = await supabase
-        .from('investor_interests')
-        .insert({
-          investor_id: currentUser.id,
-          pitch_id: pitch.id,
-          message: interestMessage,
-          status: 'pending'
-        })
-        .select()
-        .single();
-      
-      if (error) throw error;
-
-      if (isFirstInterest && pitch.founder_id) {
-        await awardXp('first_interest', pitch.founder_id);
-      }
-
-      let conversationId: string | null = null;
-      if (pitch.founder_id) {
-        const { data: existingConversation } = await supabase
-          .from('conversations')
-          .select('id')
-          .eq('pitch_id', pitch.id)
-          .eq('founder_id', pitch.founder_id)
-          .eq('investor_id', currentUser.id)
-          .maybeSingle();
-
-        if (existingConversation?.id) {
-          conversationId = existingConversation.id;
-        } else {
-          const { data: newConversation, error: conversationError } = await supabase
-            .from('conversations')
-            .insert({
-              founder_id: pitch.founder_id,
-              investor_id: currentUser.id,
-              pitch_id: pitch.id,
-              last_message_at: new Date().toISOString(),
-            })
-            .select('id')
-            .single();
-          if (conversationError) throw conversationError;
-          conversationId = newConversation?.id || null;
-        }
-
-        if (conversationId) {
-          const amount = Number(interestAmount);
-          await supabase.from('deals').insert({
-            pitch_id: pitch.id,
-            founder_id: pitch.founder_id,
-            investor_id: currentUser.id,
-            conversation_id: conversationId,
-            agreed_amount: amount > 0 ? amount : null,
-            status: 'interested',
-          });
-        }
-      }
+ const params = useParams();
+ const id = params?.id as string;
+ const router = useRouter();
+ const [pitch, setPitch] = useState<any>(null);
+ const [products, setProducts] = useState<any[]>([]);
+ const [loading, setLoading] = useState(true);
  
-      // Create notification for founder
-      if (pitch.founder_id) {
-        await supabase
-          .from('notifications')
-          .insert({
-            user_id: pitch.founder_id,
-            type: 'interest',
-            message: `${currentProfile?.full_name || currentUser.email?.split('@')[0] || 'An investor'} has expressed interest in your pitch: "${pitch.title}"`,
-            link: `/founder/dashboard`
-          });
+ // Subscription state
+ const [investorPremium, setInvestorPremium] = useState(false);
+ const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
+ const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
+ 
+ // Interest modal state
+ const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
+ const [interestAmount, setInterestAmount] = useState('');
+ const [interestMessage, setInterestMessage] = useState('');
+ const [sendingInterest, setSendingInterest] = useState(false);
+ const [isCheckingOut, setIsCheckingOut] = useState(false);
+ const [founderProfile, setFounderProfile] = useState<{
+ full_name: string | null;
+ level: string | null;
+ } | null>(null);
+ const [linkCopied, setLinkCopied] = useState(false);
+ const [savingPitch, setSavingPitch] = useState(false);
+ const [saved, setSaved] = useState(false);
+ const [matchedInvestors, setMatchedInvestors] = useState<any[]>([]);
+ const [pitchDeal, setPitchDeal] = useState<any>(null);
 
-        // Fire investor_interest email to founder via server trigger
-        await fetch('/api/emails/trigger', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            event: 'investor_interest',
-            payload: {
-              pitchFounderId: pitch.founder_id,
-              startupName: pitch.title,
-              investorName: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'An investor',
-              message: interestMessage,
-            },
-          }),
-        });
-      }
+ const handleSendInterest = async () => {
+ if (!currentUser) {
+ alert("Please log in to express interest.");
+ return;
+ }
+ if (interestMessage.length > 500) {
+ alert("Message must be 500 characters or less.");
+ return;
+ }
+ setSendingInterest(true);
+ try {
+ const { count: priorInterests } = await supabase
+ .from('investor_interests')
+ .select('*', { count: 'exact', head: true })
+ .eq('pitch_id', pitch.id);
 
-      alert("Interest expressed successfully! The founder has been notified.");
-      setIsInterestModalOpen(false);
-      setInterestAmount('');
-      setInterestMessage('');
-    } catch (err: any) {
-      console.error(err);
-      alert("Failed to express interest: " + err.message);
-    } finally {
-      setSendingInterest(false);
-    }
-  };
+ const isFirstInterest = (priorInterests ?? 0) === 0;
 
-  const handleSavePitch = async () => {
-    if (!currentUser) {
-      router.push('/login');
-      return;
-    }
-    if (!pitch) return;
+ const { data: _interestData, error } = await supabase
+ .from('investor_interests')
+ .insert({
+ investor_id: currentUser.id,
+ pitch_id: pitch.id,
+ message: interestMessage,
+ status: 'pending'
+ })
+ .select()
+ .single();
+ 
+ if (error) throw error;
 
-    const newSaved = !saved;
-    setSaved(newSaved);
-    setSavingPitch(true);
+ if (isFirstInterest && pitch.founder_id) {
+ await awardXp('first_interest', pitch.founder_id);
+ }
 
-    try {
-      if (newSaved) {
-        const { count: priorSaves } = await supabase
-          .from('saved_pitches')
-          .select('*', { count: 'exact', head: true })
-          .eq('pitch_id', pitch.id);
+ let conversationId: string | null = null;
+ if (pitch.founder_id) {
+ const { data: existingConversation } = await supabase
+ .from('conversations')
+ .select('id')
+ .eq('pitch_id', pitch.id)
+ .eq('founder_id', pitch.founder_id)
+ .eq('investor_id', currentUser.id)
+ .maybeSingle();
 
-        const isFirstSave = (priorSaves ?? 0) === 0;
+ if (existingConversation?.id) {
+ conversationId = existingConversation.id;
+ } else {
+ const { data: newConversation, error: conversationError } = await supabase
+ .from('conversations')
+ .insert({
+ founder_id: pitch.founder_id,
+ investor_id: currentUser.id,
+ pitch_id: pitch.id,
+ last_message_at: new Date().toISOString(),
+ })
+ .select('id')
+ .single();
+ if (conversationError) throw conversationError;
+ conversationId = newConversation?.id || null;
+ }
 
-        const { error } = await supabase.from('saved_pitches').insert({
-          user_id: currentUser.id,
-          pitch_id: pitch.id,
-        });
+ if (conversationId) {
+ const amount = Number(interestAmount);
+ await supabase.from('deals').insert({
+ pitch_id: pitch.id,
+ founder_id: pitch.founder_id,
+ investor_id: currentUser.id,
+ conversation_id: conversationId,
+ agreed_amount: amount > 0 ? amount : null,
+ status: 'interested',
+ });
+ }
+ }
+ 
+ // Create notification for founder
+ if (pitch.founder_id) {
+ await supabase
+ .from('notifications')
+ .insert({
+ user_id: pitch.founder_id,
+ type: 'interest',
+ message: `${currentProfile?.full_name || currentUser.email?.split('@')[0] || 'An investor'} has expressed interest in your pitch: "${pitch.title}"`,
+ link: `/founder/dashboard`
+ });
 
-        if (error && !error.message.toLowerCase().includes('duplicate')) {
-          throw error;
-        }
+ // Fire investor_interest email to founder via server trigger
+ await fetch('/api/emails/trigger', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ event: 'investor_interest',
+ payload: {
+ pitchFounderId: pitch.founder_id,
+ startupName: pitch.title,
+ investorName: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'An investor',
+ message: interestMessage,
+ },
+ }),
+ });
+ }
 
-        if (isFirstSave && pitch.founder_id) {
-          await awardXp('first_save', pitch.founder_id);
-        }
-      } else {
-        const { error } = await supabase
-          .from('saved_pitches')
-          .delete()
-          .eq('user_id', currentUser.id)
-          .eq('pitch_id', pitch.id);
+ alert("Interest expressed successfully! The founder has been notified.");
+ setIsInterestModalOpen(false);
+ setInterestAmount('');
+ setInterestMessage('');
+ } catch (err: any) {
+ console.error(err);
+ alert("Failed to express interest: " + err.message);
+ } finally {
+ setSendingInterest(false);
+ }
+ };
 
-        if (error) throw error;
-      }
-    } catch (err: unknown) {
-      setSaved(!newSaved);
-      const message = err instanceof Error ? err.message : 'Failed to save pitch';
-      alert(message);
-    } finally {
-      setSavingPitch(false);
-    }
-  };
+ const handleSavePitch = async () => {
+ if (!currentUser) {
+ router.push('/login');
+ return;
+ }
+ if (!pitch) return;
 
-  const handleWhatsAppShare = () => {
-    if (!pitch || typeof window === 'undefined') return;
-    const text = `ðŸš€ *${pitch.title}* â€” ${pitch.tagline || pitch.short_description || ''}
+ const newSaved = !saved;
+ setSaved(newSaved);
+ setSavingPitch(true);
+
+ try {
+ if (newSaved) {
+ const { count: priorSaves } = await supabase
+ .from('saved_pitches')
+ .select('*', { count: 'exact', head: true })
+ .eq('pitch_id', pitch.id);
+
+ const isFirstSave = (priorSaves ?? 0) === 0;
+
+ const { error } = await supabase.from('saved_pitches').insert({
+ user_id: currentUser.id,
+ pitch_id: pitch.id,
+ });
+
+ if (error && !error.message.toLowerCase().includes('duplicate')) {
+ throw error;
+ }
+
+ if (isFirstSave && pitch.founder_id) {
+ await awardXp('first_save', pitch.founder_id);
+ }
+ } else {
+ const { error } = await supabase
+ .from('saved_pitches')
+ .delete()
+ .eq('user_id', currentUser.id)
+ .eq('pitch_id', pitch.id);
+
+ if (error) throw error;
+ }
+ } catch (err: unknown) {
+ setSaved(!newSaved);
+ const message = err instanceof Error ? err.message : 'Failed to save pitch';
+ alert(message);
+ } finally {
+ setSavingPitch(false);
+ }
+ };
+
+ const handleWhatsAppShare = () => {
+ if (!pitch || typeof window === 'undefined') return;
+ const text = `ðŸš€ *${pitch.title}* â€” ${pitch.tagline || pitch.short_description || ''}
 ðŸ’° Seeking â‚¹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
 ðŸ“ ${pitch.industry || 'Startup'} Â· ${pitch.company_stage || ''} Â· ${pitch.country || ''}
 ðŸ‘€ ${window.location.href}
 via Ventex`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-  };
-
-  const handleCopyLink = async () => {
-    if (typeof window === 'undefined') return;
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setLinkCopied(true);
-      setTimeout(() => setLinkCopied(false), 2000);
-    } catch {
-      alert('Could not copy link');
-    }
-  };
-
-  const handleBuyProduct = async (prod: any) => {
-    if (!currentUser) {
-      router.push('/login');
-      return;
-    }
-
-    setIsCheckingOut(true);
-
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push('/login');
-        return;
-      }
-
-      const res = await fetch('/api/marketplace/create-checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          cartItems: [{ product_id: prod.id, quantity: 1 }],
-          promoCodeId: null,
-        }),
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || 'Failed to create checkout session');
-      }
-
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL returned from Stripe');
-      }
-    } catch (err: any) {
-      console.error('[Buy Product] Error:', err);
-      alert(err.message || 'Checkout failed. Please try again.');
-    } finally {
-      setIsCheckingOut(false);
-    }
-  };
-
-  // Comments state
-  const [comments, setComments] = useState<any[]>([]);
-  const [commentsLoading, setCommentsLoading] = useState(true);
-  const [newComment, setNewComment] = useState('');
-  const [posting, setPosting] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [currentProfile, setCurrentProfile] = useState<any>(null);
-  const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!id) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const { data: pitchData, error: pitchError } = await supabase
-          .from('pitches')
-          .select('*')
-          .eq('id', id)
-          .maybeSingle();
-          
-        if (pitchError) throw pitchError;
-        setPitch(pitchData);
-
-        if (pitchData?.founder_id) {
-          const { data: founderData } = await supabase
-            .from('users')
-            .select('full_name, level')
-            .eq('id', pitchData.founder_id)
-            .single();
-          if (founderData) setFounderProfile(founderData);
-        }
-
-        const { data: productsData, error: productsError } = await supabase
-          .from('products')
-          .select('*')
-          .eq('pitch_id', id)
-          .in('status', ['live', 'published']);
-          
-        if (productsError) throw productsError;
-        setProducts(productsData || []);
-
-      } catch (err) {
-        console.error('Error fetching pitch:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [id]);
-
-  // Load current user session + liked comments from localStorage
-  useEffect(() => {
-    const loadUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setCurrentUser(session.user);
-        const { data: profile } = await supabase
-          .from('users')
-          .select('full_name, role, avatar_url, investor_premium, ventex_access, subscription_end_date')
-          .eq('id', session.user.id)
-          .single();
-        if (profile) {
-          setCurrentProfile(profile);
-          const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
-          setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
-        }
-      }
-      // Load liked comments from localStorage
-      try {
-        const stored = localStorage.getItem(`ventex_liked_${id}`);
-        if (stored) setLikedComments(new Set(JSON.parse(stored)));
-      } catch {}
-    };
-    if (id) loadUser();
-  }, [id]);
-
-  // Fetch comments
-  const fetchComments = useCallback(async () => {
-    if (!id) return;
-    setCommentsLoading(true);
-    const { data: _commentsData, error: _commentsError } = await supabase
-      .from('comments')
-      .select(`
-        id, content, likes, created_at,
-        users:user_id ( id, full_name, role, avatar_url )
-      `)
-      .eq('pitch_id', id)
-      .order('created_at', { ascending: false });
-    if (_commentsData) setComments(_commentsData);
-    setCommentsLoading(false);
-  }, [id]);
-
-  useEffect(() => { fetchComments(); }, [fetchComments]);
-
-  useEffect(() => {
-    const fetchMatches = async () => {
-      if (!pitch || !currentUser || currentUser.id !== pitch.founder_id) {
-        setMatchedInvestors([]);
-        return;
-      }
-
-      const { data } = await supabase
-        .from('users')
-        .select('id, full_name, avatar_url, investment_thesis, preferred_sectors, preferred_stages, response_rate')
-        .eq('role', 'investor')
-        .limit(12);
-
-      const matches = ((data || []) as any[])
-        .filter((investor) => {
-          const sectors = investor.preferred_sectors || [];
-          const stages = investor.preferred_stages || [];
-          const sectorMatch = sectors.length === 0 || sectors.includes(pitch.industry) || sectors.some((s: string) => pitch.tags?.includes(s));
-          const stageMatch = stages.length === 0 || stages.includes(pitch.company_stage);
-          return sectorMatch && stageMatch;
-        })
-        .slice(0, 3);
-
-      setMatchedInvestors(matches);
-    };
-
-    fetchMatches();
-  }, [pitch, currentUser]);
-
-  useEffect(() => {
-    const checkSavedPitch = async () => {
-      if (!currentUser || !pitch?.id) {
-        setSaved(false);
-        return;
-      }
-
-      const { data } = await supabase
-        .from('saved_pitches')
-        .select('id')
-        .eq('user_id', currentUser.id)
-        .eq('pitch_id', pitch.id)
-        .maybeSingle();
-
-      setSaved(Boolean(data));
-    };
-
-    checkSavedPitch();
-  }, [currentUser, pitch?.id]);
-
-  useEffect(() => {
-    const fetchPitchDeal = async () => {
-      if (!currentUser || !pitch?.id) {
-        setPitchDeal(null);
-        return;
-      }
-
-      const { data } = await supabase
-        .from('deals')
-        .select('*')
-        .eq('pitch_id', pitch.id)
-        .or(`founder_id.eq.${currentUser.id},investor_id.eq.${currentUser.id}`)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      setPitchDeal(data || null);
-    };
-
-    fetchPitchDeal();
-  }, [currentUser, pitch?.id]);
-
-  // Real-time subscription
-  useEffect(() => {
-    if (!id) return;
-    const channel = supabase
-      .channel(`comments:${id}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'comments',
-        filter: `pitch_id=eq.${id}`
-      }, (payload) => {
-        if (payload.eventType === 'INSERT') {
-          fetchComments(); // re-fetch to get joined user data
-        } else if (payload.eventType === 'UPDATE') {
-          setComments(prev => prev.map(c =>
-            c.id === payload.new.id ? { ...c, likes: payload.new.likes } : c
-          ));
-        } else if (payload.eventType === 'DELETE') {
-          setComments(prev => prev.filter(c => c.id !== payload.old.id));
-        }
-      })
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [id, fetchComments]);
-
-  const handlePostComment = async () => {
-    if (!newComment.trim() || !currentUser || posting) return;
-    setPosting(true);
-    const optimistic = {
-      id: `opt-${Date.now()}`,
-      content: newComment,
-      likes: 0,
-      created_at: new Date().toISOString(),
-      users: {
-        id: currentUser.id,
-        full_name: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'You',
-        role: currentProfile?.role || 'visitor',
-        avatar_url: currentProfile?.avatar_url || null,
-      },
-    };
-    setComments(prev => [optimistic, ...prev]);
-    setNewComment('');
-    const { error } = await supabase.from('comments').insert({
-      pitch_id: id,
-      user_id: currentUser.id,
-      content: optimistic.content,
-      likes: 0,
-    });
-    if (error) {
-      console.error('Error posting comment:', error);
-      setComments(prev => prev.filter(c => c.id !== optimistic.id));
-      setNewComment(optimistic.content);
-      alert('Failed to post comment: ' + error.message);
-    } else {
-      // Fire new_comment email to founder via server trigger
-      try {
-        if (pitch?.founder_id) {
-          fetch('/api/emails/trigger', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              event: 'new_comment',
-              payload: {
-                pitchFounderId: pitch.founder_id,
-                pitchId: id,
-                pitchName: pitch.title,
-                commenterName: currentProfile?.full_name || currentUser?.email?.split('@')[0] || 'Someone',
-                commentText: optimistic.content,
-              },
-            }),
-          });
-        }
-      } catch {}
-    }
-    setPosting(false);
-  };
-
-  const handleLike = async (commentId: string, currentLikes: number) => {
-    if (!currentUser) return;
-    const alreadyLiked = likedComments.has(commentId);
-    const newLiked = new Set(likedComments);
-    if (alreadyLiked) {
-      newLiked.delete(commentId);
-    } else {
-      newLiked.add(commentId);
-    }
-    setLikedComments(newLiked);
-    localStorage.setItem(`ventex_liked_${id}`, JSON.stringify(Array.from(newLiked)));
-    // Optimistic UI
-    setComments(prev => prev.map(c =>
-      c.id === commentId ? { ...c, likes: alreadyLiked ? c.likes - 1 : c.likes + 1 } : c
-    ));
-    await supabase.from('comments').update({ likes: alreadyLiked ? currentLikes - 1 : currentLikes + 1 }).eq('id', commentId);
-  };
-
-  const handleOpenDeck = () => {
-    const enforcement = getDealEnforcementState(pitchDeal);
-    if (!investorPremium || enforcement.isLocked || enforcement.isBanned) return;
-    setIsNdaModalOpen(true);
-  };
-
-  const handleAcceptNda = async () => {
-    if (currentUser && pitch?.id) {
-      await supabase.from('data_room_agreements').insert({
-        user_id: currentUser.id,
-        pitch_id: pitch.id,
-        agreed_at: new Date().toISOString(),
-      });
-    }
-    setIsNdaModalOpen(false);
-    setIsDeckModalOpen(true);
-  };
-
-  const getInitials = (name: string) => {
-    if (!name) return '?';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-16 h-16 bg-gray-300 dark:bg-[var(--text)] rounded-xl mb-4"></div>
-          <div className="h-4 bg-gray-300 dark:bg-[var(--text)] rounded w-32 mb-2"></div>
-        </div>
-      </div>
-    );
-  }
-
-  const showRunway = pitch ? shouldShowRunway(pitch.is_raising, pitch.round_closes_at) : false;
-  const runwayCountdown = pitch ? getRunwayCountdown(pitch.round_closes_at) : null;
-  const runwayProgress = pitch
-    ? getRunwayProgress(pitch.created_at, pitch.round_closes_at)
-    : 0;
-  const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
-  const isPitchOwner = currentUser?.id === pitch?.founder_id;
-  const canSeeFinancialDetails = Boolean(currentUser);
-  const dealEnforcement = getDealEnforcementState(pitchDeal);
-
-  if (!pitch) {
-    return (
-      <div className="min-h-screen bg-[var(--bg)]  flex items-center justify-center flex-col text-center px-4">
-        <h1 className="text-2xl font-bold text-[var(--text)]  mb-2">Pitch not found</h1>
-        <p className="text-[var(--text2)] mb-6">The pitch you are looking for does not exist or has been removed.</p>
-        <Link href="/discover" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium">Browse startups</Link>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-[var(--bg)]  min-h-screen pb-28 md:pb-24">
-      {pitch && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "InvestmentOrGrant",
-              name: pitch.title,
-              description: pitch.tagline || pitch.short_description,
-              amount: pitch.amount_seeking ? {
-                "@type": "MonetaryAmount",
-                currency: "INR",
-                value: pitch.amount_seeking
-              } : undefined
-            })
-          }}
-        />
-      )}
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
-        
-        {/* HERO CARD */}
-        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-8 relative">
-          {pitch.status === 'live' && pitch.is_raising === false && (
-            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--bg)] dark:bg-[#333333] px-3 py-1 rounded-full">
-              <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-              <span className="text-[10px] font-bold text-[var(--text)]  uppercase tracking-wider">Verified</span>
-            </div>
-          )}
-          {pitch.is_raising && (
-            <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
-              <span className="text-[10px] font-bold text-[var(--text)] dark:text-[var(--text)] uppercase tracking-wider">Raising</span>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-5 mb-8 sm:flex-row sm:items-start sm:gap-6">
-            <div className="w-20 h-20 bg-[var(--bg)] dark:bg-[#333333] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
-              {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <div className="text-2xl font-bold text-[var(--text2)]">{pitch.title?.charAt(0)}</div>}
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-[var(--text)]  mb-2 sm:text-3xl">{pitch.title}</h1>
-              <p className="text-base text-[var(--text2)] mb-2 sm:text-lg">{pitch.tagline || pitch.short_description}</p>
-              {founderProfile && (
-                <p className="text-sm text-[var(--text2)] mb-4 flex flex-wrap items-center gap-2">
-                  <span className="font-medium text-[var(--text)] ">
-                    {founderProfile.full_name || 'Founder'}
-                  </span>
-                  {founderProfile.level && (
-                    <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-2.5 py-1 rounded-full font-bold">
-                      {founderProfile.level} {levelEmoji(founderProfile.level)}
-                    </span>
-                  )}
-                </p>
-              )}
-              <div className="flex gap-2 flex-wrap">
-                {pitch.industry && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
-                {pitch.company_stage && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
-                {(pitch.state || pitch.country) && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
-                {pitch.business_type && <span className="bg-[var(--bg)] dark:bg-[#333333] text-[var(--text)]  text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.business_type}</span>}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
-            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
-              <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Sign in'}</span>
-            </div>
-            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
-              <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Sign in'}</span>
-            </div>
-            <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex flex-col justify-center text-center">
-              <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
-              <span className="text-xl font-bold text-[var(--text)] ">
-                {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Sign in'}
-              </span>
-            </div>
-          </div>
-
-          {!canSeeFinancialDetails && (
-            <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[#666666]  dark:bg-[var(--text)] dark:text-gray-300">
-              Sign in to view financial details.
-            </div>
-          )}
-
-          {showRunway && runwayCountdown && (
-            <div className="mb-8">
-              <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
-                â° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
-              </p>
-              <div className="w-full h-2 bg-[var(--bg)] dark:bg-[#333333] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-red-500 rounded-full transition-all"
-                  style={{ width: `${runwayProgress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="hidden items-center gap-3 md:flex">
-             <button 
-               onClick={() => {
-                 if (!currentUser) router.push('/login');
-                 else setIsInterestModalOpen(true);
-               }}
-               className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
-             >
-               Express interest
-             </button>
-            <button
-              onClick={handleSavePitch}
-              disabled={savingPitch}
-              className="disabled:opacity-50"
-              style={{
-                color: saved ? '#ef4444' : 'var(--text3)',
-                background: saved ? '#ef444415' : 'transparent',
-                border: saved ? '1px solid #ef444430' : '1px solid transparent',
-                borderRadius: '8px',
-                padding: '6px 8px',
-                transition: 'all 200ms',
-                transform: 'scale(1)',
-                animation: saved ? 'heartPop 0.35s ease' : undefined,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-              onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.9)'; }}
-              onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
-              aria-pressed={saved}
-              aria-label={saved ? 'Remove from watchlist' : 'Save to watchlist'}
-            >
-              <Heart className="w-5 h-5" fill={saved ? '#ef4444' : 'none'} />
-            </button>
-          </div>
-        </div>
-
-        <aside className="flex flex-col gap-3 md:sticky md:top-24">
-          <button
-            type="button"
-            onClick={handleWhatsAppShare}
-            className="flex-1 bg-[#25D366] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
-          >
-            Share on WhatsApp ðŸ’¬
-          </button>
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className="flex-1 bg-[#e5e5e5] dark:bg-[#333333] text-[var(--text)]  px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
-          >
-            {linkCopied ? 'Copied! âœ“' : 'Copy link ðŸ”—'}
-          </button>
-        </aside>
-
-        {/* AI SUMMARY BAR */}
-        {videoEmbedUrl ? (
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6 md:col-span-2">
-            <div className="text-xs font-bold text-[var(--text)]  uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
-            {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
-              <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
-            ) : (
-              <iframe
-                src={videoEmbedUrl}
-                title={`${pitch.title} founder pitch`}
-                className="w-full aspect-video rounded-xl bg-black"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            )}
-          </div>
-        ) : isPitchOwner ? (
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4]  p-6 text-center md:col-span-2">
-            <div className="text-sm font-bold text-[var(--text)]  mb-2">Add your 60-second founder pitch</div>
-            <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[var(--text)]  underline underline-offset-4">
-              Edit pitch â†’
-            </Link>
-          </div>
-        ) : null}
-
-        {matchedInvestors.length > 0 && (
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6 md:col-span-2">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-4">Best matched investors</h2>
-            <div className="grid grid-cols-1 gap-3">
-              {matchedInvestors.map((investor) => (
-                <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[var(--border)]  p-4 hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
-                  <div className="font-bold text-sm text-[var(--text)] ">{investor.full_name || 'Investor'}</div>
-                  <p className="mt-1 text-xs text-[var(--text2)] line-clamp-2">
-                    Invests in {pitch.industry || 'your sector'} Â· {pitch.company_stage || 'this stage'}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {pitch.ai_summary && (
-          <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 md:col-span-2">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-[var(--text2)]" />
-              <span className="text-xs font-bold text-[var(--text)]  uppercase tracking-wider">AI-generated briefing</span>
-            </div>
-            <p className="text-[var(--text2)] italic text-[15px] leading-relaxed">"{pitch.ai_summary}"</p>
-          </div>
-        )}
-
-        {/* CONTENT SECTIONS */}
-        <div className="space-y-6 md:col-span-2">
-          {/* Problem & Solution */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  overflow-hidden">
-            <div className="p-5 border-b-[0.5px] border-[var(--border)]  sm:p-6">
-              <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Problem & Solution</h2>
-              <div className="flex gap-4 items-start mb-8">
-                <div className="w-8 h-8 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text2)] text-sm">P</div>
-                <div>
-                  <h3 className="font-bold text-[var(--text)]  mb-2 text-sm">The Problem</h3>
-                  <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.problem || 'Not specified'}</p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text)] dark:text-[var(--text)] text-sm">S</div>
-                <div>
-                  <h3 className="font-bold text-[var(--text)]  mb-2 text-sm">Our Solution</h3>
-                  <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Market Opportunity */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 sm:p-6">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Market opportunity</h2>
-            <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
-              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[var(--text2)] font-bold mb-1">TAM</div>
-                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.tam)}</div>
-              </div>
-              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[var(--text2)] font-bold mb-1">SAM</div>
-                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.sam)}</div>
-              </div>
-              <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4 text-center">
-                <div className="text-xs text-[var(--text2)] font-bold mb-1">SOM</div>
-                <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.som)}</div>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Market Trends</h3>
-              <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.market_trend || 'Not specified'}</p>
-            </div>
-          </div>
-
-          {/* Competition */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Competition</h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Key Competitors</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitors || 'Not specified'}</p>
-              </div>
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Competitive Advantages</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitive_advantages || 'Not specified'}</p>
-              </div>
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Moat / Defensibility</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.moat || 'Not specified'}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Business Model */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Business model</h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Revenue Model</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.revenue_model || 'Not specified'}</p>
-              </div>
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Pricing Strategy</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.pricing || 'Not specified'}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Team (Mocked) */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Team</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-[var(--text2)]" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[var(--text)]  text-sm">Jane Doe</h4>
-                  <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">Founder & CEO</p>
-                  <p className="text-[var(--text2)] text-xs">Ex-Google PM. 2x founder with 1 exit in the logistics space.</p>
-                </div>
-              </div>
-              <div className="border-[0.5px] border-[var(--border)]  rounded-xl p-4 flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-[var(--text2)]" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[var(--text)]  text-sm">John Smith</h4>
-                  <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">CTO</p>
-                  <p className="text-[var(--text2)] text-xs">10 years engineering leadership at Stripe. Built highly scalable architectures.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Traction & Financials (Premium Gated) */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 relative overflow-hidden">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Traction & Financials</h2>
-            
-            <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[var(--text2)] mb-1">MRR</div>
-                  <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.mrr)}</div>
-                </div>
-                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[var(--text2)] mb-1">ARR</div>
-                  <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.arr)}</div>
-                </div>
-                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[var(--text2)] mb-1">Active Users</div>
-                  <div className="font-bold text-[var(--text)] ">{pitch.users_count ? pitch.users_count.toLocaleString() : 'N/A'}</div>
-                </div>
-                <div className="bg-[var(--bg)] dark:bg-[#333333] rounded-xl p-4">
-                  <div className="text-xs text-[var(--text2)] mb-1">MoM Growth</div>
-                  <div className="font-bold text-[var(--text)] ">{pitch.mom_growth || 'N/A'}</div>
-                </div>
-              </div>
-              <div>
-                <h3 className="font-bold text-[var(--text)]  text-sm mb-2">Key Milestones</h3>
-                <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
-              </div>
-            </div>
-
-            {!investorPremium && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-[var(--card-bg)]  border-[0.5px] border-[var(--border)]  p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
-                  <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
-                    <Lock className="w-5 h-5 text-[var(--text)] " />
-                  </div>
-                  <h3 className="text-lg font-bold text-[var(--text)]  mb-2">Investor Account required</h3>
-                  <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
-                  <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
-                    View Investor Accounts
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Product Listings (If exists) */}
-          {products.length > 0 && (
-            <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-[var(--text)] ">Products by this startup</h2>
-                <span className="text-[var(--text2)] text-sm font-medium">{products.length} listed</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {products.map(p => (
-                  <div key={p.id} className="border-[0.5px] border-[var(--border)]  rounded-[10px] overflow-hidden group">
-                    <div className="w-full aspect-video bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center">
-                      <span className="text-[var(--text2)] text-xs">Image Placeholder</span>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-[var(--text)]  text-sm mb-1 truncate">{p.name}</h4>
-                      <div className="flex justify-between items-center mt-3">
-                        <span className="font-bold text-[var(--text)]  text-sm">{formatCurrency(p.price)}</span>
-                        <button 
-                          onClick={() => handleBuyProduct(p)}
-                          disabled={isCheckingOut}
-                          className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
-                        >
-                          {isCheckingOut ? '...' : 'Buy now'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Documents */}
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6 relative overflow-hidden">
-            <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Documents</h2>
-            
-            <div className={`flex items-center justify-between border-[0.5px] border-[var(--border)]  rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-md flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-[var(--text2)]" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[var(--text)]  text-sm">Pitch Deck</h4>
-                  <p className="text-[var(--text2)] text-xs">Confidential PDF</p>
-                </div>
-              </div>
-              <button 
-                onClick={handleOpenDeck}
-                className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
-                disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
-              >
-                View Pitch Deck
-              </button>
-            </div>
-
-            {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
-                <div className="bg-[var(--card-bg)]  border-[0.5px] border-[var(--border)]  p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
-                  <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
-                    <Lock className="w-5 h-5 text-[var(--text)] " />
-                  </div>
-                  <h3 className="text-lg font-bold text-[var(--text)]  mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
-                  <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
-                  <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
-                    View Investor Accounts
-                  </Link>
-                </div>
-              </div>
-            )}
-            
-            {pitch.additional_docs && pitch.additional_docs.length > 0 && (
-              <div className={`mt-4 space-y-3 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
-                {pitch.additional_docs.map((doc: any, idx: number) => (
-                  <div key={idx} className="flex items-center justify-between border-[0.5px] border-[var(--border)]  rounded-xl p-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-md flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-[var(--text2)]" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-[var(--text)]  text-sm">{doc.name}</h4>
-                        <p className="text-[var(--text2)] text-xs">Additional Document</p>
-                      </div>
-                    </div>
-                    <a
-                      href={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '#' : doc.url}
-                      target={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '_self' : '_blank'}
-                      rel="noopener noreferrer"
-                      className="bg-[#e5e5e5] dark:bg-[#333333] text-[var(--text)]  px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
-                      onClick={(e) => {
-                        if (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) {
-                          e.preventDefault();
-                        }
-                      }}
-                    >
-                      Download
-                    </a>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Q&A Section */}
-          {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
-            <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-6">
-              <h2 className="text-lg font-bold text-[var(--text)]  mb-6">Founder Q&A</h2>
-              <div className="space-y-6">
-                {QUESTIONS.map((q) => {
-                  const answer = pitch.qa_data?.[q.id];
-                  if (!answer) return null;
-                  
-                  const isGated = q.premium && (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned);
-
-                  return (
-                    <div key={q.id}>
-                      <h3 className="font-bold text-[var(--text)]  text-sm mb-2 flex items-center gap-2">
-                        {q.text}
-                        {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><Lock className="w-2.5 h-2.5" /> Premium</span>}
-                      </h3>
-                      <div className={`text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
-                        {isGated ? 'This content is hidden to non-investors. A premium account is required to view the detailed traction and analytics provided by the founders. Upgrade your account today.' : answer}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {pitch.custom_qa?.map((qa: any, idx: number) => {
-                  if (!qa.question || !qa.answer) return null;
-                  return (
-                    <div key={idx}>
-                      <h3 className="font-bold text-[var(--text)]  text-sm mb-2">{qa.question}</h3>
-                      <div className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">
-                        {qa.answer}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* COMMUNITY COMMENTS */}
-        <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)]  p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
-          <h2 className="text-xl font-bold text-[var(--text)]  mb-8 border-b-[0.5px] border-[var(--border)]  pb-4">
-            Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
-          </h2>
-
-          {/* Comment Input */}
-          {currentUser ? (
-            <div className="flex gap-4 mb-10">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-[0.5px] border-[var(--border)] bg-[var(--text)] text-[var(--text)] font-bold text-sm flex-shrink-0">
-                {currentProfile?.avatar_url
-                  ? <img src={currentProfile.avatar_url} alt="" className="w-full h-full object-cover" />
-                  : getInitials(currentProfile?.full_name || currentUser.email || 'U')
-                }
-              </div>
-              <div className="flex-1">
-                <textarea
-                  ref={textareaRef}
-                  className="w-full border-[0.5px] border-[var(--border)]  rounded-xl p-4 text-sm bg-[var(--card-bg)]  text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
-                  placeholder="Ask a question or leave feedback for the founders..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handlePostComment(); }}
-                />
-                <div className="flex items-center justify-between mt-3">
-                  <span className="text-xs text-[var(--text2)]">Ctrl+Enter to post</span>
-                  <button
-                    onClick={handlePostComment}
-                    disabled={!newComment.trim() || posting}
-                    className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
-                  >
-                    {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
-                    {posting ? 'Posting...' : 'Post'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <Link
-              href="/login"
-              className="flex items-center justify-between w-full border-[0.5px] border-[var(--border)]  rounded-xl p-4 mb-10 hover:bg-[var(--bg)] dark:hover:bg-[#333333] transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[var(--bg)] dark:bg-[#333333] rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-[var(--text2)]" />
-                </div>
-                <span className="text-sm text-[var(--text2)]">Login to join the conversation</span>
-              </div>
-              <span className="text-sm font-bold text-[var(--text)]  group-hover:underline">Login &rarr;</span>
-            </Link>
-          )}
-
-          {/* Comments List */}
-          {commentsLoading ? (
-            <div className="space-y-6">
-              {[1, 2].map(i => (
-                <div key={i} className="flex gap-4 animate-pulse">
-                  <div className="w-10 h-10 bg-[var(--bg)] rounded-full flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 bg-[var(--bg)] rounded w-24" />
-                    <div className="h-3 bg-[var(--bg)] rounded w-full" />
-                    <div className="h-3 bg-[var(--bg)] rounded w-2/3" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : comments.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-[var(--text2)] text-sm">No comments yet. Be the first to start the conversation!</p>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {comments.map((comment) => {
-                const user = comment.users;
-                const name = user?.full_name || 'Anonymous';
-                const isLiked = likedComments.has(comment.id);
-                return (
-                  <div key={comment.id} className="flex gap-4 group">
-                    <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-[var(--bg)] dark:bg-[#333333] flex items-center justify-center border-[0.5px] border-[var(--border)]">
-                      {user?.avatar_url
-                        ? <img src={user.avatar_url} alt={name} className="w-full h-full object-cover" />
-                        : <span className="text-[var(--text2)] font-bold text-xs">{getInitials(name)}</span>
-                      }
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="font-bold text-[var(--text)]  text-sm">{name}</span>
-                        {user?.role === 'mentor' && (
-                          <span className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
-                        )}
-                        {user?.role === 'investor' && (
-                          <span className="bg-[#888888] text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
-                        )}
-                        {user?.role === 'founder' && (
-                          <span className="bg-blue-100 text-blue-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Founder</span>
-                        )}
-                        <span className="text-[var(--text2)] text-xs ml-auto">{timeAgo(comment.created_at)}</span>
-                      </div>
-                      <p className="text-[var(--text)] dark:text-[#cccccc] text-sm leading-relaxed mb-3">
-                        {comment.content}
-                      </p>
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={() => handleLike(comment.id, comment.likes)}
-                          disabled={!currentUser}
-                          className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
-                            isLiked
-                              ? 'text-red-500'
-                              : 'text-[var(--text2)] hover:text-red-500'
-                          } disabled:cursor-not-allowed`}
-                        >
-                          <Heart className={`w-3.5 h-3.5 transition-all ${isLiked ? 'fill-red-500' : ''}`} />
-                          <span>{comment.likes ?? 0}</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--card-bg)]/95 p-3 shadow-2xl backdrop-blur  bg-[var(--card-bg)]/95 md:hidden">
-        <button
-          onClick={() => {
-            if (!currentUser) router.push('/login');
-            else setIsInterestModalOpen(true);
-          }}
-          className="min-h-11 w-full rounded-full bg-[var(--text)] px-6 py-3 text-center text-sm font-bold text-[var(--text)] transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[var(--text)] dark:hover:bg-gray-200"
-        >
-          Express interest
-        </button>
-      </div>
-
-      {isNdaModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl bg-[var(--card-bg)]">
-            <h3 className="text-lg font-bold text-[var(--text)] ">Data room NDA terms</h3>
-            <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
-              By accessing this data room you agree all information is confidential.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[var(--border)] px-5 py-2.5 text-sm font-bold text-[var(--text)]  ">
-                Cancel
-              </button>
-              <button onClick={handleAcceptNda} className="rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-bold text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
-                I Agree â€” View Documents
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Pitch Deck Modal Overlay */}
-      {isDeckModalOpen && pitch.id && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
-          <div className="bg-[var(--bg)] w-full max-w-6xl h-full rounded-2xl overflow-hidden flex flex-col shadow-2xl relative animate-in zoom-in-95 duration-200">
-            <div className="bg-[var(--text)] px-6 py-4 flex items-center justify-between flex-shrink-0">
-              <div>
-                <h3 className="text-[var(--text)] font-bold text-lg">{pitch.title} - Pitch Deck</h3>
-                <p className="text-[var(--text2)] text-xs">Secure Viewer</p>
-              </div>
-              <button 
-                onClick={() => setIsDeckModalOpen(false)}
-                className="text-[var(--text2)] hover:text-[var(--text)] transition-colors p-2 bg-[var(--card-bg)]/10 rounded-full hover:bg-[var(--card-bg)]/20"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="flex-grow relative bg-[var(--card-bg)]">
-              <PitchDeckViewer 
-                pitchId={pitch.id} 
-                investorName={currentProfile?.full_name || currentUser?.email?.split('@')[0] || 'Investor'} 
-                investorEmail={currentUser?.email || 'investor@example.com'} 
-              />
-            </div>
-          </div>
-        </div>
-      )}
-      {/* Express Interest Modal Overlay */}
-      {isInterestModalOpen && pitch.id && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-[var(--text)]  font-bold text-lg">Express Interest in {pitch.title}</h3>
-              <button 
-                onClick={() => setIsInterestModalOpen(false)}
-                className="text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Amount</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={interestAmount}
-                  onChange={(e) => setInterestAmount(e.target.value)}
-                  placeholder="Enter amount you are interested in"
-                  className="w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222]  dark:bg-[var(--text)] "
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Message to Founder</label>
-                <textarea 
-                  value={interestMessage}
-                  onChange={(e) => setInterestMessage(e.target.value.slice(0, 500))}
-                  placeholder="Introduce yourself and explain why you're interested in this startup..."
-                  rows={6}
-                  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)]  bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--text)]  focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
-                />
-                <div className="flex justify-between text-xs text-[var(--text2)] mt-1.5">
-                  <span>Keep it professional and concise.</span>
-                  <span className={interestMessage.length >= 500 ? 'text-red-500 font-bold' : ''}>
-                    {interestMessage.length}/500 chars
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex gap-3 justify-end pt-4">
-                <button
-                  onClick={() => setIsInterestModalOpen(false)}
-                  className="px-5 py-2.5 rounded-full border-[0.5px] border-[var(--border)]  hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] text-sm font-bold text-[var(--text)]  transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSendInterest}
-                  disabled={sendingInterest || !interestMessage.trim()}
-                  className="px-6 py-2.5 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {sendingInterest ? 'Sending...' : 'Send interest'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+ window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+ };
+
+ const handleCopyLink = async () => {
+ if (typeof window === 'undefined') return;
+ try {
+ await navigator.clipboard.writeText(window.location.href);
+ setLinkCopied(true);
+ setTimeout(() => setLinkCopied(false), 2000);
+ } catch {
+ alert('Could not copy link');
+ }
+ };
+
+ const handleBuyProduct = async (prod: any) => {
+ if (!currentUser) {
+ router.push('/login');
+ return;
+ }
+
+ setIsCheckingOut(true);
+
+ try {
+ const { data: { session } } = await supabase.auth.getSession();
+ if (!session) {
+ router.push('/login');
+ return;
+ }
+
+ const res = await fetch('/api/marketplace/create-checkout', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ Authorization: `Bearer ${session.access_token}`,
+ },
+ body: JSON.stringify({
+ cartItems: [{ product_id: prod.id, quantity: 1 }],
+ promoCodeId: null,
+ }),
+ });
+
+ if (!res.ok) {
+ const errText = await res.text();
+ throw new Error(errText || 'Failed to create checkout session');
+ }
+
+ const data = await res.json();
+ if (data.url) {
+ window.location.href = data.url;
+ } else {
+ throw new Error('No checkout URL returned from Stripe');
+ }
+ } catch (err: any) {
+ console.error('[Buy Product] Error:', err);
+ alert(err.message || 'Checkout failed. Please try again.');
+ } finally {
+ setIsCheckingOut(false);
+ }
+ };
+
+ // Comments state
+ const [comments, setComments] = useState<any[]>([]);
+ const [commentsLoading, setCommentsLoading] = useState(true);
+ const [newComment, setNewComment] = useState('');
+ const [posting, setPosting] = useState(false);
+ const [currentUser, setCurrentUser] = useState<any>(null);
+ const [currentProfile, setCurrentProfile] = useState<any>(null);
+ const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
+ const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+ useEffect(() => {
+ async function fetchData() {
+ if (!id) {
+ setLoading(false);
+ return;
+ }
+ try {
+ const { data: pitchData, error: pitchError } = await supabase
+ .from('pitches')
+ .select('*')
+ .eq('id', id)
+ .maybeSingle();
+ 
+ if (pitchError) throw pitchError;
+ setPitch(pitchData);
+
+ if (pitchData?.founder_id) {
+ const { data: founderData } = await supabase
+ .from('users')
+ .select('full_name, level')
+ .eq('id', pitchData.founder_id)
+ .single();
+ if (founderData) setFounderProfile(founderData);
+ }
+
+ const { data: productsData, error: productsError } = await supabase
+ .from('products')
+ .select('*')
+ .eq('pitch_id', id)
+ .in('status', ['live', 'published']);
+ 
+ if (productsError) throw productsError;
+ setProducts(productsData || []);
+
+ } catch (err) {
+ console.error('Error fetching pitch:', err);
+ } finally {
+ setLoading(false);
+ }
+ }
+ fetchData();
+ }, [id]);
+
+ // Load current user session + liked comments from localStorage
+ useEffect(() => {
+ const loadUser = async () => {
+ const { data: { session } } = await supabase.auth.getSession();
+ if (session?.user) {
+ setCurrentUser(session.user);
+ const { data: profile } = await supabase
+ .from('users')
+ .select('full_name, role, avatar_url, investor_premium, ventex_access, subscription_end_date')
+ .eq('id', session.user.id)
+ .single();
+ if (profile) {
+ setCurrentProfile(profile);
+ const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
+ setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
+ }
+ }
+ // Load liked comments from localStorage
+ try {
+ const stored = localStorage.getItem(`ventex_liked_${id}`);
+ if (stored) setLikedComments(new Set(JSON.parse(stored)));
+ } catch {}
+ };
+ if (id) loadUser();
+ }, [id]);
+
+ // Fetch comments
+ const fetchComments = useCallback(async () => {
+ if (!id) return;
+ setCommentsLoading(true);
+ const { data: _commentsData, error: _commentsError } = await supabase
+ .from('comments')
+ .select(`
+ id, content, likes, created_at,
+ users:user_id ( id, full_name, role, avatar_url )
+ `)
+ .eq('pitch_id', id)
+ .order('created_at', { ascending: false });
+ if (_commentsData) setComments(_commentsData);
+ setCommentsLoading(false);
+ }, [id]);
+
+ useEffect(() => { fetchComments(); }, [fetchComments]);
+
+ useEffect(() => {
+ const fetchMatches = async () => {
+ if (!pitch || !currentUser || currentUser.id !== pitch.founder_id) {
+ setMatchedInvestors([]);
+ return;
+ }
+
+ const { data } = await supabase
+ .from('users')
+ .select('id, full_name, avatar_url, investment_thesis, preferred_sectors, preferred_stages, response_rate')
+ .eq('role', 'investor')
+ .limit(12);
+
+ const matches = ((data || []) as any[])
+ .filter((investor) => {
+ const sectors = investor.preferred_sectors || [];
+ const stages = investor.preferred_stages || [];
+ const sectorMatch = sectors.length === 0 || sectors.includes(pitch.industry) || sectors.some((s: string) => pitch.tags?.includes(s));
+ const stageMatch = stages.length === 0 || stages.includes(pitch.company_stage);
+ return sectorMatch && stageMatch;
+ })
+ .slice(0, 3);
+
+ setMatchedInvestors(matches);
+ };
+
+ fetchMatches();
+ }, [pitch, currentUser]);
+
+ useEffect(() => {
+ const checkSavedPitch = async () => {
+ if (!currentUser || !pitch?.id) {
+ setSaved(false);
+ return;
+ }
+
+ const { data } = await supabase
+ .from('saved_pitches')
+ .select('id')
+ .eq('user_id', currentUser.id)
+ .eq('pitch_id', pitch.id)
+ .maybeSingle();
+
+ setSaved(Boolean(data));
+ };
+
+ checkSavedPitch();
+ }, [currentUser, pitch?.id]);
+
+ useEffect(() => {
+ const fetchPitchDeal = async () => {
+ if (!currentUser || !pitch?.id) {
+ setPitchDeal(null);
+ return;
+ }
+
+ const { data } = await supabase
+ .from('deals')
+ .select('*')
+ .eq('pitch_id', pitch.id)
+ .or(`founder_id.eq.${currentUser.id},investor_id.eq.${currentUser.id}`)
+ .order('created_at', { ascending: false })
+ .limit(1)
+ .maybeSingle();
+
+ setPitchDeal(data || null);
+ };
+
+ fetchPitchDeal();
+ }, [currentUser, pitch?.id]);
+
+ // Real-time subscription
+ useEffect(() => {
+ if (!id) return;
+ const channel = supabase
+ .channel(`comments:${id}`)
+ .on('postgres_changes', {
+ event: '*',
+ schema: 'public',
+ table: 'comments',
+ filter: `pitch_id=eq.${id}`
+ }, (payload) => {
+ if (payload.eventType === 'INSERT') {
+ fetchComments(); // re-fetch to get joined user data
+ } else if (payload.eventType === 'UPDATE') {
+ setComments(prev => prev.map(c =>
+ c.id === payload.new.id ? { ...c, likes: payload.new.likes } : c
+ ));
+ } else if (payload.eventType === 'DELETE') {
+ setComments(prev => prev.filter(c => c.id !== payload.old.id));
+ }
+ })
+ .subscribe();
+ return () => { supabase.removeChannel(channel); };
+ }, [id, fetchComments]);
+
+ const handlePostComment = async () => {
+ if (!newComment.trim() || !currentUser || posting) return;
+ setPosting(true);
+ const optimistic = {
+ id: `opt-${Date.now()}`,
+ content: newComment,
+ likes: 0,
+ created_at: new Date().toISOString(),
+ users: {
+ id: currentUser.id,
+ full_name: currentProfile?.full_name || currentUser.email?.split('@')[0] || 'You',
+ role: currentProfile?.role || 'visitor',
+ avatar_url: currentProfile?.avatar_url || null,
+ },
+ };
+ setComments(prev => [optimistic, ...prev]);
+ setNewComment('');
+ const { error } = await supabase.from('comments').insert({
+ pitch_id: id,
+ user_id: currentUser.id,
+ content: optimistic.content,
+ likes: 0,
+ });
+ if (error) {
+ console.error('Error posting comment:', error);
+ setComments(prev => prev.filter(c => c.id !== optimistic.id));
+ setNewComment(optimistic.content);
+ alert('Failed to post comment: ' + error.message);
+ } else {
+ // Fire new_comment email to founder via server trigger
+ try {
+ if (pitch?.founder_id) {
+ fetch('/api/emails/trigger', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify({
+ event: 'new_comment',
+ payload: {
+ pitchFounderId: pitch.founder_id,
+ pitchId: id,
+ pitchName: pitch.title,
+ commenterName: currentProfile?.full_name || currentUser?.email?.split('@')[0] || 'Someone',
+ commentText: optimistic.content,
+ },
+ }),
+ });
+ }
+ } catch {}
+ }
+ setPosting(false);
+ };
+
+ const handleLike = async (commentId: string, currentLikes: number) => {
+ if (!currentUser) return;
+ const alreadyLiked = likedComments.has(commentId);
+ const newLiked = new Set(likedComments);
+ if (alreadyLiked) {
+ newLiked.delete(commentId);
+ } else {
+ newLiked.add(commentId);
+ }
+ setLikedComments(newLiked);
+ localStorage.setItem(`ventex_liked_${id}`, JSON.stringify(Array.from(newLiked)));
+ // Optimistic UI
+ setComments(prev => prev.map(c =>
+ c.id === commentId ? { ...c, likes: alreadyLiked ? c.likes - 1 : c.likes + 1 } : c
+ ));
+ await supabase.from('comments').update({ likes: alreadyLiked ? currentLikes - 1 : currentLikes + 1 }).eq('id', commentId);
+ };
+
+ const handleOpenDeck = () => {
+ const enforcement = getDealEnforcementState(pitchDeal);
+ if (!investorPremium || enforcement.isLocked || enforcement.isBanned) return;
+ setIsNdaModalOpen(true);
+ };
+
+ const handleAcceptNda = async () => {
+ if (currentUser && pitch?.id) {
+ await supabase.from('data_room_agreements').insert({
+ user_id: currentUser.id,
+ pitch_id: pitch.id,
+ agreed_at: new Date().toISOString(),
+ });
+ }
+ setIsNdaModalOpen(false);
+ setIsDeckModalOpen(true);
+ };
+
+ const getInitials = (name: string) => {
+ if (!name) return '?';
+ return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+ };
+
+ if (loading) {
+ return (
+ <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
+ <div className="animate-pulse flex flex-col items-center">
+ <div className="w-16 h-16 bg-gray-300 dark:bg-[var(--text)] rounded-xl mb-4"></div>
+ <div className="h-4 bg-gray-300 dark:bg-[var(--text)] rounded w-32 mb-2"></div>
+ </div>
+ </div>
+ );
+ }
+
+ const showRunway = pitch ? shouldShowRunway(pitch.is_raising, pitch.round_closes_at) : false;
+ const runwayCountdown = pitch ? getRunwayCountdown(pitch.round_closes_at) : null;
+ const runwayProgress = pitch
+ ? getRunwayProgress(pitch.created_at, pitch.round_closes_at)
+ : 0;
+ const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
+ const isPitchOwner = currentUser?.id === pitch?.founder_id;
+ const canSeeFinancialDetails = Boolean(currentUser);
+ const dealEnforcement = getDealEnforcementState(pitchDeal);
+
+ if (!pitch) {
+ return (
+ <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center flex-col text-center px-4">
+ <h1 className="text-2xl font-bold text-[var(--text)] mb-2">Pitch not found</h1>
+ <p className="text-[var(--text2)] mb-6">The pitch you are looking for does not exist or has been removed.</p>
+ <Link href="/discover" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium">Browse startups</Link>
+ </div>
+ );
+ }
+
+ return (
+ <div className="bg-[var(--bg)] min-h-screen pb-28 md:pb-24">
+ {pitch && (
+ <script
+ type="application/ld+json"
+ dangerouslySetInnerHTML={{
+ __html: JSON.stringify({
+ "@context": "https://schema.org",
+ "@type": "InvestmentOrGrant",
+ name: pitch.title,
+ description: pitch.tagline || pitch.short_description,
+ amount: pitch.amount_seeking ? {
+ "@type": "MonetaryAmount",
+ currency: "INR",
+ value: pitch.amount_seeking
+ } : undefined
+ })
+ }}
+ />
+ )}
+ <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
+ 
+ {/* HERO CARD */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-8 relative">
+ {pitch.status === 'live' && pitch.is_raising === false && (
+ <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--bg)] px-3 py-1 rounded-full">
+ <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+ <span className="text-[10px] font-bold text-[var(--text)] uppercase tracking-wider">Verified</span>
+ </div>
+ )}
+ {pitch.is_raising && (
+ <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
+ <span className="text-[10px] font-bold text-[var(--text)] dark:text-[var(--text)] uppercase tracking-wider">Raising</span>
+ </div>
+ )}
+
+ <div className="flex flex-col gap-5 mb-8 sm:flex-row sm:items-start sm:gap-6">
+ <div className="w-20 h-20 bg-[var(--bg)] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
+ {pitch.logo_url ? <img src={pitch.logo_url} alt={pitch.title} className="w-full h-full object-cover" /> : <div className="text-2xl font-bold text-[var(--text2)]">{pitch.title?.charAt(0)}</div>}
+ </div>
+ <div>
+ <h1 className="text-2xl font-bold text-[var(--text)] mb-2 sm:text-3xl">{pitch.title}</h1>
+ <p className="text-base text-[var(--text2)] mb-2 sm:text-lg">{pitch.tagline || pitch.short_description}</p>
+ {founderProfile && (
+ <p className="text-sm text-[var(--text2)] mb-4 flex flex-wrap items-center gap-2">
+ <span className="font-medium text-[var(--text)] ">
+ {founderProfile.full_name || 'Founder'}
+ </span>
+ {founderProfile.level && (
+ <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-2.5 py-1 rounded-full font-bold">
+ {founderProfile.level} {levelEmoji(founderProfile.level)}
+ </span>
+ )}
+ </p>
+ )}
+ <div className="flex gap-2 flex-wrap">
+ {pitch.industry && <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.industry}</span>}
+ {pitch.company_stage && <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.company_stage}</span>}
+ {(pitch.state || pitch.country) && <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-3 py-1.5 rounded-md font-medium">{[pitch.state, pitch.country].filter(Boolean).join(', ')}</span>}
+ {pitch.business_type && <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-3 py-1.5 rounded-md font-medium">{pitch.business_type}</span>}
+ </div>
+ </div>
+ </div>
+
+ <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-3">
+ <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex flex-col justify-center text-center">
+ <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Funding Ask</span>
+ <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? formatCurrency(pitch.amount_seeking) : 'Sign in'}</span>
+ </div>
+ <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex flex-col justify-center text-center">
+ <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Equity Offered</span>
+ <span className="text-xl font-bold text-[var(--text)] ">{canSeeFinancialDetails ? (pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A') : 'Sign in'}</span>
+ </div>
+ <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex flex-col justify-center text-center">
+ <span className="text-[var(--text2)] text-xs font-medium uppercase tracking-wider mb-1">Valuation (Post)</span>
+ <span className="text-xl font-bold text-[var(--text)] ">
+ {canSeeFinancialDetails ? (pitch.amount_seeking && pitch.equity_pct ? formatCurrency(pitch.amount_seeking / (pitch.equity_pct / 100)) : 'N/A') : 'Sign in'}
+ </span>
+ </div>
+ </div>
+
+ {!canSeeFinancialDetails && (
+ <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[#666666] dark:bg-[var(--text)] ">
+ Sign in to view financial details.
+ </div>
+ )}
+
+ {showRunway && runwayCountdown && (
+ <div className="mb-8">
+ <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
+ â° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
+ </p>
+ <div className="w-full h-2 bg-[var(--bg)] rounded-full overflow-hidden">
+ <div
+ className="h-full bg-red-500 rounded-full transition-all"
+ style={{ width: `${runwayProgress}%` }}
+ />
+ </div>
+ </div>
+ )}
+
+ <div className="hidden items-center gap-3 md:flex">
+ <button 
+ onClick={() => {
+ if (!currentUser) router.push('/login');
+ else setIsInterestModalOpen(true);
+ }}
+ className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
+ >
+ Express interest
+ </button>
+ <button
+ onClick={handleSavePitch}
+ disabled={savingPitch}
+ className="disabled:opacity-50"
+ style={{
+ color: saved ? '#ef4444' : 'var(--text3)',
+ background: saved ? '#ef444415' : 'transparent',
+ border: saved ? '1px solid #ef444430' : '1px solid transparent',
+ borderRadius: '8px',
+ padding: '6px 8px',
+ transition: 'all 200ms',
+ transform: 'scale(1)',
+ animation: saved ? 'heartPop 0.35s ease' : undefined,
+ }}
+ onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
+ onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+ onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.9)'; }}
+ onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; }}
+ aria-pressed={saved}
+ aria-label={saved ? 'Remove from watchlist' : 'Save to watchlist'}
+ >
+ <Heart className="w-5 h-5" fill={saved ? '#ef4444' : 'none'} />
+ </button>
+ </div>
+ </div>
+
+ <aside className="flex flex-col gap-3 md:sticky md:top-24">
+ <button
+ type="button"
+ onClick={handleWhatsAppShare}
+ className="flex-1 bg-[#25D366] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
+ >
+ Share on WhatsApp ðŸ’¬
+ </button>
+ <button
+ type="button"
+ onClick={handleCopyLink}
+ className="flex-1 bg-[#e5e5e5] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
+ >
+ {linkCopied ? 'Copied! âœ“' : 'Copy link ðŸ”—'}
+ </button>
+ </aside>
+
+ {/* AI SUMMARY BAR */}
+ {videoEmbedUrl ? (
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
+ <div className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
+ {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
+ <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
+ ) : (
+ <iframe
+ src={videoEmbedUrl}
+ title={`${pitch.title} founder pitch`}
+ className="w-full aspect-video rounded-xl bg-black"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowFullScreen
+ />
+ )}
+ </div>
+ ) : isPitchOwner ? (
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4] p-6 text-center md:col-span-2">
+ <div className="text-sm font-bold text-[var(--text)] mb-2">Add your 60-second founder pitch</div>
+ <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[var(--text)] underline underline-offset-4">
+ Edit pitch â†’
+ </Link>
+ </div>
+ ) : null}
+
+ {matchedInvestors.length > 0 && (
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-4">Best matched investors</h2>
+ <div className="grid grid-cols-1 gap-3">
+ {matchedInvestors.map((investor) => (
+ <Link key={investor.id} href={`/profile/${investor.id}`} className="rounded-xl border border-[var(--border)] p-4 hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
+ <div className="font-bold text-sm text-[var(--text)] ">{investor.full_name || 'Investor'}</div>
+ <p className="mt-1 text-xs text-[var(--text2)] line-clamp-2">
+ Invests in {pitch.industry || 'your sector'} Â· {pitch.company_stage || 'this stage'}
+ </p>
+ </Link>
+ ))}
+ </div>
+ </div>
+ )}
+
+ {pitch.ai_summary && (
+ <div className="bg-gradient-to-r from-[#F2F2F0] to-white dark:from-[#222222] dark:to-[#1a1a1a] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 md:col-span-2">
+ <div className="flex items-center gap-2 mb-3">
+ <Sparkles className="w-4 h-4 text-[var(--text2)]" />
+ <span className="text-xs font-bold text-[var(--text)] uppercase tracking-wider">AI-generated briefing</span>
+ </div>
+ <p className="text-[var(--text2)] italic text-[15px] leading-relaxed">"{pitch.ai_summary}"</p>
+ </div>
+ )}
+
+ {/* CONTENT SECTIONS */}
+ <div className="space-y-6 md:col-span-2">
+ {/* Problem & Solution */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] overflow-hidden">
+ <div className="p-5 border-b-[0.5px] border-[var(--border)] sm:p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Problem & Solution</h2>
+ <div className="flex gap-4 items-start mb-8">
+ <div className="w-8 h-8 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text2)] text-sm">P</div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] mb-2 text-sm">The Problem</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.problem || 'Not specified'}</p>
+ </div>
+ </div>
+ <div className="flex gap-4 items-start">
+ <div className="w-8 h-8 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text)] dark:text-[var(--text)] text-sm">S</div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] mb-2 text-sm">Our Solution</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ {/* Market Opportunity */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Market opportunity</h2>
+ <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
+ <div className="bg-[var(--bg)] rounded-xl p-4 text-center">
+ <div className="text-xs text-[var(--text2)] font-bold mb-1">TAM</div>
+ <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.tam)}</div>
+ </div>
+ <div className="bg-[var(--bg)] rounded-xl p-4 text-center">
+ <div className="text-xs text-[var(--text2)] font-bold mb-1">SAM</div>
+ <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.sam)}</div>
+ </div>
+ <div className="bg-[var(--bg)] rounded-xl p-4 text-center">
+ <div className="text-xs text-[var(--text2)] font-bold mb-1">SOM</div>
+ <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.som)}</div>
+ </div>
+ </div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Market Trends</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.market_trend || 'Not specified'}</p>
+ </div>
+ </div>
+
+ {/* Competition */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Competition</h2>
+ <div className="space-y-6">
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Key Competitors</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitors || 'Not specified'}</p>
+ </div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Competitive Advantages</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.competitive_advantages || 'Not specified'}</p>
+ </div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Moat / Defensibility</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.moat || 'Not specified'}</p>
+ </div>
+ </div>
+ </div>
+
+ {/* Business Model */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Business model</h2>
+ <div className="space-y-6">
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Revenue Model</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.revenue_model || 'Not specified'}</p>
+ </div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Pricing Strategy</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.pricing || 'Not specified'}</p>
+ </div>
+ </div>
+ </div>
+
+ {/* Team (Mocked) */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Team</h2>
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
+ <div className="w-12 h-12 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0">
+ <User className="w-5 h-5 text-[var(--text2)]" />
+ </div>
+ <div>
+ <h4 className="font-bold text-[var(--text)] text-sm">Jane Doe</h4>
+ <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">Founder & CEO</p>
+ <p className="text-[var(--text2)] text-xs">Ex-Google PM. 2x founder with 1 exit in the logistics space.</p>
+ </div>
+ </div>
+ <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
+ <div className="w-12 h-12 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0">
+ <User className="w-5 h-5 text-[var(--text2)]" />
+ </div>
+ <div>
+ <h4 className="font-bold text-[var(--text)] text-sm">John Smith</h4>
+ <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">CTO</p>
+ <p className="text-[var(--text2)] text-xs">10 years engineering leadership at Stripe. Built highly scalable architectures.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ {/* Traction & Financials (Premium Gated) */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Traction & Financials</h2>
+ 
+ <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
+ <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+ <div className="bg-[var(--bg)] rounded-xl p-4">
+ <div className="text-xs text-[var(--text2)] mb-1">MRR</div>
+ <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.mrr)}</div>
+ </div>
+ <div className="bg-[var(--bg)] rounded-xl p-4">
+ <div className="text-xs text-[var(--text2)] mb-1">ARR</div>
+ <div className="font-bold text-[var(--text)] ">{formatCurrency(pitch.arr)}</div>
+ </div>
+ <div className="bg-[var(--bg)] rounded-xl p-4">
+ <div className="text-xs text-[var(--text2)] mb-1">Active Users</div>
+ <div className="font-bold text-[var(--text)] ">{pitch.users_count ? pitch.users_count.toLocaleString() : 'N/A'}</div>
+ </div>
+ <div className="bg-[var(--bg)] rounded-xl p-4">
+ <div className="text-xs text-[var(--text2)] mb-1">MoM Growth</div>
+ <div className="font-bold text-[var(--text)] ">{pitch.mom_growth || 'N/A'}</div>
+ </div>
+ </div>
+ <div>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">Key Milestones</h3>
+ <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
+ </div>
+ </div>
+
+ {!investorPremium && (
+ <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+ <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+ <Lock className="w-5 h-5 text-[var(--text)] " />
+ </div>
+ <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
+ <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
+ <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ View Investor Accounts
+ </Link>
+ </div>
+ </div>
+ )}
+ </div>
+
+ {/* Product Listings (If exists) */}
+ {products.length > 0 && (
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="flex items-center justify-between mb-6">
+ <h2 className="text-lg font-bold text-[var(--text)] ">Products by this startup</h2>
+ <span className="text-[var(--text2)] text-sm font-medium">{products.length} listed</span>
+ </div>
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+ {products.map(p => (
+ <div key={p.id} className="border-[0.5px] border-[var(--border)] rounded-[10px] overflow-hidden group">
+ <div className="w-full aspect-video bg-[var(--bg)] flex items-center justify-center">
+ <span className="text-[var(--text2)] text-xs">Image Placeholder</span>
+ </div>
+ <div className="p-3">
+ <h4 className="font-bold text-[var(--text)] text-sm mb-1 truncate">{p.name}</h4>
+ <div className="flex justify-between items-center mt-3">
+ <span className="font-bold text-[var(--text)] text-sm">{formatCurrency(p.price)}</span>
+ <button 
+ onClick={() => handleBuyProduct(p)}
+ disabled={isCheckingOut}
+ className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+ >
+ {isCheckingOut ? '...' : 'Buy now'}
+ </button>
+ </div>
+ </div>
+ </div>
+ ))}
+ </div>
+ </div>
+ )}
+
+ {/* Documents */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Documents</h2>
+ 
+ <div className={`flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+ <div className="flex items-center gap-4">
+ <div className="w-10 h-10 bg-[var(--bg)] rounded-md flex items-center justify-center">
+ <FileText className="w-5 h-5 text-[var(--text2)]" />
+ </div>
+ <div>
+ <h4 className="font-bold text-[var(--text)] text-sm">Pitch Deck</h4>
+ <p className="text-[var(--text2)] text-xs">Confidential PDF</p>
+ </div>
+ </div>
+ <button 
+ onClick={handleOpenDeck}
+ className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
+ disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
+ >
+ View Pitch Deck
+ </button>
+ </div>
+
+ {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
+ <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
+ <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+ <Lock className="w-5 h-5 text-[var(--text)] " />
+ </div>
+ <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
+ <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
+ <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ View Investor Accounts
+ </Link>
+ </div>
+ </div>
+ )}
+ 
+ {pitch.additional_docs && pitch.additional_docs.length > 0 && (
+ <div className={`mt-4 space-y-3 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+ {pitch.additional_docs.map((doc: any, idx: number) => (
+ <div key={idx} className="flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4">
+ <div className="flex items-center gap-4">
+ <div className="w-10 h-10 bg-[var(--bg)] rounded-md flex items-center justify-center">
+ <FileText className="w-5 h-5 text-[var(--text2)]" />
+ </div>
+ <div>
+ <h4 className="font-bold text-[var(--text)] text-sm">{doc.name}</h4>
+ <p className="text-[var(--text2)] text-xs">Additional Document</p>
+ </div>
+ </div>
+ <a
+ href={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '#' : doc.url}
+ target={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '_self' : '_blank'}
+ rel="noopener noreferrer"
+ className="bg-[#e5e5e5] text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
+ onClick={(e) => {
+ if (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) {
+ e.preventDefault();
+ }
+ }}
+ >
+ Download
+ </a>
+ </div>
+ ))}
+ </div>
+ )}
+ </div>
+
+ {/* Q&A Section */}
+ {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <h2 className="text-lg font-bold text-[var(--text)] mb-6">Founder Q&A</h2>
+ <div className="space-y-6">
+ {QUESTIONS.map((q) => {
+ const answer = pitch.qa_data?.[q.id];
+ if (!answer) return null;
+ 
+ const isGated = q.premium && (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned);
+
+ return (
+ <div key={q.id}>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2 flex items-center gap-2">
+ {q.text}
+ {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><Lock className="w-2.5 h-2.5" /> Premium</span>}
+ </h3>
+ <div className={`text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
+ {isGated ? 'This content is hidden to non-investors. A premium account is required to view the detailed traction and analytics provided by the founders. Upgrade your account today.' : answer}
+ </div>
+ </div>
+ );
+ })}
+
+ {pitch.custom_qa?.map((qa: any, idx: number) => {
+ if (!qa.question || !qa.answer) return null;
+ return (
+ <div key={idx}>
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2">{qa.question}</h3>
+ <div className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">
+ {qa.answer}
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ )}
+ </div>
+
+ {/* COMMUNITY COMMENTS */}
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
+ <h2 className="text-xl font-bold text-[var(--text)] mb-8 border-b-[0.5px] border-[var(--border)] pb-4">
+ Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
+ </h2>
+
+ {/* Comment Input */}
+ {currentUser ? (
+ <div className="flex gap-4 mb-10">
+ <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-[0.5px] border-[var(--border)] bg-[var(--text)] text-[var(--bg)] font-bold text-sm flex-shrink-0">
+ {currentProfile?.avatar_url
+ ? <img src={currentProfile.avatar_url} alt="" className="w-full h-full object-cover" />
+ : getInitials(currentProfile?.full_name || currentUser.email || 'U')
+ }
+ </div>
+ <div className="flex-1">
+ <textarea
+ ref={textareaRef}
+ className="w-full border-[0.5px] border-[var(--border)] rounded-xl p-4 text-sm bg-[var(--card-bg)] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] min-h-[100px] resize-y transition-all"
+ placeholder="Ask a question or leave feedback for the founders..."
+ value={newComment}
+ onChange={(e) => setNewComment(e.target.value)}
+ onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handlePostComment(); }}
+ />
+ <div className="flex items-center justify-between mt-3">
+ <span className="text-xs text-[var(--text2)]">Ctrl+Enter to post</span>
+ <button
+ onClick={handlePostComment}
+ disabled={!newComment.trim() || posting}
+ className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+ >
+ {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
+ {posting ? 'Posting...' : 'Post'}
+ </button>
+ </div>
+ </div>
+ </div>
+ ) : (
+ <Link
+ href="/login"
+ className="flex items-center justify-between w-full border-[0.5px] border-[var(--border)] rounded-xl p-4 mb-10 hover:bg-[var(--bg)] dark:hover:bg-[#333333] transition-colors group"
+ >
+ <div className="flex items-center gap-3">
+ <div className="w-10 h-10 bg-[var(--bg)] rounded-full flex items-center justify-center">
+ <User className="w-5 h-5 text-[var(--text2)]" />
+ </div>
+ <span className="text-sm text-[var(--text2)]">Login to join the conversation</span>
+ </div>
+ <span className="text-sm font-bold text-[var(--text)] group-hover:underline">Login &rarr;</span>
+ </Link>
+ )}
+
+ {/* Comments List */}
+ {commentsLoading ? (
+ <div className="space-y-6">
+ {[1, 2].map(i => (
+ <div key={i} className="flex gap-4 animate-pulse">
+ <div className="w-10 h-10 bg-[var(--bg)] rounded-full flex-shrink-0" />
+ <div className="flex-1 space-y-2">
+ <div className="h-3 bg-[var(--bg)] rounded w-24" />
+ <div className="h-3 bg-[var(--bg)] rounded w-full" />
+ <div className="h-3 bg-[var(--bg)] rounded w-2/3" />
+ </div>
+ </div>
+ ))}
+ </div>
+ ) : comments.length === 0 ? (
+ <div className="text-center py-10">
+ <p className="text-[var(--text2)] text-sm">No comments yet. Be the first to start the conversation!</p>
+ </div>
+ ) : (
+ <div className="space-y-8">
+ {comments.map((comment) => {
+ const user = comment.users;
+ const name = user?.full_name || 'Anonymous';
+ const isLiked = likedComments.has(comment.id);
+ return (
+ <div key={comment.id} className="flex gap-4 group">
+ <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden bg-[var(--bg)] flex items-center justify-center border-[0.5px] border-[var(--border)]">
+ {user?.avatar_url
+ ? <img src={user.avatar_url} alt={name} className="w-full h-full object-cover" />
+ : <span className="text-[var(--text2)] font-bold text-xs">{getInitials(name)}</span>
+ }
+ </div>
+ <div className="flex-1">
+ <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+ <span className="font-bold text-[var(--text)] text-sm">{name}</span>
+ {user?.role === 'mentor' && (
+ <span className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
+ )}
+ {user?.role === 'investor' && (
+ <span className="bg-[#888888] text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
+ )}
+ {user?.role === 'founder' && (
+ <span className="bg-blue-100 text-blue-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Founder</span>
+ )}
+ <span className="text-[var(--text2)] text-xs ml-auto">{timeAgo(comment.created_at)}</span>
+ </div>
+ <p className="text-[var(--text)] dark:text-[var(--text3)] text-sm leading-relaxed mb-3">
+ {comment.content}
+ </p>
+ <div className="flex items-center gap-4">
+ <button
+ onClick={() => handleLike(comment.id, comment.likes)}
+ disabled={!currentUser}
+ className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${
+ isLiked
+ ? 'text-red-500'
+ : 'text-[var(--text2)] hover:text-red-500'
+ } disabled:cursor-not-allowed`}
+ >
+ <Heart className={`w-3.5 h-3.5 transition-all ${isLiked ? 'fill-red-500' : ''}`} />
+ <span>{comment.likes ?? 0}</span>
+ </button>
+ </div>
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ )}
+ </div>
+ </div>
+
+ <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--card-bg)]/95 p-3 shadow-2xl backdrop-blur bg-[var(--card-bg)]/95 md:hidden">
+ <button
+ onClick={() => {
+ if (!currentUser) router.push('/login');
+ else setIsInterestModalOpen(true);
+ }}
+ className="min-h-11 w-full rounded-full bg-[var(--text)] px-6 py-3 text-center text-sm font-bold text-[var(--text)] transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[var(--text)] dark:hover:bg-gray-200"
+ >
+ Express interest
+ </button>
+ </div>
+
+ {isNdaModalOpen && (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+ <div className="w-full max-w-lg rounded-2xl bg-[var(--card-bg)] p-6 shadow-2xl bg-[var(--card-bg)]">
+ <h3 className="text-lg font-bold text-[var(--text)] ">Data room NDA terms</h3>
+ <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
+ By accessing this data room you agree all information is confidential.
+ </p>
+ <div className="mt-6 flex justify-end gap-3">
+ <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[var(--border)] px-5 py-2.5 text-sm font-bold text-[var(--text)] ">
+ Cancel
+ </button>
+ <button onClick={handleAcceptNda} className="rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-bold text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
+ I Agree â€” View Documents
+ </button>
+ </div>
+ </div>
+ </div>
+ )}
+
+ {/* Pitch Deck Modal Overlay */}
+ {isDeckModalOpen && pitch.id && (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8">
+ <div className="bg-[var(--bg)] w-full max-w-6xl h-full rounded-2xl overflow-hidden flex flex-col shadow-2xl relative animate-in zoom-in-95 duration-200">
+ <div className="bg-[var(--text)] px-6 py-4 flex items-center justify-between flex-shrink-0">
+ <div>
+ <h3 className="text-[var(--text)] font-bold text-lg">{pitch.title} - Pitch Deck</h3>
+ <p className="text-[var(--text2)] text-xs">Secure Viewer</p>
+ </div>
+ <button 
+ onClick={() => setIsDeckModalOpen(false)}
+ className="text-[var(--text2)] hover:text-[var(--text)] transition-colors p-2 bg-[var(--card-bg)]/10 rounded-full hover:bg-[var(--card-bg)]/20"
+ >
+ <X className="w-5 h-5" />
+ </button>
+ </div>
+ 
+ <div className="flex-grow relative bg-[var(--card-bg)]">
+ <PitchDeckViewer 
+ pitchId={pitch.id} 
+ investorName={currentProfile?.full_name || currentUser?.email?.split('@')[0] || 'Investor'} 
+ investorEmail={currentUser?.email || 'investor@example.com'} 
+ />
+ </div>
+ </div>
+ </div>
+ )}
+ {/* Express Interest Modal Overlay */}
+ {isInterestModalOpen && pitch.id && (
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+ <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
+ <div className="flex justify-between items-center mb-6">
+ <h3 className="text-[var(--text)] font-bold text-lg">Express Interest in {pitch.title}</h3>
+ <button 
+ onClick={() => setIsInterestModalOpen(false)}
+ className="text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors"
+ >
+ <X className="w-5 h-5" />
+ </button>
+ </div>
+ 
+ <div className="space-y-4">
+ <div>
+ <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Amount</label>
+ <input
+ type="number"
+ min="0"
+ value={interestAmount}
+ onChange={(e) => setInterestAmount(e.target.value)}
+ placeholder="Enter amount you are interested in"
+ className="w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222] dark:bg-[var(--text)] "
+ />
+ </div>
+ <div>
+ <label className="block text-xs font-bold text-[var(--text2)] uppercase tracking-wider mb-2">Message to Founder</label>
+ <textarea 
+ value={interestMessage}
+ onChange={(e) => setInterestMessage(e.target.value.slice(0, 500))}
+ placeholder="Introduce yourself and explain why you're interested in this startup..."
+ rows={6}
+ className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
+ />
+ <div className="flex justify-between text-xs text-[var(--text2)] mt-1.5">
+ <span>Keep it professional and concise.</span>
+ <span className={interestMessage.length >= 500 ? 'text-red-500 font-bold' : ''}>
+ {interestMessage.length}/500 chars
+ </span>
+ </div>
+ </div>
+
+ <div className="flex gap-3 justify-end pt-4">
+ <button
+ onClick={() => setIsInterestModalOpen(false)}
+ className="px-5 py-2.5 rounded-full border-[0.5px] border-[var(--border)] hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] text-sm font-bold text-[var(--text)] transition-colors"
+ >
+ Cancel
+ </button>
+ <button
+ onClick={handleSendInterest}
+ disabled={sendingInterest || !interestMessage.trim()}
+ className="px-6 py-2.5 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+ >
+ {sendingInterest ? 'Sending...' : 'Send interest'}
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+ )}
+ </div>
+ );
 }
