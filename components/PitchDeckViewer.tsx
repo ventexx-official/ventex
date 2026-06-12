@@ -65,8 +65,8 @@ export default function PitchDeckViewer({ pitchId, investorName, investorEmail }
   if (loading) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-[#F2F2F0] min-h-[400px]">
-        <Loader2 className="w-10 h-10 text-[#222222] animate-spin mb-4" />
-        <p className="text-sm font-bold text-[#888888] uppercase tracking-wider">Securing connection...</p>
+        <Loader2 className="w-10 h-10 text-[var(--text)] animate-spin mb-4" />
+        <p className="text-sm font-bold text-[var(--text2)] uppercase tracking-wider">Securing connection...</p>
       </div>
     );
   }
@@ -75,8 +75,8 @@ export default function PitchDeckViewer({ pitchId, investorName, investorEmail }
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-[#F2F2F0] min-h-[400px] text-center px-4">
         <AlertCircle className="w-10 h-10 text-red-500 mb-4" />
-        <p className="text-[#222222] font-bold mb-2">Access Denied</p>
-        <p className="text-sm text-[#888888]">{error}</p>
+        <p className="text-[var(--text)] font-bold mb-2">Access Denied</p>
+        <p className="text-sm text-[var(--text2)]">{error}</p>
       </div>
     );
   }
@@ -85,8 +85,8 @@ export default function PitchDeckViewer({ pitchId, investorName, investorEmail }
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-[#F2F2F0] min-h-[400px] text-center px-4">
         <AlertCircle className="w-10 h-10 text-amber-500 mb-4" />
-        <p className="text-[#222222] font-bold mb-2">Session expired.</p>
-        <p className="text-sm text-[#888888] mb-6">For security reasons, viewing sessions are limited to 30 minutes.</p>
+        <p className="text-[var(--text)] font-bold mb-2">Session expired.</p>
+        <p className="text-sm text-[var(--text2)] mb-6">For security reasons, viewing sessions are limited to 30 minutes.</p>
         <button 
           onClick={() => window.location.reload()} 
           className="bg-[#222222] text-white px-6 py-2 rounded-full font-medium text-sm hover:bg-black transition-colors"

@@ -50,7 +50,7 @@ export default function LivePage() {
  <div className="mx-auto max-w-6xl space-y-10">
  <header>
  <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventex Live - Monthly Pitch Night. Watch founders pitch to real investors.</h1>
- <p className="mt-4 text-sm font-bold text-[#666666]">Next event countdown appears here once the admin sets the event date.</p>
+ <p className="mt-4 text-sm font-bold text-[var(--text2)]">Next event countdown appears here once the admin sets the event date.</p>
  </header>
 
  <div className="grid gap-6 lg:grid-cols-2">
@@ -82,7 +82,7 @@ export default function LivePage() {
 
  <section className="rounded-2xl bg-[var(--card-bg)] p-6">
  <h2 className="text-xl font-black">Past episodes and clips</h2>
- <p className="mt-2 text-sm text-[#666666]">Admin-managed YouTube embeds will appear here after episodes are added.</p>
+ <p className="mt-2 text-sm text-[var(--text2)]">Admin-managed YouTube embeds will appear here after episodes are added.</p>
  </section>
  </div>
  </main>

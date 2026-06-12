@@ -912,7 +912,7 @@ export default function ProductDetailPage() {
  Only customers with a fulfilled order for this product can write a review.
  </p>
  {currentUser && (
- <p className="text-[10px] text-[#aaaaaa] font-medium">
+ <p className="text-[10px] text-[var(--text3)] font-medium">
  No unreviewed orders found.
  </p>
  )}

@@ -49,7 +49,7 @@ export default function PitchScorePanel({ pitchId }: { pitchId: string }) {
           type="button"
           onClick={scorePitch}
           disabled={loading}
-          className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#F2F2F0] px-3 py-1.5 text-xs font-black text-[#222222] hover:bg-[#e5e5e5] disabled:opacity-50"
+          className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#F2F2F0] px-3 py-1.5 text-xs font-black text-[var(--text)] hover:bg-[#e5e5e5] disabled:opacity-50"
         >
           <Sparkles className="h-3.5 w-3.5" />
           {loading ? 'Scoring...' : 'Score My Pitch'}
@@ -62,18 +62,18 @@ export default function PitchScorePanel({ pitchId }: { pitchId: string }) {
   return (
     <div className="mt-3 rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] p-3">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <span className="text-xs font-black uppercase tracking-widest text-[#888888]">AI score</span>
-        <span className="text-lg font-black text-[#222222]">{score.overall}/100</span>
+        <span className="text-xs font-black uppercase tracking-widest text-[var(--text2)]">AI score</span>
+        <span className="text-lg font-black text-[var(--text)]">{score.overall}/100</span>
       </div>
       <div className="grid grid-cols-5 gap-2">
         {SCORE_KEYS.map(([key, label]) => (
           <div key={key} className="text-center">
-            <div className="text-sm font-black text-[#222222]">{score[key] ?? 0}</div>
-            <div className="text-[9px] font-bold text-[#888888]">{label}</div>
+            <div className="text-sm font-black text-[var(--text)]">{score[key] ?? 0}</div>
+            <div className="text-[9px] font-bold text-[var(--text2)]">{label}</div>
           </div>
         ))}
       </div>
-      <p className="mt-3 text-xs font-medium leading-relaxed text-[#666666]">{score.feedback}</p>
+      <p className="mt-3 text-xs font-medium leading-relaxed text-[var(--text2)]">{score.feedback}</p>
     </div>
   );
 }

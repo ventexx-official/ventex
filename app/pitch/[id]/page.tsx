@@ -724,7 +724,7 @@ via Ventex`;
  </div>
 
  {!canSeeFinancialDetails && (
- <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[#666666] dark:bg-[var(--text)] ">
+ <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[var(--text2)] dark:bg-[var(--text)] ">
  Sign in to view financial details.
  </div>
  )}

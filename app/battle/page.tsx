@@ -140,7 +140,7 @@ export default function BattlePage() {
  <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
  <div>
  <h1 className="text-4xl font-black tracking-tighter text-[var(--text)]">Weekly pitch battle</h1>
- <p className="mt-2 text-sm font-medium text-[#666666]">Vote for the strongest startup of the week. Ends in {endOfWeekLabel()}.</p>
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">Vote for the strongest startup of the week. Ends in {endOfWeekLabel()}.</p>
  </div>
  <div className="rounded-full bg-[var(--card-bg)] px-4 py-2 text-sm font-black text-[var(--text)]">{totalVotes} votes</div>
  </header>
@@ -160,7 +160,7 @@ export default function BattlePage() {
  {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="h-full w-full object-cover" /> : (pitch.title || 'P')[0]}
  </div>
  <h2 className="mt-4 line-clamp-2 min-h-[3rem] text-lg font-black leading-tight text-[var(--text)]">{pitch.title || 'Untitled pitch'}</h2>
- <p className="mt-2 line-clamp-3 min-h-[4rem] text-sm font-medium text-[#666666]">{pitch.tagline || 'No tagline yet.'}</p>
+ <p className="mt-2 line-clamp-3 min-h-[4rem] text-sm font-medium text-[var(--text2)]">{pitch.tagline || 'No tagline yet.'}</p>
  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--bg)]">
  <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
  </div>

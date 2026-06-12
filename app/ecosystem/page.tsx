@@ -49,7 +49,7 @@ export default function EcosystemPage() {
  <main className="mx-auto max-w-6xl space-y-8">
  <header>
  <h1 className="text-4xl font-black tracking-tighter text-[var(--text)]">India startup heat map</h1>
- <p className="mt-2 text-sm font-medium text-[#666666]">Startup density by state, powered by live Ventex pitch data.</p>
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">Startup density by state, powered by live Ventex pitch data.</p>
  </header>
 
  <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
@@ -87,7 +87,7 @@ export default function EcosystemPage() {
  <div className="rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
  <div className="text-xs font-black uppercase tracking-widest text-[var(--text2)]">Hover details</div>
  <div className="mt-3 text-2xl font-black text-[var(--text)]">{hovered?.name || 'Select a state'}</div>
- <p className="mt-2 text-sm font-medium text-[#666666]">
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">
  {hovered ? `${hovered.count} startups · Top sector: ${hovered.topSector}` : 'Hover over the map to inspect startup count and top sector.'}
  </p>
  </div>

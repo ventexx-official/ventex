@@ -27,7 +27,7 @@ export default function SchemesHelperPage() {
  <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-[380px_1fr]">
  <form onSubmit={submit} className="h-fit rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
  <h1 className="text-3xl font-black tracking-tighter text-[var(--text)]">DPIIT Scheme Helper</h1>
- <p className="mt-2 text-sm font-medium text-[#666666]">Answer five questions to shortlist Indian startup schemes.</p>
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">Answer five questions to shortlist Indian startup schemes.</p>
  <Field label="Industry sector" value={form.sector} onChange={(v) => update('sector', v)} />
  <Field label="Stage" value={form.stage} onChange={(v) => update('stage', v)} />
  <Field label="State" value={form.state} onChange={(v) => update('state', v)} />
@@ -48,7 +48,7 @@ export default function SchemesHelperPage() {
  <h2 className="text-xl font-black text-[var(--text)]">{scheme.name}</h2>
  <p className="mt-2 text-sm font-medium text-[var(--text2)]">{scheme.benefit}</p>
  <p className="mt-3 text-xs font-bold uppercase tracking-widest text-[var(--text2)]">Eligibility</p>
- <p className="mt-1 text-sm font-medium text-[#666666]">{scheme.eligibility}</p>
+ <p className="mt-1 text-sm font-medium text-[var(--text2)]">{scheme.eligibility}</p>
  {scheme.apply_url ? (
  <a href={scheme.apply_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-2xl bg-[var(--text)] px-4 py-2 text-sm font-black text-[var(--text)]">
  Apply

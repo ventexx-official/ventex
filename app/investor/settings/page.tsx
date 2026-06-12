@@ -57,7 +57,7 @@ export default function InvestorSettingsPage() {
  <div className="min-h-screen bg-[var(--bg)] px-4 py-10">
  <main className="mx-auto max-w-3xl rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-6 md:p-8">
  <h1 className="text-3xl font-black tracking-tighter text-[var(--text)]">Investor thesis</h1>
- <p className="mt-2 text-sm font-medium text-[#666666]">This powers founder-side investor matching.</p>
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">This powers founder-side investor matching.</p>
 
  <label className="mt-8 block text-xs font-black uppercase tracking-widest text-[var(--text2)]">Investment thesis</label>
  <textarea
@@ -72,7 +72,7 @@ export default function InvestorSettingsPage() {
 
  <section className="mt-8 rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-5">
  <h2 className="text-sm font-black uppercase tracking-widest text-[var(--text)]">Two-Factor Authentication</h2>
- <p className="mt-2 text-sm font-medium text-[#666666]">Protect your account with an authenticator app.</p>
+ <p className="mt-2 text-sm font-medium text-[var(--text2)]">Protect your account with an authenticator app.</p>
  <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
  <span className="text-xs font-black uppercase tracking-widest text-[var(--text2)]">Status: {twoFactorEnabled ? 'Enabled' : 'Not enabled'}</span>
  <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--text)] disabled:opacity-50">

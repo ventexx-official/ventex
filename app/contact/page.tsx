@@ -45,9 +45,9 @@ export default function ContactPage() {
  <main className="min-h-screen bg-[var(--bg)] px-4 py-16 text-[var(--text)] ">
  <div className="mx-auto max-w-5xl">
  <div className="mb-10 border-b border-black/10 pb-8 dark:border-white/10">
- <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[#666666] ">Support</p>
+ <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[var(--text2)] ">Support</p>
  <h1 className="text-4xl font-black uppercase tracking-tight md:text-5xl">Contact Ventex</h1>
- <p className="mt-4 max-w-2xl text-sm leading-6 text-[#666666] ">
+ <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--text2)] ">
  Send account, billing, marketplace, privacy, partnership, and grievance requests to the Ventex team.
  </p>
  </div>
@@ -58,19 +58,19 @@ export default function ContactPage() {
  <Mail className="mb-4 h-6 w-6" />
  <h2 className="mb-2 text-lg font-black">Support Email</h2>
  <a className="text-sm font-bold underline underline-offset-4" href={`mailto:${supportEmail}`}>{supportEmail}</a>
- <p className="mt-3 text-xs leading-5 text-[#666666] ">Target response time: 2 business days.</p>
+ <p className="mt-3 text-xs leading-5 text-[var(--text2)] ">Target response time: 2 business days.</p>
  </section>
  <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
  <ShieldCheck className="mb-4 h-6 w-6" />
  <h2 className="mb-2 text-lg font-black">Grievance Officer</h2>
  <p className="text-sm font-bold">Ventex Support Desk</p>
- <p className="mt-3 text-xs leading-5 text-[#666666] ">Use the form for escalation, privacy, and compliance requests.</p>
+ <p className="mt-3 text-xs leading-5 text-[var(--text2)] ">Use the form for escalation, privacy, and compliance requests.</p>
  </section>
  <section className="rounded-lg border border-black/10 bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
  <MapPin className="mb-4 h-6 w-6" />
  <h2 className="mb-2 text-lg font-black">Business Address</h2>
  <p className="text-sm font-bold">Ventex, Global Remote</p>
- <p className="mt-3 text-xs leading-5 text-[#666666] ">Add registered entity details before live commercial launch.</p>
+ <p className="mt-3 text-xs leading-5 text-[var(--text2)] ">Add registered entity details before live commercial launch.</p>
  </section>
  </div>
 

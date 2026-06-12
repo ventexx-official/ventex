@@ -39,7 +39,7 @@ function roleBadgeClass(role: string) {
  if (role === 'admin') return 'bg-purple-100 text-purple-700 border-purple-200';
  if (role === 'founder') return 'bg-emerald-100 text-emerald-700 border-emerald-200';
  if (role === 'investor') return 'bg-blue-100 text-blue-700 border-blue-200';
- return 'bg-[var(--bg)] text-[#666666] border-[var(--border)]';
+ return 'bg-[var(--bg)] text-[var(--text2)] border-[var(--border)]';
 }
 
 function formatJoined(dateStr?: string | null) {
@@ -179,7 +179,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  </div>
  {role === 'founder' && (
  <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4">
- <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-[#666666]">
+ <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-[var(--text2)]">
  <span>Founder XP</span>
  <span>{xp} XP</span>
  </div>
@@ -270,7 +270,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  </span>
  ) : null}
  {isOwnProfile && p.status ? (
- <span className="text-[11px] font-bold text-[#666666] bg-[var(--card-bg)] px-2 py-1 rounded-full border border-[var(--border)]">
+ <span className="text-[11px] font-bold text-[var(--text2)] bg-[var(--card-bg)] px-2 py-1 rounded-full border border-[var(--border)]">
  {p.status}
  </span>
  ) : null}
