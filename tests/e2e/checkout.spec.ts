@@ -8,15 +8,18 @@ test.describe('Marketplace Checkout E2E Flow', () => {
     // 2. Verify marketplace loaded
     await expect(page).toHaveURL(/.*marketplace/);
     
-    // 3. Find first product card and click it
-    const firstProduct = page.locator('.card').first();
-    if ((await firstProduct.count()) === 0) {
-      await expect(page.getByText(/No products listed yet|No products found/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Marketplace/i })).toBeVisible();
+
+    // 3. Either exercise the first product detail path or accept the valid empty marketplace state.
+    const emptyState = page.getByText(/No products listed yet|No products found/i).first();
+    const firstProductLink = page.locator('main a[href^="/marketplace/"]:not([href="/marketplace"])').first();
+    await expect(firstProductLink.or(emptyState)).toBeVisible({ timeout: 15000 });
+
+    if (await emptyState.isVisible()) {
       return;
     }
 
-    await expect(firstProduct).toBeVisible();
-    await firstProduct.click();
+    await firstProductLink.click();
 
     // 4. On product page, click Add to Cart
     const addToCartBtn = page.getByRole('button', { name: /Add to Cart/i });

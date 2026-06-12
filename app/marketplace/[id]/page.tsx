@@ -476,25 +476,24 @@ export default function ProductDetailPage() {
  setSubmittingQuestion(true);
 
  try {
- const qObj = {
- id: crypto.randomUUID(),
- user_name: currentUser.full_name || 'Anonymous',
- question: newQuestion,
- answer: null,
- date: new Date().toISOString()
- };
-
  const currentQa = Array.isArray(product.qa_data) ? product.qa_data : [];
- const fallbackQa = [...currentQa, qObj];
-
- const { data: savedQa, error } = await supabase.rpc('append_product_question', {
- target_product_id: product.id,
- question: qObj
+ const { data: { session } } = await supabase.auth.getSession();
+ const response = await fetch('/api/products/questions', {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
+ body: JSON.stringify({
+ productId: product.id,
+ question: newQuestion,
+ }),
  });
 
- if (error) throw error;
+ const result = await response.json().catch(() => ({}));
+ if (!response.ok) throw new Error(result?.error || 'Could not submit question');
 
- const updatedQa = Array.isArray(savedQa) ? savedQa : fallbackQa;
+ const updatedQa = Array.isArray(result.qa_data) ? result.qa_data : currentQa;
  setProduct({ ...product, qa_data: updatedQa });
  setNewQuestion('');
  } catch (err: any) {
