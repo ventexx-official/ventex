@@ -160,8 +160,10 @@ export default function Navbar() {
  const displayName = userProfile?.full_name || user?.email?.split('@')[0] || 'User';
  const initial = (displayName?.trim()?.[0] || 'U').toUpperCase();
 
+ const hideNavbar = !isHome && scrollDirection === 'down';
+
  return (
- <nav className={`fixed top-4 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled ? 'translate-y-1' : ''}`}>
+ <nav className={`fixed top-4 left-0 right-0 z-50 pointer-events-none transition-transform duration-500 ${hideNavbar ? '-translate-y-[150%]' : scrolled ? 'translate-y-1' : 'translate-y-0'}`}>
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <div className="grid grid-cols-[1fr_auto_1fr] items-center h-14 gap-4">
  {/* Left Pill - Logo */}
