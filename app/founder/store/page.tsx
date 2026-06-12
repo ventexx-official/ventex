@@ -8,7 +8,6 @@ import {
  LayoutDashboard,
  FileText,
  Store,
- Zap,
  Settings,
  ShoppingBag,
  DollarSign,
@@ -311,7 +310,6 @@ export default function FounderStorePage() {
  <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
  <NavItem icon={Store} label="My Store" active href="/founder/store" collapsed={sidebarCollapsed} />
  <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
- <NavItem icon={Zap} label="Booster Packs" href="/founder/boost" collapsed={sidebarCollapsed} />
  <NavItem icon={Settings} label="Settings" href="/founder/settings" collapsed={sidebarCollapsed} />
  </nav>
 
@@ -321,12 +319,11 @@ export default function FounderStorePage() {
  <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
  <NavItemMobile icon={Store} label="Store" active href="/founder/store" />
  <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
- <NavItemMobile icon={Zap} label="Boost" href="/founder/boost" />
  <NavItemMobile icon={Settings} label="Settings" href="/founder/settings" />
  </nav>
  </aside>
 
- {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN CONTENT Ã¢â€â‚¬Ã¢â€â‚¬ */}
+ {/* ── MAIN CONTENT ── */}
  <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
  <div className="max-w-6xl mx-auto space-y-8">
  
@@ -514,54 +511,27 @@ export default function FounderStorePage() {
  </div>
  </div>
 
- {/* Payouts card + schedule */}
+ {/* WhatsApp Orders section */}
  <div className="space-y-6">
- <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Payout Account</h2>
- <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-6 shadow-sm space-y-6">
+ <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">WhatsApp Orders</h2>
+ <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-6 shadow-sm space-y-4">
+ <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
+ <svg className="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
+ <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+ </svg>
+ </div>
  <div>
- <p className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest mb-2">Payout balance</p>
- <h3 className="text-3xl font-black text-[var(--text)]">
- ₹{(orders.reduce((acc, o) => acc + (o.seller_payout || 0), 0) / 100).toLocaleString()}
- </h3>
- <div className="flex items-center gap-1.5 text-xs text-[var(--text2)] mt-2 font-medium">
- <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
- <span>Calculated automatically (95% of total sales)</span>
+ <p className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest mb-1">Transaction Model</p>
+ <p className="text-sm font-semibold text-[var(--text)]">Direct P2P via WhatsApp</p>
  </div>
- </div>
-
- <div className="border-t-[0.5px] border-[var(--border)] pt-4 space-y-3">
- <div className="flex justify-between items-center text-xs font-bold">
- <span className="text-[var(--text2)]">Earnings (This Month)</span>
- <span className="text-[var(--text)]">
- ₹{(orders.reduce((acc, o) => {
- const orderMonth = new Date(o.created_at).getMonth();
- const currMonth = new Date().getMonth();
- return orderMonth === currMonth ? acc + (o.seller_payout || 0) : acc;
- }, 0) / 100).toLocaleString()}
- </span>
- </div>
- <div className="flex justify-between items-center text-xs font-bold">
- <span className="text-[var(--text2)]">Stripe Connect Status</span>
- <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-[9px] uppercase font-black tracking-wider border-[0.5px] border-emerald-200">
- Connected
- </span>
- </div>
- </div>
-
- <div className="bg-amber-50 border-[0.5px] border-amber-200 rounded-2xl p-4 flex items-start gap-2.5">
- <Clock className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
- <p className="text-xs text-amber-700 font-semibold leading-normal">
- <strong>7-day rolling payout schedule:</strong> Stripe processes payments dynamically. Funds arrive securely to your bank account weekly.
+ <p className="text-xs text-[var(--text2)] leading-relaxed">
+ Buyers contact you directly on WhatsApp. You agree on payment, delivery, and terms together. Ventex takes 0%.
+ </p>
+ <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+ <p className="text-xs text-emerald-700 font-semibold">
+ 💡 Make sure your WhatsApp number is set in <a href="/settings" className="underline">Settings</a> so buyers can reach you.
  </p>
  </div>
-
- <Link
- href="https://dashboard.stripe.com"
- target="_blank"
- className="block w-full text-center py-3.5 border-[0.5px] border-[var(--border)] rounded-2xl text-xs font-black text-[var(--text)] hover:bg-[var(--bg)] active:scale-95 transition-all"
- >
- Manage payout account →
- </Link>
  </div>
  </div>
  </div>

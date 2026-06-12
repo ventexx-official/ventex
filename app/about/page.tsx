@@ -78,6 +78,21 @@ export default function AboutPage() {
  </Link>
  </div>
  </section>
- </main>
+
+  {/* Support section */}
+  <section className="py-16 border-t border-[var(--border)] text-center">
+    <p className="text-[var(--text2)] text-sm mb-2">Support the mission</p>
+    <p className="text-[var(--text)] font-semibold mb-1">Ventex is free and always will be during early access.</p>
+    <p className="text-[var(--text2)] text-sm mb-6">If you believe in what we&apos;re building, a coffee goes a long way.</p>
+    <a
+      href="https://ko-fi.com/ventexx"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 bg-[#FF5E5B] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity"
+    >
+      ☕ Buy us a coffee →
+    </a>
+  </section>
+  </main>
  );
 }

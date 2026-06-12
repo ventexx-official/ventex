@@ -55,7 +55,7 @@ export default function RootLayout({
  <script
  dangerouslySetInnerHTML={{
  __html: `
- const t=localStorage.getItem('theme')||'light';
+ const t=localStorage.getItem('theme')||'dark';
  document.documentElement.classList.add('js');
  document.documentElement.setAttribute('data-theme',t);
  `,

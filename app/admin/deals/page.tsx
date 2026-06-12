@@ -88,7 +88,6 @@ export default function AdminDealsPage() {
  <div>
  <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--text3)]">Deal Flow</p>
  <h2 className="mt-2 text-3xl font-black text-[var(--text)]">Deals</h2>
- <p className="mt-3 text-sm text-[var(--text2)]">Fee collection activates post early access.</p>
  </div>
 
  <section className="grid gap-4 md:grid-cols-3">
@@ -104,17 +103,7 @@ export default function AdminDealsPage() {
  ))}
  </section>
 
- <section className="rounded-[24px] border border-amber-900/40 bg-amber-950/20 p-5">
- <h3 className="font-black text-amber-200">Post early access enforcement</h3>
- <div className="mt-3 grid gap-3 text-sm text-amber-100/80 md:grid-cols-3">
- <p>7 day overdue: conversation locked, pitch hidden from Discover, data room access revoked, and founder cannot create new pitches.</p>
- <p>14 day overdue: full account ban, pitch permanently delisted, founder added to blacklist, and investor gets 1 month credit.</p>
- <p>Partial 50% payment: conversation unlocks 3 more days.</p>
- </div>
- <p className="mt-3 text-xs font-bold uppercase tracking-[.14em] text-amber-300/80">
- {sevenDayOverdue.length} at 7+ days · {fourteenDayOverdue.length} at 14+ days
- </p>
- </section>
+
 
  <section className="overflow-x-auto rounded-[24px] border border-[0.5px] border-[var(--border)] bg-[var(--bg)]">
  <div className="border-b border-[0.5px] border-[var(--border)] p-4">
@@ -122,7 +111,7 @@ export default function AdminDealsPage() {
  </div>
  <table className="w-full min-w-[900px] text-left text-sm">
  <thead className="text-xs uppercase text-[var(--text3)]">
- <tr>{["Pitch", "Founder", "Investor", "Amount", "Fee", "Status", "Due", "Actions"].map((head) => <th key={head} className="p-4">{head}</th>)}</tr>
+ <tr>{["Pitch", "Founder", "Investor", "Amount", "Status", "Due", "Actions"].map((head) => <th key={head} className="p-4">{head}</th>)}</tr>
  </thead>
  <tbody>
  {deals.map((deal) => {
@@ -133,7 +122,6 @@ export default function AdminDealsPage() {
  <td className="p-4 text-[var(--text2)]">{deal.founder?.full_name || deal.founder?.email || "-"}</td>
  <td className="p-4 text-[var(--text2)]">{deal.investor?.full_name || deal.investor?.email || "-"}</td>
  <td className="p-4 text-[var(--text2)]">{money(Number(deal.agreed_amount || 0))}</td>
- <td className="p-4 text-amber-300">{money(Number(deal.fee_amount || 0))}</td>
  <td className="p-4">
  <span className="rounded-full bg-[var(--bg2)] px-3 py-1 text-xs font-black text-[var(--text)]">{deal.status}</span>
  {enforcement.overdueDays > 0 ? <p className="mt-2 text-[10px] font-bold text-red-300">{enforcement.overdueDays} days overdue</p> : null}
@@ -142,9 +130,6 @@ export default function AdminDealsPage() {
  <td className="p-4">
  <div className="flex flex-col items-start gap-2">
  {deal.pitch_id ? <Link href={`/pitch/${deal.pitch_id}`} className="text-violet-300 underline">View pitch</Link> : "-"}
- <button onClick={() => applySevenDayLock(deal)} className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-black text-[var(--text)]">Apply 7-day lock</button>
- <button onClick={() => markPartialPayment(deal)} className="rounded-lg bg-[var(--bg2)] px-3 py-2 text-xs font-black text-[var(--text)]">50% partial unlock</button>
- <button onClick={() => applyFounderBan(deal)} className="rounded-lg bg-red-600 px-3 py-2 text-xs font-black text-[var(--text)]">Ban + investor credit</button>
  </div>
  </td>
  </tr>

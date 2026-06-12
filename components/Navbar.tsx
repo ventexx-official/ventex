@@ -135,7 +135,7 @@ export default function Navbar() {
  { href: '/discover', label: 'Discover' },
  { href: '/marketplace', label: 'Marketplace' },
  { href: '/catalyst', label: 'Catalyst' },
- { href: '/pricing', label: 'Pricing' },
+ { href: '/events', label: 'Events' },
  ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

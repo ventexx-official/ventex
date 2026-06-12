@@ -39,6 +39,7 @@ export default function FounderSettingsPage() {
  // Profile states
  const [fullName, setFullName] = useState("");
  const [avatarUrl, setAvatarUrl] = useState("");
+ const [whatsappNumber, setWhatsappNumber] = useState("");
  const [isSeller, setIsSeller] = useState(false);
  const [stripeConnectId, setStripeConnectId] = useState("");
 
@@ -60,6 +61,7 @@ export default function FounderSettingsPage() {
  setUserProfile(profile);
  setFullName(profile.full_name || "");
  setAvatarUrl(profile.avatar_url || "");
+ setWhatsappNumber(profile.whatsapp_number || "");
  setIsSeller(profile.is_seller || false);
  setStripeConnectId(profile.stripe_connect_id || "");
  } else {
@@ -85,6 +87,7 @@ export default function FounderSettingsPage() {
  .update({
  full_name: fullName,
  avatar_url: avatarUrl,
+ whatsapp_number: whatsappNumber || null,
  is_seller: isSeller,
  stripe_connect_id: stripeConnectId || null,
  })
@@ -97,6 +100,7 @@ export default function FounderSettingsPage() {
  ...prev,
  full_name: fullName,
  avatar_url: avatarUrl,
+ whatsapp_number: whatsappNumber || null,
  is_seller: isSeller,
  stripe_connect_id: stripeConnectId || null,
  }));
@@ -247,6 +251,21 @@ export default function FounderSettingsPage() {
  placeholder="Enter your name"
  className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
  />
+ </div>
+
+ {/* WhatsApp Number */}
+ <div className="space-y-1.5">
+ <label className="block text-xs font-black text-[var(--text2)] uppercase tracking-widest">
+ WhatsApp Number <span className="text-red-400 ml-0.5">*</span>
+ </label>
+ <input
+ type="tel"
+ value={whatsappNumber}
+ onChange={(e) => setWhatsappNumber(e.target.value)}
+ placeholder="+91 XXXXX XXXXX"
+ className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] placeholder:font-normal placeholder:text-[var(--text2)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
+ />
+ <p className="text-[11px] text-[var(--text2)] font-medium">Buyers contact you directly. Include country code. (e.g. +91 98765 43210)</p>
  </div>
 
  <div className="space-y-2">

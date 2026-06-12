@@ -99,7 +99,7 @@ export default function AdminOverview() {
  });
 
  const { data: flagRows } = await supabase.from("feature_flags").select("key, enabled");
- const nextFlags = Object.fromEntries(FEATURE_FLAGS.map(([key]) => [key, false]));
+ const nextFlags = Object.fromEntries(FEATURE_FLAGS.map(([key]) => [key, key.includes('live')]));
  (flagRows || []).forEach((row: any) => {
  nextFlags[row.key] = !!row.enabled;
  });
@@ -189,37 +189,7 @@ export default function AdminOverview() {
  </p>
  </div>
 
- {/* Total Platform Fees */}
- <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)] rounded-[24px] p-5 relative overflow-hidden group">
- <div className="flex justify-between items-start">
- <div>
- <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Total Platform Commission</p>
- <h3 className="text-2xl font-black text-[var(--text)] mt-2 font-mono">${stats.totalFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
- </div>
- <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400">
- <DollarSign size={20} />
- </div>
- </div>
- <p className="text-xs text-[var(--text2)] mt-4 font-semibold">
- All-time fee logs (5% splits)
- </p>
- </div>
 
- {/* Revenue This Month */}
- <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)] rounded-[24px] p-5 relative overflow-hidden group">
- <div className="flex justify-between items-start">
- <div>
- <p className="text-xs font-bold text-[var(--text2)] tracking-wider uppercase">Revenue This Month</p>
- <h3 className="text-2xl font-black text-[var(--text)] mt-2 font-mono">${stats.thisMonthRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
- </div>
- <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400">
- <Calendar size={20} />
- </div>
- </div>
- <p className="text-xs text-violet-400 mt-4 font-semibold">
- Current calendar month fees
- </p>
- </div>
 
  {/* Critical Flags/Bans */}
  <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)] rounded-[24px] p-5 relative overflow-hidden group">
