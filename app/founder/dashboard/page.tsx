@@ -21,7 +21,6 @@ import {
  LayoutDashboard, 
  FileText, 
  Store, 
- Zap, 
  Settings, 
  Eye, 
  MessageSquare, 
@@ -448,7 +447,6 @@ export default function FounderDashboard() {
  <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
  <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
  <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
- <NavItem icon={Zap} label="Booster Packs" href="/founder/boost" collapsed={sidebarCollapsed} />
  <NavItem icon={Settings} label="Settings" href="/founder/settings" collapsed={sidebarCollapsed} />
  </nav>
 
@@ -458,7 +456,6 @@ export default function FounderDashboard() {
  <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
  <NavItemMobile icon={Store} label="Store" href="/founder/store" />
  <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
- <NavItemMobile icon={Zap} label="Boost" href="/founder/boost" />
  <NavItemMobile icon={Settings} label="Settings" href="/founder/settings" />
  </nav>
 
@@ -798,16 +795,6 @@ export default function FounderDashboard() {
 
  {/* SIDE CONTENT */}
  <div className="space-y-8">
- <div className="bg-[var(--text)] rounded-[32px] p-8 text-[var(--text)] relative overflow-hidden group">
- <div className="relative z-10">
- <h3 className="text-xl font-black mb-2 uppercase tracking-tighter">Boost your pitch</h3>
- <p className="text-[var(--text)]/60 text-sm mb-6 leading-relaxed">Get 10x more eyes on your startup with premium booster packs.</p>
- <Link href="/founder/boost" className="w-full py-3 bg-[var(--card-bg)] text-[var(--text)] rounded-2xl font-bold text-sm hover:bg-[var(--bg3)] active:scale-95 transition-all flex items-center justify-center gap-2">
- Buy booster pack <Zap className="w-4 h-4" />
- </Link>
- </div>
- <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-[var(--card-bg)]/5 rounded-full blur-2xl group-hover:bg-[var(--card-bg)]/10 transition-all duration-500"></div>
- </div>
 
  <div>
  <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5">Investor Interests</h2>
