@@ -228,7 +228,7 @@ export default function OrdersDashboard() {
  placeholder="Search products or sellers..." 
  value={searchQuery}
  onChange={e => setSearchQuery(e.target.value)}
- className="w-full pl-11 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[var(--text)] focus:border-[#222222] dark:focus:border-white transition-all text-[var(--text)] placeholder-[#888888]"
+ className="w-full pl-11 pr-4 py-3 bg-[var(--bg)] border-[0.5px] border-transparent rounded-2xl text-sm font-semibold focus:outline-none focus:bg-[var(--card-bg)] dark:focus:bg-[var(--bg3)] focus:border-[#222222] dark:focus:border-white transition-all text-[var(--text)] placeholder-[#888888]"
  />
  </div>
  </div>
