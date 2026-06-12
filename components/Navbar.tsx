@@ -197,9 +197,6 @@ export default function Navbar() {
  {/* Right Pill - Actions - collapses on non-home scroll-down */}
  <div className={`flex justify-end gap-2 transition-all duration-500 ${pillsHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'}`}>
  <div className="pointer-events-auto flex items-center h-14 px-3 rounded-full border transition-all duration-300 shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px] gap-2" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
- <div className="hidden sm:block">
- <ThemeToggle />
- </div>
  {user ? (
  <>
  <Link

@@ -21,7 +21,12 @@ export default function SettingsRedirectPage() {
  .eq('id', session.user.id)
  .single();
 
- const next = profile?.role === 'admin' ? '/admin/users' : '/founder/settings';
+ const next =
+ profile?.role === 'admin'
+ ? '/admin/users'
+ : profile?.role === 'investor'
+ ? '/investor/settings'
+ : '/founder/settings';
  router.replace(next);
  };
  run();

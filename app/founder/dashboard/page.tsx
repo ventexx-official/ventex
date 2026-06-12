@@ -84,6 +84,16 @@ export default function FounderDashboard() {
  const { data: profile } = await supabase
  .from('users').select('*').eq('id', session.user.id).single();
 
+ if (profile?.role === 'investor') {
+ router.replace('/investor/portal');
+ return;
+ }
+
+ if (profile?.role === 'admin') {
+ router.replace('/admin/users');
+ return;
+ }
+
  // Use profile if available, otherwise build one from session data
  setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
 
