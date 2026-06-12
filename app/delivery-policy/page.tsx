@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function DeliveryPolicyPage() {
  const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || emailFor("support");
  return (
- <main className="min-h-screen bg-[var(--bg)] px-6 py-16 text-neutral-300">
+ <main className="min-h-screen bg-[var(--bg)] px-6 py-16 text-[var(--text)]">
  <article className="mx-auto max-w-4xl space-y-8">
- <header className="border-b border-neutral-800 pb-8">
+ <header className="border-b border-[var(--border)] pb-8">
  <p className="mb-3 font-mono text-xs uppercase tracking-[.16em] text-violet-400">Marketplace</p>
  <h1 className="text-4xl font-black uppercase tracking-tight text-[var(--text)] md:text-5xl">Delivery Policy</h1>
  <p className="mt-4 text-sm text-[var(--text3)]">Last updated: May 2026</p>

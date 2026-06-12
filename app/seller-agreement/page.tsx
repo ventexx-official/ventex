@@ -57,10 +57,10 @@ export default function SellerAgreementPage() {
  ];
 
  return (
- <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
+ <div className="bg-[var(--bg)] text-[var(--text)] min-h-screen py-16 md:py-24">
  <div className="max-w-4xl mx-auto px-6 space-y-12">
  {/* Header */}
- <div className="space-y-4 border-b border-neutral-900 pb-10">
+ <div className="space-y-4 border-b border-[var(--border)] pb-10">
  <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
  Marketplace Charter
  </div>
@@ -84,7 +84,7 @@ export default function SellerAgreementPage() {
  </div>
 
  {/* Introduction */}
- <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+ <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-sm leading-relaxed text-[var(--text2)]">
  This Seller Agreement governs your participation as a merchant on the Ventex digital marketplace. By listing any product, template, or code package, you agree to comply with our commissions policy, file verification processes, and anti-fraud holds.
  </div>
 
@@ -95,7 +95,7 @@ export default function SellerAgreementPage() {
  return (
  <div
  key={index}
- className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
+ className="p-8 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--border)] transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
  >
  <div className="w-12 h-12 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0 group-hover:bg-violet-600/20 transition-all duration-300">
  <Icon className="w-6 h-6" />
@@ -104,7 +104,7 @@ export default function SellerAgreementPage() {
  <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
  {clause.title}
  </h2>
- <p className="text-neutral-400 text-sm leading-relaxed">
+ <p className="text-[var(--text2)] text-sm leading-relaxed">
  {clause.desc}
  </p>
  </div>
@@ -114,7 +114,7 @@ export default function SellerAgreementPage() {
  </div>
 
  {/* Escrow Banner */}
- <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-neutral-900 text-center space-y-4">
+ <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-[var(--border)] text-center space-y-4">
  <Landmark className="w-8 h-8 text-violet-500 mx-auto" />
  <h3 className="text-base font-bold text-[var(--text)] tracking-wider uppercase font-mono">
  Secure Escrow Integration
@@ -125,7 +125,7 @@ export default function SellerAgreementPage() {
  </div>
 
  {/* Compliance Footer */}
- <div className="text-center pt-6 border-t border-neutral-900 text-xs text-[var(--text3)] font-mono">
+ <div className="text-center pt-6 border-t border-[var(--border)] text-xs text-[var(--text3)] font-mono">
  <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
  </div>
  </div>

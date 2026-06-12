@@ -316,7 +316,7 @@ export default function MarketplacePage() {
  onChange={() => setSelectedCategory(cat)}
  className="w-4 h-4 text-[var(--text)] border-gray-300 focus:ring-[#222222]" 
  />
- <span className={`text-sm font-medium transition-colors ${selectedCategory === cat ? 'text-[var(--text)] font-bold' : 'text-[var(--text2)] group-hover:text-[var(--text)] dark:group-hover:text-gray-300'}`}>
+ <span className={`text-sm font-medium transition-colors ${selectedCategory === cat ? 'text-[var(--text)] font-bold' : 'text-[var(--text2)] group-hover:text-[var(--text)] dark:group-hover:text-[var(--text3)]'}`}>
  {cat}
  </span>
  </label>
@@ -498,7 +498,7 @@ export default function MarketplacePage() {
 
  <div className="flex items-center gap-2 mb-3">
  <div className="flex items-center gap-1">
- <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-[var(--text2)]'}`} />
+ <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-[var(--text3)] dark:text-[var(--text2)]'}`} />
  <span className="text-xs font-bold text-[var(--text)] ">{product.average_rating > 0 ? product.average_rating.toFixed(1) : 'New'}</span>
  </div>
  {product.review_count > 0 && (

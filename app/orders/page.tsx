@@ -350,11 +350,11 @@ export default function OrdersDashboard() {
  {/* Order Info Row */}
  <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#F2F2F0] dark:border-[#222222] text-[10px] text-[var(--text2)] font-bold uppercase tracking-wider">
  <div className="space-y-0.5">
- <span className="text-[9px] font-medium block text-neutral-400">Purchased On</span>
+ <span className="text-[9px] font-medium block text-[var(--text2)]">Purchased On</span>
  <span className="text-[var(--text)] flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {dateStr}</span>
  </div>
  <div className="space-y-0.5">
- <span className="text-[9px] font-medium block text-neutral-400">Total Paid</span>
+ <span className="text-[9px] font-medium block text-[var(--text2)]">Total Paid</span>
  <span className="text-xs font-black text-[var(--text)] ">₹{order.amount_paid.toLocaleString()}</span>
  </div>
  </div>
@@ -451,7 +451,7 @@ export default function OrdersDashboard() {
  className={`w-8 h-8 transition-colors ${
  star <= (hoverRating !== null ? hoverRating : rating) 
  ? 'fill-amber-400 text-amber-400' 
- : 'text-gray-300 dark:text-[var(--text)]'
+ : 'text-[var(--text3)] dark:text-[var(--text)]'
  }`} 
  />
  </button>

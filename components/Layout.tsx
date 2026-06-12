@@ -23,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       {!hideNav && <Footer />}
+      {pathname === '/' && <FloatingStatusRail />}
     </div>
   );
 }

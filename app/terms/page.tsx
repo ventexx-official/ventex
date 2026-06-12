@@ -88,10 +88,10 @@ export default function TermsPage() {
  ];
 
  return (
- <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
+ <div className="bg-[var(--bg)] text-[var(--text)] min-h-screen py-16 md:py-24">
  <div className="max-w-4xl mx-auto px-6 space-y-12">
  {/* Header */}
- <div className="space-y-4 border-b border-neutral-900 pb-10">
+ <div className="space-y-4 border-b border-[var(--border)] pb-10">
  <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
  Legal Agreement
  </div>
@@ -104,12 +104,12 @@ export default function TermsPage() {
  </div>
 
  {/* Introduction */}
- <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+ <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-sm leading-relaxed text-[var(--text2)]">
  Welcome to Ventex. Please read these Terms of Service carefully before utilizing our marketplace or pitching services. These terms establish a legally binding contract between you and Ventex regarding platform access, commissions, security standards, and dispute handling.
  </div>
 
  {/* Table of Contents Quicklinks */}
- <div className="p-6 rounded-xl bg-[var(--bg)] border border-neutral-900">
+ <div className="p-6 rounded-xl bg-[var(--bg)] border border-[var(--border)]">
  <h2 className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-4 font-mono">
  Table of Contents
  </h2>
@@ -134,7 +134,7 @@ export default function TermsPage() {
  <article
  key={sec.id}
  id={sec.id}
- className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800/80 transition-all duration-300 space-y-4 scroll-mt-20 group"
+ className="p-8 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--border)]/80 transition-all duration-300 space-y-4 scroll-mt-20 group"
  >
  <div className="flex items-center gap-3">
  <div className="w-10 h-10 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 group-hover:bg-violet-600/20 transition-all duration-300">
@@ -144,7 +144,7 @@ export default function TermsPage() {
  {sec.title}
  </h2>
  </div>
- <p className="text-neutral-400 text-sm leading-relaxed font-sans">
+ <p className="text-[var(--text2)] text-sm leading-relaxed font-sans">
  {sec.content}
  </p>
  </article>
@@ -153,7 +153,7 @@ export default function TermsPage() {
  </div>
 
  {/* Compliance Footer */}
- <div className="text-center pt-10 border-t border-neutral-900 text-xs text-[var(--text3)] font-mono space-y-2">
+ <div className="text-center pt-10 border-t border-[var(--border)] text-xs text-[var(--text3)] font-mono space-y-2">
  <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
  <p>For legal inquiries, contact {legalEmail}</p>
  </div>

@@ -39,7 +39,7 @@ export default function LivePage() {
  <div>
  <p className="mono mb-3 text-xs uppercase tracking-[.16em] text-violet-300">Ventex Live</p>
  <h1 className="text-5xl font-black tracking-tight">Coming Soon</h1>
- <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-neutral-400">Monthly pitch nights are built but disabled until the owner enables Ventex Live from Admin → Feature Flags.</p>
+ <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Monthly pitch nights are built but disabled until the owner enables Ventex Live from Admin → Feature Flags.</p>
  </div>
  </main>
  );

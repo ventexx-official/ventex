@@ -861,7 +861,7 @@ export default function ProductDetailPage() {
  </p>
  <div className="flex items-center justify-center gap-1 my-2 text-amber-400">
  {[1,2,3,4,5].map(star => (
- <Star key={star} className={`w-5 h-5 ${star <= Math.round(product.average_rating || 0) ? 'fill-current' : 'text-gray-200 dark:text-[var(--text)]'}`} />
+ <Star key={star} className={`w-5 h-5 ${star <= Math.round(product.average_rating || 0) ? 'fill-current' : 'text-[var(--border2)] dark:text-[var(--text)]'}`} />
  ))}
  </div>
  <p className="text-xs text-[var(--text2)] font-bold uppercase tracking-wider">
@@ -882,7 +882,7 @@ export default function ProductDetailPage() {
  style={{ width: `${pct}%` }}
  ></div>
  </div>
- <span className="w-8 text-right font-bold text-gray-400 dark:text-[var(--text3)]">{pct}%</span>
+ <span className="w-8 text-right font-bold text-[var(--text2)] dark:text-[var(--text3)]">{pct}%</span>
  </div>
  );
  })}
@@ -943,7 +943,7 @@ export default function ProductDetailPage() {
  </div>
  </div>
  <div className="flex items-center gap-0.5 text-amber-400">
- {[1,2,3,4,5].map(star => <Star key={star} className={`w-3.5 h-3.5 ${star <= review.rating ? 'fill-current' : 'text-gray-200 dark:text-[var(--text)]'}`} />)}
+ {[1,2,3,4,5].map(star => <Star key={star} className={`w-3.5 h-3.5 ${star <= review.rating ? 'fill-current' : 'text-[var(--border2)] dark:text-[var(--text)]'}`} />)}
  </div>
  </div>
  <p className="text-sm text-[var(--text2)] ">{review.comment}</p>
@@ -1119,7 +1119,7 @@ export default function ProductDetailPage() {
  className={`w-10 h-10 transition-colors ${
  star <= (hoverRating || reviewRating) 
  ? 'text-amber-400 fill-current' 
- : 'text-gray-200 dark:text-[var(--text)]'
+ : 'text-[var(--border2)] dark:text-[var(--text)]'
  }`}
  />
  </button>

@@ -48,10 +48,10 @@ export default function PrivacyPage() {
  ];
 
  return (
- <div className="bg-[var(--bg)] text-neutral-300 min-h-screen py-16 md:py-24">
+ <div className="bg-[var(--bg)] text-[var(--text)] min-h-screen py-16 md:py-24">
  <div className="max-w-4xl mx-auto px-6 space-y-12">
  {/* Header */}
- <div className="space-y-4 border-b border-neutral-900 pb-10">
+ <div className="space-y-4 border-b border-[var(--border)] pb-10">
  <div className="text-xs font-mono tracking-widest text-violet-400 uppercase">
  Data Governance
  </div>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
  </div>
 
  {/* Introduction */}
- <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-neutral-900 text-sm leading-relaxed text-neutral-400">
+ <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-sm leading-relaxed text-[var(--text2)]">
  At Ventex, we are committed to safeguarding your personal information, financial data, and intellectual property. This Privacy Policy details what information we collect, how it is processed by our secure infrastructure, and the complete privacy rights you possess under modern Indian data protection frameworks.
  </div>
 
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
  return (
  <div
  key={index}
- className="p-8 rounded-xl bg-[var(--card-bg)] border border-neutral-900 hover:border-neutral-800 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
+ className="p-8 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] hover:border-[var(--border)] transition-all duration-300 flex flex-col md:flex-row gap-6 items-start group"
  >
  <div className="w-12 h-12 rounded-lg bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0 group-hover:bg-violet-600/20 transition-all duration-300">
  <Icon className="w-6 h-6" />
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
  <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
  {point.title}
  </h2>
- <p className="text-neutral-400 text-sm leading-relaxed">
+ <p className="text-[var(--text2)] text-sm leading-relaxed">
  {point.desc}
  </p>
  </div>
@@ -94,24 +94,24 @@ export default function PrivacyPage() {
  </div>
 
  {/* Grievance Officer Section */}
- <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-neutral-900 space-y-6">
+ <div className="p-8 rounded-xl bg-[var(--card-bg)]/60 border border-[var(--border)] space-y-6">
  <div className="flex items-center gap-3">
  <Landmark className="w-5 h-5 text-violet-400" />
  <h2 className="text-lg font-bold text-[var(--text)] tracking-wide uppercase font-mono">
  Grievance Redressal
  </h2>
  </div>
- <div className="text-neutral-400 text-sm leading-relaxed space-y-3">
+ <div className="text-[var(--text2)] text-sm leading-relaxed space-y-3">
  <p>
  In accordance with the India DPDP Act 2023, Ventex has designated a Grievance Officer to address any questions, feedback, or complaints regarding our data practices or to coordinate data principal requests.
  </p>
- <div className="pt-3 border-t border-neutral-900/60 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono text-[var(--text3)]">
+ <div className="pt-3 border-t border-[var(--border)]/60 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono text-[var(--text3)]">
  <div>
- <p className="font-bold text-neutral-400">Designation:</p>
+ <p className="font-bold text-[var(--text2)]">Designation:</p>
  <p>Data Protection & Grievance Officer</p>
  </div>
  <div>
- <p className="font-bold text-neutral-400">Location:</p>
+ <p className="font-bold text-[var(--text2)]">Location:</p>
  <p>Kozhikode, Kerala, India</p>
  </div>
  </div>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
  </div>
 
  {/* Contact Block */}
- <div className="p-6 rounded-xl border border-neutral-900 bg-gradient-to-r from-violet-950/10 to-neutral-900/20 flex flex-col sm:flex-row justify-between items-center gap-6">
+ <div className="p-6 rounded-xl border border-[var(--border)] bg-gradient-to-r from-violet-950/10 to-neutral-900/20 flex flex-col sm:flex-row justify-between items-center gap-6">
  <div className="space-y-1 text-center sm:text-left">
  <h3 className="font-bold text-[var(--text)] text-sm uppercase font-mono tracking-wide">
  Have Questions?
@@ -137,7 +137,7 @@ export default function PrivacyPage() {
  </div>
 
  {/* Compliance Footer */}
- <div className="text-center pt-6 border-t border-neutral-900 text-xs text-[var(--text3)] font-mono">
+ <div className="text-center pt-6 border-t border-[var(--border)] text-xs text-[var(--text3)] font-mono">
  <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
  </div>
  </div>

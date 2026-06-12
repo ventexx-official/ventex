@@ -344,7 +344,7 @@ function OrderConfirmationDetails() {
  className={`w-8 h-8 transition-colors ${
  star <= (hoverRating !== null ? hoverRating : rating) 
  ? 'fill-amber-400 text-amber-400' 
- : 'text-gray-300 dark:text-[var(--text)]'
+ : 'text-[var(--text3)] dark:text-[var(--text)]'
  }`} 
  />
  </button>
