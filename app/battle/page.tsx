@@ -156,7 +156,7 @@ export default function BattlePage() {
  const pct = totalVotes ? Math.round(((entry.votes || 0) / totalVotes) * 100) : 0;
  return (
  <article key={entry.pitch_id} className="rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
- <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[var(--text)] text-xl font-black text-[var(--text)]">
+ <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[var(--text)] text-xl font-black text-[var(--bg)]">
  {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="h-full w-full object-cover" /> : (pitch.title || 'P')[0]}
  </div>
  <h2 className="mt-4 line-clamp-2 min-h-[3rem] text-lg font-black leading-tight text-[var(--text)]">{pitch.title || 'Untitled pitch'}</h2>
@@ -168,7 +168,7 @@ export default function BattlePage() {
  <button
  onClick={() => vote(entry)}
  disabled={!!votedId}
- className="mt-4 w-full rounded-2xl bg-[var(--text)] py-3 text-sm font-black text-[var(--text)] disabled:bg-[#d4d4d4]"
+ className="mt-4 w-full rounded-2xl bg-[var(--text)] py-3 text-sm font-black text-[var(--bg)] disabled:bg-[#d4d4d4]"
  >
  {votedId === entry.pitch_id ? 'Voted' : votedId ? 'Vote locked' : 'Vote'}
  </button>

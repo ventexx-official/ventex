@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import { generatePitchSummary } from '@/lib/claude';
-import { supabase } from '@/lib/supabase';
-import { createClient } from '@supabase/supabase-js';
 import { BASE_URL } from '@/lib/site';
+import { createSupabaseAdmin } from '@/lib/supabase-admin';
+import { isUuid, requireAdmin, requireUser } from '@/lib/api-security';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabaseAdmin = createSupabaseAdmin();
 
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   try {
     const baseUrl = BASE_URL;
     await fetch(`${baseUrl}/api/emails`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(process.env.INTERNAL_API_SECRET ? { 'x-internal-secret': process.env.INTERNAL_API_SECRET } : {}),
+      },
       body: JSON.stringify({ type, recipientEmail, data }),
     });
   } catch (e) {
@@ -27,13 +27,40 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { pitchId, title, tagline, problem, solution, unique_insight, tam, country, stage, milestones, mrr } = body;
 
-    if (!pitchId) {
+    if (!isUuid(pitchId)) {
       return NextResponse.json({ error: 'Pitch ID is required' }, { status: 400 });
+    }
+
+    const { data: pitch, error: pitchError } = await supabaseAdmin
+      .from('pitches')
+      .select('id, founder_id, title, tagline, problem, solution, unique_insight, tam, country, company_stage, milestones, mrr')
+      .eq('id', pitchId)
+      .single();
+
+    if (pitchError || !pitch) {
+      return NextResponse.json({ error: 'Pitch not found' }, { status: 404 });
+    }
+
+    const adminAuth = await requireAdmin(request);
+    if (adminAuth.error) {
+      const userAuth = await requireUser(request);
+      if (userAuth.error || userAuth.user?.id !== pitch.founder_id) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     try {
       const summary = await generatePitchSummary({
-        title, tagline, problem, solution, unique_insight, tam, country, stage, milestones, mrr
+        title: title || pitch.title,
+        tagline: tagline || pitch.tagline,
+        problem: problem || pitch.problem,
+        solution: solution || pitch.solution,
+        unique_insight: unique_insight || pitch.unique_insight,
+        tam: tam || pitch.tam,
+        country: country || pitch.country,
+        stage: stage || pitch.company_stage,
+        milestones: milestones || pitch.milestones,
+        mrr: mrr || pitch.mrr,
       });
 
       // Attempt to save summary to database
@@ -68,9 +95,9 @@ export async function POST(request: Request) {
       console.error('Claude API failed:', claudeError);
       
       // Fallback: use tagline if Claude fails so submission is never blocked
-      const fallbackSummary = tagline || 'A promising new startup entering the market.';
+      const fallbackSummary = tagline || pitch.tagline || 'A promising new startup entering the market.';
       
-      await supabase
+      await supabaseAdmin
         .from('pitches')
         .update({ ai_summary: fallbackSummary })
         .eq('id', pitchId);

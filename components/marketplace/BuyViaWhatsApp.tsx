@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { generateDealCode, buildWhatsAppMessage, openWhatsApp } from '@/lib/whatsapp';
+import { supabase } from '@/lib/supabase';
 
 interface BuyViaWhatsAppProps {
   product: {
@@ -33,14 +34,17 @@ export default function BuyViaWhatsApp({ product, buyer }: BuyViaWhatsAppProps) 
 
     try {
       const code = generateDealCode(product.id);
+      const { data: { session } } = await supabase.auth.getSession();
 
       const res = await fetch('/api/purchase-intent', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({
           deal_code: code,
           product_id: product.id,
-          buyer_id: buyer.id || null,
           buyer_email: buyer.email,
           buyer_name: buyer.name,
           seller_id: product.seller_id,

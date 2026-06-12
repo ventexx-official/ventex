@@ -87,13 +87,13 @@ export default function InvestorSettingsPage() {
  <p className="mt-2 text-sm font-medium text-[var(--text2)]">Protect your account with an authenticator app.</p>
  <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
  <span className="text-xs font-black uppercase tracking-widest text-[var(--text2)]">Status: {twoFactorEnabled ? 'Enabled' : 'Not enabled'}</span>
- <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--text)] disabled:opacity-50">
+ <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--bg)] disabled:opacity-50">
  {enrolling2fa ? 'Starting...' : 'Enable 2FA'}
  </button>
  </div>
  </section>
 
- <button onClick={save} disabled={saving} className="mt-8 rounded-2xl bg-[var(--text)] px-6 py-3 text-sm font-black text-[var(--text)] disabled:opacity-50">
+ <button onClick={save} disabled={saving} className="mt-8 rounded-2xl bg-[var(--text)] px-6 py-3 text-sm font-black text-[var(--bg)] disabled:opacity-50">
  {saving ? 'Saving...' : 'Save thesis'}
  </button>
  </main>

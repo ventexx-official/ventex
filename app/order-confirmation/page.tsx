@@ -179,7 +179,7 @@ function OrderConfirmationDetails() {
  <p className="text-[var(--text2)] mb-8 max-w-sm mx-auto">We couldn't retrieve the details for this checkout session. Please check your account dashboard for order history.</p>
  <Link 
  href="/marketplace" 
- className="inline-flex items-center gap-2 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors"
+ className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--bg)] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors"
  >
  Browse Marketplace <ArrowRight className="w-4 h-4" />
  </Link>
@@ -296,7 +296,7 @@ function OrderConfirmationDetails() {
  </Link>
  <Link 
  href="/marketplace" 
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md flex items-center gap-1.5"
+ className="bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md flex items-center gap-1.5"
  >
  Marketplace <ChevronRight className="w-4 h-4" />
  </Link>
@@ -367,7 +367,7 @@ function OrderConfirmationDetails() {
  <button 
  onClick={handleSubmitReview}
  disabled={submittingReview || !comment.trim()}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
  >
  {submittingReview ? 'Submitting Review...' : 'Submit Review'}
  </button>

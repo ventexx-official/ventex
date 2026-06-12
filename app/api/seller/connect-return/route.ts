@@ -1,27 +1,28 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { createClient } from '@supabase/supabase-js';
+import { createSupabaseAdmin } from '@/lib/supabase-admin';
+import { getRequestOrigin } from '@/lib/api-security';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabaseAdmin = createSupabaseAdmin();
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const accountId = searchParams.get('account');
-  const userId = searchParams.get('userId');
 
-  const origin = req.headers.get('origin') ||
-    (req.url.startsWith('http') ? new URL(req.url).origin : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
+  const origin = getRequestOrigin(req);
 
-  if (!accountId || !userId) {
+  if (!accountId) {
     return NextResponse.redirect(`${origin}/founder/become-seller?step=stripe&error=missing_params`);
   }
 
   try {
     // Retrieve the account to check onboarding status
     const account = await stripe.accounts.retrieve(accountId);
+    const userId = typeof account.metadata?.ventex_user_id === 'string' ? account.metadata.ventex_user_id : null;
+
+    if (!userId) {
+      return NextResponse.redirect(`${origin}/founder/become-seller?step=stripe&error=account_mismatch`);
+    }
 
     if (account.charges_enabled) {
       // Fully onboarded  -  mark as seller

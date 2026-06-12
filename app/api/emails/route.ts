@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { resend, FROM_EMAIL, VENTEX_URL } from '@/lib/resend';
+import { rateLimit } from '@/lib/rate-limit';
+import { requireInternalSecret, requireUser } from '@/lib/api-security';
 
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ HTML Template Builder Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
@@ -82,6 +84,32 @@ type EmailType =
   | 'live_investor_application'
   | 'build_request'
   | 'weekly_digest';
+
+const PUBLIC_EMAIL_TYPES: EmailType[] = [
+  'contact_submission',
+  'catalyst_application',
+  'live_founder_application',
+  'live_investor_application',
+  'build_request',
+];
+
+function escapeHtml(value: unknown) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function sanitizeData(input: Record<string, any>) {
+  return Object.fromEntries(
+    Object.entries(input || {}).map(([key, value]) => [
+      key,
+      typeof value === 'string' ? escapeHtml(value).slice(0, 2000) : value,
+    ])
+  );
+}
 
 function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
@@ -248,9 +276,17 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 // Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ API Handler Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 export async function POST(req: Request) {
+  const { success, remaining } = rateLimit(req, 20, 60_000);
+  if (!success) {
+    return new NextResponse('Too many requests. Please try again later.', {
+      status: 429,
+      headers: { 'Retry-After': '60', 'X-RateLimit-Remaining': String(remaining) },
+    });
+  }
+
   try {
     const body = await req.json();
-    const { type, recipientEmail, data } = body as {
+    const { type, recipientEmail, data: rawData } = body as {
       type: EmailType;
       recipientEmail: string;
       data: Record<string, any>;
@@ -259,6 +295,15 @@ export async function POST(req: Request) {
     if (!type || !recipientEmail) {
       return NextResponse.json({ error: 'Missing type or recipientEmail' }, { status: 400 });
     }
+
+    if (!PUBLIC_EMAIL_TYPES.includes(type) && !requireInternalSecret(req)) {
+      const auth = await requireUser(req);
+      if (auth.error || !auth.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
+    const data = sanitizeData(rawData || {});
 
     if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 're_placeholder') {
       // Log in dev when key not set

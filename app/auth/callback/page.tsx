@@ -67,7 +67,7 @@ export default function AuthCallback() {
  <p className="text-sm text-[var(--text2)] mb-6">{error}</p>
  <button 
  onClick={() => router.push('/login')}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium"
+ className="bg-[var(--text)] text-[var(--bg)] px-6 py-2 rounded-full font-medium"
  >
  Return to login
  </button>

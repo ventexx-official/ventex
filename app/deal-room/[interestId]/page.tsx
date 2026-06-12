@@ -241,7 +241,7 @@ export default function DealRoomChat() {
  </p>
  <button 
  onClick={() => router.push('/discover')}
- className="w-full py-3 bg-[var(--text)] hover:bg-black text-[var(--text)] font-bold rounded-2xl text-sm transition-all"
+ className="w-full py-3 bg-[var(--text)] hover:bg-black text-[var(--bg)] font-bold rounded-2xl text-sm transition-all"
  >
  Return to Discover
  </button>

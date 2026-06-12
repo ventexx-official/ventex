@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { BASE_URL } from '@/lib/site';
+import { createSupabaseAdmin } from '@/lib/supabase-admin';
+import { requireInternalSecret, requireUser } from '@/lib/api-security';
 
 /**
  * Server-side trigger endpoint for emailing founders/investors.
@@ -16,22 +17,29 @@ import { BASE_URL } from '@/lib/site';
  *   - investor_interest → emails pitch founder
  */
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabaseAdmin = createSupabaseAdmin();
 
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   const baseUrl = BASE_URL;
   await fetch(`${baseUrl}/api/emails`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(process.env.INTERNAL_API_SECRET ? { 'x-internal-secret': process.env.INTERNAL_API_SECRET } : {}),
+    },
     body: JSON.stringify({ type, recipientEmail, data }),
   });
 }
 
 export async function POST(req: Request) {
   try {
+    if (!requireInternalSecret(req)) {
+      const auth = await requireUser(req);
+      if (auth.error || !auth.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
     const body = await req.json();
     const { event, payload } = body;
 

@@ -767,7 +767,7 @@ export default function ProductDetailPage() {
  <div className="mt-auto space-y-3">
  {isCustom ? (
  <>
- <button onClick={handleRequestWork} className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
+ <button onClick={handleRequestWork} className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10">
  Request Work
  </button>
  </>
@@ -783,7 +783,7 @@ export default function ProductDetailPage() {
  <button 
  onClick={handleBuyNow}
  disabled={isAddingToCart || addedToCart || isCheckingOut}
- className="flex-1 bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+ className="flex-1 bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
  >
  {isCheckingOut ? 'Checking out...' : 'Buy Now'}
  </button>
@@ -898,7 +898,7 @@ export default function ProductDetailPage() {
  setReviewComment('');
  setIsReviewModalOpen(true);
  }}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
  >
  Write a Review
  </button>
@@ -979,7 +979,7 @@ export default function ProductDetailPage() {
  <button 
  onClick={submitQuestion}
  disabled={!newQuestion.trim() || submittingQuestion}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
+ className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 transition-colors"
  >
  {submittingQuestion ? 'Posting...' : 'Ask'}
  </button>
@@ -1082,7 +1082,7 @@ export default function ProductDetailPage() {
  <button 
  onClick={submitRequest}
  disabled={submittingRequest || !requirements.trim()}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
  >
  {submittingRequest ? 'Sending...' : 'Send Request'}
  </button>
@@ -1151,7 +1151,7 @@ export default function ProductDetailPage() {
  <button 
  onClick={submitReview}
  disabled={submittingReview || reviewRating === 0 || reviewComment.trim().length < 10 || reviewComment.length > 500}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
  >
  {submittingReview ? 'Submitting...' : 'Submit Review'}
  </button>

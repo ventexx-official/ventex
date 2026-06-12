@@ -1,19 +1,18 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { createClient } from '@supabase/supabase-js';
+import { createSupabaseAdmin } from '@/lib/supabase-admin';
+import { getRequestOrigin, requireUser } from '@/lib/api-security';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+const supabaseAdmin = createSupabaseAdmin();
 
 export async function POST(req: Request) {
   try {
-    const { userId, email } = await req.json();
+    const auth = await requireUser(req);
+    if (auth.error || !auth.user) return auth.error;
 
-    if (!userId || !email) {
-      return NextResponse.json({ error: 'Missing userId or email' }, { status: 400 });
-    }
+    const userId = auth.user.id;
+    const email = auth.user.email;
+    if (!email) return NextResponse.json({ error: 'Account email is required' }, { status: 400 });
 
     // Check if user already has a Connect account
     const { data: userRecord } = await supabaseAdmin
@@ -46,11 +45,11 @@ export async function POST(req: Request) {
     }
 
     // Create onboarding link
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const origin = getRequestOrigin(req);
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
       refresh_url: `${origin}/founder/become-seller?step=stripe&refresh=true`,
-      return_url: `${origin}/api/seller/connect-return?account=${accountId}&userId=${userId}`,
+      return_url: `${origin}/api/seller/connect-return?account=${accountId}`,
       type: 'account_onboarding',
     });
 

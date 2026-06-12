@@ -232,7 +232,7 @@ export default function FounderSettingsPage() {
  <button
  type="button"
  onClick={generateRandomAvatar}
- className="absolute -bottom-1 -right-1 bg-[var(--text)] hover:bg-black text-[var(--text)] p-2 rounded-full shadow-lg transition-transform duration-200 active:scale-90"
+ className="absolute -bottom-1 -right-1 bg-[var(--text)] hover:bg-black text-[var(--bg)] p-2 rounded-full shadow-lg transition-transform duration-200 active:scale-90"
  title="Generate Random Avatar"
  >
  <Camera className="w-3.5 h-3.5" />
@@ -339,7 +339,7 @@ export default function FounderSettingsPage() {
  <p className="mt-1 text-xs font-semibold text-[var(--text2)]">Protect your account with an authenticator app.</p>
  <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-[var(--text2)]">Status: {twoFactorEnabled ? "Enabled" : "Not enabled"}</p>
  </div>
- <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--text)] disabled:opacity-50">
+ <button type="button" onClick={enableTwoFactor} disabled={enrolling2fa} className="rounded-2xl bg-[var(--text)] px-5 py-2.5 text-sm font-black text-[var(--bg)] disabled:opacity-50">
  {enrolling2fa ? "Starting..." : "Enable 2FA"}
  </button>
  </div>
@@ -351,7 +351,7 @@ export default function FounderSettingsPage() {
  <button
  type="submit"
  disabled={saving}
- className="px-6 py-3 bg-[var(--text)] hover:bg-black text-[var(--text)] text-sm font-black rounded-2xl shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2"
+ className="px-6 py-3 bg-[var(--text)] hover:bg-black text-[var(--bg)] text-sm font-black rounded-2xl shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2"
  >
  {saving ? (
  <>

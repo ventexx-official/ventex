@@ -7,9 +7,13 @@ import { useRouter } from 'next/navigation';
 // Email helper (fires-and-forgets)
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
  try {
+ const { data: { session } } = await supabase.auth.getSession();
  await fetch('/api/emails', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: {
+ 'Content-Type': 'application/json',
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({ type, recipientEmail, data }),
  });
  } catch (e) {
@@ -685,7 +689,7 @@ export default function FounderDashboard() {
  <button
  onClick={() => handleSubmitRebuttal(dispute.id)}
  disabled={submittingDisputeId === dispute.id || rebuttalText.trim().length < 20}
- className="flex-1 py-2 bg-[var(--text)] hover:bg-black disabled:opacity-50 text-[var(--text)] rounded-xl text-[10px] font-bold uppercase transition-colors"
+ className="flex-1 py-2 bg-[var(--text)] hover:bg-black disabled:opacity-50 text-[var(--bg)] rounded-xl text-[10px] font-bold uppercase transition-colors"
  >
  {submittingDisputeId === dispute.id ? 'Submitting...' : 'Submit Rebuttal'}
  </button>

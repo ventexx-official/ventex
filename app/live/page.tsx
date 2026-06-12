@@ -64,7 +64,7 @@ export default function LivePage() {
  <input maxLength={150} placeholder="One-line pitch" value={founderForm.pitch} onChange={(e) => setFounderForm((p) => ({ ...p, pitch: e.target.value }))} className="w-full rounded-xl border p-3" />
  <textarea placeholder="Why should we pick you? (200 words max)" value={founderForm.why} onChange={(e) => setFounderForm((p) => ({ ...p, why: e.target.value }))} className="w-full rounded-xl border p-3" />
  <input placeholder="Ventex profile URL" value={founderForm.profileUrl} onChange={(e) => setFounderForm((p) => ({ ...p, profileUrl: e.target.value }))} className="w-full rounded-xl border p-3" />
- <button disabled={!flags.live_founder_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--text)] disabled:opacity-50">Submit founder application</button>
+ <button disabled={!flags.live_founder_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--bg)] disabled:opacity-50">Submit founder application</button>
  </form>
 
  <form onSubmit={submitJudge} className="rounded-2xl bg-[var(--card-bg)] p-6 space-y-3">
@@ -74,7 +74,7 @@ export default function LivePage() {
  <select value={judgeForm.ticket} onChange={(e) => setJudgeForm((p) => ({ ...p, ticket: e.target.value }))} className="w-full rounded-xl border p-3">{["<₹10L", "₹10-50L", "₹50L-1Cr", ">₹1Cr", "Flexible"].map((s) => <option key={s}>{s}</option>)}</select>
  <select value={judgeForm.investedBefore} onChange={(e) => setJudgeForm((p) => ({ ...p, investedBefore: e.target.value }))} className="w-full rounded-xl border p-3"><option>Yes</option><option>No</option></select>
  <textarea placeholder="Why join as a judge?" value={judgeForm.why} onChange={(e) => setJudgeForm((p) => ({ ...p, why: e.target.value }))} className="w-full rounded-xl border p-3" />
- <button disabled={!flags.live_investor_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--text)] disabled:opacity-50">Submit judge application</button>
+ <button disabled={!flags.live_investor_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--bg)] disabled:opacity-50">Submit judge application</button>
  </form>
  </div>
 

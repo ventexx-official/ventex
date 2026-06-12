@@ -84,7 +84,7 @@ export default function ContactPage() {
  {['General', 'Bug Report', 'Partnership', 'Press', 'Other'].map((subject) => <option key={subject}>{subject}</option>)}
  </select>
  <textarea required value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} placeholder="Message" rows={6} className="w-full resize-none rounded-xl border border-black/10 bg-[#F8F8F8] px-4 py-3 text-sm font-bold text-[var(--text)] outline-none" />
- <button disabled={submitting} className="w-full rounded-xl bg-[var(--text)] py-3 text-sm font-black text-[var(--text)] disabled:opacity-50">
+ <button disabled={submitting} className="w-full rounded-xl bg-[var(--text)] py-3 text-sm font-black text-[var(--bg)] disabled:opacity-50">
  {submitting ? 'Sending...' : 'Send message'}
  </button>
  </form>

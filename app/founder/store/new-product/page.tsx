@@ -751,7 +751,7 @@ export default function NewProductPage() {
  <button
  type="submit"
  disabled={submitting}
- className="flex-1 py-4 bg-[var(--text)] hover:bg-black text-[var(--text)] rounded-2xl font-black text-sm active:scale-95 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
+ className="flex-1 py-4 bg-[var(--text)] hover:bg-black text-[var(--bg)] rounded-2xl font-black text-sm active:scale-95 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2"
  >
  {submitting ? (
  <><Loader2 className="w-4 h-4 animate-spin" /> Submitting listing...</>

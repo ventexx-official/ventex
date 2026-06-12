@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Login() {
  const [email, setEmail] = useState('');
@@ -57,7 +58,10 @@ export default function Login() {
  };
 
  return (
- <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
+ <div className="relative min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
+ <div className="absolute right-4 top-4">
+ <ThemeToggle />
+ </div>
  <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
  <div className="text-center mb-8">
  <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
@@ -75,8 +79,9 @@ export default function Login() {
  )}
  
  <div>
- <label className="block text-sm font-bold text-[var(--text)] mb-1.5">Email address</label>
+ <label htmlFor="login-email" className="block text-sm font-bold text-[var(--text)] mb-1.5">Email address</label>
  <input
+ id="login-email"
  type="email"
  className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
  value={email}
@@ -87,10 +92,11 @@ export default function Login() {
 
  <div>
  <div className="flex justify-between items-center mb-1.5">
- <label className="block text-sm font-bold text-[var(--text)] ">Password</label>
+ <label htmlFor="login-password" className="block text-sm font-bold text-[var(--text)] ">Password</label>
  <Link href="/forgot-password" className="text-xs text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors">Forgot password?</Link>
  </div>
  <input
+ id="login-password"
  type="password"
  className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
  value={password}
@@ -102,7 +108,7 @@ export default function Login() {
  <button
  type="submit"
  disabled={loading}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-2.5 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 mt-2"
  >
  {loading ? 'Logging in...' : 'Login'}
  </button>

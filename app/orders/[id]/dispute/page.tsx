@@ -149,7 +149,7 @@ export default function OrderDisputePage() {
  <p className="text-[var(--text2)] text-sm mb-6 leading-relaxed">
  We couldn't retrieve this order. Please verify that the URL is correct and that you are logged in to the account that purchased this item.
  </p>
- <Link href="/marketplace" className="inline-block bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/marketplace" className="inline-block bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
  Return to Marketplace
  </Link>
  </div>
@@ -188,7 +188,7 @@ export default function OrderDisputePage() {
  <p className="text-sm text-[var(--text2)] italic">"{description}"</p>
  </div>
 
- <Link href="/marketplace" className="inline-block bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+ <Link href="/marketplace" className="inline-block bg-[var(--text)] text-[var(--bg)] px-8 py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
  Go to Marketplace
  </Link>
  </div>
@@ -206,7 +206,7 @@ export default function OrderDisputePage() {
  This purchase is already marked as disputed. The payout is frozen and is currently under review by our administration team.
  </p>
 
- <Link href="/marketplace" className="inline-block bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/marketplace" className="inline-block bg-[var(--text)] text-[var(--bg)] px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors">
  Return to Marketplace
  </Link>
  </div>
@@ -292,7 +292,7 @@ export default function OrderDisputePage() {
  <button
  type="submit"
  disabled={submitting || description.length < 20 || description.length > 1000}
- className="w-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
  >
  {submitting ? 'Initiating Dispute...' : 'File Dispute'}
  </button>

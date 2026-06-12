@@ -138,9 +138,13 @@ export default function PitchReviewDetails() {
  if (updateError) throw updateError;
 
  // 2. Trigger AI Summary API (it handles generating summary & emailing the founder)
+ const { data: { session } } = await supabase.auth.getSession();
  const res = await fetch("/api/generate-summary", {
  method: "POST",
- headers: { "Content-Type": "application/json" },
+ headers: {
+ "Content-Type": "application/json",
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({
  pitchId: pitch.id,
  title: pitch.title,
@@ -185,9 +189,13 @@ export default function PitchReviewDetails() {
 
  // 2. Trigger email notify via /api/emails
  if (pitch.users?.email) {
+ const { data: { session } } = await supabase.auth.getSession();
  const emailRes = await fetch("/api/emails", {
  method: "POST",
- headers: { "Content-Type": "application/json" },
+ headers: {
+ "Content-Type": "application/json",
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({
  type: "pitch_rejected",
  recipientEmail: pitch.users.email,

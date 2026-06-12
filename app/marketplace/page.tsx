@@ -234,11 +234,7 @@ export default function MarketplacePage() {
  </div>
  </div>
 
- <div className="border-b-[0.5px] border-[var(--border)] bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-100">
- <div className="mx-auto max-w-7xl">
- Ventex Premium is for marketplace access - buying software, hiring, and custom build requests. For investment features, see <a href="/pricing" className="underline underline-offset-4">Investor Accounts</a>.
- </div>
- </div>
+
 
  {/* DEALS BANNER with countdown */}
  {activeDeals.length > 0 && !dealsOnly && (
@@ -416,12 +412,12 @@ export default function MarketplacePage() {
  <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
  </div>
  ) : filteredProducts.length === 0 ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-12 text-center">
- <ShoppingBag className="w-12 h-12 text-[var(--text3)] dark:text-[var(--text)] mx-auto mb-4" />
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-12 text-center">
+ <ShoppingBag className="w-12 h-12 text-[var(--text2)] mx-auto mb-4" />
  <h3 className="text-xl font-bold text-[var(--text)] mb-2">{products.length === 0 ? 'No products listed yet.' : 'No products found'}</h3>
  <p className="text-[var(--text2)] mb-6">{products.length === 0 ? 'Are you a founder with a product to sell?' : 'Try adjusting your filters or search query.'}</p>
  {products.length === 0 ? (
- <Link href="/founder/store/new-product" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
+ <Link href="/founder/store/new-product" className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors">
  List your product
  </Link>
  ) : (
@@ -430,7 +426,7 @@ export default function MarketplacePage() {
  setSearchQuery(''); setSelectedCategory('All'); setSelectedSector('All'); 
  setSelectedType('All'); setDealsOnly(false); setMinRating(0); setPriceMin(''); setPriceMax('');
  }}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
+ className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors"
  >
  Clear all filters
  </button>
@@ -529,15 +525,15 @@ export default function MarketplacePage() {
  </div>
  
  {isJob ? (
- <a href={product.apply_url || (product.apply_email ? `mailto:${product.apply_email}` : `/marketplace/${product.id}`)} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
+ <a href={product.apply_url || (product.apply_email ? `mailto:${product.apply_email}` : `/marketplace/${product.id}`)} className="border-[1.5px] border-[var(--border2)] text-[var(--text)] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg2)] transition-colors">
  Apply
  </a>
  ) : isCustom || isFreelance ? (
- <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors">
+ <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[var(--border2)] text-[var(--text)] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg2)] transition-colors">
  Request
  </Link>
  ) : (
- <Link href={`/marketplace/${product.id}`} className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-full text-xs font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md">
+ <Link href={`/marketplace/${product.id}`} className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-md">
  Buy Now
  </Link>
  )}
@@ -554,23 +550,23 @@ export default function MarketplacePage() {
  /* PURCHASES TAB */
  <div>
  {!user ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">
- <ShoppingBag className="w-12 h-12 text-[var(--text3)] dark:text-[var(--text)] mx-auto mb-4" />
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">
+ <ShoppingBag className="w-12 h-12 text-[var(--text2)] mx-auto mb-4" />
  <h3 className="text-xl font-bold text-[var(--text)] mb-2">Sign in to view your purchases</h3>
- <Link href="/login" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
+ <Link href="/login" className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-4">
  Sign In
  </Link>
  </div>
  ) : loadingPurchases ? (
  <div className="flex justify-center items-center py-20">
- <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
+ <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[var(--text)] rounded-full animate-spin"></div>
  </div>
  ) : purchases.length === 0 ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">
- <ShoppingBag className="w-12 h-12 text-[var(--text3)] dark:text-[var(--text)] mx-auto mb-4" />
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">
+ <ShoppingBag className="w-12 h-12 text-[var(--text2)] mx-auto mb-4" />
  <h3 className="text-xl font-bold text-[var(--text)] mb-2">No purchases yet</h3>
  <p className="text-[var(--text2)]">When you buy products on Ventex, they will appear here.</p>
- <button onClick={() => setActiveTab('Explore')} className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
+ <button onClick={() => setActiveTab('Explore')} className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
  Explore Marketplace
  </button>
  </div>
@@ -594,7 +590,7 @@ export default function MarketplacePage() {
  </Link>
  
  <div className="mt-auto pt-4 border-t-[0.5px] border-[var(--border)] flex justify-end">
- <Link href={`/marketplace/${product.id}`} className="border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors shadow-md">
+ <Link href={`/marketplace/${product.id}`} className="bg-[var(--text)] text-[var(--bg)] px-4 py-1.5 rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-md">
  Access Product
  </Link>
  </div>

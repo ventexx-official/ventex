@@ -172,7 +172,7 @@ export default function Onboarding() {
  <button 
  onClick={() => setStep(2)}
  disabled={!role}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+ className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
  >
  Continue &rarr;
  </button>
@@ -228,7 +228,7 @@ export default function Onboarding() {
  <button 
  onClick={handleComplete}
  disabled={!fullName || submitting}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
+ className="bg-[var(--text)] text-[var(--bg)] px-8 py-2.5 rounded-md font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
  >
  {submitting ? 'Saving...' : 'Complete setup'}
  </button>

@@ -15,7 +15,10 @@ async function sendEmail(type: string, recipientEmail: string, data: Record<stri
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/emails`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(process.env.INTERNAL_API_SECRET ? { 'x-internal-secret': process.env.INTERNAL_API_SECRET } : {}),
+      },
       body: JSON.stringify({ type, recipientEmail, data }),
     });
     if (!res.ok) {

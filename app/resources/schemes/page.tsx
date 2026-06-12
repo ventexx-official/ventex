@@ -33,7 +33,7 @@ export default function SchemesHelperPage() {
  <Field label="State" value={form.state} onChange={(v) => update('state', v)} />
  <Field label="Team size" value={form.teamSize} onChange={(v) => update('teamSize', v)} />
  <Field label="Annual revenue" value={form.revenue} onChange={(v) => update('revenue', v)} />
- <button disabled={loading} className="mt-6 w-full rounded-2xl bg-[var(--text)] py-3 text-sm font-black text-[var(--text)] disabled:opacity-50">
+ <button disabled={loading} className="mt-6 w-full rounded-2xl bg-[var(--text)] py-3 text-sm font-black text-[var(--bg)] disabled:opacity-50">
  {loading ? 'Finding schemes...' : 'Find schemes'}
  </button>
  </form>
@@ -50,7 +50,7 @@ export default function SchemesHelperPage() {
  <p className="mt-3 text-xs font-bold uppercase tracking-widest text-[var(--text2)]">Eligibility</p>
  <p className="mt-1 text-sm font-medium text-[var(--text2)]">{scheme.eligibility}</p>
  {scheme.apply_url ? (
- <a href={scheme.apply_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-2xl bg-[var(--text)] px-4 py-2 text-sm font-black text-[var(--text)]">
+ <a href={scheme.apply_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-2xl bg-[var(--text)] px-4 py-2 text-sm font-black text-[var(--bg)]">
  Apply
  </a>
  ) : null}

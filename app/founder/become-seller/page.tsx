@@ -181,10 +181,14 @@ function BecomeSellerInner() {
  setStripeLoading(true);
  setStripeError("");
  try {
+ const { data: { session: activeSession } } = await supabase.auth.getSession();
  const res = await fetch("/api/seller/create-connect-account", {
  method: "POST",
- headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ userId: session.user.id, email: session.user.email }),
+ headers: {
+ "Content-Type": "application/json",
+ ...(activeSession?.access_token ? { Authorization: `Bearer ${activeSession.access_token}` } : {}),
+ },
+ body: JSON.stringify({}),
  });
  const data = await res.json();
  if (!res.ok || data.error) throw new Error(data.error || "Failed to create account");

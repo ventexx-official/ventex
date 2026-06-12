@@ -31,9 +31,13 @@ const QUESTIONS = [
 // Fire-and-forget email helper (available for future use)
 async function _sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
  try {
+ const { data: { session } } = await supabase.auth.getSession();
  await fetch('/api/emails', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: {
+ 'Content-Type': 'application/json',
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({ type, recipientEmail, data }),
  });
  } catch (e) {
@@ -181,9 +185,13 @@ export default function PitchDetail() {
  });
 
  // Fire investor_interest email to founder via server trigger
+ const { data: { session } } = await supabase.auth.getSession();
  await fetch('/api/emails/trigger', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: {
+ 'Content-Type': 'application/json',
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({
  event: 'investor_interest',
  payload: {
@@ -550,9 +558,13 @@ via Ventex`;
  // Fire new_comment email to founder via server trigger
  try {
  if (pitch?.founder_id) {
+ const { data: { session } } = await supabase.auth.getSession();
  fetch('/api/emails/trigger', {
  method: 'POST',
- headers: { 'Content-Type': 'application/json' },
+ headers: {
+ 'Content-Type': 'application/json',
+ ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+ },
  body: JSON.stringify({
  event: 'new_comment',
  payload: {
@@ -637,7 +649,7 @@ via Ventex`;
  <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center flex-col text-center px-4">
  <h1 className="text-2xl font-bold text-[var(--text)] mb-2">Pitch not found</h1>
  <p className="text-[var(--text2)] mb-6">The pitch you are looking for does not exist or has been removed.</p>
- <Link href="/discover" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-6 py-2 rounded-full font-medium">Browse startups</Link>
+ <Link href="/discover" className="bg-[var(--text)] text-[var(--bg)] px-6 py-2 rounded-full font-medium">Browse startups</Link>
  </div>
  );
  }
@@ -674,7 +686,7 @@ via Ventex`;
  )}
  {pitch.is_raising && (
  <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
- <span className="text-[10px] font-bold text-[var(--text)] dark:text-[var(--text)] uppercase tracking-wider">Raising</span>
+ <span className="text-[10px] font-bold text-[var(--text)] uppercase tracking-wider">Raising</span>
  </div>
  )}
 
@@ -749,7 +761,7 @@ via Ventex`;
  if (!currentUser) router.push('/login');
  else setIsInterestModalOpen(true);
  }}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
+ className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
  >
  Express interest
  </button>
@@ -861,7 +873,7 @@ via Ventex`;
  </div>
  </div>
  <div className="flex gap-4 items-start">
- <div className="w-8 h-8 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--text)] dark:text-[var(--text)] text-sm">S</div>
+ <div className="w-8 h-8 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] flex items-center justify-center flex-shrink-0 font-bold text-[var(--bg)] text-sm">S</div>
  <div>
  <h3 className="font-bold text-[var(--text)] mb-2 text-sm">Our Solution</h3>
  <p className="text-[var(--text2)] text-sm leading-relaxed">{pitch.solution || 'Not specified'}</p>
@@ -991,7 +1003,7 @@ via Ventex`;
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
  <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
- <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
  View Investor Accounts
  </Link>
  </div>
@@ -1019,7 +1031,7 @@ via Ventex`;
  <button 
  onClick={() => handleBuyProduct(p)}
  disabled={isCheckingOut}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+ className="bg-[var(--text)] text-[var(--bg)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
  >
  {isCheckingOut ? '...' : 'Buy now'}
  </button>
@@ -1047,7 +1059,7 @@ via Ventex`;
  </div>
  <button 
  onClick={handleOpenDeck}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
+ className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
  disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
  >
  View Pitch Deck
@@ -1062,7 +1074,7 @@ via Ventex`;
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
  <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
- <Link href="/pricing" className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
  View Investor Accounts
  </Link>
  </div>
@@ -1170,7 +1182,7 @@ via Ventex`;
  <button
  onClick={handlePostComment}
  disabled={!newComment.trim() || posting}
- className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+ className="bg-[var(--text)] text-[var(--bg)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
  >
  {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
  {posting ? 'Posting...' : 'Post'}
@@ -1229,7 +1241,7 @@ via Ventex`;
  <div className="flex items-center gap-2 mb-1.5 flex-wrap">
  <span className="font-bold text-[var(--text)] text-sm">{name}</span>
  {user?.role === 'mentor' && (
- <span className="bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
+ <span className="bg-[var(--text)] text-[var(--bg)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Mentor</span>
  )}
  {user?.role === 'investor' && (
  <span className="bg-[#888888] text-[var(--text)] text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">Investor</span>
@@ -1271,7 +1283,7 @@ via Ventex`;
  if (!currentUser) router.push('/login');
  else setIsInterestModalOpen(true);
  }}
- className="min-h-11 w-full rounded-full bg-[var(--text)] px-6 py-3 text-center text-sm font-bold text-[var(--text)] transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[var(--text)] dark:hover:bg-gray-200"
+ className="min-h-11 w-full rounded-full bg-[var(--text)] px-6 py-3 text-center text-sm font-bold text-[var(--bg)] transition-colors hover:bg-black dark:bg-[var(--card-bg)] dark:text-[var(--text)] dark:hover:bg-gray-200"
  >
  Express interest
  </button>
@@ -1288,7 +1300,7 @@ via Ventex`;
  <button onClick={() => setIsNdaModalOpen(false)} className="rounded-full border-[0.5px] border-[var(--border)] px-5 py-2.5 text-sm font-bold text-[var(--text)] ">
  Cancel
  </button>
- <button onClick={handleAcceptNda} className="rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-bold text-[var(--text)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
+ <button onClick={handleAcceptNda} className="rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-bold text-[var(--bg)] dark:bg-[var(--card-bg)] dark:text-[var(--text)]">
  I Agree â€” View Documents
  </button>
  </div>
@@ -1369,14 +1381,14 @@ via Ventex`;
  <div className="flex gap-3 justify-end pt-4">
  <button
  onClick={() => setIsInterestModalOpen(false)}
- className="px-5 py-2.5 rounded-full border-[0.5px] border-[var(--border)] hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] text-sm font-bold text-[var(--text)] transition-colors"
+ className="px-5 py-2.5 rounded-full border-[0.5px] border-[var(--border)] hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] text-sm font-bold text-[var(--bg)] transition-colors"
  >
  Cancel
  </button>
  <button
  onClick={handleSendInterest}
  disabled={sendingInterest || !interestMessage.trim()}
- className="px-6 py-2.5 rounded-full bg-[var(--text)] dark:bg-[var(--card-bg)] text-[var(--text)] dark:text-[var(--text)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+ className="px-6 py-2.5 rounded-full bg-[var(--text)] text-[var(--bg)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
  >
  {sendingInterest ? 'Sending...' : 'Send interest'}
  </button>
