@@ -177,16 +177,15 @@ export default function FounderSettingsPage() {
  <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
  <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
  <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
- <NavItem icon={Zap} label="Booster Packs" href="/founder/boost" collapsed={sidebarCollapsed} />
  <NavItem icon={Settings} label="Settings" active href="/founder/settings" collapsed={sidebarCollapsed} />
  </nav>
 
  <nav className="flex md:hidden flex-1 items-center gap-1 px-3 overflow-x-auto py-2">
  <NavItemMobile icon={LayoutDashboard} label="Dashboard" href="/founder/dashboard" />
  <NavItemMobile icon={FileText} label="Pitches" href="/founder/pitches" />
+ <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
  <NavItemMobile icon={Store} label="Store" href="/founder/store" />
  <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
- <NavItemMobile icon={Zap} label="Boost" href="/founder/boost" />
  <NavItemMobile icon={Settings} label="Settings" active href="/founder/settings" />
  </nav>
  </aside>

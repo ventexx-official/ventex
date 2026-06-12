@@ -33,24 +33,23 @@ export default function ArenaEvents({ compact = false }: { compact?: boolean }) 
       {events.map((event) => (
         <article
           key={event.name}
-          className="relative overflow-hidden rounded-lg border border-amber-400/30 bg-[#120b08] p-5 text-white shadow-[0_0_40px_rgba(245,158,11,.12)]"
+          className="relative overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-5 text-[var(--text)] shadow-sm"
         >
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent" />
           <div className="flex items-start justify-between gap-4">
             <h3 className="pr-16 text-lg font-black tracking-[-.02em]">{event.label}</h3>
-            <span className="absolute right-4 top-4 rounded-full border border-amber-300/40 bg-amber-300/10 px-2.5 py-1 text-[10px] font-black text-amber-200">
+            <span className="absolute right-4 top-4 rounded-full border border-[var(--border)] bg-[var(--bg)] px-2.5 py-1 text-[10px] font-black text-[var(--text)]">
               UPCOMING
             </span>
           </div>
-          <p className="mt-4 text-sm font-bold text-amber-200">{event.theme}</p>
-          <div className="mt-5 space-y-2 text-xs leading-5 text-orange-50/70">
+          <p className="mt-4 text-sm font-bold text-[var(--text)]">{event.theme}</p>
+          <div className="mt-5 space-y-2 text-xs leading-5 text-[var(--text2)]">
             <p>Season 1 dates will be announced. Stay tuned.</p>
             <p>{event.format}</p>
             <p>Investor Panel: {event.investorPanel}</p>
             <p>{event.location}</p>
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
-            <Link href="/arena#notify" className="rounded-full bg-amber-300 px-4 py-2 text-xs font-black text-[#160b04]">
+            <Link href="/arena#notify" className="rounded-full bg-[var(--text)] px-4 py-2 text-xs font-black text-[var(--bg)]">
               Notify Me
             </Link>
           </div>
