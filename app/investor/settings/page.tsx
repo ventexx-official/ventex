@@ -13,6 +13,7 @@ export default function InvestorSettingsPage() {
  const [thesis, setThesis] = useState('');
  const [sectors, setSectors] = useState<string[]>([]);
  const [stages, setStages] = useState<string[]>([]);
+ const [whatsappNumber, setWhatsappNumber] = useState("");
  const [saving, setSaving] = useState(false);
  const [enrolling2fa, setEnrolling2fa] = useState(false);
  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
@@ -26,6 +27,7 @@ export default function InvestorSettingsPage() {
  setThesis(data?.investment_thesis || '');
  setSectors(data?.preferred_sectors || []);
  setStages(data?.preferred_stages || []);
+ setWhatsappNumber(data?.whatsapp_number || '');
  };
  load();
  }, [router]);
@@ -41,6 +43,7 @@ export default function InvestorSettingsPage() {
  investment_thesis: thesis,
  preferred_sectors: sectors,
  preferred_stages: stages,
+ whatsapp_number: whatsappNumber || null,
  }).eq('id', profile.id);
  setSaving(false);
  };
@@ -64,7 +67,16 @@ export default function InvestorSettingsPage() {
  value={thesis}
  onChange={(e) => setThesis(e.target.value)}
  rows={6}
- className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4 text-sm font-medium outline-none focus:border-[#222222]"
+ className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
+ />
+
+ <label className="mt-8 block text-xs font-black uppercase tracking-widest text-[var(--text2)]">WhatsApp Number (For Direct P2P)</label>
+ <input
+ type="tel"
+ value={whatsappNumber}
+ onChange={(e) => setWhatsappNumber(e.target.value)}
+ placeholder="+1234567890"
+ className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
  />
 
  <Section title="Preferred sectors" values={SECTORS} selected={sectors} onToggle={(v) => toggle(v, sectors, setSectors)} />

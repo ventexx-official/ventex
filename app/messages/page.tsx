@@ -23,18 +23,8 @@ type Conversation = {
     full_name: string;
     avatar_url: string | null;
     role: string;
+    whatsapp_number: string | null;
   };
-};
-
-type Message = {
-  id: string;
-  conversation_id: string;
-  sender_id: string;
-  content: string;
-  message_type: string;
-  deal_code: string | null;
-  is_read: boolean;
-  created_at: string;
 };
 
 function formatTime(value?: string | null) {
@@ -80,15 +70,10 @@ function MessagesInner() {
   const [user, setUser] = useState<any>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedId, setSelectedId] = useState<string>('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [draft, setDraft] = useState('');
   const [search, setSearch] = useState('');
   const [tab, setTab] = useState<'all' | 'pitches' | 'orders'>('all');
   const [loading, setLoading] = useState(true);
-  const [sending, setSending] = useState(false);
   const [showMobile, setShowMobile] = useState<'list' | 'thread'>('list');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Load user + conversations
   useEffect(() => {
@@ -108,7 +93,7 @@ function MessagesInner() {
         const otherIds = convos.map(c => c.participant_a === session.user.id ? c.participant_b : c.participant_a);
         const { data: profiles } = await supabase
           .from('users')
-          .select('id, full_name, avatar_url, role')
+          .select('id, full_name, avatar_url, role, whatsapp_number')
           .in('id', otherIds);
 
         const profileMap = Object.fromEntries((profiles || []).map(p => [p.id, p]));
@@ -131,18 +116,10 @@ function MessagesInner() {
     init();
   }, [router, searchParams]);
 
-  // Load messages for selected conversation
+  // Load details for selected conversation
   useEffect(() => {
     if (!selectedId || !user) return;
     const load = async () => {
-      const { data } = await supabase
-        .from('messages')
-        .select('*')
-        .eq('conversation_id', selectedId)
-        .order('created_at', { ascending: true });
-      setMessages(data || []);
-      // Mark as read
-      await supabase.from('messages').update({ is_read: true }).eq('conversation_id', selectedId).neq('sender_id', user.id);
       // Reset unread counts
       const conv = conversations.find(c => c.id === selectedId);
       if (conv) {
@@ -151,41 +128,7 @@ function MessagesInner() {
       }
     };
     load();
-
-    const channel = supabase
-      .channel(`msgs:${selectedId}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${selectedId}` }, payload => {
-        setMessages(prev => [...prev, payload.new as Message]);
-      })
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
   }, [selectedId, user]);
-
-  // Auto-scroll
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const sendMessage = async () => {
-    if (!draft.trim() || !selectedId || !user || sending) return;
-    setSending(true);
-    const content = draft.trim();
-    setDraft('');
-    const optimistic: Message = {
-      id: `opt-${Date.now()}`,
-      conversation_id: selectedId,
-      sender_id: user.id,
-      content,
-      message_type: 'text',
-      deal_code: null,
-      is_read: false,
-      created_at: new Date().toISOString(),
-    };
-    setMessages(prev => [...prev, optimistic]);
-    await supabase.from('messages').insert({ conversation_id: selectedId, sender_id: user.id, content, message_type: 'text' });
-    await supabase.from('conversations').update({ last_message: content, last_message_at: new Date().toISOString() }).eq('id', selectedId);
-    setSending(false);
-  };
 
   const selected = useMemo(() => conversations.find(c => c.id === selectedId), [conversations, selectedId]);
 
@@ -317,80 +260,63 @@ function MessagesInner() {
                   <p className="text-xs text-[var(--text2)] truncate">Re: {selected.context_title}</p>
                 )}
               </div>
-              <button className="p-2 rounded-xl hover:bg-[var(--bg2)] transition-colors">
-                <MoreHorizontal className="w-5 h-5 text-[var(--text2)]" />
-              </button>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-              {messages.length === 0 && (
-                <p className="text-center text-sm text-[var(--text2)] italic mt-8">No messages yet. Say hello!</p>
-              )}
-              {messages.map((msg, i) => {
-                const isMine = msg.sender_id === user?.id;
-                const prevMsg = messages[i - 1];
-                const showSender = !prevMsg || prevMsg.sender_id !== msg.sender_id;
-                if (msg.message_type === 'system') {
-                  return (
-                    <div key={msg.id} className="text-center">
-                      <p className="text-xs text-[var(--text2)] italic bg-[var(--bg2)] inline-block px-3 py-1.5 rounded-full">{msg.content}</p>
-                    </div>
-                  );
-                }
-                if (msg.deal_code) {
-                  return (
-                    <div key={msg.id} className="flex justify-center">
-                      <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-4 max-w-sm w-full">
-                        <p className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-2">Deal Code</p>
-                        <p className="font-mono font-black text-violet-500 text-lg">{msg.deal_code}</p>
-                        <p className="text-xs text-[var(--text2)] mt-2">{msg.content}</p>
-                      </div>
-                    </div>
-                  );
-                }
-                return (
-                  <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[70%] ${isMine ? 'items-end' : 'items-start'} flex flex-col`}>
-                      {showSender && !isMine && (
-                        <p className="text-[11px] font-semibold text-[var(--text2)] mb-1 ml-1">
-                          {selected.other_user?.full_name || 'User'}
-                        </p>
-                      )}
-                      <div className={`px-4 py-2.5 rounded-xl text-sm leading-relaxed ${
-                        isMine
-                          ? 'bg-[var(--text)] text-[var(--bg)]'
-                          : 'bg-[var(--bg2)] text-[var(--text)]'
-                      }`} style={{ borderRadius: 12 }}>
-                        {msg.content}
-                      </div>
-                      <p className="text-[10px] text-[var(--text2)] mt-1 mx-1">{formatTime(msg.created_at)}</p>
-                    </div>
+            {/* Lead Details */}
+            <div className="flex-1 overflow-y-auto px-4 py-8 flex flex-col items-center">
+              <div className="w-full max-w-md bg-[var(--card-bg)] border border-[var(--border)] rounded-3xl p-6 shadow-sm">
+                <div className="flex flex-col items-center text-center mb-6">
+                  <Avatar name={selected.other_user?.full_name || '?'} src={selected.other_user?.avatar_url} size={80} />
+                  <h2 className="text-xl font-black mt-4 text-[var(--text)]">{selected.other_user?.full_name || 'Unknown User'}</h2>
+                  <p className="text-sm font-semibold text-[var(--text2)] uppercase tracking-widest mt-1">
+                    {selected.other_user?.role || 'User'}
+                  </p>
+                </div>
+                
+                <div className="bg-[var(--bg2)] rounded-2xl p-4 mb-6">
+                  <p className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-1">Context</p>
+                  <p className="text-sm font-semibold text-[var(--text)]">{selected.context_title || 'General Inquiry'}</p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className={`text-[10px] font-bold px-2 py-1 rounded-md uppercase ${CONTEXT_COLORS[selected.context_type || 'general']}`}>
+                      {CONTEXT_LABELS[selected.context_type || 'general'] || selected.context_type || 'GENERAL'}
+                    </span>
                   </div>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </div>
+                </div>
 
-            {/* Input */}
-            <div className="border-t border-[var(--border)] bg-[var(--bg)] px-4 py-3 flex items-end gap-2 flex-shrink-0">
-              <textarea
-                ref={inputRef}
-                value={draft}
-                onChange={e => setDraft(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
-                placeholder="Type a message..."
-                rows={1}
-                className="flex-1 resize-none bg-[var(--bg2)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text2)] outline-none focus:ring-1 focus:ring-[var(--border2)] max-h-32"
-                style={{ minHeight: 44 }}
-              />
-              <button
-                onClick={sendMessage}
-                disabled={!draft.trim() || sending}
-                className="w-10 h-10 flex items-center justify-center bg-[var(--text)] text-[var(--bg)] rounded-xl hover:opacity-80 transition-opacity disabled:opacity-40 flex-shrink-0"
-              >
-                <Send className="w-4 h-4" />
-              </button>
+                {selected.last_message && (
+                  <div className="mb-6">
+                    <p className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest mb-2">Initial Message</p>
+                    <p className="text-sm text-[var(--text)] bg-[var(--bg2)] p-4 rounded-2xl italic">
+                      "{selected.last_message}"
+                    </p>
+                  </div>
+                )}
+
+                <div className="pt-2">
+                  {selected.other_user?.whatsapp_number ? (
+                    <a
+                      href={`https://wa.me/${selected.other_user.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi ${selected.other_user.full_name}, I saw your inquiry regarding "${selected.context_title}" on Ventex!`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-2xl font-bold hover:bg-[#20b858] active:scale-95 transition-all shadow-lg shadow-[#25D366]/20"
+                    >
+                      <MessageSquare className="w-5 h-5" />
+                      Chat on WhatsApp
+                    </a>
+                  ) : (
+                    <div className="text-center">
+                      <button disabled className="w-full flex items-center justify-center gap-3 bg-[var(--bg2)] text-[var(--text3)] px-6 py-4 rounded-2xl font-bold cursor-not-allowed">
+                        <MessageSquare className="w-5 h-5" />
+                        No WhatsApp Provided
+                      </button>
+                      <p className="text-xs text-[var(--text2)] mt-3">This user has not linked their WhatsApp number.</p>
+                    </div>
+                  )}
+                  <p className="text-xs text-center text-[var(--text2)] mt-4">
+                    All communication and payments are directly P2P via WhatsApp. Ventex takes 0% commission.
+                  </p>
+                </div>
+              </div>
             </div>
           </>
         )}
