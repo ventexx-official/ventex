@@ -62,7 +62,7 @@ export default function Login() {
  <div className="absolute right-4 top-4">
  <ThemeToggle />
  </div>
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
  <div className="text-center mb-8">
  <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
  Ventex

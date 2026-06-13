@@ -13,7 +13,8 @@ import {
  BadgeMinus,
  RefreshCw,
  Crown,
- Ban
+ Ban,
+ Briefcase
 } from "lucide-react";
 
 interface UserProfile {
@@ -269,15 +270,9 @@ export default function AdminUsers() {
  <span className="text-[var(--text)] font-mono">{user.productCount}</span>
  </div>
  <div className="flex justify-between">
- <span className="text-[var(--text3)]">Seller Account</span>
- <span className={user.is_seller ? "text-emerald-400 font-bold" : "text-[var(--text3)]"}>
- {user.is_seller ? "Yes" : "No"}
- </span>
- </div>
- <div className="flex justify-between">
- <span className="text-[var(--text3)]">Ventex Access</span>
- <span className={user.ventex_access ? "text-violet-400 font-bold" : "text-[var(--text3)]"}>
- {user.ventex_access ? "Active" : "None"}
+ <span className="text-[var(--text3)]">Investor Account</span>
+ <span className={user.role === "investor" ? "text-amber-400 font-bold" : "text-[var(--text3)]"}>
+ {user.role === "investor" ? "Yes" : "No"}
  </span>
  </div>
  <div className="flex justify-between">
@@ -321,23 +316,10 @@ export default function AdminUsers() {
  </div>
  </div>
 
- {/* Premium Access */}
+ {/* Investor Access */}
  <div className="space-y-3">
- <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Premium Access</h4>
+ <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Investor Access</h4>
  <div className="space-y-2">
- <button
- onClick={() => updateUser(user.id, { ventex_access: !user.ventex_access })}
- disabled={isLoading}
- className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
- user.ventex_access
- ? "bg-[var(--bg2)] border-[0.5px] border-[var(--border)] text-[var(--text2)] hover:bg-[var(--bg2)]"
- : "bg-violet-950/20 border-violet-900/40 text-violet-400 hover:bg-violet-950/40"
- }`}
- >
- {isLoading ? <Loader2 size={12} className="animate-spin" /> : null}
- {user.ventex_access ? "Revoke Ventex Pro" : "Grant Ventex Pro"}
- </button>
-
  <button
  onClick={() => updateUser(user.id, { investor_premium: !user.investor_premium })}
  disabled={isLoading}
@@ -350,6 +332,14 @@ export default function AdminUsers() {
  {isLoading ? <Loader2 size={12} className="animate-spin" /> : <Crown size={12} />}
  {user.investor_premium ? "Revoke Investor Premium" : "Grant Investor Premium"}
  </button>
+ <button
+ onClick={() => updateUser(user.id, { role: "investor" })}
+ disabled={isLoading || user.role === "investor"}
+ className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border border-amber-900/40 bg-amber-950/20 text-amber-400 transition-all hover:bg-amber-950/40 disabled:opacity-50"
+ >
+ {isLoading ? <Loader2 size={12} className="animate-spin" /> : <Briefcase size={12} />}
+ Make Investor
+ </button>
  </div>
  </div>
 
@@ -357,14 +347,14 @@ export default function AdminUsers() {
  <div className="space-y-3">
  <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Role Assignment</h4>
  <div className="grid grid-cols-2 gap-2">
- {["visitor", "founder", "seller", "admin"].map((r) => (
+ {["visitor", "founder", "investor", "admin"].map((r) => (
  <button
  key={r}
  onClick={() => updateUser(user.id, { role: r })}
  disabled={isLoading || user.role === r}
  className={`px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-40 capitalize ${
  user.role === r
- ? "bg-violet-600 border-violet-500 text-[var(--text)]"
+ ? "bg-[var(--text)] border-[var(--text)] text-[var(--bg)]"
  : "bg-[var(--bg2)] border-[0.5px] border-[var(--border)] text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)]"
  }`}
  >

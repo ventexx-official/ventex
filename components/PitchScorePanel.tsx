@@ -60,7 +60,7 @@ export default function PitchScorePanel({ pitchId }: { pitchId: string }) {
   }
 
   return (
-    <div className="mt-3 rounded-2xl border border-[#e5e5e5] bg-[#F8F8F8] p-3">
+    <div className="mt-3 rounded-2xl border border-[#e5e5e5] bg-[var(--bg)] p-3">
       <div className="mb-2 flex items-center justify-between gap-3">
         <span className="text-xs font-black uppercase tracking-widest text-[var(--text2)]">AI score</span>
         <span className="text-lg font-black text-[var(--text)]">{score.overall}/100</span>

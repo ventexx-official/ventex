@@ -211,7 +211,7 @@ export default function MarketplacePage() {
  return (
  <div className="min-h-screen bg-[var(--bg)] pb-24">
  {/* HEADER */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] pt-12 pb-8 px-6">
+ <div className="bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] pt-12 pb-8 px-6">
  <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
  <div>
  <h1 className="text-3xl font-black text-[var(--text)] uppercase tracking-tighter flex items-center gap-3">
@@ -357,13 +357,13 @@ export default function MarketplacePage() {
  <input 
  type="number" placeholder="Min" value={priceMin}
  onChange={(e) => setPriceMin(e.target.value)}
- className="w-full px-3 py-2 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-lg text-sm text-[var(--text)] focus:outline-none focus:border-[#222222]" 
+ className="w-full px-3 py-2 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-lg text-sm text-[var(--text)] focus:outline-none focus:border-[#222222]" 
  />
  <span className="text-[var(--text2)]">-</span>
  <input 
  type="number" placeholder="Max" value={priceMax}
  onChange={(e) => setPriceMax(e.target.value)}
- className="w-full px-3 py-2 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-lg text-sm text-[var(--text)] focus:outline-none focus:border-[#222222]" 
+ className="w-full px-3 py-2 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-lg text-sm text-[var(--text)] focus:outline-none focus:border-[#222222]" 
  />
  </div>
  </div>
@@ -457,14 +457,14 @@ export default function MarketplacePage() {
  const isJob = listingType === 'job';
 
  return (
- <div key={product.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+ <div key={product.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
  {isDeal && (
  <span className="absolute top-4 left-4 bg-[var(--text)] text-[var(--bg)] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
  <Tag className="w-3 h-3" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
  </span>
  )}
  
- <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
+ <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--bg3)] relative overflow-hidden">
  {product.images_urls?.[0] ? (
  <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
  ) : (
@@ -573,8 +573,8 @@ export default function MarketplacePage() {
  ) : (
  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
  {purchases.map(product => (
- <div key={product.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
- <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
+ <div key={product.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl hover:border-[#cccccc] dark:hover:border-[#555555] transition-all flex flex-col h-full relative">
+ <Link href={`/marketplace/${product.id}`} className="block aspect-video bg-[var(--bg)] dark:bg-[var(--bg3)] relative overflow-hidden">
  {product.images_urls?.[0] ? (
  <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
  ) : (

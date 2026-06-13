@@ -117,7 +117,7 @@ export default function Onboarding() {
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
  <button 
  onClick={() => setRole('founder')}
- className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
+ className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
  role === 'founder' 
  ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
  : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'
@@ -130,7 +130,7 @@ export default function Onboarding() {
 
  <button 
  onClick={() => setRole('investor')}
- className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
+ className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
  role === 'investor' 
  ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
  : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'
@@ -143,7 +143,7 @@ export default function Onboarding() {
 
  <button 
  onClick={() => setRole('buyer')}
- className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
+ className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
  role === 'buyer' 
  ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
  : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'
@@ -156,7 +156,7 @@ export default function Onboarding() {
 
  <button 
  onClick={() => setRole('explorer')}
- className={`p-6 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
+ className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${
  role === 'explorer' 
  ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' 
  : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'
@@ -182,7 +182,7 @@ export default function Onboarding() {
 
  {/* STEP 2: Quick Profile */}
  {step === 2 && (
- <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
+ <div className="animate-in fade-in slide-in-from-right-8 duration-500 bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 max-w-[440px] mx-auto shadow-sm">
  <h1 className="text-2xl font-bold text-center text-[var(--text)] mb-2">
  Setup your profile
  </h1>

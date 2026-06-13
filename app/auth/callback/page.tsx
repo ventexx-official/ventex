@@ -62,7 +62,7 @@ export default function AuthCallback() {
  return (
  <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-4">
  {error ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] text-center shadow-sm">
  <h1 className="text-xl font-bold text-red-600 mb-2">Auth Error</h1>
  <p className="text-sm text-[var(--text2)] mb-6">{error}</p>
  <button 

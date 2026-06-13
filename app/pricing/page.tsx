@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Check, Coffee } from 'lucide-react';
+import PricingCTA from './PricingCTA';
 
 export const metadata = {
   title: 'Pricing · Ventex',
@@ -36,12 +36,7 @@ export default function PricingPage() {
         <p className="text-xl text-[var(--text2)] max-w-2xl mx-auto mb-10">
           Every feature. Every founder. No card required.
         </p>
-        <Link
-          href="/signup"
-          className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--bg)] px-8 py-4 rounded-2xl font-black text-base hover:opacity-80 transition-opacity"
-        >
-          Get started for free →
-        </Link>
+        <PricingCTA />
       </section>
 
       {/* 3 Columns */}

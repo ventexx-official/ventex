@@ -208,7 +208,7 @@ export default function OrdersDashboard() {
  </Link>
 
  {/* Dashboard Header Header */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[var(--border)] shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-8 md:p-10 border-[0.5px] border-[var(--border)] shadow-xl relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-600 to-indigo-600"></div>
  <div className="space-y-2">
  <h1 className="text-3xl font-black text-[var(--text)] uppercase tracking-tighter flex items-center gap-3">
@@ -237,7 +237,7 @@ export default function OrdersDashboard() {
  <div className="flex flex-col md:flex-row gap-8 items-start">
  
  {/* Sidebar Navigation */}
- <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-2xl md:rounded-3xl border-[0.5px] border-[var(--border)] overflow-x-auto md:overflow-x-visible">
+ <aside className="w-full md:w-56 flex-shrink-0 flex md:flex-col gap-2 p-1 bg-[var(--card-bg)] rounded-2xl md:rounded-3xl border-[0.5px] border-[var(--border)] overflow-x-auto md:overflow-x-visible">
  {[
  { id: 'all', label: 'All Purchases', count: orders.length },
  { 
@@ -260,7 +260,7 @@ export default function OrdersDashboard() {
  <span className={`ml-2 text-[10px] px-2 py-0.5 rounded-full font-bold ${
  activeTab === tab.id 
  ? 'bg-[var(--card-bg)]/20 text-[var(--text)]' 
- : 'bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--text2)]'
+ : 'bg-[var(--bg)] dark:bg-[var(--bg3)] text-[var(--text2)]'
  }`}>
  {tab.count}
  </span>
@@ -272,7 +272,7 @@ export default function OrdersDashboard() {
  <main className="flex-1 w-full space-y-6">
  {filteredOrders.length === 0 ? (
  /* Empty state card */
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)] shadow-md">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)] shadow-md">
  <ShoppingBag className="w-12 h-12 text-[var(--text3)] dark:text-[var(--text)] mx-auto mb-4" />
  <h3 className="text-lg font-black text-[var(--text)] uppercase tracking-tight mb-1">
  No purchases found
@@ -318,13 +318,13 @@ export default function OrdersDashboard() {
  return (
  <div 
  key={order.id} 
- className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
+ className="bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] p-5 flex flex-col justify-between hover:shadow-lg transition-all group relative overflow-hidden"
  >
  {/* Top Row: Visual & Info */}
  <div className="space-y-4">
  <div className="flex gap-4">
  {/* Image box */}
- <div className="w-16 h-16 bg-[var(--bg)] dark:bg-[var(--text)] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center relative border-[0.5px] border-[var(--border)] ">
+ <div className="w-16 h-16 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center relative border-[0.5px] border-[var(--border)] ">
  {product.images_urls?.[0] ? (
  <img src={product.images_urls[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
  ) : (
@@ -418,7 +418,7 @@ export default function OrdersDashboard() {
  {/* RATING & REVIEW MODAL */}
  {reviewOrder && (
  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[var(--border)] ">
+ <div className="bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[var(--border)] ">
  
  <button 
  onClick={() => {

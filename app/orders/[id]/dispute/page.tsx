@@ -141,7 +141,7 @@ export default function OrderDisputePage() {
  if (!order) {
  return (
  <div className="min-h-screen bg-[var(--bg)] py-16 px-6">
- <div className="max-w-md mx-auto bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-8 border-[0.5px] border-[var(--border)] text-center shadow-xl">
+ <div className="max-w-md mx-auto bg-[var(--card-bg)] rounded-[32px] p-8 border-[0.5px] border-[var(--border)] text-center shadow-xl">
  <div className="w-16 h-16 bg-red-50 dark:bg-red-950/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
  <ShieldAlert className="w-8 h-8 text-red-500" />
  </div>
@@ -170,7 +170,7 @@ export default function OrderDisputePage() {
 
  {isSuccess ? (
  /* Success Screen */
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200">
  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-red-500 to-amber-500"></div>
  
  <div className="w-20 h-20 bg-red-50 dark:bg-red-950/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -182,7 +182,7 @@ export default function OrderDisputePage() {
  Your dispute for <strong>{order.product?.name}</strong> has been successfully submitted and logged. The seller's payout is frozen, and our team has been notified to conduct an admin review.
  </p>
 
- <div className="bg-[var(--bg)] dark:bg-[var(--text)] p-5 rounded-2xl border-[0.5px] border-[var(--border)] text-left mb-8 space-y-2">
+ <div className="bg-[var(--bg)] dark:bg-[var(--bg3)] p-5 rounded-2xl border-[0.5px] border-[var(--border)] text-left mb-8 space-y-2">
  <p className="text-xs font-bold text-[var(--text2)] uppercase tracking-wider">Dispute Summary</p>
  <p className="text-sm text-[var(--text)] "><strong>Reason:</strong> {reason}</p>
  <p className="text-sm text-[var(--text2)] italic">"{description}"</p>
@@ -194,7 +194,7 @@ export default function OrderDisputePage() {
  </div>
  ) : isAlreadyDisputed ? (
  /* Already Disputed State */
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden">
  <div className="absolute top-0 left-0 right-0 h-2 bg-amber-500"></div>
  
  <div className="w-16 h-16 bg-amber-50 dark:bg-amber-950/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -212,14 +212,14 @@ export default function OrderDisputePage() {
  </div>
  ) : (
  /* Dispute Form */
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] border-[0.5px] border-[var(--border)] shadow-xl overflow-hidden relative">
+ <div className="bg-[var(--card-bg)] rounded-[32px] border-[0.5px] border-[var(--border)] shadow-xl overflow-hidden relative">
  <div className="absolute top-0 left-0 right-0 h-2 bg-red-500"></div>
  
  <div className="p-8 md:p-10">
  
  {/* Product Info Block */}
  <div className="flex gap-4 items-center pb-6 border-b-[0.5px] border-[var(--border)] mb-8">
- <div className="w-14 h-14 bg-[var(--bg)] dark:bg-[var(--text)] rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
+ <div className="w-14 h-14 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
  {order.product?.images_urls?.[0] ? (
  <img src={order.product.images_urls[0]} alt="" className="w-full h-full object-cover" />
  ) : (

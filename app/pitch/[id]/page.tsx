@@ -627,8 +627,8 @@ via Ventex`;
  return (
  <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
  <div className="animate-pulse flex flex-col items-center">
- <div className="w-16 h-16 bg-gray-300 dark:bg-[var(--text)] rounded-xl mb-4"></div>
- <div className="h-4 bg-gray-300 dark:bg-[var(--text)] rounded w-32 mb-2"></div>
+ <div className="w-16 h-16 bg-gray-300 dark:bg-[var(--bg3)] rounded-xl mb-4"></div>
+ <div className="h-4 bg-gray-300 dark:bg-[var(--bg3)] rounded w-32 mb-2"></div>
  </div>
  </div>
  );
@@ -677,7 +677,7 @@ via Ventex`;
  <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
  
  {/* HERO CARD */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-8 relative">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-8 relative">
  {pitch.status === 'live' && pitch.is_raising === false && (
  <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--bg)] px-3 py-1 rounded-full">
  <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
@@ -736,7 +736,7 @@ via Ventex`;
  </div>
 
  {!canSeeFinancialDetails && (
- <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[var(--text2)] dark:bg-[var(--text)] ">
+ <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[var(--text2)] dark:bg-[var(--bg3)] ">
  Sign in to view financial details.
  </div>
  )}
@@ -810,7 +810,7 @@ via Ventex`;
 
  {/* AI SUMMARY BAR */}
  {videoEmbedUrl ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
  <div className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
  {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
  <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
@@ -825,7 +825,7 @@ via Ventex`;
  )}
  </div>
  ) : isPitchOwner ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4] p-6 text-center md:col-span-2">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4] p-6 text-center md:col-span-2">
  <div className="text-sm font-bold text-[var(--text)] mb-2">Add your 60-second founder pitch</div>
  <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[var(--text)] underline underline-offset-4">
  Edit pitch â†’
@@ -834,7 +834,7 @@ via Ventex`;
  ) : null}
 
  {matchedInvestors.length > 0 && (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
  <h2 className="text-lg font-bold text-[var(--text)] mb-4">Best matched investors</h2>
  <div className="grid grid-cols-1 gap-3">
  {matchedInvestors.map((investor) => (
@@ -862,7 +862,7 @@ via Ventex`;
  {/* CONTENT SECTIONS */}
  <div className="space-y-6 md:col-span-2">
  {/* Problem & Solution */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] overflow-hidden">
  <div className="p-5 border-b-[0.5px] border-[var(--border)] sm:p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Problem & Solution</h2>
  <div className="flex gap-4 items-start mb-8">
@@ -883,7 +883,7 @@ via Ventex`;
  </div>
 
  {/* Market Opportunity */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Market opportunity</h2>
  <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-3">
  <div className="bg-[var(--bg)] rounded-xl p-4 text-center">
@@ -906,7 +906,7 @@ via Ventex`;
  </div>
 
  {/* Competition */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Competition</h2>
  <div className="space-y-6">
  <div>
@@ -925,7 +925,7 @@ via Ventex`;
  </div>
 
  {/* Business Model */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Business model</h2>
  <div className="space-y-6">
  <div>
@@ -940,7 +940,7 @@ via Ventex`;
  </div>
 
  {/* Team (Mocked) */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Team</h2>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
@@ -967,7 +967,7 @@ via Ventex`;
  </div>
 
  {/* Traction & Financials (Premium Gated) */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Traction & Financials</h2>
  
  <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
@@ -998,7 +998,7 @@ via Ventex`;
  {!investorPremium && (
  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
- <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+ <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center mb-4">
  <Lock className="w-5 h-5 text-[var(--text)] " />
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
@@ -1013,7 +1013,7 @@ via Ventex`;
 
  {/* Product Listings (If exists) */}
  {products.length > 0 && (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <div className="flex items-center justify-between mb-6">
  <h2 className="text-lg font-bold text-[var(--text)] ">Products by this startup</h2>
  <span className="text-[var(--text2)] text-sm font-medium">{products.length} listed</span>
@@ -1044,7 +1044,7 @@ via Ventex`;
  )}
 
  {/* Documents */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Documents</h2>
  
  <div className={`flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
@@ -1069,7 +1069,7 @@ via Ventex`;
  {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
- <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mb-4">
+ <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center mb-4">
  <Lock className="w-5 h-5 text-[var(--text)] " />
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
@@ -1115,7 +1115,7 @@ via Ventex`;
 
  {/* Q&A Section */}
  {(pitch.qa_data || (pitch.custom_qa && pitch.custom_qa.length > 0)) && (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Founder Q&A</h2>
  <div className="space-y-6">
  {QUESTIONS.map((q) => {
@@ -1154,7 +1154,7 @@ via Ventex`;
  </div>
 
  {/* COMMUNITY COMMENTS */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
+ <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 mt-6 md:col-span-2 sm:p-8 md:mt-12">
  <h2 className="text-xl font-bold text-[var(--text)] mb-8 border-b-[0.5px] border-[var(--border)] pb-4">
  Community &middot; {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
  </h2>
@@ -1338,7 +1338,7 @@ via Ventex`;
  {/* Express Interest Modal Overlay */}
  {isInterestModalOpen && pitch.id && (
  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
+ <div className="bg-[var(--card-bg)] w-full max-w-lg rounded-2xl overflow-hidden flex flex-col shadow-2xl relative p-6 animate-in zoom-in-95 duration-200">
  <div className="flex justify-between items-center mb-6">
  <h3 className="text-[var(--text)] font-bold text-lg">Express Interest in {pitch.title}</h3>
  <button 
@@ -1358,7 +1358,7 @@ via Ventex`;
  value={interestAmount}
  onChange={(e) => setInterestAmount(e.target.value)}
  placeholder="Enter amount you are interested in"
- className="w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222] dark:bg-[var(--text)] "
+ className="w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] transition-all focus:outline-none focus:ring-1 focus:ring-[#222222] dark:bg-[var(--bg3)] "
  />
  </div>
  <div>
@@ -1368,7 +1368,7 @@ via Ventex`;
  onChange={(e) => setInterestMessage(e.target.value.slice(0, 500))}
  placeholder="Introduce yourself and explain why you're interested in this startup..."
  rows={6}
- className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] dark:bg-[var(--text)] text-[var(--bg)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
+ className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] dark:bg-[var(--bg3)] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all resize-none text-sm"
  />
  <div className="flex justify-between text-xs text-[var(--text2)] mt-1.5">
  <span>Keep it professional and concise.</span>

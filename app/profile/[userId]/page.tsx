@@ -178,7 +178,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  {profile.bio?.trim() ? profile.bio : 'No bio added yet.'}
  </div>
  {role === 'founder' && (
- <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4">
+ <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4">
  <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-[var(--text2)]">
  <span>Founder XP</span>
  <span>{xp} XP</span>

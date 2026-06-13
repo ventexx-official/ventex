@@ -29,7 +29,7 @@ export default function ForgotPassword() {
 
  return (
  <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
  <div className="text-center mb-8">
  <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
  Ventex

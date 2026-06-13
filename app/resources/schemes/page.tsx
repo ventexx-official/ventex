@@ -69,7 +69,7 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
  <input
  value={value}
  onChange={(e) => onChange(e.target.value)}
- className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
+ className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm font-bold outline-none focus:border-[#222222]"
  />
  </label>
  );

@@ -672,7 +672,7 @@ export default function ProductDetailPage() {
  
  {/* Left: Image Gallery */}
  <div className="space-y-4">
- <div className="aspect-video bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] overflow-hidden flex items-center justify-center relative">
+ <div className="aspect-video bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] overflow-hidden flex items-center justify-center relative">
  {isDeal && (
  <span className="absolute top-4 left-4 bg-[var(--text)] text-[var(--bg)] text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full z-10 shadow-lg flex items-center gap-1">
  <Tag className="w-3.5 h-3.5" /> {Math.round((1 - product.discount_price / product.price) * 100)}% OFF
@@ -713,8 +713,8 @@ export default function ProductDetailPage() {
  </h1>
 
  {/* Seller Row */}
- <div className="flex items-center gap-4 bg-[var(--card-bg)] bg-[var(--card-bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)] mb-8">
- <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
+ <div className="flex items-center gap-4 bg-[var(--card-bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)] mb-8">
+ <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
  {product.seller?.avatar_url ? (
  <img src={product.seller.avatar_url} alt="" className="w-full h-full object-cover" />
  ) : (
@@ -793,7 +793,7 @@ export default function ProductDetailPage() {
  </div>
 
  {/* TABS */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] overflow-hidden">
  <div className="flex border-b-[0.5px] border-[var(--border)] overflow-x-auto hide-scrollbar">
  {['description', 'reviews', 'qa'].map((tab) => (
  <button
@@ -845,7 +845,7 @@ export default function ProductDetailPage() {
  className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0 ${
  isDemoMode 
  ? 'bg-amber-600 text-[var(--text)] hover:bg-amber-700' 
- : 'bg-[var(--card-bg)] dark:bg-[var(--text)] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
+ : 'bg-[var(--card-bg)] dark:bg-[var(--bg3)] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
  }`}
  >
  {isDemoMode ? 'Deactivate Demo' : 'Activate Demo'}
@@ -948,7 +948,7 @@ export default function ProductDetailPage() {
  <p className="text-sm text-[var(--text2)] ">{review.comment}</p>
  
  {review.seller_reply && (
- <div className="ml-8 mt-3 bg-[var(--bg)] dark:bg-[var(--text)] p-4 rounded-xl border-l-2 border-[#222222] dark:border-white">
+ <div className="ml-8 mt-3 bg-[var(--bg)] dark:bg-[var(--bg3)] p-4 rounded-xl border-l-2 border-[#222222] dark:border-white">
  <p className="text-xs font-bold text-[var(--text)] mb-1">Reply from Founder</p>
  <p className="text-sm text-[var(--text2)] ">{review.seller_reply}</p>
  </div>
@@ -965,7 +965,7 @@ export default function ProductDetailPage() {
  {activeTab === 'qa' && (
  <div className="space-y-8">
  {currentUser ? (
- <div className="bg-[var(--bg)] dark:bg-[var(--text)] p-6 rounded-2xl">
+ <div className="bg-[var(--bg)] dark:bg-[var(--bg3)] p-6 rounded-2xl">
  <h3 className="font-bold text-[var(--text)] mb-4">Ask a question</h3>
  <div className="flex gap-3">
  <input 
@@ -985,7 +985,7 @@ export default function ProductDetailPage() {
  </div>
  </div>
  ) : (
- <div className="bg-[var(--bg)] dark:bg-[var(--text)] p-6 rounded-2xl text-center">
+ <div className="bg-[var(--bg)] dark:bg-[var(--bg3)] p-6 rounded-2xl text-center">
  <p className="text-sm text-[var(--text2)] mb-3">Please log in to ask a question.</p>
  <Link href="/login" className="inline-block bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] dark:border-[#444444] px-6 py-2 rounded-xl text-sm font-bold text-[var(--text)] ">
  Login
@@ -1030,8 +1030,8 @@ export default function ProductDetailPage() {
  <h2 className="text-xl font-black text-[var(--text)] uppercase tracking-tight mb-6">More in {product.category}</h2>
  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
  {relatedProducts.map(rel => (
- <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
- <div className="aspect-video bg-[var(--bg)] dark:bg-[var(--text)] relative overflow-hidden">
+ <Link href={`/marketplace/${rel.id}`} key={rel.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] overflow-hidden group hover:shadow-xl transition-all flex flex-col relative">
+ <div className="aspect-video bg-[var(--bg)] dark:bg-[var(--bg3)] relative overflow-hidden">
  {rel.images_urls?.[0] ? (
  <img src={rel.images_urls[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
  ) : (
@@ -1058,7 +1058,7 @@ export default function ProductDetailPage() {
  {/* REQUEST MODAL */}
  {isRequestModalOpen && (
  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+ <div className="bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
  <button onClick={() => setIsRequestModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[var(--bg)] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
  <X className="w-4 h-4 text-[var(--text2)]" />
  </button>
@@ -1093,7 +1093,7 @@ export default function ProductDetailPage() {
  {/* REVIEW MODAL */}
  {isReviewModalOpen && (
  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[var(--border)] animate-in fade-in zoom-in-95 duration-200">
+ <div className="bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative border-[0.5px] border-[var(--border)] animate-in fade-in zoom-in-95 duration-200">
  <button onClick={() => setIsReviewModalOpen(false)} className="absolute top-4 right-4 p-2 bg-[var(--bg)] rounded-full hover:bg-[#e5e5e5] dark:hover:bg-[#444444] transition-colors">
  <X className="w-4 h-4 text-[var(--text2)]" />
  </button>

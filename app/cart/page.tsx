@@ -199,7 +199,7 @@ export default function CartPage() {
  return (
  <div className="min-h-screen bg-[var(--bg)] pb-24">
  {/* HEADER */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] pt-12 pb-8 px-6">
+ <div className="bg-[var(--card-bg)] border-b-[0.5px] border-[var(--border)] pt-12 pb-8 px-6">
  <div className="max-w-7xl mx-auto">
  <h1 className="text-3xl font-black text-[var(--text)] uppercase tracking-tighter flex items-center gap-3">
  <ShoppingBag className="w-8 h-8" />
@@ -210,8 +210,8 @@ export default function CartPage() {
 
  <div className="max-w-7xl mx-auto px-6 py-12">
  {cartItems.length === 0 ? (
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
- <div className="w-24 h-24 bg-[var(--bg)] dark:bg-[var(--text)] rounded-full flex items-center justify-center mx-auto mb-6">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[32px] p-16 text-center shadow-xl shadow-black/5">
+ <div className="w-24 h-24 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center mx-auto mb-6">
  <ShoppingBag className="w-10 h-10 text-[var(--text2)]" />
  </div>
  <h2 className="text-2xl font-black text-[var(--text)] mb-2 tracking-tight">Your cart is empty</h2>
@@ -236,9 +236,9 @@ export default function CartPage() {
  const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
 
  return (
- <div key={item.id} className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
+ <div key={item.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-4 sm:p-6 flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm">
  {/* Image */}
- <div className="w-full sm:w-32 aspect-video sm:aspect-square bg-[var(--bg)] dark:bg-[var(--text)] rounded-xl overflow-hidden flex-shrink-0 relative">
+ <div className="w-full sm:w-32 aspect-video sm:aspect-square bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-xl overflow-hidden flex-shrink-0 relative">
  {product.images_urls?.[0] ? (
  <img src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover" />
  ) : (
@@ -280,13 +280,13 @@ export default function CartPage() {
  <div className="flex items-center gap-3">
  <span className="text-xs font-bold text-[var(--text2)] uppercase tracking-widest">Qty</span>
  {isHardware ? (
- <div className="flex items-center bg-[var(--bg)] dark:bg-[var(--text)] rounded-lg p-1 border-[0.5px] border-[var(--border)] ">
+ <div className="flex items-center bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-lg p-1 border-[0.5px] border-[var(--border)] ">
  <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[var(--text)] "><Minus className="w-3.5 h-3.5" /></button>
  <span className="w-8 text-center text-sm font-bold text-[var(--text)] ">{item.quantity}</span>
  <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-1 hover:bg-[var(--card-bg)] dark:hover:bg-[#333333] rounded transition-colors text-[var(--text)] "><Plus className="w-3.5 h-3.5" /></button>
  </div>
  ) : (
- <div className="bg-[var(--bg)] dark:bg-[var(--text)] rounded-lg px-4 py-1.5 border-[0.5px] border-[var(--border)] ">
+ <div className="bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-lg px-4 py-1.5 border-[0.5px] border-[var(--border)] ">
  <span className="text-sm font-bold text-[var(--text2)]">1 (Digital)</span>
  </div>
  )}
@@ -312,7 +312,7 @@ export default function CartPage() {
 
  {/* ORDER SUMMARY */}
  <div className="w-full lg:w-[400px] flex-shrink-0">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[32px] p-8 sticky top-24 shadow-xl shadow-black/5">
  <h2 className="text-xl font-black text-[var(--text)] uppercase tracking-tight mb-6">Order Summary</h2>
  
  <div className="space-y-4 mb-6 pb-6 border-b-[0.5px] border-[var(--border)] ">

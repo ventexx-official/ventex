@@ -69,7 +69,7 @@ export default function InvestorSettingsPage() {
  value={thesis}
  onChange={(e) => setThesis(e.target.value)}
  rows={6}
- className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
+ className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
  />
 
  <label className="mt-8 block text-xs font-black uppercase tracking-widest text-[var(--text2)]">WhatsApp Number (For Direct P2P)</label>
@@ -78,13 +78,13 @@ export default function InvestorSettingsPage() {
  value={whatsappNumber}
  onChange={(e) => setWhatsappNumber(e.target.value)}
  placeholder="+1234567890"
- className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
+ className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-medium outline-none focus:border-[#222222] text-[var(--text)]"
  />
 
  <Section title="Preferred sectors" values={SECTORS} selected={sectors} onToggle={(v) => toggle(v, sectors, setSectors)} />
  <Section title="Preferred stages" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
 
- <section className="mt-8 rounded-2xl border border-[var(--border)] bg-[#F8F8F8] p-5">
+ <section className="mt-8 rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
  <h2 className="text-sm font-black uppercase tracking-widest text-[var(--text)]">Two-Factor Authentication</h2>
  <p className="mt-2 text-sm font-medium text-[var(--text2)]">Protect your account with an authenticator app.</p>
  <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

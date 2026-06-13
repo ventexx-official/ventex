@@ -64,14 +64,14 @@ export default function Signup() {
  <div className="absolute right-4 top-4">
  <ThemeToggle />
  </div>
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
+ <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
  <div className="text-center mb-8">
  <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
  Ventex
  </Link>
  <h1 className="text-xl font-bold mt-4 text-[var(--text)] ">Create an account</h1>
  <p className="text-sm text-[var(--text2)] mt-2">Join Ventex to discover, fund, or sell startups.</p>
- <div className="mt-4 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-3 text-left text-xs leading-5 text-[var(--text2)] dark:bg-[var(--text)] ">
+ <div className="mt-4 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-3 text-left text-xs leading-5 text-[var(--text2)] dark:bg-[var(--bg3)] ">
  <strong className="text-[var(--text)] ">Investor verification:</strong> Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
  </div>
  </div>

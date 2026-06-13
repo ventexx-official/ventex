@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { createSupabaseAdmin } from './supabase-admin';
 
 export function jsonError(message: string, status = 400) {
@@ -14,8 +15,22 @@ export async function requireUser(req: Request) {
   const token = getBearerToken(req);
   if (!token) return { user: null, error: jsonError('Unauthorized', 401) };
 
-  const supabaseAdmin = createSupabaseAdmin();
-  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  const supabaseAuth = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    }
+  );
+  const { data, error } = await supabaseAuth.auth.getUser(token);
   if (error || !data.user) return { user: null, error: jsonError('Unauthorized', 401) };
 
   return { user: data.user, error: null };

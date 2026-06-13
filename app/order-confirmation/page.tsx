@@ -171,7 +171,7 @@ function OrderConfirmationDetails() {
  
  {!sessionId || orders.length === 0 ? (
  /* Empty or Invalid State */
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)] shadow-xl">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)] shadow-xl">
  <div className="w-20 h-20 bg-red-50 dark:bg-red-950/20 rounded-full flex items-center justify-center mx-auto mb-6">
  <X className="w-10 h-10 text-red-500" />
  </div>
@@ -189,7 +189,7 @@ function OrderConfirmationDetails() {
  <div className="space-y-8">
  
  {/* Header Success Card */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-10 border-[0.5px] border-[var(--border)] text-center shadow-xl relative overflow-hidden">
  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
  
  <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-950/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
@@ -201,7 +201,7 @@ function OrderConfirmationDetails() {
  Thank you for your purchase. Your order was successfully processed and split payouts were distributed.
  </p>
  
- <div className="inline-flex items-center gap-4 bg-[var(--bg)] dark:bg-[var(--text)] px-6 py-3 rounded-2xl border-[0.5px] border-[var(--border)] ">
+ <div className="inline-flex items-center gap-4 bg-[var(--bg)] dark:bg-[var(--bg3)] px-6 py-3 rounded-2xl border-[0.5px] border-[var(--border)] ">
  <div className="text-left border-r border-[#cccccc] dark:border-[#444444] pr-4">
  <span className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest block">Session ID</span>
  <span className="text-xs font-bold text-[var(--text)] ">{sessionId.slice(0, 15)}...</span>
@@ -214,7 +214,7 @@ function OrderConfirmationDetails() {
  </div>
 
  {/* Purchased Items & Delivery Area */}
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[32px] p-8 border-[0.5px] border-[var(--border)] shadow-md space-y-6">
+ <div className="bg-[var(--card-bg)] rounded-[32px] p-8 border-[0.5px] border-[var(--border)] shadow-md space-y-6">
  <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight pb-4 border-b-[0.5px] border-[var(--border)] ">Your Products</h2>
  
  <div className="divide-y-[0.5px] divide-[#e5e5e5] dark:divide-[#333333]">
@@ -228,7 +228,7 @@ function OrderConfirmationDetails() {
  
  {/* Left: Product Info */}
  <div className="flex gap-4 items-center">
- <div className="w-16 h-16 bg-[var(--bg)] dark:bg-[var(--text)] rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center relative">
+ <div className="w-16 h-16 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center relative">
  {product.images_urls?.[0] ? (
  <img src={product.images_urls[0]} alt="" className="w-full h-full object-cover" />
  ) : (
@@ -290,7 +290,7 @@ function OrderConfirmationDetails() {
  <div className="flex gap-4">
  <Link 
  href="/orders" 
- className="bg-[var(--card-bg)] bg-[var(--card-bg)] text-[var(--text)] border-[0.5px] border-[var(--border)] px-6 py-3 rounded-xl font-bold text-sm hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors shadow-sm"
+ className="bg-[var(--card-bg)] text-[var(--text)] border-[0.5px] border-[var(--border)] px-6 py-3 rounded-xl font-bold text-sm hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors shadow-sm"
  >
  View Order History
  </Link>
@@ -311,7 +311,7 @@ function OrderConfirmationDetails() {
  {/* RATING & REVIEW MODAL */}
  {reviewItem && (
  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
- <div className="bg-[var(--card-bg)] bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[var(--border)] ">
+ <div className="bg-[var(--card-bg)] rounded-[24px] w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-[0.5px] border-[var(--border)] ">
  
  <button 
  onClick={() => {
