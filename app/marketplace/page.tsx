@@ -468,7 +468,7 @@ export default function MarketplacePage() {
  {product.images_urls?.[0] ? (
  <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
  ) : (
- <div className="w-full h-full flex items-center justify-center text-[var(--text3)] dark:text-[var(--text2)]">
+ <div className="w-full h-full flex items-center justify-center text-[var(--text2)]">
  <ShoppingBag className="w-10 h-10" />
  </div>
  )}
@@ -494,7 +494,7 @@ export default function MarketplacePage() {
 
  <div className="flex items-center gap-2 mb-3">
  <div className="flex items-center gap-1">
- <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-[var(--text3)] dark:text-[var(--text2)]'}`} />
+ <Star className={`w-3.5 h-3.5 ${product.average_rating > 0 ? 'fill-amber-400 text-amber-400' : 'text-[var(--text2)]'}`} />
  <span className="text-xs font-bold text-[var(--text)] ">{product.average_rating > 0 ? product.average_rating.toFixed(1) : 'New'}</span>
  </div>
  {product.review_count > 0 && (
@@ -578,7 +578,7 @@ export default function MarketplacePage() {
  {product.images_urls?.[0] ? (
  <img loading="lazy" src={product.images_urls[0]} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
  ) : (
- <div className="w-full h-full flex items-center justify-center text-[var(--text3)] dark:text-[var(--text2)]">
+ <div className="w-full h-full flex items-center justify-center text-[var(--text2)]">
  <ShoppingBag className="w-10 h-10" />
  </div>
  )}

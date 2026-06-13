@@ -218,7 +218,7 @@ export default function CartPage() {
  <p className="text-[var(--text2)] mb-8 max-w-md mx-auto">Looks like you haven't added any products, templates, or services to your cart yet.</p>
  <Link 
  href="/marketplace" 
- className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--bg)] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10"
+ className="inline-flex items-center gap-2 bg-[var(--text)] text-[var(--bg)] px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10"
  >
  Browse Products <ArrowRight className="w-4 h-4" />
  </Link>
@@ -401,7 +401,7 @@ export default function CartPage() {
  <button 
  onClick={handleCheckout}
  disabled={checkingOut || cartItems.length === 0}
- className="w-full flex items-center justify-center gap-2 bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+ className="w-full flex items-center justify-center gap-2 bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
  >
  {checkingOut ? (
  <><Loader2 className="w-4 h-4 animate-spin" /> Creating Session...</>

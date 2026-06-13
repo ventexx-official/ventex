@@ -761,7 +761,7 @@ via Ventex`;
  if (!currentUser) router.push('/login');
  else setIsInterestModalOpen(true);
  }}
- className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors flex-grow md:flex-grow-0 text-center"
+ className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors flex-grow md:flex-grow-0 text-center"
  >
  Express interest
  </button>
@@ -1003,7 +1003,7 @@ via Ventex`;
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
  <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
- <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
  View Investor Accounts
  </Link>
  </div>
@@ -1031,7 +1031,7 @@ via Ventex`;
  <button 
  onClick={() => handleBuyProduct(p)}
  disabled={isCheckingOut}
- className="bg-[var(--text)] text-[var(--bg)] px-3 py-1.5 rounded-md text-xs font-bold hover:bg-black dark:hover:bg-gray-200 disabled:opacity-50"
+ className="bg-[var(--text)] text-[var(--bg)] px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-80 disabled:opacity-50"
  >
  {isCheckingOut ? '...' : 'Buy now'}
  </button>
@@ -1059,7 +1059,7 @@ via Ventex`;
  </div>
  <button 
  onClick={handleOpenDeck}
- className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors"
+ className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md text-sm font-bold hover:opacity-80 transition-colors"
  disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
  >
  View Pitch Deck
@@ -1074,7 +1074,7 @@ via Ventex`;
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
  <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
- <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors">
+ <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
  View Investor Accounts
  </Link>
  </div>
@@ -1182,7 +1182,7 @@ via Ventex`;
  <button
  onClick={handlePostComment}
  disabled={!newComment.trim() || posting}
- className="bg-[var(--text)] text-[var(--bg)] px-5 py-2 rounded-md text-sm font-bold hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+ className="bg-[var(--text)] text-[var(--bg)] px-5 py-2 rounded-md text-sm font-bold hover:opacity-80 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
  >
  {posting ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-4 h-4" />}
  {posting ? 'Posting...' : 'Post'}
@@ -1388,7 +1388,7 @@ via Ventex`;
  <button
  onClick={handleSendInterest}
  disabled={sendingInterest || !interestMessage.trim()}
- className="px-6 py-2.5 rounded-full bg-[var(--text)] text-[var(--bg)] hover:bg-black dark:hover:bg-gray-200 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+ className="px-6 py-2.5 rounded-full bg-[var(--text)] text-[var(--bg)] hover:opacity-80 text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
  >
  {sendingInterest ? 'Sending...' : 'Send interest'}
  </button>

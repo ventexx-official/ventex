@@ -273,7 +273,7 @@ export default function OrdersDashboard() {
  {filteredOrders.length === 0 ? (
  /* Empty state card */
  <div className="bg-[var(--card-bg)] rounded-[32px] p-12 text-center border-[0.5px] border-[var(--border)] shadow-md">
- <ShoppingBag className="w-12 h-12 text-[var(--text3)] dark:text-[var(--text)] mx-auto mb-4" />
+ <ShoppingBag className="w-12 h-12 text-[var(--text2)] mx-auto mb-4" />
  <h3 className="text-lg font-black text-[var(--text)] uppercase tracking-tight mb-1">
  No purchases found
  </h3>
@@ -285,7 +285,7 @@ export default function OrdersDashboard() {
  {!searchQuery && (
  <Link 
  href="/marketplace" 
- className="inline-block bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-black dark:hover:bg-gray-200 transition-colors shadow-md"
+ className="inline-block bg-[var(--text)] text-[var(--bg)] px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider hover:opacity-80 transition-colors shadow-md"
  >
  Browse Marketplace
  </Link>
@@ -451,7 +451,7 @@ export default function OrdersDashboard() {
  className={`w-8 h-8 transition-colors ${
  star <= (hoverRating !== null ? hoverRating : rating) 
  ? 'fill-amber-400 text-amber-400' 
- : 'text-[var(--text3)] dark:text-[var(--text)]'
+ : 'text-[var(--text2)]'
  }`} 
  />
  </button>
@@ -474,7 +474,7 @@ export default function OrdersDashboard() {
  <button 
  onClick={handleSubmitReview}
  disabled={submittingReview || !comment.trim()}
- className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:bg-black dark:hover:bg-gray-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+ className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
  >
  {submittingReview ? 'Submitting Review...' : 'Submit Review'}
  </button>
