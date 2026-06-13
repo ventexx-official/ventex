@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
-export default function FounderGuard({ children }: { children: React.ReactNode }) {
+export default function BuyerGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
@@ -23,12 +23,12 @@ export default function FounderGuard({ children }: { children: React.ReactNode }
         .eq('id', session.user.id)
         .single();
 
-      if (profile?.role === 'admin' || profile?.role === 'founder') {
+      if (profile?.role === 'admin' || profile?.role === 'buyer') {
         if (mounted) setAuthorized(true);
       } else if (profile?.role === 'investor') {
         if (mounted) router.replace('/investor/portal');
-      } else if (profile?.role === 'buyer') {
-        if (mounted) router.replace('/buyer/dashboard');
+      } else if (profile?.role === 'founder') {
+        if (mounted) router.replace('/founder/dashboard');
       } else {
         if (mounted) router.replace('/dashboard');
       }

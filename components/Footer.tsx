@@ -25,6 +25,7 @@ const columns = [
       ['Investors', '/investors'],
       ['Contact', '/contact'],
       ['Resources', '/resources/schemes'],
+      ['Support Ventex', 'https://buymeacoffee.com/ventexx'],
     ],
   },
   {

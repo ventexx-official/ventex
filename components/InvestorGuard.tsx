@@ -27,6 +27,8 @@ export default function InvestorGuard({ children }: { children: React.ReactNode 
         if (mounted) setAuthorized(true);
       } else if (profile?.role === 'founder') {
         if (mounted) router.replace('/founder/dashboard');
+      } else if (profile?.role === 'buyer') {
+        if (mounted) router.replace('/buyer/dashboard');
       } else {
         if (mounted) router.replace('/dashboard');
       }

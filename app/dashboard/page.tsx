@@ -26,7 +26,13 @@ export default function DashboardRedirectPage() {
  ? '/admin/users'
  : profile?.role === 'investor'
  ? '/investor/portal'
- : '/founder/dashboard';
+ : profile?.role === 'buyer'
+ ? '/buyer/dashboard'
+ : profile?.role === 'visitor'
+ ? '/'
+ : profile?.role === 'founder'
+ ? '/founder/dashboard'
+ : '/onboarding';
 
  router.replace(next);
  };

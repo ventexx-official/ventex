@@ -10,6 +10,7 @@ const PROTECTED_ROUTES = [
   '/settings',
   '/founder',
   '/investor',
+  '/buyer',
   '/booster-packs',
 ];
 
@@ -28,6 +29,7 @@ const BOT_BLOCKED_PATHS = [
   '/booster-packs',
   '/founder',
   '/investor',
+  '/buyer',
 ];
 
 export function middleware(request: NextRequest) {

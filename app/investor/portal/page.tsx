@@ -7,7 +7,7 @@ import {
  LayoutDashboard, Bookmark, MessageSquare, Briefcase, 
  Search, Settings, PanelLeftClose, PanelLeftOpen, 
  User, Star, Eye, Clock, Trash2, 
- ExternalLink
+ ExternalLink, FileText
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -206,9 +206,23 @@ export default function InvestorPortal() {
  <NavItem icon={Bookmark} label="Saved Pitches" collapsed={sidebarCollapsed} />
  <NavItem icon={MessageSquare} label="My Interests" collapsed={sidebarCollapsed} />
  <NavItem icon={Briefcase} label="Deal Room" collapsed={sidebarCollapsed} />
- <NavItem icon={Search} label="Advanced Search" collapsed={sidebarCollapsed} />
+ <NavItem icon={FileText} label="Saved Pitches" href="/investor/saved" collapsed={sidebarCollapsed} />
  <NavItem icon={Settings} label="Settings" collapsed={sidebarCollapsed} />
  </nav>
+
+ {/* Buy Me A Coffee Widget */}
+ <div className="px-3 pb-4 border-t-[0.5px] border-[var(--border)] pt-4 mt-auto md:mt-4 hidden md:block">
+  {!sidebarCollapsed ? (
+    <a href="https://buymeacoffee.com/ventexx" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-3 py-2.5 bg-[#FFDD00] text-black font-bold rounded-lg hover:brightness-95 transition-all text-sm shadow-sm w-full">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+      Support Ventex
+    </a>
+  ) : (
+    <a href="https://buymeacoffee.com/ventexx" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-8 h-8 mx-auto bg-[#FFDD00] text-black font-bold rounded-lg hover:brightness-95 transition-all shadow-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+    </a>
+  )}
+ </div>
 
  {/* Mobile Nav Row */}
  <nav className="flex md:hidden flex-1 items-center gap-1 px-3 overflow-x-auto py-2">

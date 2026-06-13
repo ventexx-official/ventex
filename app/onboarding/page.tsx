@@ -68,9 +68,9 @@ export default function Onboarding() {
 
  // Redirect to appropriate landing pages
  switch (role) {
- case 'founder': return router.push('/founder/create-pitch');
- case 'investor': return router.push('/discover');
- case 'buyer': return router.push('/discover');
+ case 'founder': return router.push('/founder/dashboard');
+ case 'investor': return router.push('/investor/portal');
+ case 'buyer': return router.push('/buyer/dashboard');
  case 'explorer': return router.push('/');
  default: return router.push('/');
  }
