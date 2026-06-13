@@ -65,10 +65,10 @@ export default function Login() {
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
  <div className="text-center mb-8">
  <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
- Ventex
+ Ventexx
  </Link>
  <h1 className="text-xl font-bold mt-4 text-[var(--text)] ">Welcome back</h1>
- <p className="text-sm text-[var(--text2)] mt-2">Log in to your Ventex account.</p>
+ <p className="text-sm text-[var(--text2)] mt-2">Log in to your Ventexx account.</p>
  </div>
 
  <form onSubmit={handleLogin} className="space-y-4">

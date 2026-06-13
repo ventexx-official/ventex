@@ -1,46 +1,40 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: 'https://ventexx.com',
-  generateRobotsTxt: false,
+  generateRobotsTxt: false, // We created a custom robots.txt
   exclude: [
-    '/admin',
-    '/admin/*',
-    '/dashboard',
-    '/dashboard/*',
-    '/settings',
-    '/settings/*',
-    '/my-pitches',
-    '/my-pitches/*',
-    '/my-store',
-    '/my-store/*',
-    '/messages',
-    '/messages/*',
-    '/booster-packs',
-    '/booster-packs/*',
-    '/api',
-    '/api/*'
+    '/admin*',
+    '/dashboard*',
+    '/settings*',
+    '/my-pitches*',
+    '/my-store*',
+    '/messages*',
+    '/api*',
+    '/founder*',
+    '/investor*',
+    '/login',
+    '/signup'
   ],
-  changefreq: 'weekly',
-  priority: 0.8,
   transform: async (config, path) => {
-    // Custom priority for legal pages
-    const legalPages = ['/terms', '/privacy', '/seller-agreement', '/refunds', '/delivery', '/refund-policy', '/delivery-policy'];
-    if (legalPages.includes(path)) {
-      return {
-        loc: path,
-        changefreq: config.changefreq,
-        priority: 0.5,
-        lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
-        alternateRefs: config.alternateRefs ?? [],
-      }
+    // Custom priorities
+    let priority = config.priority;
+    if (path === '/') {
+      priority = 1.0;
+    } else if (path === '/discover' || path === '/marketplace') {
+      priority = 0.9;
+    } else if (path === '/events' || path === '/investors') {
+      priority = 0.8;
+    } else if (path === '/about' || path === '/catalyst' || path === '/pricing' || path === '/contact') {
+      priority = 0.7;
+    } else {
+      priority = 0.6;
     }
 
     return {
       loc: path,
       changefreq: config.changefreq,
-      priority: config.priority,
+      priority: priority,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
-      alternateRefs: config.alternateRefs ?? [],
     }
   },
 }

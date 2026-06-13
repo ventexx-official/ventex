@@ -295,7 +295,7 @@ function MessagesInner() {
                 <div className="pt-2">
                   {selected.other_user?.whatsapp_number ? (
                     <a
-                      href={`https://wa.me/${selected.other_user.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi ${selected.other_user.full_name}, I saw your inquiry regarding "${selected.context_title}" on Ventex!`)}`}
+                      href={`https://wa.me/${selected.other_user.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi ${selected.other_user.full_name}, I saw your inquiry regarding "${selected.context_title}" on Ventexx!`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-2xl font-bold hover:bg-[#20b858] active:scale-95 transition-all shadow-lg shadow-[#25D366]/20"
@@ -313,7 +313,7 @@ function MessagesInner() {
                     </div>
                   )}
                   <p className="text-xs text-center text-[var(--text2)] mt-4">
-                    All communication and payments are directly P2P via WhatsApp. Ventex takes 0% commission.
+                    All communication and payments are directly P2P via WhatsApp. Ventexx takes 0% commission.
                   </p>
                 </div>
               </div>

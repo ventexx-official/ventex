@@ -327,7 +327,7 @@ export default function CreatePitch() {
  const newData = { ...prev, [field]: value };
  if (field === 'is_raising' && prev.is_raising === true && value === false) {
  setTimeout(() => {
- if (confirm('Notify your Ventex investors?')) {
+ if (confirm('Notify your Ventexx investors?')) {
  notifySavedInvestors();
  }
  }, 0);
@@ -356,12 +356,12 @@ export default function CreatePitch() {
  const filePath = `pitch-logos/${pitchId}.${fileExt}`;
 
  const { error: uploadError } = await supabase.storage
- .from('ventex-assets')
+ .from('ventexx-assets')
  .upload(filePath, file, { upsert: true });
 
  if (!uploadError) {
  const { data: { publicUrl } } = supabase.storage
- .from('ventex-assets')
+ .from('ventexx-assets')
  .getPublicUrl(filePath);
  
  handleChange('logo_url', publicUrl);
@@ -513,7 +513,7 @@ export default function CreatePitch() {
  <label className="block text-sm font-bold text-[var(--text)] mb-2">Startup title</label>
  <input 
  type="text"
- placeholder="e.g. Ventex"
+ placeholder="e.g. Ventexx"
  className="w-full px-4 py-3 rounded-xl border-[0.5px] border-[var(--border)] focus:outline-none focus:ring-1 focus:ring-[#222222] transition-all"
  value={formData.title}
  onChange={(e) => handleChange('title', e.target.value)}
@@ -899,9 +899,9 @@ export default function CreatePitch() {
  const file = e.target.files?.[0];
  if (file && pitchId) {
  const path = `pitch-docs/${pitchId}/deck.pdf`;
- supabase.storage.from('ventex-assets').upload(path, file, { upsert: true }).then(({ error }) => {
+ supabase.storage.from('ventexx-assets').upload(path, file, { upsert: true }).then(({ error }) => {
  if (!error) {
- const { data: { publicUrl } } = supabase.storage.from('ventex-assets').getPublicUrl(path);
+ const { data: { publicUrl } } = supabase.storage.from('ventexx-assets').getPublicUrl(path);
  handleChange('pitch_deck_url', publicUrl);
  if (founderId && !deckXpAwardedRef.current) {
  deckXpAwardedRef.current = true;
@@ -922,9 +922,9 @@ export default function CreatePitch() {
  const file = e.target.files?.[0];
  if (file && pitchId) {
  const path = `pitch-docs/${pitchId}/${file.name}`;
- supabase.storage.from('ventex-assets').upload(path, file, { upsert: true }).then(({ error }) => {
+ supabase.storage.from('ventexx-assets').upload(path, file, { upsert: true }).then(({ error }) => {
  if (!error) {
- const { data: { publicUrl } } = supabase.storage.from('ventex-assets').getPublicUrl(path);
+ const { data: { publicUrl } } = supabase.storage.from('ventexx-assets').getPublicUrl(path);
  const newDocs = [...formData.additional_docs, { name: file.name, url: publicUrl }];
  handleChange('additional_docs', newDocs);
  }
@@ -979,9 +979,9 @@ export default function CreatePitch() {
  if (file && pitchId) {
  if (file.size > 500 * 1024 * 1024) return alert("File too large");
  const path = `pitch-videos/${pitchId}/main.mp4`;
- supabase.storage.from('ventex-assets').upload(path, file, { upsert: true }).then(({ error }) => {
+ supabase.storage.from('ventexx-assets').upload(path, file, { upsert: true }).then(({ error }) => {
  if (!error) {
- const { data: { publicUrl } } = supabase.storage.from('ventex-assets').getPublicUrl(path);
+ const { data: { publicUrl } } = supabase.storage.from('ventexx-assets').getPublicUrl(path);
  handleChange('video_url', publicUrl);
  }
  });

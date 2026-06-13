@@ -159,7 +159,7 @@ export default function DealRoomChat() {
  const paymentRegex = /(paypal|gpay|phonepe|paytm|pay\.google\.com|paypal\.com|phonepe\.com)\b/i;
 
  if (phoneRegex.test(text) || upiRegex.test(text) || whatsappRegex.test(text) || paymentRegex.test(text)) {
- setModerationWarning("Please keep discussions on-platform. Sharing payment details violates Ventex terms.");
+ setModerationWarning("Please keep discussions on-platform. Sharing payment details violates Ventexx terms.");
  return false;
  }
 
@@ -309,7 +309,7 @@ export default function DealRoomChat() {
  </div>
  <h3 className="font-bold text-[var(--text)] text-sm uppercase tracking-tight">Deal Room Initialized</h3>
  <p className="text-xs text-[var(--text2)] leading-relaxed">
- This is a secure, end-to-end moderated chat channel for sharing private discussions and deal queries. Keep your transactions and conversations strictly on Ventex.
+ This is a secure, end-to-end moderated chat channel for sharing private discussions and deal queries. Keep your transactions and conversations strictly on Ventexx.
  </p>
  </div>
  ) : (

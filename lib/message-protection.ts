@@ -18,7 +18,7 @@ export function sanitizeMessage(content: string) {
   const externalUrls = content.match(urlPattern)?.filter((url) => {
     try {
       const parsed = new URL(url.startsWith("http") ? url : `https://${url}`);
-      return !parsed.hostname.includes("ventex");
+      return !parsed.hostname.includes("ventexx");
     } catch {
       return true;
     }

@@ -43,7 +43,7 @@ export default function InvestorsPage() {
  For Investors
  </h1>
  <p className="text-base leading-7 text-[var(--text2)] sm:text-lg">
- Ventex helps investors find startup opportunities, understand founder context,
+ Ventexx helps investors find startup opportunities, understand founder context,
  and keep promising companies organized as they move from discovery to follow-up.
  </p>
  </div>
@@ -73,9 +73,9 @@ export default function InvestorsPage() {
  <div className="mb-8 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
  <h2 className="text-xl font-black tracking-[-.03em]">Investor verification notice</h2>
  <p className="mt-2 text-sm leading-6 text-[var(--text2)]">
- Ventex conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
+ Ventexx conducts identity verification for all investor accounts. You will be asked to complete KYC before accessing founder contact details or data rooms.
  </p>
- <p className="mt-3 text-sm font-bold text-[var(--text)]">Applications reviewed by Ventex team. Investor accounts are verified before activation.</p>
+ <p className="mt-3 text-sm font-bold text-[var(--text)]">Applications reviewed by Ventexx team. Investor accounts are verified before activation.</p>
  </div>
 
  <h2 className="text-2xl font-black tracking-[-.03em]">

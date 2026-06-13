@@ -21,7 +21,7 @@ interface UserProfile {
  id: string;
  full_name: string;
  role: string;
- ventex_access: boolean;
+ 
  investor_premium: boolean;
  is_seller: boolean;
  banned: boolean;
@@ -50,7 +50,7 @@ export default function AdminUsers() {
  // Fetch users + auth emails via admin rpc if available, otherwise fetch users table
  const [{ data: usersData }, { data: pitches }, { data: products }] =
  await Promise.all([
- supabase.from("users").select("id, full_name, role, avatar_url, banned, verified_founder, ventex_access, investor_premium, is_seller, created_at").order("created_at", { ascending: false }),
+ supabase.from("users").select("id, full_name, role, avatar_url, banned, verified_founder, investor_premium, is_seller, created_at").order("created_at", { ascending: false }),
  supabase.from("pitches").select("founder_id"),
  supabase.from("products").select("seller_id"),
  ]);
@@ -231,11 +231,7 @@ export default function AdminUsers() {
  {/* Role + chips */}
  <div className="hidden md:flex items-center gap-3">
  {roleBadge(user.role)}
- {user.ventex_access && (
- <span className="text-[10px] bg-violet-500/10 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-full font-bold">
- Ventex Pro
- </span>
- )}
+ 
  {user.investor_premium && (
  <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
  <Crown size={9} /> Investor

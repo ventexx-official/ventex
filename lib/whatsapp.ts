@@ -1,5 +1,5 @@
 /**
- * Ventex WhatsApp P2P Utility
+ * Ventexx WhatsApp P2P Utility
  * Handles message formatting and WhatsApp deep-link generation.
  * The seller phone number is NEVER exposed in client HTML.
  */
@@ -25,7 +25,7 @@ export function buildWhatsAppMessage(params: WhatsAppMessageParams): string {
   const priceInr = (params.priceInr / 100).toLocaleString('en-IN');
   const listingUrl = `https://ventexx.com/marketplace/${params.productId}`;
 
-  return `🛒 *PURCHASE REQUEST — Ventex Marketplace*
+  return `🛒 *PURCHASE REQUEST — Ventexx Marketplace*
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
 📦 *Product Details*
@@ -50,7 +50,7 @@ export function buildWhatsAppMessage(params: WhatsAppMessageParams): string {
 6️⃣ Buyer confirms receipt
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
-Sent via Ventex Marketplace · ventexx.com
+Sent via Ventexx Marketplace · ventexx.com
 Transaction ref: ${params.dealCode}`;
 }
 

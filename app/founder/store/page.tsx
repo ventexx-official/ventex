@@ -275,7 +275,7 @@ export default function FounderStorePage() {
  <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
  {!sidebarCollapsed && (
  <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">
- Ventex
+ Ventexx
  </Link>
  )}
  <button
@@ -525,7 +525,7 @@ export default function FounderStorePage() {
  <p className="text-sm font-semibold text-[var(--text)]">Direct P2P via WhatsApp</p>
  </div>
  <p className="text-xs text-[var(--text2)] leading-relaxed">
- Buyers contact you directly on WhatsApp. You agree on payment, delivery, and terms together. Ventex takes 0%.
+ Buyers contact you directly on WhatsApp. You agree on payment, delivery, and terms together. Ventexx takes 0%.
  </p>
  <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
  <p className="text-xs text-emerald-700 font-semibold">

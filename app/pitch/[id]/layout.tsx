@@ -8,8 +8,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
  .eq('id', params.id)
  .maybeSingle();
 
- const title = pitch?.title ? `${pitch.title} â€” Pitch on Ventex` : 'Pitch on Ventex';
- const description = pitch?.tagline || pitch?.short_description || 'View this startup pitch on Ventex.';
+ const title = pitch?.title ? `${pitch.title} â€” Pitch on Ventexx` : 'Pitch on Ventexx';
+ const description = pitch?.tagline || pitch?.short_description || 'View this startup pitch on Ventexx.';
 
  return {
  title,

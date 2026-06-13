@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout";
-import { BASE_URL, OG_IMAGE_URL } from "@/lib/site";
 import { Analytics } from '@vercel/analytics/react'
 
 const jakarta = Plus_Jakarta_Sans({
  subsets: ["latin"],
- variable: "--font-inter", // Keep variable name to avoid massive CSS changes, but it's Jakarta now
+ variable: "--font-inter",
  display: "swap",
 });
 
@@ -25,22 +24,46 @@ const jetBrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
  metadataBase: new URL('https://ventexx.com'),
- title: "Ventex - Where Startups Pitch, Fund and Sell",
- description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
- robots: "index, follow",
+ title: {
+  default: "Ventexx — Where Startups Pitch, Fund and Sell",
+  template: "%s | Ventexx",
+ },
+ description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+ robots: {
+  index: true,
+  follow: true,
+  googleBot: { index: true, follow: true },
+ },
  alternates: {
- canonical: "/",
+  canonical: "https://ventexx.com",
  },
  openGraph: {
- title: "Ventex - Where Startups Pitch, Fund and Sell",
- description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products.",
- url: "https://ventexx.com",
- siteName: "Ventex",
- type: "website",
- images: ["/og-image.png"],
+  title: "Ventexx — Where Startups Pitch, Fund and Sell",
+  description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+  url: "https://ventexx.com",
+  siteName: "Ventexx",
+  type: "website",
+  images: [
+   {
+    url: "https://ventexx.com/api/og",
+    width: 1200,
+    height: 630,
+    alt: "Ventexx — Where Startups Pitch, Fund and Sell",
+   }
+  ],
  },
  twitter: {
- card: "summary_large_image",
+  card: "summary_large_image",
+  title: "Ventexx — Where Startups Pitch, Fund and Sell",
+  description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+  images: ["https://ventexx.com/api/og"],
+ },
+ icons: {
+  icon: [
+   { url: "/favicon.ico", sizes: "any" },
+   { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+  ],
+  apple: "/apple-touch-icon.png",
  },
 };
 
@@ -50,24 +73,25 @@ export default function RootLayout({
  children: React.ReactNode;
 }>) {
  return (
- <html lang="en" suppressHydrationWarning>
- <head>
- <script
- dangerouslySetInnerHTML={{
- __html: `
- const t=localStorage.getItem('theme')||'dark';
- document.documentElement.classList.add('js');
- document.documentElement.setAttribute('data-theme',t);
- `,
- }}
- />
- </head>
- <body className={`${jakarta.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>
- <Layout>
- {children}
- </Layout>
- <Analytics />
- </body>
- </html>
+  <html lang="en" suppressHydrationWarning>
+  <head>
+  <link rel="manifest" href="/site.webmanifest" />
+  <script
+   dangerouslySetInnerHTML={{
+    __html: `
+    const t=localStorage.getItem('theme')||'dark';
+    document.documentElement.classList.add('js');
+    document.documentElement.setAttribute('data-theme',t);
+    `,
+   }}
+  />
+  </head>
+  <body className={`${jakarta.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>
+  <Layout>
+   {children}
+  </Layout>
+  <Analytics />
+  </body>
+  </html>
  );
 }

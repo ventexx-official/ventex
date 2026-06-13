@@ -423,7 +423,7 @@ export default function FounderDashboard() {
  <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
  <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
  {!sidebarCollapsed && (
- <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
+ <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventexx</Link>
  )}
  <button
  onClick={() => setSidebarCollapsed(v => !v)}

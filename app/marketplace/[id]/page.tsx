@@ -228,7 +228,7 @@ export default function ProductDetailPage() {
  // Scan for off-platform contact/payment patterns
  const flagged = await scanOffPlatformAttempt(requirements, 'project_requirements');
  if (flagged) {
- alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+ alert("âš ï¸ Access Blocked: All transactions must go through Ventexx. Sharing contact details, UPI handles, or external links is strictly prohibited.");
  return;
  }
 
@@ -469,7 +469,7 @@ export default function ProductDetailPage() {
  // Scan for off-platform contact/payment patterns
  const flagged = await scanOffPlatformAttempt(newQuestion, 'qa_question');
  if (flagged) {
- alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+ alert("âš ï¸ Access Blocked: All transactions must go through Ventexx. Sharing contact details, UPI handles, or external links is strictly prohibited.");
  return;
  }
 

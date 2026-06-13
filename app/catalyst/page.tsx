@@ -78,7 +78,7 @@ export default function CatalystPage() {
  }),
  });
 
- setMessage('Application submitted. The Ventex team will review it and contact you.');
+ setMessage('Application submitted. The Ventexx team will review it and contact you.');
  setForm({ fullName: '', email: '', role: 'Mentor', sectorExpertise: [], linkedIn: '', bio: '', offer: '' });
  } catch (err: any) {
  setError(err.message || 'Could not submit application.');
@@ -97,7 +97,7 @@ export default function CatalystPage() {
  Guide founders from idea to traction.
  </h1>
  <p className="max-w-2xl text-base md:text-lg font-medium leading-relaxed text-[var(--text2)]">
- Ventex Catalysts are mentors and investors who help founders sharpen products, close early customers, and prepare for funding. Join the network to give back and spot breakout startups early.
+ Ventexx Catalysts are mentors and investors who help founders sharpen products, close early customers, and prepare for funding. Join the network to give back and spot breakout startups early.
  </p>
  <div className="flex flex-col sm:flex-row gap-4 mt-4">
  <button 
@@ -121,7 +121,7 @@ export default function CatalystPage() {
  </div>
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-10 flex flex-col items-center text-center">
  <h3 className="text-xl font-bold text-[var(--text)] mb-4">Are you an experienced operator, founder, or investor?</h3>
- <p className="text-[var(--text3)] mb-6 max-w-xl">We are currently onboarding the first cohort of Ventex Catalysts. Apply now to get early access and start mentoring the next generation of startups.</p>
+ <p className="text-[var(--text3)] mb-6 max-w-xl">We are currently onboarding the first cohort of Ventexx Catalysts. Apply now to get early access and start mentoring the next generation of startups.</p>
  <button 
  onClick={() => setIsModalOpen(true)}
  className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-full text-sm font-bold transition-all hover:scale-105"
@@ -136,7 +136,7 @@ export default function CatalystPage() {
  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
  <div className="p-5 border-b-[0.5px] border-[var(--border)] flex justify-between items-center bg-[var(--bg2)]">
- <h2 className="text-xl font-black tracking-tight text-[var(--text)]">Apply to Ventex Catalyst</h2>
+ <h2 className="text-xl font-black tracking-tight text-[var(--text)]">Apply to Ventexx Catalyst</h2>
  <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-[var(--bg3)] rounded-full transition-colors">
  <X className="w-5 h-5 text-[var(--text3)]" />
  </button>

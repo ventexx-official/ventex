@@ -13,10 +13,10 @@ export default function AboutPage() {
  <div className="space-y-12">
  <div className="space-y-5">
  <h1 className="text-4xl font-black tracking-[-.04em] sm:text-5xl">
- About Ventex
+ About Ventexx
  </h1>
  <p className="max-w-3xl text-base leading-7 text-[var(--text2)] sm:text-lg">
- Ventex is a global platform where startups can pitch investors, sell software products,
+ Ventexx is a global platform where startups can pitch investors, sell software products,
  offer freelance services, and create job opportunities in one focused workspace.
  </p>
  </div>
@@ -29,11 +29,11 @@ export default function AboutPage() {
  </section>
 
  <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
- <h2 className="text-2xl font-black tracking-[-.03em]">Why we built Ventex</h2>
+ <h2 className="text-2xl font-black tracking-[-.03em]">Why we built Ventexx</h2>
  <div className="mt-4 space-y-4 text-sm leading-7 text-[var(--text2)]">
  <p>
  Early-stage founders are expected to pitch, sell, hire, build proof, and find the right
- supporters before they have a team large enough to manage all of it. Ventex exists to make
+ supporters before they have a team large enough to manage all of it. Ventexx exists to make
  that first layer of credibility easier to build.
  </p>
  <p>
@@ -53,7 +53,7 @@ export default function AboutPage() {
  <article className="flex gap-4 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[var(--text)] text-sm font-black text-[var(--bg)]">V</div>
  <div>
- <h3 className="font-black">Founder & CEO, Ventex</h3>
+ <h3 className="font-black">Founder & CEO, Ventexx</h3>
  <p className="mt-2 text-sm text-[var(--text2)]">Building the global startup graph from day one.</p>
  <p className="mt-4 text-xs font-bold uppercase tracking-[.12em] text-[var(--text3)]">More team members coming soon as we grow.</p>
  </div>
@@ -82,7 +82,7 @@ export default function AboutPage() {
   {/* Support section */}
   <section className="py-16 border-t border-[var(--border)] text-center">
     <p className="text-[var(--text2)] text-sm mb-2">Support the mission</p>
-    <p className="text-[var(--text)] font-semibold mb-1">Ventex is free and always will be during early access.</p>
+    <p className="text-[var(--text)] font-semibold mb-1">Ventexx is free and always will be during early access.</p>
     <p className="text-[var(--text2)] text-sm mb-6">If you believe in what we&apos;re building, a coffee goes a long way.</p>
     <a
       href="https://ko-fi.com/ventexx"

@@ -314,7 +314,7 @@ export default function NewProductPage() {
  <ChevronLeft className="w-4 h-4" />
  Back to Store
  </Link>
- <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</span>
+ <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventexx</span>
  <div className="w-32" />
  </header>
 
@@ -322,7 +322,7 @@ export default function NewProductPage() {
  <div className="space-y-8">
  <div>
  <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter uppercase">List a New Product</h1>
- <p className="text-[var(--text2)] font-medium text-sm mt-1">Create an interactive product or custom contract page for the Ventex Marketplace.</p>
+ <p className="text-[var(--text2)] font-medium text-sm mt-1">Create an interactive product or custom contract page for the Ventexx Marketplace.</p>
  </div>
 
  {errorMsg && (
@@ -397,7 +397,7 @@ export default function NewProductPage() {
  <input
  type="text"
  required
- placeholder="e.g. Ventex SaaS Starter Kit"
+ placeholder="e.g. Ventexx SaaS Starter Kit"
  value={name}
  onChange={e => setName(e.target.value)}
  className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-2xl text-sm font-bold text-[var(--text)] focus:outline-none focus:border-[#222222] focus:bg-[var(--card-bg)] transition-all"
@@ -735,7 +735,7 @@ export default function NewProductPage() {
  <div>
  <h4 className="text-xs font-black text-amber-800 uppercase tracking-wider">Awaiting Platform Review</h4>
  <p className="text-xs text-amber-700 leading-relaxed mt-1 font-medium">
- To protect our community, new listings start as <strong>'pending'</strong>. The Ventex team manually audits listings for authenticity, clean code, and license compliance within 24 hours before launching it live.
+ To protect our community, new listings start as <strong>'pending'</strong>. The Ventexx team manually audits listings for authenticity, clean code, and license compliance within 24 hours before launching it live.
  </p>
  </div>
  </div>

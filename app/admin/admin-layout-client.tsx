@@ -195,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  <h1 className="text-base font-bold text-[var(--text)]">
  {menuItems.find(m => isActive(m.path))?.name || "Management Console"}
  </h1>
- <p className="text-[10px] text-[var(--text3)] font-mono">Ventex Admin Console</p>
+ <p className="text-[10px] text-[var(--text3)] font-mono">Ventexx Admin Console</p>
  </div>
  <div className="flex items-center gap-3">
  <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold">

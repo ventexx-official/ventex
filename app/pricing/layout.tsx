@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
- title: "Pricing - Ventex Plans for Founders and Investors",
+ title: "Pricing - Ventexx Plans for Founders and Investors",
  description: "Simple, transparent pricing for founders, investors, and marketplace buyers. Free tiers available.",
  alternates: {
  canonical: "https://ventexx.com/pricing",
  },
  openGraph: {
- title: "Pricing - Ventex Plans for Founders and Investors",
+ title: "Pricing - Ventexx Plans for Founders and Investors",
  description: "Simple, transparent pricing for founders, investors, and marketplace buyers. Free tiers available.",
  url: "https://ventexx.com/pricing",
  type: "website",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
  },
  twitter: {
  card: "summary_large_image",
- title: "Pricing - Ventex Plans for Founders and Investors",
+ title: "Pricing - Ventexx Plans for Founders and Investors",
  description: "Simple, transparent pricing for founders, investors, and marketplace buyers. Free tiers available.",
  images: [OG_IMAGE_URL],
  },

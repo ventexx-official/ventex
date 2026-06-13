@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     ready: true,
-    investorDigest: "5 new startups raising this week on Ventex",
+    investorDigest: "5 new startups raising this week on Ventexx",
     founderDigest: "3 investors were active in your sector this week",
   });
 }

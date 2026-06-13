@@ -23,13 +23,13 @@ export default function ArenaWaitlistForm() {
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         placeholder="Email for Arena updates"
-        className="min-h-11 flex-1 rounded-full border border-amber-300/30 bg-white/10 px-4 text-sm text-white outline-none placeholder:text-orange-100/50"
+        className="min-h-11 flex-1 rounded-full border border-[var(--border)] bg-[var(--bg2)] px-4 text-sm text-[var(--text)] outline-none placeholder:text-[var(--text3)]"
       />
-      <button type="submit" disabled={status === "saving"} className="min-h-11 rounded-full bg-amber-300 px-5 text-sm font-black text-[#160b04] disabled:opacity-60">
+      <button type="submit" disabled={status === "saving"} className="min-h-11 rounded-full bg-[var(--text)] px-5 text-sm font-black text-[var(--bg)] disabled:opacity-60">
         {status === "saving" ? "Joining..." : "Notify Me"}
       </button>
-      {status === "done" ? <p className="text-sm font-semibold text-amber-100 sm:self-center">You&apos;re on the list. We&apos;ll notify you before Season 1 goes live.</p> : null}
-      {status === "error" ? <p className="text-sm font-semibold text-red-200 sm:self-center">Could not save this email. Please try again.</p> : null}
+      {status === "done" ? <p className="text-sm font-semibold text-emerald-500 sm:self-center">You&apos;re on the list. We&apos;ll notify you before Season 1 goes live.</p> : null}
+      {status === "error" ? <p className="text-sm font-semibold text-red-500 sm:self-center">Could not save this email. Please try again.</p> : null}
     </form>
   );
 }

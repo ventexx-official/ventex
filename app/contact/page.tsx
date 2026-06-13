@@ -32,7 +32,7 @@ export default function ContactPage() {
  }),
  });
 
- setSuccess("Message sent. The Ventex team will reply as soon as possible.");
+ setSuccess("Message sent. The Ventexx team will reply as soon as possible.");
  setForm({ name: "", email: "", subject: "General", message: "" });
  } catch (err: any) {
  setError(err.message || "Could not submit your message.");
@@ -46,9 +46,9 @@ export default function ContactPage() {
  <div className="mx-auto max-w-5xl">
  <div className="mb-10 border-b border-[var(--border)] pb-8 dark:border-white/10">
  <p className="mono mb-3 text-xs font-bold uppercase tracking-[.16em] text-[var(--text2)] ">Support</p>
- <h1 className="text-4xl font-black uppercase tracking-tight md:text-5xl">Contact Ventex</h1>
+ <h1 className="text-4xl font-black uppercase tracking-tight md:text-5xl">Contact Ventexx</h1>
  <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--text2)] ">
- Send account, billing, marketplace, privacy, partnership, and grievance requests to the Ventex team.
+ Send account, billing, marketplace, privacy, partnership, and grievance requests to the Ventexx team.
  </p>
  </div>
 
@@ -63,13 +63,13 @@ export default function ContactPage() {
  <section className="rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
  <ShieldCheck className="mb-4 h-6 w-6" />
  <h2 className="mb-2 text-lg font-black">Grievance Officer</h2>
- <p className="text-sm font-bold">Ventex Support Desk</p>
+ <p className="text-sm font-bold">Ventexx Support Desk</p>
  <p className="mt-3 text-xs leading-5 text-[var(--text2)] ">Use the form for escalation, privacy, and compliance requests.</p>
  </section>
  <section className="rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-6 dark:border-white/10 bg-[var(--card-bg)]">
  <MapPin className="mb-4 h-6 w-6" />
  <h2 className="mb-2 text-lg font-black">Business Address</h2>
- <p className="text-sm font-bold">Ventex, Global Remote</p>
+ <p className="text-sm font-bold">Ventexx, Global Remote</p>
  <p className="mt-3 text-xs leading-5 text-[var(--text2)] ">Add registered entity details before live commercial launch.</p>
  </section>
  </div>

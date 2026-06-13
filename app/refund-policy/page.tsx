@@ -3,7 +3,7 @@ import { emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
  title: "Refund and Cancellation Policy",
- description: "Ventex refund, cancellation, digital product, subscription, and marketplace dispute policy.",
+ description: "Ventexx refund, cancellation, digital product, subscription, and marketplace dispute policy.",
  alternates: {
  canonical: "/refund-policy",
  },
@@ -22,7 +22,7 @@ export default function RefundPolicyPage() {
 
  <section className="space-y-3">
  <h2 className="text-xl font-black text-[var(--text)]">Subscriptions</h2>
- <p>Paid Ventex subscriptions can be cancelled before the next billing cycle. Access remains active until the end of the paid period unless fraud, chargeback abuse, or platform misuse is detected.</p>
+ <p>Paid Ventexx subscriptions can be cancelled before the next billing cycle. Access remains active until the end of the paid period unless fraud, chargeback abuse, or platform misuse is detected.</p>
  </section>
 
  <section className="space-y-3">
@@ -32,7 +32,7 @@ export default function RefundPolicyPage() {
 
  <section className="space-y-3">
  <h2 className="text-xl font-black text-[var(--text)]">Custom Work and Services</h2>
- <p>Custom work refunds depend on the seller agreement, milestone status, and evidence submitted by both buyer and seller. Ventex may pause payouts while a dispute is under review.</p>
+ <p>Custom work refunds depend on the seller agreement, milestone status, and evidence submitted by both buyer and seller. Ventexx may pause payouts while a dispute is under review.</p>
  </section>
 
  <section className="space-y-3">

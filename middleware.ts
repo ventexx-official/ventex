@@ -1,18 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Known AI bots and crawlers
-const BOTS = [
-  'GPTBot',
-  'ClaudeBot',
-  'anthropic',
-  'Googlebot',
-  'Bingbot',
-  'PerplexityBot',
+// Routes that require authentication
+const PROTECTED_ROUTES = [
+  '/dashboard',
+  '/my-pitches',
+  '/my-store',
+  '/messages',
+  '/settings',
+  '/founder',
+  '/investor',
+  '/booster-packs',
 ];
 
-// Paths that should be protected from bots
-const PROTECTED_PATHS = [
+// Known AI bots and crawlers — block from private paths
+const BOTS = ['GPTBot', 'ClaudeBot', 'anthropic', 'Googlebot', 'Bingbot', 'PerplexityBot'];
+
+// Paths bots must not access
+const BOT_BLOCKED_PATHS = [
   '/admin',
   '/dashboard',
   '/settings',
@@ -21,19 +26,49 @@ const PROTECTED_PATHS = [
   '/messages',
   '/api',
   '/booster-packs',
+  '/founder',
+  '/investor',
 ];
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Block bots from private paths
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = BOTS.some((bot) => userAgent.toLowerCase().includes(bot.toLowerCase()));
-
   if (isBot) {
-    const isProtectedPath = PROTECTED_PATHS.some(
-      (path) => request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith(`${path}/`)
+    const isBotBlocked = BOT_BLOCKED_PATHS.some(
+      (path) => pathname === path || pathname.startsWith(`${path}/`)
     );
-
-    if (isProtectedPath) {
+    if (isBotBlocked) {
       return new NextResponse('Forbidden', { status: 403 });
+    }
+  }
+
+  // Auth protection — check for Supabase session cookie
+  const isProtected = PROTECTED_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  if (isProtected) {
+    // Check for Supabase auth cookie (sb-*-auth-token)
+    const hasCookie = Array.from(request.cookies.getAll()).some(
+      (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
+    );
+    if (!hasCookie) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // Redirect logged-in users away from login/signup to dashboard
+  if (pathname === '/login' || pathname === '/signup') {
+    const hasCookie = Array.from(request.cookies.getAll()).some(
+      (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
+    );
+    if (hasCookie) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
 
@@ -42,12 +77,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|favicon-32x32.png|apple-touch-icon.png|robots.txt|sitemap.xml|site.webmanifest|og-image.png|icons/).*)',
   ],
 };

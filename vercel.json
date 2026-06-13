@@ -2,12 +2,13 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "ventex-eight.vercel.app"
-        }
-      ],
+      "has": [{ "type": "host", "value": "ventex-eight.vercel.app" }],
+      "destination": "https://ventexx.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "ventex-ventex-s-projects.vercel.app" }],
       "destination": "https://ventexx.com/$1",
       "permanent": true
     }

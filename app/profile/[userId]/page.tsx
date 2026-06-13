@@ -187,7 +187,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  <div className="h-full bg-emerald-500" style={{ width: `${Math.min(100, xp % 100)}%` }} />
  </div>
  <div className="mt-3 flex flex-wrap gap-2">
- {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventex Live Participant'].map((badge) => (
+ {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventexx Live Participant'].map((badge) => (
  <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[var(--text)] text-[var(--bg)]' : 'bg-[var(--card-bg)] text-[var(--text2)]'}`}>
  {badge}
  </span>

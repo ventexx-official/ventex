@@ -27,7 +27,6 @@ async function sendEmail(type: string, recipientEmail: string, data: Record<stri
 }
 
 const PLAN_PRICE_IDS = {
-  ventex_access: process.env.STRIPE_PRICE_VENTEX_ACCESS,
   investor_premium: process.env.STRIPE_PRICE_INVESTOR_PREMIUM,
 } as const;
 
@@ -65,9 +64,7 @@ export async function POST(req: Request) {
             subscription_end_date: endDate.toISOString(),
           };
 
-          if (plan === 'ventex_access' && priceId === PLAN_PRICE_IDS.ventex_access) {
-            updateData.ventex_access = true;
-          } else if (plan === 'investor_premium' && priceId === PLAN_PRICE_IDS.investor_premium) {
+          if (plan === 'investor_premium' && priceId === PLAN_PRICE_IDS.investor_premium) {
             updateData.investor_premium = true;
           } else {
             console.warn('[Stripe webhook] Ignoring unknown plan or price:', { plan, priceId });
@@ -128,7 +125,6 @@ export async function POST(req: Request) {
         await supabaseAdmin
           .from('users')
           .update({
-            ventex_access: false,
             investor_premium: false,
             // Optionally clear the end date or leave it for history
           })

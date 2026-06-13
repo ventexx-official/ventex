@@ -111,7 +111,7 @@ export default function Onboarding() {
  {step === 1 && (
  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
  <h1 className="text-3xl md:text-4xl font-bold text-center text-[var(--text)] mb-8">
- What brings you to Ventex?
+ What brings you to Ventexx?
  </h1>
  
  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -164,7 +164,7 @@ export default function Onboarding() {
  >
  <Compass className={`w-8 h-8 mb-4 ${role === 'explorer' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
  <h3 className="font-bold text-lg text-[var(--text)] mb-1">Just exploring</h3>
- <p className="text-sm text-[var(--text2)]">I want to see what Ventex is about</p>
+ <p className="text-sm text-[var(--text2)]">I want to see what Ventexx is about</p>
  </button>
  </div>
 
