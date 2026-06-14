@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   default: "Ventexx — Where Startups Pitch, Fund and Sell",
   template: "%s | Ventexx",
  },
- description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+ description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
  robots: {
   index: true,
   follow: true,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
  },
  openGraph: {
   title: "Ventexx — Where Startups Pitch, Fund and Sell",
-  description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+  description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
   url: "https://ventexx.com",
   siteName: "Ventexx",
   type: "website",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
  twitter: {
   card: "summary_large_image",
   title: "Ventexx — Where Startups Pitch, Fund and Sell",
-  description: "The platform for founders, investors, and startup builders worldwide. Pitch investors, raise funding, and sell digital products — free during early access.",
+  description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
   images: ["https://ventexx.com/api/og"],
  },
  icons: {
@@ -87,6 +87,26 @@ export default function RootLayout({
   />
   </head>
   <body className={`${jakarta.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased`}>
+  {/* JSON-LD Schema */}
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Ventexx",
+        "url": "https://ventexx.com",
+        "logo": "https://ventexx.com/icon.png",
+        "description": "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
+        "sameAs": [
+          "https://x.com/ventex_hq",
+          "https://www.linkedin.com/in/ventexx",
+          "https://www.instagram.com/ventexhq/",
+          "https://youtube.com/@ventexhq"
+        ]
+      })
+    }}
+  />
   <Layout>
    {children}
   </Layout>
