@@ -222,7 +222,7 @@ function BecomeSellerInner() {
  <ChevronLeft className="w-4 h-4" />
  Back to Dashboard
  </Link>
- <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventexx</span>
+ <span className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</span>
  <div className="w-32" />
  </header>
 
@@ -235,7 +235,7 @@ function BecomeSellerInner() {
  Seller Onboarding
  </div>
  <h1 className="text-4xl font-black text-[var(--text)] tracking-tighter mb-3">
- Start selling on Ventexx
+ Start selling on Ventex
  </h1>
  <p className="text-[var(--text2)] font-medium text-base leading-relaxed">
  Complete two quick steps to list products and get paid directly.
@@ -290,7 +290,7 @@ function BecomeSellerInner() {
  </div>
  </div>
  <p className="text-[var(--text)]/60 text-sm leading-relaxed">
- We use your phone number to protect buyers and sellers on Ventexx. Standard SMS rates may apply.
+ We use your phone number to protect buyers and sellers on Ventex. Standard SMS rates may apply.
  </p>
  </div>
 
@@ -447,7 +447,7 @@ function BecomeSellerInner() {
  </div>
  </div>
  <p className="text-[var(--text)]/60 text-sm leading-relaxed">
- Stripe handles payouts securely. Ventexx never stores your bank details.
+ Stripe handles payouts securely. Ventex never stores your bank details.
  </p>
  </div>
 
@@ -470,8 +470,8 @@ function BecomeSellerInner() {
  <div className="space-y-3">
  <p className="text-xs font-black text-[var(--text2)] uppercase tracking-widest">How payouts work</p>
  {[
- { step: "01", text: "Buyer pays through Ventexx checkout" },
- { step: "02", text: "Ventexx deducts 5% platform fee" },
+ { step: "01", text: "Buyer pays through Ventex checkout" },
+ { step: "02", text: "Ventex deducts 5% platform fee" },
  { step: "03", text: "95% transferred to your Stripe account" },
  ].map(item => (
  <div key={item.step} className="flex items-center gap-4 p-4 bg-[var(--bg)] rounded-2xl">
@@ -506,7 +506,7 @@ function BecomeSellerInner() {
 
  <p className="text-center text-[11px] text-[var(--text3)] font-medium leading-relaxed">
  You'll be redirected to Stripe's secure onboarding flow.<br />
- Your banking details are never shared with Ventexx.
+ Your banking details are never shared with Ventex.
  </p>
  </div>
  </div>
@@ -572,7 +572,7 @@ function BecomeSellerInner() {
  {step < 3 && (
  <p className="text-center text-xs text-[var(--text3)] font-medium mt-8">
  Need help?{" "}
- <a href="mailto:support@ventexx.io" className="underline decoration-[0.5px] underline-offset-4 hover:text-[var(--text2)] transition-colors">
+ <a href="mailto:support@ventex.io" className="underline decoration-[0.5px] underline-offset-4 hover:text-[var(--text2)] transition-colors">
  Contact support
  </a>
  </p>

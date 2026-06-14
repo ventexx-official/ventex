@@ -109,7 +109,7 @@ export default function BuyViaWhatsApp({ product, buyer }: BuyViaWhatsAppProps) 
           <span>WhatsApp opened · Deal code: <span className="font-black font-mono">{dealCode}</span></span>
         </div>
         <p className="text-xs text-[var(--text2)] text-center">
-          Payment arranged directly with seller. Ventexx does not process payments.
+          Payment arranged directly with seller. Ventex does not process payments.
         </p>
         <button
           onClick={handleBuy}
@@ -141,7 +141,7 @@ export default function BuyViaWhatsApp({ product, buyer }: BuyViaWhatsAppProps) 
         {loading ? 'Opening WhatsApp...' : 'Buy via WhatsApp'}
       </button>
       <p className="text-xs text-[var(--text2)] text-center">
-        Direct seller transaction · Ventexx verified listing
+        Direct seller transaction · Ventex verified listing
       </p>
     </div>
   );

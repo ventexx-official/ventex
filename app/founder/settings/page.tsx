@@ -181,7 +181,7 @@ export default function FounderSettingsPage() {
  <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
  <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
  {!sidebarCollapsed && (
- <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventexx</Link>
+ <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventex</Link>
  )}
  <button onClick={() => setSidebarCollapsed((v) => !v)} className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto">
  {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
@@ -229,7 +229,7 @@ export default function FounderSettingsPage() {
  <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter uppercase flex items-center gap-2">
  <Settings className="w-8 h-8 text-[var(--text)]" /> Settings
  </h1>
- <p className="text-[var(--text2)] font-medium text-sm mt-1">Configure your personal and merchant preferences for Ventexx.</p>
+ <p className="text-[var(--text2)] font-medium text-sm mt-1">Configure your personal and merchant preferences for Ventex.</p>
  </header>
 
  {/* Messages */}
@@ -348,7 +348,7 @@ export default function FounderSettingsPage() {
  <div>
  <h4 className="text-sm font-black text-[var(--text)]">Managed payout setup</h4>
  <p className="mt-1 text-xs font-semibold text-[var(--text2)]">
- Do not paste a Stripe account ID. Ventexx creates or resumes your connected account and sends you through Stripe onboarding securely.
+ Do not paste a Stripe account ID. Ventex creates or resumes your connected account and sends you through Stripe onboarding securely.
  </p>
  </div>
  <button

@@ -192,7 +192,7 @@ export async function POST(req: Request) {
           .eq('id', detail.productId)
           .single();
 
-        const productName = prod?.name || 'Ventexx Product';
+        const productName = prod?.name || 'Ventex Product';
 
         if (buyerEmail) {
           await sendEmail('order_confirmation', buyerEmail, {

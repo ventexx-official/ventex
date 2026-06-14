@@ -53,12 +53,12 @@ function PitchWizardContent() {
     setLoading(true);
     await supabase.from('pitches').update({ ...pitch, status: 'pending_review' }).eq('id', pitch.id);
     setLoading(false);
-    router.push('/dashboard/founder');
+    router.push('/founder/dashboard');
   };
 
   const handleQuit = async () => {
     await handleSaveDraft();
-    router.push('/dashboard/founder');
+    router.push('/founder/dashboard');
   };
 
   return (

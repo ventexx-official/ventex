@@ -32,7 +32,7 @@ export default function FounderDashboard() {
         <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
           <div className="font-black text-xl mb-8 text-[var(--text)]">Founder</div>
           <nav className="space-y-2 text-sm font-bold">
-            <Link href="/dashboard/founder" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
+            <Link href="/founder/dashboard" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
             <Link href="/founder/pitches" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Pitches</Link>
             <Link href="/pitches/new" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Create Pitch</Link>
             <Link href="/founder/store" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Store</Link>

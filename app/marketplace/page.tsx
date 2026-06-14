@@ -565,7 +565,7 @@ export default function MarketplacePage() {
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">
  <ShoppingBag className="w-12 h-12 text-[var(--text2)] mx-auto mb-4" />
  <h3 className="text-xl font-bold text-[var(--text)] mb-2">No purchases yet</h3>
- <p className="text-[var(--text2)]">When you buy products on Ventexx, they will appear here.</p>
+ <p className="text-[var(--text2)]">When you buy products on Ventex, they will appear here.</p>
  <button onClick={() => setActiveTab('Explore')} className="bg-[var(--text)] text-[var(--bg)] px-6 py-2.5 rounded-full text-sm font-bold transition-colors inline-block mt-6">
  Explore Marketplace
  </button>

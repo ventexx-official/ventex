@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Seller Agreement · Ventexx',
-  description: 'Seller Agreement for Ventexx marketplace — free platform, direct P2P transactions.',
+  title: 'Seller Agreement · Ventex',
+  description: 'Seller Agreement for Ventex marketplace — free platform, direct P2P transactions.',
   alternates: {
     canonical: '/seller-agreement',
   },
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: 'Seller Agreement · Ventexx',
-    description: 'Seller Agreement for Ventexx marketplace — free platform, direct P2P transactions.',
+    title: 'Seller Agreement · Ventex',
+    description: 'Seller Agreement for Ventex marketplace — free platform, direct P2P transactions.',
     type: 'website',
-    siteName: 'Ventexx',
+    siteName: 'Ventex',
   },
 };
 
@@ -23,19 +23,19 @@ const sections = [
     id: 'overview',
     title: '1. Overview',
     content:
-      'This Seller Agreement governs your use of the Ventexx Marketplace as a seller. By listing products on Ventexx, you agree to these terms. Ventexx is currently in early access and is completely free to use.',
+      'This Seller Agreement governs your use of the Ventex Marketplace as a seller. By listing products on Ventex, you agree to these terms. Ventex is currently in early access and is completely free to use.',
   },
   {
     id: 'free-platform',
     title: '2. Free Platform & Direct Transactions',
     content:
-      'During early access, Ventexx is a free connection platform. All transactions occur directly between buyers and sellers. Ventexx does not process, hold, or take any percentage of payments. Buyers and sellers arrange payment privately via UPI, bank transfer, PayPal, or any agreed method.',
+      'During early access, Ventex is a free connection platform. All transactions occur directly between buyers and sellers. Ventex does not process, hold, or take any percentage of payments. Buyers and sellers arrange payment privately via UPI, bank transfer, PayPal, or any agreed method.',
   },
   {
     id: 'whatsapp',
     title: '3. WhatsApp P2P Contact System',
     content:
-      'When a buyer initiates a purchase, Ventexx generates a deal code and opens a WhatsApp conversation with you directly. You are responsible for confirming availability, agreeing on delivery timelines, collecting payment, and delivering the product. Ventexx provides the connection — the rest is between you and the buyer.',
+      'When a buyer initiates a purchase, Ventex generates a deal code and opens a WhatsApp conversation with you directly. You are responsible for confirming availability, agreeing on delivery timelines, collecting payment, and delivering the product. Ventex provides the connection — the rest is between you and the buyer.',
   },
   {
     id: 'seller-obligations',
@@ -53,7 +53,7 @@ const sections = [
     id: 'future-monetization',
     title: '6. Future Monetization (April 2027)',
     content:
-      'Ventexx plans to introduce optional paid features beginning April 2027. These will be opt-in and will not affect existing free functionality. Sellers will be notified in advance with full details before any changes take effect.',
+      'Ventex plans to introduce optional paid features beginning April 2027. These will be opt-in and will not affect existing free functionality. Sellers will be notified in advance with full details before any changes take effect.',
   },
 ];
 
@@ -64,12 +64,12 @@ export default function SellerAgreementPage() {
         <p className="text-xs font-black uppercase tracking-[.2em] text-[var(--text2)] mb-4">Legal</p>
         <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-3">Seller Agreement</h1>
         <p className="text-[var(--text2)] mb-12">
-          Last updated: June 2026 · Applies to all Ventexx marketplace sellers
+          Last updated: June 2026 · Applies to all Ventex marketplace sellers
         </p>
 
         <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mb-12">
           <p className="text-emerald-800 font-bold text-sm">
-            🎉 Ventexx is 100% free during early access. No commissions. No platform fees. You keep everything.
+            🎉 Ventex is 100% free during early access. No commissions. No platform fees. You keep everything.
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export default function SellerAgreementPage() {
         <div className="mt-16 border-t border-[var(--border)] pt-8">
           <p className="text-sm text-[var(--text2)]">
             Questions? Contact us at{' '}
-            <a href="mailto:support@ventexx.com" className="text-[var(--text)] underline">
-              support@ventexx.com
+            <a href="mailto:support@ventex.com" className="text-[var(--text)] underline">
+              support@ventex.com
             </a>
           </p>
         </div>

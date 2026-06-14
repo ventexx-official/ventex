@@ -23,10 +23,10 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
- metadataBase: new URL('https://ventexx.com'),
+ metadataBase: new URL('https://ventex.com'),
  title: {
-  default: "Ventexx — Where Startups Pitch, Fund and Sell",
-  template: "%s | Ventexx",
+  default: "Ventex — Where Startups Pitch, Fund and Sell",
+  template: "%s | Ventex",
  },
  description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
  robots: {
@@ -35,28 +35,28 @@ export const metadata: Metadata = {
   googleBot: { index: true, follow: true },
  },
  alternates: {
-  canonical: "https://ventexx.com",
+  canonical: "https://ventex.com",
  },
  openGraph: {
-  title: "Ventexx — Where Startups Pitch, Fund and Sell",
+  title: "Ventex — Where Startups Pitch, Fund and Sell",
   description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
-  url: "https://ventexx.com",
-  siteName: "Ventexx",
+  url: "https://ventex.com",
+  siteName: "Ventex",
   type: "website",
   images: [
    {
-    url: "https://ventexx.com/api/og",
+    url: "https://ventex.com/api/og",
     width: 1200,
     height: 630,
-    alt: "Ventexx — Where Startups Pitch, Fund and Sell",
+    alt: "Ventex — Where Startups Pitch, Fund and Sell",
    }
   ],
  },
  twitter: {
   card: "summary_large_image",
-  title: "Ventexx — Where Startups Pitch, Fund and Sell",
+  title: "Ventex — Where Startups Pitch, Fund and Sell",
   description: "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
-  images: ["https://ventexx.com/api/og"],
+  images: ["https://ventex.com/api/og"],
  },
  icons: {
   icon: [
@@ -94,13 +94,13 @@ export default function RootLayout({
       __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Ventexx",
-        "url": "https://ventexx.com",
-        "logo": "https://ventexx.com/icon.png",
+        "name": "Ventex",
+        "url": "https://ventex.com",
+        "logo": "https://ventex.com/icon.png",
         "description": "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
         "sameAs": [
           "https://x.com/ventex_hq",
-          "https://www.linkedin.com/in/ventexx",
+          "https://www.linkedin.com/in/ventex",
           "https://www.instagram.com/ventexhq/",
           "https://youtube.com/@ventexhq"
         ]

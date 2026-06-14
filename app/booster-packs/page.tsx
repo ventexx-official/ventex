@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Zap } from 'lucide-react';
 
 export const metadata = {
-  title: 'Booster Packs · Ventexx',
+  title: 'Booster Packs · Ventex',
   description: 'Pitch visibility boosts coming April 2027.',
 };
 

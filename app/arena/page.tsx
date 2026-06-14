@@ -8,11 +8,11 @@ import { OG_IMAGE_URL } from "@/lib/site";
 export const metadata: Metadata = {
  title: "The Arena - Live Startup Pitch Battle",
  description: "Monthly live pitch event where India's boldest founders pitch to real investors. Apply to pitch or watch live.",
- alternates: { canonical: "https://ventexx.com/arena" },
+ alternates: { canonical: "https://ventex.com/arena" },
  openGraph: {
  title: "The Arena - Live Startup Pitch Battle",
  description: "Where founders face the fire.",
- url: "https://ventexx.com/arena",
+ url: "https://ventex.com/arena",
  type: "website",
  images: [OG_IMAGE_URL],
  },
@@ -52,7 +52,7 @@ export default function ArenaPage() {
  <div className="space-y-5 text-sm leading-7 text-orange-50/75">
  <p>A panel of verified investors. Live audience. Real decisions.</p>
  <p className="text-2xl font-black text-[var(--text)]">Pitch. Defend. Win.</p>
- <p>The best pitches get funded, featured, and amplified across Ventexx&apos;s network.</p>
+ <p>The best pitches get funded, featured, and amplified across Ventex&apos;s network.</p>
  </div>
  </div>
  </section>
@@ -62,7 +62,7 @@ export default function ArenaPage() {
  <h2 className="text-3xl font-black tracking-[-.03em]">How it works</h2>
  <div className="mt-8 grid gap-4 md:grid-cols-4">
  {[
- ["01", "Apply to pitch", "Submit your startup through Ventexx"],
+ ["01", "Apply to pitch", "Submit your startup through Ventex"],
  ["02", "Get selected", "top 5 founders monthly"],
  ["03", "Go live", "streamed live"],
  ["04", "Get amplified", "Best moments become Reels and Shorts"],

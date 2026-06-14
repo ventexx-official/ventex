@@ -104,7 +104,7 @@ export default function Discover() {
  <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
  <div>
  <h1 className="max-w-2xl text-4xl font-extrabold tracking-[-.04em] text-[var(--text)] md:text-6xl">Browse investor-ready startups.</h1>
- <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Filter by sector, stage, traction signals, and fundraising status across the Ventexx startup graph.</p>
+ <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Filter by sector, stage, traction signals, and fundraising status across the Ventex startup graph.</p>
  </div>
  <div className="relative w-full max-w-md">
  <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text3)]" />

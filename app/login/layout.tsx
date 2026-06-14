@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Log in to Ventexx to manage pitches, marketplace purchases, investor tools, and founder workflows.",
+  description: "Log in to Ventex to manage pitches, marketplace purchases, investor tools, and founder workflows.",
   robots: { index: false, follow: false },
 };
 

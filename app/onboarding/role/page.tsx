@@ -74,7 +74,7 @@ export default function RoleSelection() {
     <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-500">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-[var(--text)] mb-8">
-          What brings you to Ventexx?
+          What brings you to Ventex?
         </h1>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">

@@ -47,7 +47,7 @@ function PaymentSuccessContent() {
  </h1>
  
  <p className="text-[var(--text2)] font-medium mb-8">
- Welcome to Ventexx Premium. Your account has been upgraded and you now have access to all exclusive features.
+ Welcome to Ventex Premium. Your account has been upgraded and you now have access to all exclusive features.
  </p>
 
  <div className="space-y-3">

@@ -4,7 +4,7 @@ import { BASE_URL, emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
  title: "Terms of Service - Startup Platform",
- description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventexx.",
+ description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventex.",
  alternates: {
  canonical: "/terms",
  },
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
  },
  openGraph: {
  title: "Terms of Service - Startup Platform",
- description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventexx.",
+ description: "Terms of Service and platform regulations governing listings, marketplace transactions, commissions, and dispute arbitration on Ventex.",
  url: `${BASE_URL}/terms`,
  type: "website",
- siteName: "Ventexx",
+ siteName: "Ventex",
  },
 };
 
@@ -29,25 +29,25 @@ export default function TermsPage() {
  id: "acceptance",
  icon: Scale,
  title: "1. Acceptance of Terms",
- content: "By creating an account, accessing, or using the Ventexx platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, you are prohibited from utilizing any of our platform services or listings."
+ content: "By creating an account, accessing, or using the Ventex platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree to these terms, you are prohibited from utilizing any of our platform services or listings."
  },
  {
  id: "roles",
  icon: FileText,
  title: "2. User Roles & Conduct",
- content: "Ventexx hosts distinct user profiles. 'Visitors' browse basic public records. 'Founders' represent individuals submitting pitch profiles and listing startup products. 'Investors' represent accredited individuals/groups looking for startup metrics. You agree to provide accurate, up-to-date documentation and maintain secure credentials."
+ content: "Ventex hosts distinct user profiles. 'Visitors' browse basic public records. 'Founders' represent individuals submitting pitch profiles and listing startup products. 'Investors' represent accredited individuals/groups looking for startup metrics. You agree to provide accurate, up-to-date documentation and maintain secure credentials."
  },
  {
  id: "pitch-rules",
  icon: AlertTriangle,
  title: "3. Pitching Guidelines",
- content: "Founders submitting pitches must represent real, verifiable startup ideas. You may not list misleading financial figures, false team members, or unauthorized intellectual property. Ventexx retains the right to remove, suspend, or request verification credentials for any pitch profile in our sole discretion."
+ content: "Founders submitting pitches must represent real, verifiable startup ideas. You may not list misleading financial figures, false team members, or unauthorized intellectual property. Ventex retains the right to remove, suspend, or request verification credentials for any pitch profile in our sole discretion."
  },
  {
  id: "seller-rules",
  icon: ShieldAlert,
  title: "4. Seller & Marketplace Rules",
- content: "When listing digital products, SaaS boilerplates, templates, or code bases on the Ventexx Marketplace, sellers agree to a flat 5% platform commission deducted automatically from every transaction. To safeguard this system, any attempt to solicit or receive off-platform payments (circumventing Ventexx fees) will lead to an immediate and permanent account ban."
+ content: "When listing digital products, SaaS boilerplates, templates, or code bases on the Ventex Marketplace, sellers agree to a flat 5% platform commission deducted automatically from every transaction. To safeguard this system, any attempt to solicit or receive off-platform payments (circumventing Ventex fees) will lead to an immediate and permanent account ban."
  },
  {
  id: "prohibited",
@@ -65,25 +65,25 @@ export default function TermsPage() {
  id: "disputes",
  icon: Gavel,
  title: "7. Dispute Arbitration",
- content: "If a buyer reports a product defect or failure of delivery, Ventexx Admins act as final arbitrators. After reviewing seller responses and buyer claims, the Admin has full authority to either release funds to the seller or issue a refund back to the buyer's payment method."
+ content: "If a buyer reports a product defect or failure of delivery, Ventex Admins act as final arbitrators. After reviewing seller responses and buyer claims, the Admin has full authority to either release funds to the seller or issue a refund back to the buyer's payment method."
  },
  {
  id: "ip",
  icon: Scale,
  title: "8. Intellectual Property",
- content: "You retain ownership of the pitch content and code you upload. By listing items, you grant Ventexx a limited, non-exclusive license to showcase your brand, descriptions, and media to investors and potential buyers. All Ventexx logo assets, CSS styles, layouts, and algorithms remain the exclusive property of Ventexx."
+ content: "You retain ownership of the pitch content and code you upload. By listing items, you grant Ventex a limited, non-exclusive license to showcase your brand, descriptions, and media to investors and potential buyers. All Ventex logo assets, CSS styles, layouts, and algorithms remain the exclusive property of Ventex."
  },
  {
  id: "liability",
  icon: AlertTriangle,
  title: "9. Limits of Liability & Disclaimer",
- content: "Ventexx is not a licensed financial broker or investment advisor. Startup investing carries extreme risk, including complete loss of capital. Ventexx does not guarantee the success, profitability, or legal validity of any pitch. All software and listings are provided 'AS IS' without warranty of any kind."
+ content: "Ventex is not a licensed financial broker or investment advisor. Startup investing carries extreme risk, including complete loss of capital. Ventex does not guarantee the success, profitability, or legal validity of any pitch. All software and listings are provided 'AS IS' without warranty of any kind."
  },
  {
  id: "law",
  icon: Gavel,
  title: "10. Governing Law",
- content: "These terms and all disputes arising out of your usage of the Ventexx platform are governed by and construed in accordance with the laws of India, without giving effect to conflicts of law principles. Any legal actions must be filed in courts located in India."
+ content: "These terms and all disputes arising out of your usage of the Ventex platform are governed by and construed in accordance with the laws of India, without giving effect to conflicts of law principles. Any legal actions must be filed in courts located in India."
  }
  ];
 
@@ -105,7 +105,7 @@ export default function TermsPage() {
 
  {/* Introduction */}
  <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-sm leading-relaxed text-[var(--text2)]">
- Welcome to Ventexx. Please read these Terms of Service carefully before utilizing our marketplace or pitching services. These terms establish a legally binding contract between you and Ventexx regarding platform access, commissions, security standards, and dispute handling.
+ Welcome to Ventex. Please read these Terms of Service carefully before utilizing our marketplace or pitching services. These terms establish a legally binding contract between you and Ventex regarding platform access, commissions, security standards, and dispute handling.
  </div>
 
  {/* Table of Contents Quicklinks */}
@@ -154,7 +154,7 @@ export default function TermsPage() {
 
  {/* Compliance Footer */}
  <div className="text-center pt-10 border-t border-[var(--border)] text-xs text-[var(--text3)] font-mono space-y-2">
- <p>&copy; {currentYear} Ventexx. Built for India&apos;s builders.</p>
+ <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
  <p>For legal inquiries, contact {legalEmail}</p>
  </div>
  </div>

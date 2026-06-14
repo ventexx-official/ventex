@@ -2,8 +2,8 @@ import { Check, Coffee } from 'lucide-react';
 import PricingCTA from './PricingCTA';
 
 export const metadata = {
-  title: 'Pricing · Ventexx',
-  description: 'Ventexx is completely free. Every feature, every founder. No card required.',
+  title: 'Pricing · Ventex',
+  description: 'Ventex is completely free. Every feature, every founder. No card required.',
 };
 
 const columns = [
@@ -31,7 +31,7 @@ export default function PricingPage() {
       <section className="pt-32 pb-20 px-6 text-center">
         <p className="mono text-xs font-bold uppercase tracking-[.2em] text-[var(--text2)] mb-6">Pricing</p>
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
-          Ventexx is completely free.
+          Ventex is completely free.
         </h1>
         <p className="text-xl text-[var(--text2)] max-w-2xl mx-auto mb-10">
           Every feature. Every founder. No card required.
@@ -70,7 +70,7 @@ export default function PricingPage() {
             Monetization begins April 2027.
           </p>
           <a
-            href="https://ko-fi.com/ventexx"
+            href="https://ko-fi.com/ventex"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#FF5E5B] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity"

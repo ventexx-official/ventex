@@ -10,7 +10,7 @@ const PUBLIC_ROUTES = [
 const AUTH_ROUTES = ['/messages', '/settings', '/onboarding'];
 
 // Role restricted base paths
-const FOUNDER_PATHS = ['/dashboard/founder', '/my-pitches', '/my-store'];
+const FOUNDER_PATHS = ['/founder/dashboard', '/my-pitches', '/my-store'];
 const INVESTOR_PATHS = ['/dashboard/investor', '/watchlist', '/deal-flow'];
 const BUYER_PATHS = ['/dashboard/buyer', '/saved-products', '/purchases'];
 const ADMIN_PATHS = ['/admin'];

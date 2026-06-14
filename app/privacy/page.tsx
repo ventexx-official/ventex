@@ -17,7 +17,7 @@ export const metadata: Metadata = {
  description: "Privacy Policy outlining data collection, third-party processing via Supabase & Stripe, and compliance with the India DPDP Act 2023.",
  url: `${BASE_URL}/privacy`,
  type: "website",
- siteName: "Ventexx",
+ siteName: "Ventex",
  },
 };
 
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
 
  {/* Introduction */}
  <div className="p-6 rounded-xl bg-[var(--card-bg)] border border-[var(--border)] text-sm leading-relaxed text-[var(--text2)]">
- At Ventexx, we are committed to safeguarding your personal information, financial data, and intellectual property. This Privacy Policy details what information we collect, how it is processed by our secure infrastructure, and the complete privacy rights you possess under modern Indian data protection frameworks.
+ At Ventex, we are committed to safeguarding your personal information, financial data, and intellectual property. This Privacy Policy details what information we collect, how it is processed by our secure infrastructure, and the complete privacy rights you possess under modern Indian data protection frameworks.
  </div>
 
  {/* Policy Grid */}
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
  </div>
  <div className="text-[var(--text2)] text-sm leading-relaxed space-y-3">
  <p>
- In accordance with the India DPDP Act 2023, Ventexx has designated a Grievance Officer to address any questions, feedback, or complaints regarding our data practices or to coordinate data principal requests.
+ In accordance with the India DPDP Act 2023, Ventex has designated a Grievance Officer to address any questions, feedback, or complaints regarding our data practices or to coordinate data principal requests.
  </p>
  <div className="pt-3 border-t border-[var(--border)]/60 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono text-[var(--text3)]">
  <div>
@@ -138,7 +138,7 @@ export default function PrivacyPage() {
 
  {/* Compliance Footer */}
  <div className="text-center pt-6 border-t border-[var(--border)] text-xs text-[var(--text3)] font-mono">
- <p>&copy; {currentYear} Ventexx. Built for India&apos;s builders.</p>
+ <p>&copy; {currentYear} Ventex. Built for India&apos;s builders.</p>
  </div>
  </div>
  </div>

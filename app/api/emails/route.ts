@@ -53,7 +53,7 @@ function buildEmail({
           <td style="padding:20px 36px 28px;border-top:1px solid #f0f0f0;">
             <p style="margin:0;font-size:12px;color:#999999;">
               You're receiving this because you have an account on 
-              <a href="${VENTEX_URL}" style="color:#666666;">ventexx.co</a>.
+              <a href="${VENTEX_URL}" style="color:#666666;">ventex.co</a>.
               &nbsp;·&nbsp;
               <a href="${VENTEX_URL}/unsubscribe" style="color:#666666;text-decoration:underline;">Unsubscribe</a>
             </p>
@@ -115,12 +115,12 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
     case 'welcome':
       return {
-        subject: `Welcome to Ventexx, ${data.name || 'there'}! 🚀`,
+        subject: `Welcome to Ventex, ${data.name || 'there'}! 🚀`,
         html: buildEmail({
-          heading: `Welcome to Ventexx, ${data.name || 'there'}!`,
-          body: `<p>You're in. Ventexx is where serious startups meet serious investors  -  and you've just become part of it.</p>
+          heading: `Welcome to Ventex, ${data.name || 'there'}!`,
+          body: `<p>You're in. Ventex is where serious startups meet serious investors  -  and you've just become part of it.</p>
                  <p>Start by exploring the pitch hub, browsing the marketplace, or submitting your first pitch.</p>`,
-          ctaText: 'Explore Ventexx',
+          ctaText: 'Explore Ventex',
           ctaUrl: `${VENTEX_URL}/discover`,
         }),
       };
@@ -143,7 +143,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `🤝 An investor expressed interest in "${data.startupName}"`,
         html: buildEmail({
           heading: `An investor is interested in ${data.startupName}`,
-          body: `<p><strong>${data.investorName || 'A premium investor'}</strong> has expressed interest in your startup on Ventexx and wants to connect.</p>
+          body: `<p><strong>${data.investorName || 'A premium investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
                  ${data.message ? `<blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;">"${data.message}"</blockquote>` : ''}
                  <p>Review their profile and accept or decline from your founder dashboard.</p>`,
           ctaText: 'Review in Dashboard',
@@ -157,7 +157,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
           body: `<p>Great news  -  the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
-                 <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Ventexx.</p>`,
+                 <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Ventex.</p>`,
           ctaText: 'Enter Deal Room',
           ctaUrl: `${VENTEX_URL}/deal-room/${data.interestId}`,
         }),
@@ -168,7 +168,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `🎉 You sold "${data.productName}"! Order details inside.`,
         html: buildEmail({
           heading: `You sold "${data.productName}"!`,
-          body: `<p>Congratulations! A buyer just purchased your product on Ventexx Marketplace.</p>
+          body: `<p>Congratulations! A buyer just purchased your product on Ventex Marketplace.</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
@@ -185,7 +185,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `📦 Your order for "${data.productName}" is confirmed`,
         html: buildEmail({
           heading: `Your order is confirmed!`,
-          body: `<p>Thanks for your purchase on Ventexx Marketplace. Here are your order details:</p>
+          body: `<p>Thanks for your purchase on Ventex Marketplace. Here are your order details:</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                    <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount Paid</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
@@ -201,9 +201,9 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
       return {
         subject: `🤖 Your pitch "${data.pitchName}" is live with an AI briefing`,
         html: buildEmail({
-          heading: `Your pitch is live on Ventexx!`,
+          heading: `Your pitch is live on Ventex!`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> has been published and an AI-generated briefing is now attached to it.</p>
-                 <p>Investors browsing Ventexx can see your pitch with the AI summary, increasing your discoverability. Make sure your details are complete to get the best quality briefing.</p>`,
+                 <p>Investors browsing Ventex can see your pitch with the AI summary, increasing your discoverability. Make sure your details are complete to get the best quality briefing.</p>`,
           ctaText: 'View Your Pitch',
           ctaUrl: `${VENTEX_URL}/pitch/${data.pitchId}`,
         }),
@@ -225,7 +225,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'contact_submission':
       return {
-        subject: `New Ventexx contact submission: ${data.subject || 'General'}`,
+        subject: `New Ventex contact submission: ${data.subject || 'General'}`,
         html: buildEmail({
           heading: 'New contact submission',
           body: `<p><strong>Name:</strong> ${data.name || 'Unknown'}</p>
@@ -240,7 +240,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'catalyst_application':
       return {
-        subject: `Ventexx Catalyst application: ${data.fullName || data.name || 'Applicant'}`,
+        subject: `Ventex Catalyst application: ${data.fullName || data.name || 'Applicant'}`,
         html: buildEmail({
           heading: 'Catalyst application received',
           body: `<p><strong>Name:</strong> ${data.fullName || data.name || 'Unknown'}</p>
@@ -259,10 +259,10 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
     case 'build_request':
     case 'weekly_digest':
       return {
-        subject: data.subject || 'Ventexx notification',
+        subject: data.subject || 'Ventex notification',
         html: buildEmail({
-          heading: data.heading || 'Ventexx notification',
-          body: data.body || '<p>A Ventexx workflow was triggered.</p>',
+          heading: data.heading || 'Ventex notification',
+          body: data.body || '<p>A Ventex workflow was triggered.</p>',
           ctaText: data.ctaText,
           ctaUrl: data.ctaUrl,
         }),

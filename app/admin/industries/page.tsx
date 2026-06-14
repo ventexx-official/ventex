@@ -113,7 +113,7 @@ export default function AdminIndustries() {
  <div>
  <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">Industry Sector Manager</h2>
  <p className="text-sm text-[var(--text2)] mt-1">
- Manage the official list of industry sectors available on Ventexx. Approve custom suggestions from founders.
+ Manage the official list of industry sectors available on Ventex. Approve custom suggestions from founders.
  </p>
  </div>
  <button

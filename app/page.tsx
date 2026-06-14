@@ -88,15 +88,15 @@ export default async function Home() {
  <JsonLd data={{
  "@context": "https://schema.org",
  "@type": "Organization",
- "name": "Ventexx",
- "url": "https://ventexx.com",
+ "name": "Ventex",
+ "url": "https://ventex.com",
  "description": "Where startups pitch, fund and sell.",
- "logo": "https://ventexx.com/logo.png",
+ "logo": "https://ventex.com/logo.png",
  "sameAs": [
- "https://twitter.com/ventexx",
- "https://linkedin.com/company/ventexx",
- "https://instagram.com/ventexx",
- "https://youtube.com/@ventexx"
+ "https://twitter.com/ventex",
+ "https://linkedin.com/company/ventex",
+ "https://instagram.com/ventex",
+ "https://youtube.com/@ventex"
  ]
  }} />
 
@@ -130,7 +130,7 @@ export default async function Home() {
  </div>
 
  <div className="glass-ledger-card stagger-3 mt-10 md:mt-0 w-full">
- <span className="mono text-[11px] font-bold text-[#e0a96d] tracking-[0.1em] uppercase mb-2 block">Ventexx Matrix</span>
+ <span className="mono text-[11px] font-bold text-[#e0a96d] tracking-[0.1em] uppercase mb-2 block">Ventex Matrix</span>
  <h3 className="text-[20px] font-bold tracking-[-0.02em] text-[var(--text)] mb-6 transition-colors duration-400">Live startups raising now.</h3>
  <div className="ledger-inner-stack">
  <div className="flex justify-between items-center py-3 border-b border-[var(--border)] transition-colors duration-400">

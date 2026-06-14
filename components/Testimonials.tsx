@@ -30,7 +30,7 @@ export default async function Testimonials() {
         <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'// '} founder stories</div>
         <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <h2 className="max-w-2xl text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">
-            Founders trust Ventexx.
+            Founders trust Ventex.
           </h2>
           {hasStories && (
             <p className="text-sm text-[var(--text3)] flex items-center gap-1.5">
@@ -43,7 +43,7 @@ export default async function Testimonials() {
         {hasStories ? (
           <>
             <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--text2)]">
-              From first pitch to closed round — real results from the Ventexx ecosystem.
+              From first pitch to closed round — real results from the Ventex ecosystem.
             </p>
             <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
               {(stories as Story[]).map((t) => (
@@ -94,7 +94,7 @@ export default async function Testimonials() {
             <Quote className="mb-4 h-10 w-10 text-[var(--text3)] opacity-40" />
             <p className="text-lg font-bold text-[var(--text)]">Founder stories coming soon.</p>
             <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--text2)]">
-              We&apos;re collecting verified success stories from founders in the Ventexx ecosystem. Be one of the first.
+              We&apos;re collecting verified success stories from founders in the Ventex ecosystem. Be one of the first.
             </p>
             <Link
               href="/founder/create-pitch"

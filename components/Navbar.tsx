@@ -170,7 +170,7 @@ export default function Navbar() {
  <div className="flex justify-start">
  <div className="pointer-events-auto flex items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
  <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
- Ventexx
+ Ventex
  </Link>
  </div>
  </div>
@@ -247,10 +247,10 @@ export default function Navbar() {
  <Link href={`/profile/${user.id}`} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <User className="w-4 h-4 text-[var(--text3)]" /> My Profile
  </Link>
- <Link href={userProfile?.role === 'founder' ? '/dashboard/founder' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+ <Link href={userProfile?.role === 'founder' ? '/founder/dashboard' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> Dashboard
  </Link>
- <Link href="/my-purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+ <Link href="/buyer/purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <Package className="w-4 h-4 text-[var(--text3)]" /> My Purchases
  </Link>
  <Link href="/settings" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
@@ -369,7 +369,7 @@ export default function Navbar() {
  My Dashboard
  </Link>
  <Link
- href="/my-purchases"
+ href="/buyer/purchases"
  onClick={() => setIsOpen(false)}
  className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
  >

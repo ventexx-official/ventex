@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
- title: "Invest in Startups - Ventexx Investor Network",
- description: "Access curated global startup deal flow. Discover your next investment on Ventexx.",
- alternates: { canonical: "https://ventexx.com/investors" },
+ title: "Invest in Startups - Ventex Investor Network",
+ description: "Access curated global startup deal flow. Discover your next investment on Ventex.",
+ alternates: { canonical: "https://ventex.com/investors" },
  openGraph: {
- title: "Invest in Startups - Ventexx Investor Network",
- description: "Access curated global startup deal flow. Discover your next investment on Ventexx.",
- url: "https://ventexx.com/investors",
+ title: "Invest in Startups - Ventex Investor Network",
+ description: "Access curated global startup deal flow. Discover your next investment on Ventex.",
+ url: "https://ventex.com/investors",
  type: "website",
  images: [OG_IMAGE_URL],
  },
  twitter: {
  card: "summary_large_image",
- title: "Invest in Startups - Ventexx Investor Network",
- description: "Access curated global startup deal flow. Discover your next investment on Ventexx.",
+ title: "Invest in Startups - Ventex Investor Network",
+ description: "Access curated global startup deal flow. Discover your next investment on Ventex.",
  images: [OG_IMAGE_URL],
  },
 };

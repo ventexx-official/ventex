@@ -7,11 +7,11 @@ import { OG_IMAGE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
  title: "Events",
- description: "Upcoming Ventexx events, including The Arena live startup pitch series.",
+ description: "Upcoming Ventex events, including The Arena live startup pitch series.",
  alternates: { canonical: "/events" },
  openGraph: {
  title: "Events",
- description: "Upcoming Ventexx events, including The Arena live startup pitch series.",
+ description: "Upcoming Ventex events, including The Arena live startup pitch series.",
  url: "/events",
  type: "website",
  images: [OG_IMAGE_URL],
@@ -31,17 +31,17 @@ export default function EventsPage() {
  "eventStatus": "https://schema.org/EventScheduled",
  "location": {
  "@type": "VirtualLocation",
- "url": "https://ventexx.com/arena"
+ "url": "https://ventex.com/arena"
  },
  "organizer": {
  "@type": "Organization",
- "name": "Ventexx",
- "url": "https://ventexx.com"
+ "name": "Ventex",
+ "url": "https://ventex.com"
  }
  }} />
  <section className="mx-auto max-w-6xl px-4 py-16">
  <p className="mono text-xs font-black uppercase tracking-[.16em] text-[var(--text3)]">Events</p>
- <h1 className="mt-3 text-4xl font-black tracking-[-.04em] md:text-6xl">Ventexx Events.</h1>
+ <h1 className="mt-3 text-4xl font-black tracking-[-.04em] md:text-6xl">Ventex Events.</h1>
  <p className="mt-4 max-w-2xl text-lg text-[var(--text2)]">Where the ecosystem meets.</p>
  <Link href="/arena" className="mt-10 block rounded-lg border border-[var(--border)] bg-[var(--card-bg)] p-6 text-[var(--text)] shadow-sm">
  <span className="mono text-xs font-black uppercase tracking-[.16em] text-[var(--text2)]">Featured event</span>

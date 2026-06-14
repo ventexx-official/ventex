@@ -55,7 +55,7 @@ export async function GET() {
             lineHeight: 1,
           }}
         >
-          Ventexx
+          Ventex
         </div>
         {/* Tagline */}
         <div
@@ -90,7 +90,7 @@ export async function GET() {
         </div>
         {/* URL */}
         <div style={{ fontSize: '20px', color: '#555555', fontWeight: 600, letterSpacing: '0.5px' }}>
-          ventexx.com
+          ventex.com
         </div>
       </div>
     ),

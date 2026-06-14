@@ -3,7 +3,7 @@ import { emailFor } from "@/lib/site";
 
 export const metadata: Metadata = {
  title: "Delivery Policy",
- description: "Ventexx delivery policy for digital products, downloads, custom work, and marketplace orders.",
+ description: "Ventex delivery policy for digital products, downloads, custom work, and marketplace orders.",
  alternates: {
  canonical: "/delivery-policy",
  },
@@ -22,7 +22,7 @@ export default function DeliveryPolicyPage() {
 
  <section className="space-y-3">
  <h2 className="text-xl font-black text-[var(--text)]">Digital Delivery</h2>
- <p>Software, templates, courses, and other digital products are delivered through Ventexx order pages, download links, or seller-provided access instructions after successful Stripe payment confirmation.</p>
+ <p>Software, templates, courses, and other digital products are delivered through Ventex order pages, download links, or seller-provided access instructions after successful Stripe payment confirmation.</p>
  </section>
 
  <section className="space-y-3">
@@ -37,7 +37,7 @@ export default function DeliveryPolicyPage() {
 
  <section className="space-y-3">
  <h2 className="text-xl font-black text-[var(--text)]">Failed Delivery</h2>
- <p>Buyers should contact {supportEmail} if access is not delivered after payment. Ventexx may request seller evidence, resend access, or open a dispute review.</p>
+ <p>Buyers should contact {supportEmail} if access is not delivered after payment. Ventex may request seller evidence, resend access, or open a dispute review.</p>
  </section>
  </article>
  </main>

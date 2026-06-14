@@ -74,7 +74,7 @@ export async function GET(
     const fileContent = `=========================================
 VENTEX DIGITAL MARKETPLACE DELIVERY
 =========================================
-Thank you for your purchase on Ventexx!
+Thank you for your purchase on Ventex!
 
 Product: ${order.product?.name || 'Digital Resource'}
 Order ID: ${order.id}

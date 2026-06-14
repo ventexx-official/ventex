@@ -37,9 +37,9 @@ export default function LivePage() {
  return (
  <main className="grid min-h-screen place-items-center bg-[var(--bg)] px-4 text-center text-[var(--text)]">
  <div>
- <p className="mono mb-3 text-xs uppercase tracking-[.16em] text-violet-300">Ventexx Live</p>
+ <p className="mono mb-3 text-xs uppercase tracking-[.16em] text-violet-300">Ventex Live</p>
  <h1 className="text-5xl font-black tracking-tight">Coming Soon</h1>
- <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Monthly pitch nights are built but disabled until the owner enables Ventexx Live from Admin → Feature Flags.</p>
+ <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Monthly pitch nights are built but disabled until the owner enables Ventex Live from Admin → Feature Flags.</p>
  </div>
  </main>
  );
@@ -49,7 +49,7 @@ export default function LivePage() {
  <main className="min-h-screen bg-[var(--bg)] px-4 py-16 text-[var(--text)]">
  <div className="mx-auto max-w-6xl space-y-10">
  <header>
- <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventexx Live - Monthly Pitch Night. Watch founders pitch to real investors.</h1>
+ <h1 className="text-4xl font-black tracking-tight md:text-6xl">Ventex Live - Monthly Pitch Night. Watch founders pitch to real investors.</h1>
  <p className="mt-4 text-sm font-bold text-[var(--text2)]">Next event countdown appears here once the admin sets the event date.</p>
  </header>
 
@@ -63,7 +63,7 @@ export default function LivePage() {
  <input placeholder="Funding ask $" value={founderForm.askUsd} onChange={(e) => setFounderForm((p) => ({ ...p, askUsd: e.target.value }))} className="w-full rounded-xl border p-3" />
  <input maxLength={150} placeholder="One-line pitch" value={founderForm.pitch} onChange={(e) => setFounderForm((p) => ({ ...p, pitch: e.target.value }))} className="w-full rounded-xl border p-3" />
  <textarea placeholder="Why should we pick you? (200 words max)" value={founderForm.why} onChange={(e) => setFounderForm((p) => ({ ...p, why: e.target.value }))} className="w-full rounded-xl border p-3" />
- <input placeholder="Ventexx profile URL" value={founderForm.profileUrl} onChange={(e) => setFounderForm((p) => ({ ...p, profileUrl: e.target.value }))} className="w-full rounded-xl border p-3" />
+ <input placeholder="Ventex profile URL" value={founderForm.profileUrl} onChange={(e) => setFounderForm((p) => ({ ...p, profileUrl: e.target.value }))} className="w-full rounded-xl border p-3" />
  <button disabled={!flags.live_founder_applications} className="w-full rounded-xl bg-[var(--text)] p-3 font-black text-[var(--bg)] disabled:opacity-50">Submit founder application</button>
  </form>
 

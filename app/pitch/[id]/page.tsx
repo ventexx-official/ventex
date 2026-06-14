@@ -272,7 +272,7 @@ export default function PitchDetail() {
 ðŸ’° Seeking â‚¹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
 ðŸ“ ${pitch.industry || 'Startup'} Â· ${pitch.company_stage || ''} Â· ${pitch.country || ''}
 ðŸ‘€ ${window.location.href}
-via Ventexx`;
+via Ventex`;
  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
  };
 
@@ -1002,7 +1002,7 @@ via Ventexx`;
  <Lock className="w-5 h-5 text-[var(--text)] " />
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
- <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventexx Premium is marketplace-only.</p>
+ <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
  <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
  View Investor Accounts
  </Link>
@@ -1073,7 +1073,7 @@ via Ventexx`;
  <Lock className="w-5 h-5 text-[var(--text)] " />
  </div>
  <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
- <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventexx Premium is marketplace-only.'}</p>
+ <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
  <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
  View Investor Accounts
  </Link>

@@ -8,8 +8,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
  .eq('id', params.id)
  .maybeSingle();
 
- const title = pitch?.title ? `${pitch.title} â€” Pitch on Ventexx` : 'Pitch on Ventexx';
- const description = pitch?.tagline || pitch?.short_description || 'View this startup pitch on Ventexx.';
+ const title = pitch?.title ? `${pitch.title} â€” Pitch on Ventex` : 'Pitch on Ventex';
+ const description = pitch?.tagline || pitch?.short_description || 'View this startup pitch on Ventex.';
 
  return {
  title,
@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
  openGraph: {
  title,
  description,
- images: ['https://ventexx.com/og-image.png'],
- url: `https://ventexx.com/pitch/${params.id}`,
+ images: ['https://ventex.com/og-image.png'],
+ url: `https://ventex.com/pitch/${params.id}`,
  },
  twitter: {
  card: 'summary_large_image',
  title,
  description,
- images: ['https://ventexx.com/og-image.png'],
+ images: ['https://ventex.com/og-image.png'],
  }
  };
 }

@@ -5,7 +5,7 @@ const anthropic = new Anthropic({
 });
 
 export async function generatePitchSummary(pitchData: any): Promise<string> {
-  const prompt = `You are summarising a startup pitch for the Ventexx platform discovery feed. Read the following startup information and write exactly 2-3 sentences that clearly explain: (1) what the business is and how it works, (2) who it serves and where, (3) one specific proof point — traction, market insight, or key feature. Be factual and specific. No hype words. No vague statements. Write like a journalist, not a marketer. Maximum 60 words total.
+  const prompt = `You are summarising a startup pitch for the Ventex platform discovery feed. Read the following startup information and write exactly 2-3 sentences that clearly explain: (1) what the business is and how it works, (2) who it serves and where, (3) one specific proof point — traction, market insight, or key feature. Be factual and specific. No hype words. No vague statements. Write like a journalist, not a marketer. Maximum 60 words total.
 
 Startup Data:
 Title: ${pitchData.title || 'N/A'}
