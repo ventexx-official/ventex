@@ -1,928 +1,108 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-
-// Email helper (fires-and-forgets)
-async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
- try {
- const { data: { session } } = await supabase.auth.getSession();
- await fetch('/api/emails', {
- method: 'POST',
- headers: {
- 'Content-Type': 'application/json',
- ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
- },
- body: JSON.stringify({ type, recipientEmail, data }),
- });
- } catch (e) {
- console.error('[sendEmail]', e);
- }
-}
-import { 
- Plus, 
- LayoutDashboard, 
- FileText, 
- Store, 
- Settings, 
- Eye, 
- MessageSquare, 
- ShoppingBag, 
- DollarSign, 
- ArrowRight,
- User,
- Clock,
- MoreVertical,
- ChevronRight,
- Edit2,
- Trash2,
- ExternalLink,
- Copy,
- PanelLeftClose,
- PanelLeftOpen,
- AlertTriangle,
- Tag,
- X
-} from 'lucide-react';
 import Link from 'next/link';
-import { levelEmoji, nextLevelThreshold, parseBadges } from '@/lib/xp';
-import PitchScorePanel from '@/components/PitchScorePanel';
+import { Eye, Users, ShoppingBag, DollarSign, Plus } from 'lucide-react';
+import FounderGuard from '@/components/FounderGuard';
 
 export default function FounderDashboard() {
- const [pitches, setPitches] = useState<any[]>([]);
- const [interests, setInterests] = useState<any[]>([]);
- const [agreedDeals, setAgreedDeals] = useState<any[]>([]);
- const [disputes, setDisputes] = useState<any[]>([]);
- const [expandedDisputeId, setExpandedDisputeId] = useState<string | null>(null);
- const [rebuttalText, setRebuttalText] = useState('');
- const [submittingDisputeId, setSubmittingDisputeId] = useState<string | null>(null);
- const [userProfile, setUserProfile] = useState<any>(null);
- const [loading, setLoading] = useState(true);
- const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
- const [openMenuId, setOpenMenuId] = useState<string | null>(null);
- const [deletingId, setDeletingId] = useState<string | null>(null);
- const [confirmDelete, setConfirmDelete] = useState<{ id: string; title: string } | null>(null);
- const menuRef = useRef<HTMLDivElement>(null);
- const router = useRouter();
-
- useEffect(() => {
- const handleClickOutside = (e: MouseEvent) => {
- if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
- setOpenMenuId(null);
- }
- };
- document.addEventListener('mousedown', handleClickOutside);
- return () => document.removeEventListener('mousedown', handleClickOutside);
- }, []);
-
- useEffect(() => {
- const fetchData = async () => {
- const { data: { session } } = await supabase.auth.getSession();
- if (!session) { router.push('/login'); return; }
-
- const { data: profile } = await supabase
- .from('users').select('*').eq('id', session.user.id).single();
-
- if (profile?.role === 'investor') {
- router.replace('/investor/portal');
- return;
- }
-
- if (profile?.role === 'admin') {
- router.replace('/admin/users');
- return;
- }
-
- // Use profile if available, otherwise build one from session data
- setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
-
- const { data: dealsData } = await supabase
- .from('deals')
- .select('*, investor:investor_id(full_name,email)')
- .eq('founder_id', session.user.id)
- .eq('status', 'agreed')
- .order('created_at', { ascending: false });
-
- setAgreedDeals(dealsData || []);
-
- const { data: pitchesData } = await supabase
- .from('pitches').select('*')
- .eq('founder_id', session.user.id)
- .order('created_at', { ascending: false });
-
- if (pitchesData) {
- setPitches(pitchesData);
- 
- const pitchIds = pitchesData.map(p => p.id) || [];
- if (pitchIds.length > 0) {
- const { data: interestsData } = await supabase
- .from('investor_interests')
- .select(`
- *,
- pitch:pitch_id ( id, title, logo_url ),
- investor:investor_id ( id, full_name, role, avatar_url, email )
- `)
- .in('pitch_id', pitchIds)
- .order('created_at', { ascending: false });
- if (interestsData) setInterests(interestsData);
- }
- }
-
- // Fetch disputes
- try {
- const { data: disputesData } = await supabase
- .from('disputes')
- .select(`
- *,
- order:order_id (
- id,
- amount_paid,
- status,
- product:product_id (
- id,
- name,
- images_urls
- )
- ),
- buyer:buyer_id (
- id,
- full_name,
- email
- )
- `)
- .eq('seller_id', session.user.id)
- .order('created_at', { ascending: false });
-
- if (disputesData) setDisputes(disputesData);
- } catch (err) {
- console.error("Error fetching disputes:", err);
- }
-
- setLoading(false);
- };
- fetchData();
- }, [router]);
-
- const handleAcceptInterest = async (interestId: string, investorId: string, pitchTitle: string) => {
- try {
- const { error } = await supabase
- .from('investor_interests')
- .update({ status: 'accepted' })
- .eq('id', interestId);
-
- if (error) throw error;
-
- // Notify investor in-app
- await supabase
- .from('notifications')
- .insert({
- user_id: investorId,
- type: 'deal_room_unlocked',
- message: `Your interest in "${pitchTitle}" has been accepted! You can now join the Deal Room.`,
- link: `/deal-room/${interestId}`
- });
-
- // Send email to investor
- const { data: _investorProfile } = await supabase
- .from('users')
- .select('full_name')
- .eq('id', investorId)
- .single();
-
- const { data: _investorAuth } = await supabase.auth.admin
- ? ({ data: null } as any)
- : ({ data: null } as any);
-
- // Get investor email from auth (use interests join or separate fetch)
- const interest = interests.find(i => i.id === interestId);
- const investorEmail = interest?.investor?.email;
- if (investorEmail) {
- await sendEmail('interest_accepted', investorEmail, {
- startupName: pitchTitle,
- interestId,
- });
- }
-
- setInterests(prev => prev.map(item =>
- item.id === interestId ? { ...item, status: 'accepted' } : item
- ));
- alert("Interest accepted! Deal room is unlocked.");
- } catch (err: any) {
- console.error(err);
- alert("Failed to accept interest: " + err.message);
- }
- };
-
- const handleDeclineInterest = async (interestId: string, investorId: string, pitchTitle: string) => {
- try {
- const { error } = await supabase
- .from('investor_interests')
- .update({ status: 'declined' })
- .eq('id', interestId);
-
- if (error) throw error;
-
- const interest = interests.find(i => i.id === interestId);
- const investorEmail = interest?.investor?.email;
-
- // Send email to investor
- if (investorEmail) {
- await sendEmail('interest_accepted', investorEmail, {
- startupName: pitchTitle,
- declined: true,
- });
- }
-
- await supabase
- .from('notifications')
- .insert({
- user_id: investorId,
- type: 'deal_room_declined',
- message: `Your interest expression in "${pitchTitle}" has been declined.`,
- link: `/discover`
- });
-
- setInterests(prev => prev.map(item =>
- item.id === interestId ? { ...item, status: 'declined' } : item
- ));
- alert("Interest declined.");
- } catch (err: any) {
- console.error(err);
- alert("Failed to decline interest: " + err.message);
- }
- };
-
- const handleSubmitRebuttal = async (disputeId: string) => {
- if (rebuttalText.trim().length < 20) {
- alert("Your response must be at least 20 characters.");
- return;
- }
- setSubmittingDisputeId(disputeId);
- try {
- // Update the dispute row
- const { error: disputeError } = await supabase
- .from('disputes')
- .update({
- seller_response: rebuttalText.trim(),
- status: 'under_review'
- })
- .eq('id', disputeId);
-
- if (disputeError) throw disputeError;
-
- // Update local state
- setDisputes(prev => prev.map(d => 
- d.id === disputeId 
- ? { ...d, seller_response: rebuttalText.trim(), status: 'under_review' } 
- : d
- ));
-
- // Notify the buyer
- const dispute = disputes.find(d => d.id === disputeId);
- if (dispute) {
- await supabase.from('notifications').insert({
- user_id: dispute.buyer_id,
- type: 'dispute_responded',
- message: `Seller responded to your dispute for product "${dispute.order?.product?.name || 'purchased item'}". Case is now under review.`,
- link: `/marketplace`
- });
- }
-
- setRebuttalText('');
- setExpandedDisputeId(null);
- alert("Response submitted successfully! The dispute is now under admin review.");
- } catch (err: any) {
- alert("Failed to submit response: " + err.message);
- } finally {
- setSubmittingDisputeId(null);
- }
- };
-
- const handleDelete = async () => {
- if (!confirmDelete) return;
- const { id: pitchId } = confirmDelete;
- setDeletingId(pitchId);
- setConfirmDelete(null);
-
- const { data: { session } } = await supabase.auth.getSession();
-
- // First ensure founder_id is set correctly on this pitch
- const pitch = pitches.find(p => p.id === pitchId);
- if (pitch && !pitch.founder_id && session?.user?.id) {
- // patch missing founder_id before deleting
- await supabase.from('pitches').update({ founder_id: session.user.id }).eq('id', pitchId);
- }
-
- const { data, error } = await supabase
- .from('pitches').delete().eq('id', pitchId).select();
-
- if (error) {
- alert(`Delete failed: ${error.message}`);
- } else if (!data || data.length === 0) {
- // RLS silently blocked - patch founder_id and retry
- if (session?.user?.id) {
- await supabase.from('pitches').update({ founder_id: session.user.id }).eq('id', pitchId);
- const { data: retryData, error: retryError } = await supabase
- .from('pitches').delete().eq('id', pitchId).select();
- if (retryData && retryData.length > 0) {
- setPitches(prev => prev.filter(p => p.id !== pitchId));
- } else {
- alert(`Could not delete pitch. ${retryError?.message || 'RLS policy may be blocking the delete. Run the DELETE policy SQL in Supabase.'}`);
- }
- }
- } else {
- setPitches(prev => prev.filter(p => p.id !== pitchId));
- }
- setDeletingId(null);
- };
-
- const handleDuplicate = async (pitch: any) => {
- setOpenMenuId(null);
- const { data, error } = await supabase.from('pitches').insert({
- ...pitch,
- id: undefined,
- title: `${pitch.title} (Copy)`,
- status: 'draft',
- created_at: undefined,
- updated_at: undefined,
- }).select().single();
- if (error) { alert('Failed to duplicate: ' + error.message); }
- else if (data) { setPitches(prev => [data, ...prev]); }
- };
-
- if (loading) {
- return (
- <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
- <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin"></div>
- </div>
- );
- }
-
- const stats = [
- { label: 'Pitch Views (30d)', value: pitches.reduce((a, p) => a + (p.views || 0), 0).toLocaleString(), icon: Eye, color: 'text-blue-500' },
- { label: 'Investor Interests', value: interests.length.toString(), icon: MessageSquare, color: 'text-emerald-500' },
- { label: 'Products Sold', value: '0', icon: ShoppingBag, color: 'text-purple-500' },
- { label: 'Total Earnings', value: '$0', icon: DollarSign, color: 'text-amber-500' },
- ];
-
- const recentActivity = [
- { id: 1, text: 'No recent activity yet.', time: '' },
- ];
-
- const sidebarW = sidebarCollapsed ? 'md:w-[72px]' : 'md:w-[240px]';
- const mainML = sidebarCollapsed ? 'md:ml-[72px]' : 'md:ml-[240px]';
-
- return (
- <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
-
- {/* Ã¢â€â‚¬Ã¢â€â‚¬ DELETE CONFIRMATION MODAL Ã¢â€â‚¬Ã¢â€â‚¬ */}
- {confirmDelete && (
- <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
- <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
- <div className="relative bg-[var(--card-bg)] rounded-3xl shadow-2xl max-w-md w-full p-8 animate-in fade-in zoom-in-95 duration-200">
- <button
- onClick={() => setConfirmDelete(null)}
- className="absolute top-4 right-4 p-1.5 hover:bg-[var(--bg)] rounded-lg transition-colors text-[var(--text2)]"
- >
- <X className="w-4 h-4" />
- </button>
- <div className="flex items-center justify-center w-14 h-14 bg-red-50 rounded-2xl mx-auto mb-5">
- <AlertTriangle className="w-7 h-7 text-red-500" />
- </div>
- <h2 className="text-xl font-black text-[var(--text)] text-center mb-2">Delete pitch?</h2>
- <p className="text-sm text-[var(--text2)] text-center mb-1">
- You're about to permanently delete:
- </p>
- <p className="text-sm font-bold text-[var(--text)] text-center mb-6 px-4 truncate">
- "{confirmDelete.title}"
- </p>
- <p className="text-xs text-red-500 text-center mb-8 bg-red-50 rounded-xl py-2 px-4">
- This action <strong>cannot be undone</strong>. All data will be lost.
- </p>
- <div className="flex gap-3">
- <button
- onClick={() => setConfirmDelete(null)}
- className="flex-1 py-3 border-[0.5px] border-[var(--border)] rounded-2xl font-bold text-[var(--text)] hover:bg-[var(--bg)] transition-colors text-sm"
- >
- Cancel
- </button>
- <button
- onClick={handleDelete}
- className="flex-1 py-3 bg-red-500 text-[var(--text)] rounded-2xl font-bold hover:bg-red-600 active:scale-95 transition-all text-sm flex items-center justify-center gap-2"
- >
- <Trash2 className="w-4 h-4" />
- Yes, delete it
- </button>
- </div>
- </div>
- </div>
- )}
-
- {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
- <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
- <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
- {!sidebarCollapsed && (
- <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">Ventexx</Link>
- )}
- <button
- onClick={() => setSidebarCollapsed(v => !v)}
- className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[var(--bg)] transition-colors text-[var(--text2)] hover:text-[var(--text)] ml-auto"
- title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
- >
- {sidebarCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
- </button>
- </div>
-
- {!sidebarCollapsed && (
- <div className="hidden md:block px-4 py-4">
- <div className="flex items-center gap-3 p-3 bg-[var(--bg)] rounded-2xl">
- <div className="w-9 h-9 rounded-full bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
- {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
- </div>
- <div className="min-w-0">
- <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || 'Founder'}</p>
- <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
- </div>
- </div>
- </div>
- )}
- {sidebarCollapsed && (
- <div className="hidden md:flex justify-center py-4">
- <div className="w-9 h-9 rounded-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden">
- {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
- </div>
- </div>
- )}
-
- <nav className="hidden md:flex flex-grow flex-col px-2 space-y-1 pt-2">
- <NavItem icon={LayoutDashboard} label="Dashboard" active collapsed={sidebarCollapsed} href="/founder/dashboard" />
- <NavItem icon={FileText} label="My Pitches" collapsed={sidebarCollapsed} href="/founder/pitches" />
- <NavItem icon={Plus} label="Create Pitch" href="/founder/create-pitch" collapsed={sidebarCollapsed} />
- <NavItem icon={Store} label="My Store" href="/founder/store" collapsed={sidebarCollapsed} />
- <NavItem icon={Tag} label="Deals & Promos" href="/founder/store/deals" collapsed={sidebarCollapsed} />
- <NavItem icon={Settings} label="Settings" href="/founder/settings" collapsed={sidebarCollapsed} />
- </nav>
-
- {/* Buy Me A Coffee Widget */}
- <div className="px-3 pb-4 border-t-[0.5px] border-[var(--border)] pt-4 mt-auto md:mt-4 hidden md:block">
-  {!sidebarCollapsed ? (
-    <a href="https://buymeacoffee.com/ventexx" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-3 py-2.5 bg-[#FFDD00] text-black font-bold rounded-lg hover:brightness-95 transition-all text-sm shadow-sm w-full">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
-      Support Ventex
-    </a>
-  ) : (
-    <a href="https://buymeacoffee.com/ventexx" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-8 h-8 mx-auto bg-[#FFDD00] text-black font-bold rounded-lg hover:brightness-95 transition-all shadow-sm">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
-    </a>
-  )}
- </div>
-
- <nav className="flex md:hidden flex-1 items-center gap-1 px-3 overflow-x-auto py-2">
- <NavItemMobile icon={LayoutDashboard} label="Dashboard" active href="/founder/dashboard" />
- <NavItemMobile icon={FileText} label="Pitches" href="/founder/pitches" />
- <NavItemMobile icon={Plus} label="Create" href="/founder/create-pitch" />
- <NavItemMobile icon={Store} label="Store" href="/founder/store" />
- <NavItemMobile icon={Tag} label="Deals" href="/founder/store/deals" />
- <NavItemMobile icon={Settings} label="Settings" href="/founder/settings" />
- </nav>
-
- {!sidebarCollapsed && (
- <div className="hidden md:block px-3 pb-4 mt-auto border-t-[0.5px] border-[var(--border)] pt-4">
- <Link href={`/profile/${userProfile?.id}`} className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--bg)] transition-colors group">
- <span className="text-xs font-bold text-[var(--text2)] group-hover:text-[var(--text)]">View public profile</span>
- <ArrowRight className="w-4 h-4 text-[var(--text2)]" />
- </Link>
- </div>
- )}
- {sidebarCollapsed && (
- <div className="hidden md:flex justify-center pb-4 mt-auto pt-4 border-t-[0.5px] border-[var(--border)]">
- <Link href={`/profile/${userProfile?.id}`} className="p-2 rounded-xl hover:bg-[var(--bg)] transition-colors text-[var(--text2)]" title="View public profile">
- <ExternalLink className="w-4 h-4" />
- </Link>
- </div>
- )}
- </aside>
-
- {/* Ã¢â€â‚¬Ã¢â€â‚¬ MAIN CONTENT Ã¢â€â‚¬Ã¢â€â‚¬ */}
- <main className={`flex-grow p-4 md:p-8 w-full transition-all duration-300 ${mainML}`}>
- <div className="max-w-6xl mx-auto">
-
- <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
- <div>
- <div className="flex flex-wrap items-center gap-3">
- <h1 className="text-2xl md:text-3xl font-black text-[var(--text)] tracking-tighter uppercase">Founder Dashboard</h1>
- {userProfile?.level && (
- <span className="bg-[var(--text)] text-[var(--bg)] text-xs font-bold px-3 py-1.5 rounded-full">
- {userProfile.level} {levelEmoji(userProfile.level)}
- </span>
- )}
- </div>
- <p className="text-[var(--text2)] font-medium mt-1 text-sm">
- {userProfile?.full_name ? `Welcome, ${userProfile.full_name}` : 'Everything you need to scale your startup.'}
- </p>
- </div>
- <button
- onClick={() => router.push('/founder/create-pitch')}
- className="bg-[var(--text)] text-[var(--bg)] px-5 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-black active:scale-95 transition-all shadow-xl shadow-black/5 w-full sm:w-auto justify-center"
- >
- <Plus className="w-5 h-5" /> Create New Pitch
- </button>
- </header>
-
- {agreedDeals.map((deal) => (
- <div key={deal.id} className="mb-6 rounded-3xl border-[0.5px] border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-900">
- Deal agreed with {deal.investor?.full_name || deal.investor?.email || 'investor'}. Platform fee of Rs {Number(deal.fee_amount || 0).toLocaleString('en-IN')} will apply post early access.
- </div>
- ))}
-
- {/* XP PROGRESS */}
- {userProfile && (
- <div className="bg-[var(--card-bg)] p-6 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm mb-6">
- <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
- <div>
- <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">Founder XP</p>
- <p className="text-2xl font-black text-[var(--text)]">
- {(userProfile.xp ?? 0).toLocaleString()} XP
- </p>
- </div>
- <p className="text-sm text-[var(--text2)] font-medium">
- {(userProfile.xp ?? 0) >= 1000
- ? 'Max level reached'
- : `${(userProfile.xp ?? 0).toLocaleString()} / ${nextLevelThreshold(userProfile.xp ?? 0).toLocaleString()} to next level`}
- </p>
- </div>
- <div className="w-full h-3 bg-[var(--bg)] rounded-full overflow-hidden mb-4">
- <div
- className="h-full bg-[var(--text)] rounded-full transition-all"
- style={{
- width: `${(() => {
- const xp = userProfile.xp ?? 0;
- if (xp >= 1000) return 100;
- const next = nextLevelThreshold(xp);
- const prev = xp >= 500 ? 500 : xp >= 200 ? 200 : 0;
- return Math.min(100, ((xp - prev) / (next - prev)) * 100);
- })()}%`,
- }}
- />
- </div>
- {parseBadges(userProfile.badges).length > 0 && (
- <div className="flex flex-wrap gap-2">
- {parseBadges(userProfile.badges).map((badge) => (
- <span
- key={badge}
- className="bg-[var(--bg)] text-[var(--text)] text-xs font-bold px-3 py-1.5 rounded-full"
- >
- {badge}
- </span>
- ))}
- </div>
- )}
- </div>
- )}
-
- {/* STATS */}
- <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
- {stats.map((stat, idx) => (
- <div key={idx} className="bg-[var(--card-bg)] p-5 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm">
- <div className="flex items-center justify-between mb-4">
- <div className={`p-2.5 rounded-2xl bg-[var(--bg)] ${stat.color}`}><stat.icon className="w-5 h-5" /></div>
- </div>
- <p className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest mb-1">{stat.label}</p>
- <h3 className="text-2xl font-black text-[var(--text)]">{stat.value}</h3>
- </div>
- ))}
- </div>
-
- {/* ACTIVE DISPUTES */}
- {disputes.length > 0 && (
- <div className="mb-10 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
- <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase flex items-center gap-2">
- <AlertTriangle className="w-5 h-5 text-red-500 animate-pulse" />
- Active Disputes ({disputes.filter(d => d.status === 'open' || d.status === 'under_review').length})
- </h2>
- 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- {disputes.map((dispute) => {
- const isPendingResponse = dispute.status === 'open' && !dispute.seller_response;
- const isExpanded = expandedDisputeId === dispute.id;
- 
- return (
- <div 
- key={dispute.id} 
- className={`bg-[var(--card-bg)] rounded-3xl border shadow-sm overflow-hidden transition-all duration-200 ${
- isPendingResponse 
- ? 'border-red-200 hover:border-red-300' 
- : 'border-[var(--border)]'
- }`}
- >
- {/* Top status bar */}
- <div className={`px-5 py-2.5 flex items-center justify-between border-b ${
- isPendingResponse 
- ? 'bg-red-50/50 border-red-100' 
- : 'bg-[var(--bg2)]/50 border-[var(--border)]'
- }`}>
- <span className={`text-[10px] font-black uppercase tracking-wider ${
- isPendingResponse ? 'text-red-600' : 'text-amber-600'
- }`}>
- {isPendingResponse ? '⚠️ Payout Frozen - Action Required' : '⏳ Response Under Admin Review'}
- </span>
- <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
- isPendingResponse ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
- }`}>
- {dispute.status === 'open' ? 'Open' : 'Under Review'}
- </span>
- </div>
-
- <div className="p-5 space-y-4">
- {/* Order & Product Info */}
- <div className="flex gap-3.5 items-start">
- <div className="w-10 h-10 bg-[var(--bg)] rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden border-[0.5px] border-[var(--border)]">
- {dispute.order?.product?.images_urls?.[0] ? (
- <img src={dispute.order.product.images_urls[0]} alt="" className="w-full h-full object-cover" />
- ) : (
- <ShoppingBag className="w-5 h-5 text-[var(--text2)]" />
- )}
- </div>
- <div className="min-w-0">
- <h4 className="font-bold text-[var(--text)] text-sm truncate">{dispute.order?.product?.name || 'Unknown Product'}</h4>
- <p className="text-[10px] text-[var(--text2)] font-semibold mt-0.5">
- Order ID: <span className="font-mono">{dispute.order_id}</span> Â¢ Net Sale: ₹{((dispute.order?.amount_paid || 0) / 100).toLocaleString()}
- </p>
- </div>
- </div>
-
- {/* Dispute Detail */}
- <div className="bg-[var(--bg)] p-4 rounded-2xl border-[0.5px] border-[var(--border)] space-y-2">
- <div className="flex justify-between items-center text-[10px] font-black text-[var(--text2)] uppercase tracking-wider">
- <span>Reason: {dispute.reason}</span>
- <span>Buyer: {dispute.buyer?.full_name || 'Anon'}</span>
- </div>
- <p className="text-xs text-[var(--text2)] italic leading-relaxed">
- "{dispute.description}"
- </p>
- </div>
-
- {/* Seller response if exists */}
- {dispute.seller_response && (
- <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-1">
- <p className="text-[10px] font-black text-emerald-800 uppercase tracking-wider">Your Rebuttal:</p>
- <p className="text-xs text-emerald-700 italic leading-relaxed">
- "{dispute.seller_response}"
- </p>
- </div>
- )}
-
- {/* Response Form Controls */}
- {isPendingResponse && (
- <div>
- {!isExpanded ? (
- <button 
- onClick={() => {
- setExpandedDisputeId(dispute.id);
- setRebuttalText('');
- }}
- className="w-full py-2.5 bg-red-500 hover:bg-red-600 text-[var(--text)] rounded-xl text-xs font-black uppercase tracking-wider transition-colors animate-pulse"
- >
- Respond to Dispute
- </button>
- ) : (
- <div className="space-y-3 pt-2">
- <div className="flex justify-between items-center">
- <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text2)]">Rebuttal / Resolution Response</label>
- <span className={`text-[10px] font-semibold ${
- rebuttalText.trim().length < 20 ? 'text-amber-500' : 'text-emerald-500'
- }`}>
- {rebuttalText.trim().length} chars (min 20)
- </span>
- </div>
- <textarea
- rows={4}
- value={rebuttalText}
- onChange={(e) => setRebuttalText(e.target.value)}
- placeholder="Provide evidence of delivery, template details, links, or communication log showing resolution..."
- className="w-full px-3 py-2 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#222222] text-[var(--text)] resize-none leading-relaxed"
- />
- <div className="flex gap-2">
- <button
- onClick={() => setExpandedDisputeId(null)}
- className="flex-1 py-2 bg-[var(--bg)] hover:bg-[#e5e5e5] text-[var(--text)] rounded-xl text-[10px] font-bold uppercase transition-colors"
- >
- Cancel
- </button>
- <button
- onClick={() => handleSubmitRebuttal(dispute.id)}
- disabled={submittingDisputeId === dispute.id || rebuttalText.trim().length < 20}
- className="flex-1 py-2 bg-[var(--text)] hover:bg-black disabled:opacity-50 text-[var(--bg)] rounded-xl text-[10px] font-bold uppercase transition-colors"
- >
- {submittingDisputeId === dispute.id ? 'Submitting...' : 'Submit Rebuttal'}
- </button>
- </div>
- </div>
- )}
- </div>
- )}
- </div>
- </div>
- );
- })}
- </div>
- </div>
- )}
-
- <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
- {/* MY PITCHES */}
- <div className="lg:col-span-2">
- <div className="flex items-center justify-between mb-5">
- <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase">My Pitches</h2>
- <Link href="/founder/pitches" className="text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] flex items-center gap-1 transition-colors">
- View all <ChevronRight className="w-4 h-4" />
- </Link>
- </div>
-
- <div className="space-y-3" ref={menuRef}>
- {pitches.length === 0 ? (
- <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-12 text-center">
- <p className="text-[var(--text2)] font-medium">You haven't created any pitches yet.</p>
- <button
- onClick={() => router.push('/founder/create-pitch')}
- className="mt-4 text-sm font-bold text-[var(--text)] underline decoration-[0.5px] underline-offset-4 hover:no-underline"
- >
- Create your first pitch →
- </button>
- </div>
- ) : (
- pitches.slice(0, 5).map((pitch) => (
- <div
- key={pitch.id}
- className={`bg-[var(--card-bg)] p-4 rounded-3xl border-[0.5px] border-[var(--border)] shadow-sm hover:shadow-md transition-all flex items-center justify-between group ${deletingId === pitch.id ? 'opacity-40 pointer-events-none' : ''}`}
- >
- <div className="flex items-center gap-4 min-w-0">
- <div className="w-12 h-12 bg-[var(--bg)] rounded-2xl flex items-center justify-center overflow-hidden border-[0.5px] border-[var(--border)] flex-shrink-0">
- {pitch.logo_url ? <img src={pitch.logo_url} alt="" className="w-full h-full object-cover" /> : <FileText className="w-5 h-5 text-[var(--text2)]" />}
- </div>
- <div className="min-w-0">
- <div className="flex items-center gap-2 mb-1 flex-wrap">
- <h3 className="font-bold text-[var(--text)] text-sm truncate">{pitch.title || 'Untitled Pitch'}</h3>
- <StatusBadge status={pitch.status} />
- </div>
- <div className="flex items-center gap-3 text-[11px] font-medium text-[var(--text2)]">
- <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {pitch.views || 0}</span>
- <span className="hidden sm:flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(pitch.updated_at).toLocaleDateString()}</span>
- </div>
- <PitchScorePanel pitchId={pitch.id} />
- </div>
- </div>
-
- <div className="flex items-center gap-2 flex-shrink-0 ml-3">
- <Link href={`/founder/create-pitch?id=${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[var(--bg)] text-[var(--text)] text-xs font-bold rounded-xl hover:bg-[#e5e5e5] active:scale-95 transition-all">Edit</Link>
- <Link href={`/pitch/${pitch.id}`} className="hidden sm:block px-3 py-1.5 bg-[var(--text)] text-[var(--bg)] text-xs font-bold rounded-xl hover:bg-black active:scale-95 transition-all">View</Link>
-
- {/* Three-dot menu */}
- <div className="relative">
- <button
- onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === pitch.id ? null : pitch.id); }}
- className="p-2 hover:bg-[var(--bg)] rounded-xl transition-colors text-[var(--text2)] hover:text-[var(--text)]"
- >
- <MoreVertical className="w-4 h-4" />
- </button>
-
- {openMenuId === pitch.id && (
- <div className="absolute right-0 top-full mt-1 w-48 bg-[var(--card-bg)] rounded-2xl shadow-xl border-[0.5px] border-[var(--border)] z-50 py-1 overflow-hidden">
- <Link href={`/founder/create-pitch?id=${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
- <Edit2 className="w-4 h-4 text-[var(--text2)]" /> Edit pitch
- </Link>
- <Link href={`/pitch/${pitch.id}`} onClick={() => setOpenMenuId(null)} className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
- <ExternalLink className="w-4 h-4 text-[var(--text2)]" /> View public page
- </Link>
- <button onClick={() => handleDuplicate(pitch)} className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-[var(--text)] hover:bg-[var(--bg)] transition-colors">
- <Copy className="w-4 h-4 text-[var(--text2)]" /> Duplicate
- </button>
- <div className="border-t-[0.5px] border-[var(--border)] my-1" />
- <button
- onClick={() => { setOpenMenuId(null); setConfirmDelete({ id: pitch.id, title: pitch.title || 'Untitled Pitch' }); }}
- className="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
- >
- <Trash2 className="w-4 h-4" /> Delete pitch
- </button>
- </div>
- )}
- </div>
- </div>
- </div>
- ))
- )}
- {pitches.length > 5 && (
- <Link href="/founder/pitches" className="block text-center py-3 text-sm font-bold text-[var(--text2)] hover:text-[var(--text)] transition-colors">
- + {pitches.length - 5} more pitches - View all →
- </Link>
- )}
- </div>
- </div>
-
- {/* SIDE CONTENT */}
- <div className="space-y-8">
-
- <div>
- <h2 className="text-xl font-black text-[var(--text)] tracking-tight uppercase mb-5">Investor Interests</h2>
- <div className="space-y-4">
- {interests.length === 0 ? (
- <p className="text-sm text-[var(--text2)]">No requests yet.</p>
- ) : (
- interests.map((interest) => {
- const invName = interest.investor?.full_name || interest.investor?.email?.split('@')[0] || 'Premium Investor';
- return (
- <div key={interest.id} className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-5 shadow-sm space-y-3">
- <div className="flex items-center gap-3">
- <div className="w-9 h-9 rounded-full bg-[var(--bg)] border-[0.5px] border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
- {interest.investor?.avatar_url ? (
- <img src={interest.investor.avatar_url} alt="" className="w-full h-full object-cover" />
- ) : (
- <User className="w-4 h-4 text-[var(--text2)]" />
- )}
- </div>
- <div className="min-w-0">
- <p className="text-sm font-bold text-[var(--text)] truncate">{invName}</p>
- <p className="text-[10px] text-[var(--text2)] font-semibold truncate">Interest in {interest.pitch?.title}</p>
- </div>
- <span className={`ml-auto px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
- interest.status === 'accepted' ? 'bg-emerald-100 text-emerald-700' :
- interest.status === 'declined' ? 'bg-red-100 text-red-700' :
- 'bg-amber-100 text-amber-700'
- }`}>
- {interest.status}
- </span>
- </div>
-
- <p className="text-xs text-[var(--text2)] dark:text-[var(--text3)] italic leading-relaxed border-l-2 border-[var(--border)] pl-3 py-0.5">
- "{interest.message || 'No custom message.'}"
- </p>
-
- {interest.status === 'pending' && (
- <div className="flex gap-2 pt-2">
- <button
- onClick={() => handleDeclineInterest(interest.id, interest.investor_id, interest.pitch?.title)}
- className="flex-1 py-2 rounded-xl border-[0.5px] border-[var(--border)] text-xs font-bold text-[var(--text)] hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
- >
- Decline
- </button>
- <button
- onClick={() => handleAcceptInterest(interest.id, interest.investor_id, interest.pitch?.title)}
- className="flex-1 py-2 rounded-xl bg-[var(--text)] text-[var(--bg)] text-xs font-bold hover:bg-black transition-colors"
- >
- Accept
- </button>
- </div>
- )}
-
- {interest.status === 'accepted' && (
- <Link
- href={`/deal-room/${interest.id}`}
- className="block w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-[var(--text)] rounded-xl text-xs font-bold text-center transition-colors"
- >
- Enter Deal Room
- </Link>
- )}
- </div>
- );
- })
- )}
- </div>
- </div>
- </div>
- </div>
- </div>
- </main>
- </div>
- );
-}
-
-function NavItem({ icon: Icon, label, active, href = '#', collapsed }: any) {
- return (
- <Link href={href} title={collapsed ? label : undefined}
- className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group ${active ? 'bg-[var(--text)] text-[var(--bg)] shadow-lg shadow-black/10' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'} ${collapsed ? 'justify-center' : ''}`}>
- <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-[var(--text)]' : 'text-[var(--text2)] group-hover:text-[var(--text)]'}`} />
- {!collapsed && <span className="text-sm font-bold">{label}</span>}
- </Link>
- );
-}
-
-function NavItemMobile({ icon: Icon, label, active, href = '#' }: any) {
- return (
- <Link href={href} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all flex-shrink-0 ${active ? 'bg-[var(--text)] text-[var(--bg)]' : 'text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg)]'}`}>
- <Icon className="w-4 h-4" />
- <span className="text-[9px] font-bold">{label}</span>
- </Link>
- );
-}
-
-function StatusBadge({ status }: { status: string }) {
- const styles: any = {
- live: 'bg-emerald-100 text-emerald-700',
- pending: 'bg-amber-100 text-amber-700',
- rejected: 'bg-red-100 text-red-700',
- draft: 'bg-[var(--bg3)] text-[var(--text3)]',
- };
- return <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${styles[status] || styles.draft}`}>{status}</span>;
+  const router = useRouter();
+  const [pitches, setPitches] = useState<any[]>([]);
+  const [stats, setStats] = useState({ views: 0, interests: 0, sales: 0, earnings: 0 });
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        supabase.from('pitches').select('*').eq('user_id', session.user.id).then(({ data }) => {
+          if (data) setPitches(data);
+          if (data && data.length === 0) {
+            router.push('/pitches/new'); // Auto-shown after first login if pitch_count = 0
+          }
+        });
+      }
+    });
+  }, [router]);
+
+  return (
+    <FounderGuard>
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col md:flex-row">
+        {/* Sidebar */}
+        <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
+          <div className="font-black text-xl mb-8 text-[var(--text)]">Founder</div>
+          <nav className="space-y-2 text-sm font-bold">
+            <Link href="/dashboard/founder" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
+            <Link href="/founder/pitches" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Pitches</Link>
+            <Link href="/pitches/new" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Create Pitch</Link>
+            <Link href="/founder/store" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Store</Link>
+            <Link href="/messages" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Messages</Link>
+            <Link href="/founder/settings" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Settings</Link>
+          </nav>
+        </aside>
+
+        {/* Main */}
+        <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-[var(--text)]">Overview</h1>
+            <Link href="/pitches/new" className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2">
+              <Plus className="w-4 h-4"/> New Pitch
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <Eye className="w-5 h-5 text-[var(--text2)] mb-4" />
+              <div className="text-2xl font-black text-[var(--text)]">{stats.views}</div>
+              <div className="text-sm font-bold text-[var(--text2)]">Pitch Views</div>
+            </div>
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <Users className="w-5 h-5 text-[var(--text2)] mb-4" />
+              <div className="text-2xl font-black text-[var(--text)]">{stats.interests}</div>
+              <div className="text-sm font-bold text-[var(--text2)]">Investor Interests</div>
+            </div>
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <ShoppingBag className="w-5 h-5 text-[var(--text2)] mb-4" />
+              <div className="text-2xl font-black text-[var(--text)]">{stats.sales}</div>
+              <div className="text-sm font-bold text-[var(--text2)]">Products Sold</div>
+            </div>
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <DollarSign className="w-5 h-5 text-[var(--text2)] mb-4" />
+              <div className="text-2xl font-black text-[var(--text)]">${stats.earnings}</div>
+              <div className="text-sm font-bold text-[var(--text2)]">Earnings</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <h2 className="text-xl font-bold mb-4 text-[var(--text)]">My Pitches</h2>
+              {pitches.length === 0 ? (
+                <div className="text-[var(--text2)] text-sm">No pitches yet.</div>
+              ) : (
+                <div className="space-y-4">
+                  {pitches.map(p => (
+                    <div key={p.id} className="flex justify-between items-center p-4 bg-[var(--bg)] rounded-xl border border-[var(--border)]">
+                      <div>
+                        <div className="font-bold text-[var(--text)]">{p.company_name}</div>
+                        <div className="text-xs text-[var(--text2)] flex gap-2 mt-1">
+                          {p.status === 'draft' && <span className="text-amber-500 font-bold">DRAFT</span>}
+                          {p.status !== 'draft' && <span>{p.status}</span>}
+                        </div>
+                      </div>
+                      <Link href={`/pitches/new?id=${p.id}`} className="text-sm font-bold px-3 py-1 bg-[var(--bg2)] rounded-md text-[var(--text)]">Edit</Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div className="bg-[var(--card-bg)] p-6 rounded-[16px] border border-[var(--border)]">
+              <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Investor Interests</h2>
+              <div className="text-[var(--text2)] text-sm">No interests yet. Complete your pitch to attract investors.</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </FounderGuard>
+  );
 }

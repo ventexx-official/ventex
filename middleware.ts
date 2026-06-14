@@ -1,84 +1,62 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Routes that require authentication
-const PROTECTED_ROUTES = [
-  '/dashboard',
-  '/my-pitches',
-  '/my-store',
-  '/messages',
-  '/settings',
-  '/founder',
-  '/investor',
-  '/buyer',
-  '/booster-packs',
+const PUBLIC_ROUTES = [
+  '/', '/discover', '/marketplace', '/events', '/about', '/catalyst', '/contact',
+  '/investors', '/pricing', '/terms', '/privacy', '/seller-agreement', '/refund-policy', '/delivery-policy'
 ];
 
-// Known AI bots and crawlers — block from private paths
+// Any logged in user
+const AUTH_ROUTES = ['/messages', '/settings', '/onboarding'];
+
+// Role restricted base paths
+const FOUNDER_PATHS = ['/dashboard/founder', '/my-pitches', '/my-store'];
+const INVESTOR_PATHS = ['/dashboard/investor', '/watchlist', '/deal-flow'];
+const BUYER_PATHS = ['/dashboard/buyer', '/saved-products', '/purchases'];
+const ADMIN_PATHS = ['/admin'];
+
 const BOTS = ['GPTBot', 'ClaudeBot', 'anthropic', 'Googlebot', 'Bingbot', 'PerplexityBot'];
 
-// Paths bots must not access
-const BOT_BLOCKED_PATHS = [
-  '/admin',
-  '/dashboard',
-  '/settings',
-  '/my-pitches',
-  '/my-store',
-  '/messages',
-  '/api',
-  '/booster-packs',
-  '/founder',
-  '/investor',
-  '/buyer',
-];
-
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Block bots from private paths
+  // Block bots from protected paths
   const userAgent = request.headers.get('user-agent') || '';
-  const isBot = BOTS.some((bot) => userAgent.toLowerCase().includes(bot.toLowerCase()));
+  const isBot = BOTS.some(bot => userAgent.toLowerCase().includes(bot.toLowerCase()));
   if (isBot) {
-    const isBotBlocked = BOT_BLOCKED_PATHS.some(
-      (path) => pathname === path || pathname.startsWith(`${path}/`)
-    );
-    if (isBotBlocked) {
-      return new NextResponse('Forbidden', { status: 403 });
-    }
+    const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
+    if (!isPublic) return new NextResponse('Forbidden', { status: 403 });
   }
 
-  // Auth protection — check for Supabase session cookie
-  const isProtected = PROTECTED_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  // Basic auth check via cookie (set by client layout or SSR)
+  const hasAuthCookie = Array.from(request.cookies.getAll()).some(
+    (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
   );
 
-  if (isProtected) {
-    // Check for Supabase auth cookie (sb-*-auth-token)
-    const hasCookie = Array.from(request.cookies.getAll()).some(
-      (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
-    );
-    if (!hasCookie) {
-      const loginUrl = new URL('/login', request.url);
-      loginUrl.searchParams.set('next', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  const isAuthRoute = AUTH_ROUTES.some(r => pathname.startsWith(r));
+  const isFounderRoute = FOUNDER_PATHS.some(r => pathname.startsWith(r));
+  const isInvestorRoute = INVESTOR_PATHS.some(r => pathname.startsWith(r));
+  const isBuyerRoute = BUYER_PATHS.some(r => pathname.startsWith(r));
+  const isAdminRoute = ADMIN_PATHS.some(r => pathname.startsWith(r));
+
+  const requiresAuth = isAuthRoute || isFounderRoute || isInvestorRoute || isBuyerRoute || isAdminRoute;
+
+  if (requiresAuth && !hasAuthCookie) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    url.searchParams.set('next', pathname);
+    return NextResponse.redirect(url);
   }
 
-  // Redirect logged-in users away from login/signup to dashboard
-  if (pathname === '/login' || pathname === '/signup') {
-    const hasCookie = Array.from(request.cookies.getAll()).some(
-      (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
-    );
-    if (hasCookie) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+  // Redirect logged-in users away from auth pages
+  if ((pathname === '/login' || pathname === '/signup') && hasAuthCookie) {
+    // We don't know the role here natively without DB lookup, so redirect to auth/callback or dashboard root to route them
+    return NextResponse.redirect(new URL('/auth/callback', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|favicon-32x32.png|apple-touch-icon.png|robots.txt|sitemap.xml|site.webmanifest|og-image.png|icons/).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|favicon-32x32.png|apple-touch-icon.png|robots.txt|sitemap.xml|site.webmanifest|og-image.png|icons/|api/).*)'],
 };

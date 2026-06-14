@@ -62,3 +62,14 @@ export function openWhatsApp(phoneNumber: string, message: string): void {
   const encoded = encodeURIComponent(message);
   window.open(`https://wa.me/${normalized.replace('+', '')}?text=${encoded}`, '_blank');
 }
+
+export function generateWhatsAppMessage(productName: string, productType: string) {
+  const base = `Hi, I am interested in your ${productName}.`;
+  switch (productType) {
+    case 'digital': return `${base} Can you share the access details?`;
+    case 'physical': return `${base} Is it available for delivery?`;
+    case 'service': return `${base} When can we schedule this?`;
+    case 'job': return `Hi, I am applying for the ${productName} role.`;
+    default: return base;
+  }
+}

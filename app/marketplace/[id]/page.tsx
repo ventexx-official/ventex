@@ -533,47 +533,27 @@ export default function ProductDetailPage() {
  }
  };
 
- const handleBuyNow = async () => {
- const { data: { session } } = await supabase.auth.getSession();
-
- if (!session) {
- router.push('/login');
- return;
- }
-
- setIsCheckingOut(true);
-
- try {
- const res = await fetch('/api/marketplace/create-checkout', {
- method: 'POST',
- headers: {
- 'Content-Type': 'application/json',
- Authorization: `Bearer ${session.access_token}`,
- },
- body: JSON.stringify({
- cartItems: [{ product_id: product.id, quantity: 1 }],
- promoCodeId: null,
- }),
- });
-
- if (!res.ok) {
- const errText = await res.text();
- throw new Error(errText || 'Failed to create checkout session');
- }
-
- const data = await res.json();
- if (data.url) {
- window.location.href = data.url;
- } else {
- throw new Error('No checkout URL returned from Stripe');
- }
- } catch (err: any) {
- console.error('[Buy Now] Error:', err);
- alert(err.message || 'Checkout failed. Please try again.');
- } finally {
- setIsCheckingOut(false);
- }
- };
+ const handleContactSeller = async () => {
+    try {
+      setIsCheckingOut(true);
+      const res = await fetch('/api/whatsapp-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: product.id })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        alert(data.error || 'Failed to generate contact link');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to seller.');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
  if (loading || !product) {
  return (
@@ -780,11 +760,11 @@ export default function ProductDetailPage() {
  {addedToCart ? 'Added âœ“' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
  </button>
  <button 
- onClick={handleBuyNow}
- disabled={isAddingToCart || addedToCart || isCheckingOut}
- className="flex-1 bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10 disabled:opacity-50"
+ onClick={handleContactSeller}
+ disabled={isCheckingOut || currentUser?.id === product.user_id}
+ className="flex-1 bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10 disabled:opacity-50 disabled:cursor-not-allowed"
  >
- {isCheckingOut ? 'Checking out...' : 'Buy Now'}
+ {isCheckingOut ? 'Opening...' : (product.product_type === 'job' ? 'Apply Now' : 'Contact Seller')}
  </button>
  </div>
  )}

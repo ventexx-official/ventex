@@ -27,7 +27,7 @@ function useScrollDirection() {
 export default function Navbar() {
  const [isOpen, setIsOpen] = useState(false);
  const [user, setUser] = useState<any>(null);
- const [userProfile, setUserProfile] = useState<{ full_name?: string | null; avatar_url?: string | null } | null>(null);
+ const [userProfile, setUserProfile] = useState<{ full_name?: string | null; avatar_url?: string | null; role?: string | null } | null>(null);
  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
  const [scrolled, setScrolled] = useState(false);
  const [cartCount, setCartCount] = useState(0);
@@ -92,7 +92,7 @@ export default function Navbar() {
  .eq('id', session.user.id)
  .single();
  if (profile) {
- setUserProfile({ full_name: profile.full_name, avatar_url: profile.avatar_url });
+ setUserProfile({ full_name: profile.full_name, avatar_url: profile.avatar_url, role: profile.role });
  }
  fetchCartCount(session.user.id);
  fetchUnreadMessages(session.user.id);
@@ -247,8 +247,8 @@ export default function Navbar() {
  <Link href={`/profile/${user.id}`} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <User className="w-4 h-4 text-[var(--text3)]" /> My Profile
  </Link>
- <Link href="/dashboard" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
- <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> My Dashboard
+ <Link href={userProfile?.role === 'founder' ? '/dashboard/founder' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+ <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> Dashboard
  </Link>
  <Link href="/my-purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <Package className="w-4 h-4 text-[var(--text3)]" /> My Purchases
