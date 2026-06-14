@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Save, ArrowRight, ArrowLeft, X } from 'lucide-react';
 
-export default function PitchWizard() {
+function PitchWizardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pitchId = searchParams.get('id');
@@ -138,5 +138,13 @@ export default function PitchWizard() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function PitchWizard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[var(--bg)] p-8 text-[var(--text)]">Loading...</div>}>
+      <PitchWizardContent />
+    </Suspense>
   );
 }
