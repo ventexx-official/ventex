@@ -5,6 +5,7 @@ export const XP_EVENTS = {
   deck_upload: { amount: 75, badge: 'Pitch Deck 📑' },
   first_save: { amount: 100, badge: 'First Save ⭐' },
   first_interest: { amount: 300, badge: 'Investor Interest 🎯' },
+  kofi_donation: { amount: 500, badge: 'Supporter ☕' },
 } as const;
 
 export type XpEvent = keyof typeof XP_EVENTS;
