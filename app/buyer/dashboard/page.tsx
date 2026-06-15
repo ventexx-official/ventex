@@ -24,12 +24,13 @@ export default function BuyerDashboard() {
         <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
           <div className="font-black text-xl mb-8 text-[var(--text)]">Buyer</div>
           <nav className="space-y-2 text-sm font-bold">
+            <Link href="/" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Home</Link>
             <Link href="/buyer/dashboard" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
             <Link href="/marketplace" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Marketplace</Link>
-            <Link href="/saved-products" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Saved Products</Link>
-            <Link href="/purchases" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Purchases</Link>
+            <Link href="/buyer/saved-products" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Saved Products</Link>
+            <Link href="/buyer/purchases" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Purchases</Link>
             <Link href="/messages" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Messages</Link>
-            <Link href="/settings" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Settings</Link>
+            <Link href="/buyer/settings" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Settings</Link>
           </nav>
         </aside>
 

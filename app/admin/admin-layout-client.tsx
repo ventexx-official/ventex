@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import {
+ import {
  LayoutDashboard,
  FileText,
  ShoppingBag,
@@ -17,7 +17,8 @@ import {
  LogOut,
  User,
  ShieldCheck,
- Loader2
+ Loader2,
+ MapPin
 } from "lucide-react";
 import Link from "next/link";
 
@@ -80,6 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  { name: "Products Queue", icon: ShoppingBag, path: "/admin/products" },
  { name: "User Management", icon: Users, path: "/admin/users" },
  { name: "Industry Sectors", icon: Tag, path: "/admin/industries" },
+ { name: "Locations", icon: MapPin, path: "/admin/locations" },
  { name: "Disputes Resolution", icon: AlertTriangle, path: "/admin/disputes" },
  { name: "Flagged Activities", icon: Flag, path: "/admin/flagged" },
  { name: "Deals", icon: Handshake, path: "/admin/deals" }

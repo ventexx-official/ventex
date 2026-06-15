@@ -26,6 +26,8 @@ export default function SettingsRedirectPage() {
  ? '/admin/users'
  : profile?.role === 'investor'
  ? '/investor/settings'
+ : profile?.role === 'buyer'
+ ? '/buyer/settings'
  : '/founder/settings';
  router.replace(next);
  };
