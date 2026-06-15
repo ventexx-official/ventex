@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
+import { generateAIContent } from '@/lib/ai';
 
 function fallbackScore(pitch: any) {
   const traction = pitch.mrr || pitch.arr || pitch.users_count ? 72 : 48;
@@ -60,40 +61,16 @@ export async function POST(req: Request) {
 
     let score = fallbackScore(pitch);
 
-    if (process.env.GEMINI_API_KEY) {
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            system_instruction: {
-              parts: [{ text: 'You are a startup investor. Return ONLY valid JSON, no markdown.' }]
-            },
-            contents: [{
-              role: 'user',
-              parts: [{ text: `Score this pitch out of 100: {overall, problem_clarity, market_size, team_strength, traction, business_model, feedback (max 40 words)}. Pitch: ${pitch.title || ''} ${pitch.tagline || ''} ${pitch.industry || ''} ${pitch.company_stage || ''} ${pitch.amount_seeking || ''}` }]
-            }],
-            generationConfig: {
-              responseMimeType: "application/json",
-            }
-          })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) {
-            try {
-              score = JSON.parse(text);
-            } catch {
-              // Use fallback if JSON parse fails
-            }
-          }
-        }
-        // If Gemini fails (bad key, quota, etc) we silently use fallbackScore
-      } catch {
-        // Silently use fallback
-      }
+    try {
+      const aiResponse = await generateAIContent({
+        systemPrompt: 'You are a startup investor. Return ONLY valid JSON, no markdown.',
+        userPrompt: `Score this pitch out of 100: {overall, problem_clarity, market_size, team_strength, traction, business_model, feedback (max 40 words)}. Pitch: ${pitch.title || ''} ${pitch.tagline || ''} ${pitch.industry || ''} ${pitch.company_stage || ''} ${pitch.amount_seeking || ''}`,
+        responseFormat: 'json_object'
+      });
+      score = JSON.parse(aiResponse);
+    } catch (e) {
+      console.error('[Score Pitch] AI generation failed, using fallback score:', e);
+      // fallbackScore is already applied above
     }
 
     const { data: saved, error: saveError } = await supabase

@@ -67,6 +67,12 @@ export async function POST(req: Request) {
     });
   }
 
+  const origin = req.headers.get('origin');
+  const allowedOrigin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  if (origin && origin !== allowedOrigin) {
+    return new NextResponse('Forbidden: Invalid Origin', { status: 403 });
+  }
+
   try {
     const { cartItems, promoCodeId = null } = await req.json();
 

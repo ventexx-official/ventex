@@ -20,7 +20,7 @@ module.exports = {
     let priority = config.priority;
     if (path === '/') {
       priority = 1.0;
-    } else if (path === '/discover' || path === '/marketplace') {
+    } else if (path === '/discover' || path === '/marketplace' || path === '/intelligence') {
       priority = 0.9;
     } else if (path === '/events' || path === '/investors') {
       priority = 0.8;

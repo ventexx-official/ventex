@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Filter, Search, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
+import SponsoredCard from '@/components/SponsoredCard';
 
 const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'AgriTech', 'Cybersecurity'];
 const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
@@ -16,8 +17,9 @@ function formatCurrency(amount: number) {
  return `Rs ${amount.toLocaleString('en-IN')}`;
 }
 
-export default function Discover() {
+ export default function Discover() {
  const [pitches, setPitches] = useState<any[]>([]);
+ const [sponsorships, setSponsorships] = useState<any[]>([]);
  const [loading, setLoading] = useState(true);
  const [query, setQuery] = useState('');
  const [industries, setIndustries] = useState<string[]>([]);
@@ -44,12 +46,20 @@ export default function Discover() {
  }
 
  const { data, error: fetchError } = await request;
- if (fetchError) {
- console.error('[Discover] pitch fetch failed:', fetchError);
- setError('Failed to load startups. Please try again later.');
- }
- setPitches(data || []);
- setLoading(false);
+  if (fetchError) {
+  console.error('[Discover] pitch fetch failed:', fetchError);
+  setError('Failed to load startups. Please try again later.');
+  }
+  setPitches(data || []);
+
+  const { data: sponsorsData } = await supabase
+    .from('sponsorships')
+    .select('*')
+    .eq('is_active', true)
+    .eq('type', 'startup');
+  if (sponsorsData) setSponsorships(sponsorsData);
+
+  setLoading(false);
  };
  load();
  }, [sortBy]);
@@ -184,9 +194,20 @@ export default function Discover() {
  </div>
  </div>
  ) : (
- <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
- {filtered.map((pitch, index) => <PitchCard key={pitch.id} pitch={pitch} delay={index * 50} />)}
- </div>
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+  {sponsorships.map(sponsor => (
+    <SponsoredCard 
+      key={sponsor.id} 
+      id={sponsor.id}
+      type={sponsor.type}
+      title={sponsor.title}
+      description={sponsor.description}
+      linkUrl={sponsor.link_url}
+      imageUrl={sponsor.image_url}
+    />
+  ))}
+  {filtered.map((pitch, index) => <PitchCard key={pitch.id} pitch={pitch} delay={index * 50} />)}
+  </div>
  )}
  </main>
  </div>

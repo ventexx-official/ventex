@@ -4,22 +4,23 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { LayoutDashboard, Settings } from 'lucide-react';
+import { LayoutDashboard, Settings, CheckCircle } from 'lucide-react';
 import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
-type UserProfile = {
- id: string;
- full_name?: string | null;
- role?: string | null;
- avatar_url?: string | null;
- bio?: string | null;
- created_at?: string | null;
- response_rate?: number | null;
- investment_thesis?: string | null;
- preferred_sectors?: string[] | null;
- preferred_stages?: string[] | null;
- xp?: number | null;
- badges?: string[] | null;
+ type UserProfile = {
+  id: string;
+  full_name?: string | null;
+  role?: string | null;
+  avatar_url?: string | null;
+  bio?: string | null;
+  created_at?: string | null;
+  response_rate?: number | null;
+  investment_thesis?: string | null;
+  preferred_sectors?: string[] | null;
+  preferred_stages?: string[] | null;
+  xp?: number | null;
+  badges?: string[] | null;
+  verified?: boolean;
 };
 
 type PitchCardData = {
@@ -164,13 +165,18 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  </div>
 
  <div className="min-w-0 flex-1">
- <div className="flex flex-col sm:flex-row sm:items-center gap-3">
- <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter truncate">{displayName}</h1>
- <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${roleBadgeClass(role)}`}>
- {role.toUpperCase()}
- </span>
- {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
- </div>
+  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+   <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter truncate">{displayName}</h1>
+   {profile.verified && (
+     <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200">
+       <CheckCircle className="w-3.5 h-3.5" /> Verified
+     </span>
+   )}
+   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${roleBadgeClass(role)}`}>
+   {role.toUpperCase()}
+   </span>
+   {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
+  </div>
  <div className="text-sm text-[var(--text2)] mt-1">
  {joined ? `Joined ${joined}` : null}
  </div>

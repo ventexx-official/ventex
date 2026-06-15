@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/goog
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { Analytics } from '@vercel/analytics/react'
+import KofiSupport from "@/components/KofiSupport";
 
 const jakarta = Plus_Jakarta_Sans({
  subsets: ["latin"],
@@ -111,6 +112,7 @@ export default function RootLayout({
    {children}
   </Layout>
   <Analytics />
+  <KofiSupport />
   </body>
   </html>
  );
