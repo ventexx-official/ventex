@@ -89,9 +89,9 @@ export default async function Home() {
  "@context": "https://schema.org",
  "@type": "Organization",
  "name": "Ventex",
- "url": "https://ventex.com",
+ "url": "https://www.ventexx.com",
  "description": "Where startups pitch, fund and sell.",
- "logo": "https://ventex.com/logo.png",
+ "logo": "https://www.ventexx.com/logo.png",
  "sameAs": [
  "https://twitter.com/ventex",
  "https://linkedin.com/company/ventex",
