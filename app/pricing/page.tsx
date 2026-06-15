@@ -70,7 +70,7 @@ export default function PricingPage() {
             Monetization begins April 2027.
           </p>
           <a
-            href="https://ko-fi.com/ventex"
+            href="https://ko-fi.com/ventexxhqgmailcom"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#FF5E5B] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity"
