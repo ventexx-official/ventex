@@ -30,20 +30,7 @@ export default function Login() {
  }
 
  if (data.user) {
- // Check role/profile
- const { data: profile } = await supabase
- .from('users')
- .select('role')
- .eq('id', data.user.id)
- .single();
- 
- if (!profile || profile.role === 'visitor') {
- router.push('/onboarding');
- } else if (profile.role === 'founder') {
- router.push('/founder/dashboard');
- } else {
- router.push('/discover');
- }
+ router.push('/auth/callback');
  }
  };
 
