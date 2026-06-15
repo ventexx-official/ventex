@@ -26,7 +26,7 @@ export default function InvestorDashboard() {
         <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
           <div className="font-black text-xl mb-8 text-[var(--text)]">Investor</div>
           <nav className="space-y-2 text-sm font-bold">
-            <Link href="/dashboard/investor" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
+            <Link href="/investor/portal" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
             <Link href="/discover" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Discover</Link>
             {profile?.investor_type !== 'mentor' && (
               <>
@@ -35,7 +35,7 @@ export default function InvestorDashboard() {
               </>
             )}
             {isMentor && (
-              <Link href="/mentor-hub" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Mentor Hub</Link>
+              <Link href="#" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Mentor Hub</Link>
             )}
             <Link href="/messages" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Messages</Link>
             <Link href="/investor/settings" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Settings</Link>
