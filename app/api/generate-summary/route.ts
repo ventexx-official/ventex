@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { generatePitchSummary } from '@/lib/claude';
+import { generateWithFallback } from '@/services/ai-orchestrator';
 import { BASE_URL } from '@/lib/site';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { isUuid, requireAdmin, requireUser } from '@/lib/api-security';
@@ -50,18 +50,21 @@ export async function POST(request: Request) {
     }
 
     try {
-      const summary = await generatePitchSummary({
-        title: title || pitch.title,
-        tagline: tagline || pitch.tagline,
-        problem: problem || pitch.problem,
-        solution: solution || pitch.solution,
-        unique_insight: unique_insight || pitch.unique_insight,
-        tam: tam || pitch.tam,
-        country: country || pitch.country,
-        stage: stage || pitch.company_stage,
-        milestones: milestones || pitch.milestones,
-        mrr: mrr || pitch.mrr,
-      });
+      const systemPrompt = `You are summarising a startup pitch for the Ventex platform discovery feed. Be factual and specific. No hype words. Write exactly 2-3 sentences.`;
+      const userPrompt = `Startup Data:
+Title: ${title || pitch.title || 'N/A'}
+Tagline: ${tagline || pitch.tagline || 'N/A'}
+Problem: ${problem || pitch.problem || 'N/A'}
+Solution: ${solution || pitch.solution || 'N/A'}
+Unique Insight: ${unique_insight || pitch.unique_insight || 'N/A'}
+TAM: ${tam || pitch.tam || 'N/A'}
+Country: ${country || pitch.country || 'N/A'}
+Stage: ${stage || pitch.company_stage || 'N/A'}
+Milestones: ${milestones || pitch.milestones || 'N/A'}
+MRR: ${mrr || pitch.mrr || 'N/A'}
+Explain (1) what the business is/does, (2) who it serves, (3) one proof point. Maximum 60 words.`;
+
+      const summary = await generateWithFallback({ systemPrompt, userPrompt });
 
       // Attempt to save summary to database
       const { data: updatedPitch, error } = await supabaseAdmin
@@ -91,10 +94,10 @@ export async function POST(request: Request) {
       }
 
       return NextResponse.json({ summary });
-    } catch (claudeError) {
-      console.error('Claude API failed:', claudeError);
+    } catch (aiError) {
+      console.error('AI API failed:', aiError);
       
-      // Fallback: use tagline if Claude fails so submission is never blocked
+      // Fallback: use tagline if all AIs fail so submission is never blocked
       const fallbackSummary = tagline || pitch.tagline || 'A promising new startup entering the market.';
       
       await supabaseAdmin

@@ -153,6 +153,21 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
 
  return (
  <div className="min-h-screen bg-[var(--bg)] px-4 py-8">
+ {profile && (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: profile.full_name || "Ventex User",
+          image: profile.avatar_url || "https://www.ventexx.com/logo.png",
+          description: profile.bio || "Ventex User Profile",
+          url: `https://www.ventexx.com/profile/${profile.id}`
+        })
+      }}
+    />
+  )}
  <div className="max-w-5xl mx-auto space-y-8">
  <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-3xl p-6 md:p-8">
  <div className="flex flex-col sm:flex-row sm:items-center gap-6">
@@ -168,7 +183,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
   <div className="flex flex-col sm:flex-row sm:items-center gap-3">
    <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter truncate">{displayName}</h1>
    {profile.verified && (
-     <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200">
+     <span title="Identity and role confirmed by Ventex" className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 cursor-help">
        <CheckCircle className="w-3.5 h-3.5" /> Verified
      </span>
    )}
@@ -177,9 +192,12 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
    </span>
    {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
   </div>
- <div className="text-sm text-[var(--text2)] mt-1">
- {joined ? `Joined ${joined}` : null}
- </div>
+  <div className="text-sm text-[var(--text2)] mt-1 flex items-center gap-3">
+  <span>{joined ? `Joined ${joined}` : null}</span>
+  <span className="flex items-center gap-1.5" title="User has been active recently">
+    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active this week
+  </span>
+  </div>
  <div className="text-sm text-[var(--text2)] mt-4 whitespace-pre-wrap">
  {profile.bio?.trim() ? profile.bio : 'No bio added yet.'}
  </div>

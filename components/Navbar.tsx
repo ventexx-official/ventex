@@ -131,12 +131,13 @@ export default function Navbar() {
  router.refresh();
  };
 
- const navLinks = [
- { href: '/discover', label: 'Discover' },
- { href: '/marketplace', label: 'Marketplace' },
- { href: '/catalyst', label: 'Catalyst' },
- { href: '/events', label: 'Events' },
- ];
+  const navLinks = [
+    { href: '/discover', label: 'Discover' },
+    { href: '/marketplace', label: 'Marketplace' },
+    { href: '/catalyst', label: 'Catalyst' },
+    { href: '/intelligence', label: 'Intelligence' },
+    { href: '/events', label: 'Events' },
+  ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 

@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
-import { generateAIContent } from '@/lib/ai';
+import { generateWithFallback } from '@/services/ai-orchestrator';
 
 function fallbackScore(pitch: any) {
   const traction = pitch.mrr || pitch.arr || pitch.users_count ? 72 : 48;
@@ -62,9 +62,12 @@ export async function POST(req: Request) {
     let score = fallbackScore(pitch);
 
     try {
-      const aiResponse = await generateAIContent({
-        systemPrompt: 'You are a startup investor. Return ONLY valid JSON, no markdown.',
-        userPrompt: `Score this pitch out of 100: {overall, problem_clarity, market_size, team_strength, traction, business_model, feedback (max 40 words)}. Pitch: ${pitch.title || ''} ${pitch.tagline || ''} ${pitch.industry || ''} ${pitch.company_stage || ''} ${pitch.amount_seeking || ''}`,
+      const systemPrompt = 'You are a startup investor. Return ONLY valid JSON, no markdown.';
+      const userPrompt = `Score this pitch out of 100: {overall, problem_clarity, market_size, team_strength, traction, business_model, feedback (max 40 words)}. Pitch: ${pitch.title || ''} ${pitch.tagline || ''} ${pitch.industry || ''} ${pitch.company_stage || ''} ${pitch.amount_seeking || ''}`;
+      
+      const aiResponse = await generateWithFallback({
+        systemPrompt,
+        userPrompt,
         responseFormat: 'json_object'
       });
       score = JSON.parse(aiResponse);

@@ -6,6 +6,7 @@ const columns = [
     links: [
       ['Discover', '/discover'],
       ['Marketplace', '/marketplace'],
+      ['Intelligence', '/intelligence'],
       ['Catalyst', '/catalyst'],
       ['Pricing', '/pricing'],
     ],

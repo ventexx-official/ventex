@@ -42,6 +42,33 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
   return (
     <article className="container mx-auto px-4 py-12 max-w-3xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            headline: article.title,
+            image: [
+              article.image_url || "https://www.ventexx.com/logo.png"
+            ],
+            datePublished: article.published_at,
+            author: [{
+                "@type": "Organization",
+                name: article.source_name || "Ventex",
+                url: article.source_url || "https://www.ventexx.com"
+            }],
+            publisher: {
+              "@type": "Organization",
+              name: "Ventex Intelligence",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://www.ventexx.com/logo.png"
+              }
+            }
+          })
+        }}
+      />
       <Link href="/intelligence" className="text-blue-400 hover:text-blue-300 text-sm mb-8 inline-flex items-center">
         &larr; Back to Intelligence Hub
       </Link>

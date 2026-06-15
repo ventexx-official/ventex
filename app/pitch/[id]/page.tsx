@@ -660,19 +660,49 @@ via Ventex`;
  <script
  type="application/ld+json"
  dangerouslySetInnerHTML={{
- __html: JSON.stringify({
+ __html: JSON.stringify([
+ {
+ "@context": "https://schema.org",
+ "@type": "Organization",
+ name: pitch.title,
+ url: `https://www.ventexx.com/pitch/${pitch.id}`,
+ description: pitch.tagline || pitch.short_description,
+ logo: pitch.logo_url || "https://www.ventexx.com/logo.png"
+ },
+ {
  "@context": "https://schema.org",
  "@type": "InvestmentOrGrant",
- name: pitch.title,
+ name: `Investment in ${pitch.title}`,
  description: pitch.tagline || pitch.short_description,
  amount: pitch.amount_seeking ? {
  "@type": "MonetaryAmount",
  currency: "INR",
  value: pitch.amount_seeking
  } : undefined
- })
+ }
+ ])
  }}
  />
+ )}
+
+ {/* GEO AI Summary Block - Invisible to humans, visible to crawlers */}
+ {pitch && (
+ <section aria-label="AI Summary" className="hidden" aria-hidden="false">
+ <h2>About {pitch.title}</h2>
+ <p>{pitch.ai_summary || pitch.tagline || pitch.short_description}</p>
+ {pitch.problem && (
+ <div>
+ <h3>Problem</h3>
+ <p>{pitch.problem}</p>
+ </div>
+ )}
+ {pitch.solution && (
+ <div>
+ <h3>Solution</h3>
+ <p>{pitch.solution}</p>
+ </div>
+ )}
+ </section>
  )}
  <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pt-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start md:pt-12">
  
@@ -744,7 +774,7 @@ via Ventex`;
  {showRunway && runwayCountdown && (
  <div className="mb-8">
  <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
- â° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
+ â ° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
  </p>
  <div className="w-full h-2 bg-[var(--bg)] rounded-full overflow-hidden">
  <div
@@ -993,6 +1023,18 @@ via Ventex`;
  <h3 className="font-bold text-[var(--text)] text-sm mb-2">Key Milestones</h3>
  <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
  </div>
+
+ {/* Public Roadmap */}
+ {pitch.roadmap && (
+ <div className="mt-8 pt-6 border-t border-[var(--border)]">
+ <h3 className="font-bold text-[var(--text)] text-sm mb-2 flex items-center gap-2">
+ Public Roadmap
+ </h3>
+ <div className="bg-[var(--bg)] rounded-xl p-4">
+ <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.roadmap}</p>
+ </div>
+ </div>
+ )}
  </div>
 
  {!investorPremium && (

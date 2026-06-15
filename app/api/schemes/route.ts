@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { generateWithFallback } from '@/services/ai-orchestrator';
 
 const FALLBACK_SCHEMES = [
   {
@@ -37,27 +38,22 @@ export async function POST(req: Request) {
   try {
     const input = await req.json();
 
-    if (!process.env.GEMINI_API_KEY) {
+    const systemPrompt = "You are a government scheme expert for startups.";
+    const userPrompt = `For Indian startup: sector=${input.sector}, stage=${input.stage}, state=${input.state}, team=${input.teamSize}, revenue=${input.revenue}. List top 5 government schemes they qualify for. Include: Startup India, DPIIT Recognition, SISFS, TIDE 2.0, state schemes. Return JSON array: [{name, benefit, eligibility, apply_url}]`;
+
+    try {
+      const responseText = await generateWithFallback({ 
+        systemPrompt, 
+        userPrompt,
+        responseFormat: 'json_object' 
+      });
+      
+      const schemes = JSON.parse(responseText);
+      return NextResponse.json({ schemes, source: 'ai' });
+    } catch (aiError) {
+      console.error('[Schemes API] AI Generation failed, using static fallback:', aiError);
       return NextResponse.json({ schemes: FALLBACK_SCHEMES, source: 'fallback' });
     }
-
-    const prompt = `For Indian startup: sector=${input.sector}, stage=${input.stage}, state=${input.state}, team=${input.teamSize}, revenue=${input.revenue}. List top 5 government schemes they qualify for. Include: Startup India, DPIIT Recognition, SISFS, TIDE 2.0, state schemes. Return JSON array: [{name, benefit, eligibility, apply_url}]`;
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
-    });
-
-    if (!res.ok) {
-      return NextResponse.json({ schemes: FALLBACK_SCHEMES, source: 'fallback' });
-    }
-
-    const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    const jsonText = text.replace(/```json|```/g, '').trim();
-    const schemes = JSON.parse(jsonText);
-
-    return NextResponse.json({ schemes, source: 'gemini' });
   } catch {
     return NextResponse.json({ schemes: FALLBACK_SCHEMES, source: 'fallback' });
   }
