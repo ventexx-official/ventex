@@ -8,54 +8,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-// Mock data to simulate intelligent filtering and recommendations
-const MOCK_SCHEMES = [
-  {
-    id: 'dpiit-rec',
-    name: 'DPIIT Recognition',
-    category: 'Core Recognition',
-    benefit: 'Tax exemption under 80IAC, easy winding up, fast-track patent exams, and public procurement exemption.',
-    eligibility: 'Must be a private limited company or LLP incorporated in India, less than 10 years old, with turnover < ₹100 crore.',
-    score: 98,
-    deadline: 'Rolling',
-    url: 'https://www.startupindia.gov.in/content/sih/en/startupgov/startup-recognition-page.html',
-    actions: ['Incorporate Company/LLP', 'Get PAN/TAN', 'Prepare pitch deck']
-  },
-  {
-    id: 'sisfs',
-    name: 'Startup India Seed Fund Scheme (SISFS)',
-    category: 'Funding',
-    benefit: 'Up to ₹20 Lakhs as grant for validation, proof of concept, or prototype development. Up to ₹50 Lakhs for market entry/commercialization.',
-    eligibility: 'DPIIT-recognised startup, incorporated less than 2 years ago at the time of application. Must have a viable product/service idea.',
-    score: 92,
-    deadline: 'Rolling',
-    url: 'https://seedfund.startupindia.gov.in/',
-    actions: ['Obtain DPIIT Recognition', 'Prepare Business Plan', 'Find Incubator']
-  },
-  {
-    id: 'tide',
-    name: 'TIDE 2.0 (MeitY)',
-    category: 'Grant',
-    benefit: 'Grant up to ₹7 Lakhs (EiR) or ₹4 Lakhs (Grants). Access to MeitY supported incubators for deep-tech startups.',
-    eligibility: 'Tech startups working in emerging technologies (AI, IoT, Robotics, Blockchain) with societal impact.',
-    score: 85,
-    deadline: 'Varies by Incubator',
-    url: 'https://meitystartuphub.in/incubators/schemes/tide-2-0',
-    actions: ['Develop Deep-Tech MVP', 'Apply via MeitY Portal']
-  },
-  {
-    id: 'cgtsme',
-    name: 'CGTMSE Loan Guarantee',
-    category: 'Debt',
-    benefit: 'Collateral-free loans up to ₹5 Crore from banks/NBFCs.',
-    eligibility: 'MSME registered (Udyam). Retail trade, educational institutions, agriculture, and self-help groups are generally excluded.',
-    score: 75,
-    deadline: 'Rolling',
-    url: 'https://www.cgtmse.in/',
-    actions: ['Get Udyam Registration', 'Prepare Project Report', 'Approach Bank']
-  }
-];
-
 const STAGES = ['Ideation', 'Validation', 'Early Traction', 'Scaling'];
 const INDUSTRIES = ['SaaS', 'FinTech', 'HealthTech', 'EdTech', 'DeepTech', 'E-commerce', 'Hardware', 'AgriTech', 'Other'];
 const STATES = ['Maharashtra', 'Karnataka', 'Delhi', 'Gujarat', 'Tamil Nadu', 'Telangana', 'Other'];
@@ -97,13 +49,12 @@ export default function DPIITSchemeHelper() {
 
   const submitAnalysis = async () => {
     setLoading(true);
-    // Simulate AI analysis delay
-    await new Promise(r => setTimeout(r, 1500));
-    setResults(MOCK_SCHEMES);
+    // Analysis is currently unavailable
+    await new Promise(r => setTimeout(r, 800));
+    setResults([]);
     setLoading(false);
     setStep(3);
   };
-
   const update = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
 
   return (

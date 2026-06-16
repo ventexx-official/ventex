@@ -9,7 +9,7 @@ export default function NewProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: '', description: '', price: '', product_type: 'digital', delivery_type: 'digital', requires_address: false
+    name: '', description: '', price: '', product_type: 'digital', delivery_type: 'digital', stripe_price_id: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,8 +24,8 @@ export default function NewProduct() {
       description: form.description,
       price: Number(form.price) || 0,
       product_type: form.product_type,
-      delivery_type: form.delivery_type,
-      requires_address: form.requires_address,
+      category: form.product_type,
+      stripe_price_id: form.stripe_price_id,
       status: 'published'
     });
 
@@ -61,7 +61,11 @@ export default function NewProduct() {
                 <option value="hybrid">Hybrid</option>
               </select>
             </div>
-            <label className="flex items-center gap-2 font-bold"><input type="checkbox" checked={form.requires_address} onChange={e=>setForm({...form,requires_address:e.target.checked})} /> Requires Shipping Address?</label>
+            <div>
+              <label className="block text-sm font-bold">Purchase Link (e.g., Ko-fi)</label>
+              <input required type="url" placeholder="https://ko-fi.com/..." className="w-full border p-2" value={form.stripe_price_id} onChange={e=>setForm({...form,stripe_price_id:e.target.value})}/>
+              <p className="text-xs text-[var(--text2)] mt-1">Buyers will be redirected to this link when they click Buy Now.</p>
+            </div>
             <button disabled={loading} className="w-full bg-[var(--text)] text-[var(--bg)] font-bold py-2 rounded mt-6">Create Product</button>
           </form>
         </div>

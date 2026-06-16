@@ -8,7 +8,6 @@ const columns = [
       ['Marketplace', '/marketplace'],
       ['Intelligence', '/intelligence'],
       ['Catalyst', '/catalyst'],
-      ['Pricing', '/pricing'],
     ],
   },
   {

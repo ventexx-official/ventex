@@ -38,7 +38,7 @@ const QUESTIONS = [
  { id: 'q4', text: "What is the development stage and roadmap?" },
  { id: 'q5', text: "What is your go-to-market strategy?" },
  { id: 'q6', text: "What is your business and revenue model?" },
- { id: 'q7', text: "What traction have you achieved?", premium: true },
+ { id: 'q7', text: "What traction have you achieved?" },
  { id: 'q8', text: "What is your competitive advantage and moat?" },
  { id: 'q9', text: "Why is now the right time?" }
 ];
@@ -681,7 +681,7 @@ export default function CreatePitch() {
  onChange={(e) => handleChange('company_stage', e.target.value)}
  >
  <option value="">Select stage</option>
- {['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth', 'Maturity'].map(stage => (
+ {['Idea', 'Building', 'Pre-Launch', 'Beta', 'Live', 'Seeking Investment', 'Revenue Generating'].map(stage => (
  <option key={stage} value={stage}>{stage}</option>
  ))}
  </select>
@@ -877,8 +877,7 @@ export default function CreatePitch() {
  {activeTab === 'Pitch Deck' && (
  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
  <section className="bg-[var(--card-bg)] rounded-2xl p-8 border-[0.5px] border-[var(--border)] shadow-sm">
- <h2 className="text-xl font-bold text-[var(--text)] mb-2">Pitch Deck</h2>
- <p className="text-sm text-[var(--text2)] mb-6 italic">Visible to Premium Investors only</p>
+ <h2 className="text-xl font-bold text-[var(--text)] mb-6">Pitch Deck</h2>
  <div 
  className="w-full h-48 bg-[var(--bg)] rounded-xl border-2 border-dashed border-[var(--border)] flex flex-col items-center justify-center cursor-pointer hover:bg-[var(--bg3)] transition-colors"
  onClick={() => document.getElementById('deck-input')?.click()}
@@ -1069,7 +1068,7 @@ export default function CreatePitch() {
  {QUESTIONS.map((q: any) => (
  <div key={q.id}>
  <label className="text-sm font-bold text-[var(--text)] flex items-center gap-2 mb-3">
- {q.text} {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase"><Lock className="w-2.5 h-2.5" /> Premium</span>}
+ {q.text}
  </label>
  <div className="border-[0.5px] border-[var(--border)] rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-[#222222] transition-all">
  <div className="flex items-center gap-2 px-3 py-2 bg-[var(--bg2)] border-b-[0.5px] border-[var(--border)]">

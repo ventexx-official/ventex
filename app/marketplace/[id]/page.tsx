@@ -16,78 +16,40 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const MOCK_REVIEWS = [
- {
- id: "mock-1",
- buyer: {
- full_name: "Sarah Jenkins",
- avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
- },
- rating: 5,
- comment: "This template is absolutely stunning! The clean architecture and smooth tailwind styling saved me over 40 hours of setup. Integration with Supabase auth was flawless.",
- seller_reply: "Thank you Sarah! Glad you loved the Supabase setup. Let me know if you need help with deployment.",
- created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() // 3 days ago
- },
- {
- id: "mock-2",
- buyer: {
- full_name: "Developer Dan",
- avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dan"
- },
- rating: 4,
- comment: "Excellent documentation and great code structure. Had a minor issue with the Stripe webhook routing initially, but the creator responded within an hour and helped me resolve it.",
- seller_reply: "Appreciate the feedback, Dan! Yes, Stripe webhooks can sometimes be tricky. I updated the docs to make that step clearer for others.",
- created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days ago
- },
- {
- id: "mock-3",
- buyer: {
- full_name: "Elena Rostova",
- avatar_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena"
- },
- rating: 5,
- comment: "The UI design alone is worth the price. I've bought three other starter kits before but this is by far the most premium-feeling and responsive one. Highly recommended!",
- seller_reply: null,
- created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString() // 14 days ago
- }
-];
-
 export default function ProductDetailPage() {
- const { id } = useParams();
- const router = useRouter();
+const { id } = useParams();
+const router = useRouter();
 
- const [product, setProduct] = useState<any>(null);
- const [reviews, setReviews] = useState<any[]>([]);
- const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
- const [loading, setLoading] = useState(true);
- const [activeTab, setActiveTab] = useState<'description'|'reviews'|'qa'>('description');
- const [mainImage, setMainImage] = useState<string>('');
- 
- const [currentUser, setCurrentUser] = useState<any>(null);
- const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
- const [requirements, setRequirements] = useState('');
- const [requestName, setRequestName] = useState('');
- const [requestBudget, setRequestBudget] = useState('');
- const [requestTimeline, setRequestTimeline] = useState('');
- const [requestEmail, setRequestEmail] = useState('');
- const [submittingRequest, setSubmittingRequest] = useState(false);
+const [product, setProduct] = useState<any>(null);
+const [reviews, setReviews] = useState<any[]>([]);
+const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+const [activeTab, setActiveTab] = useState<'description'|'reviews'|'qa'>('description');
+const [mainImage, setMainImage] = useState<string>('');
 
- const [newQuestion, setNewQuestion] = useState('');
- const [submittingQuestion, setSubmittingQuestion] = useState(false);
+const [currentUser, setCurrentUser] = useState<any>(null);
+const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
+const [requirements, setRequirements] = useState('');
+const [requestName, setRequestName] = useState('');
+const [requestBudget, setRequestBudget] = useState('');
+const [requestTimeline, setRequestTimeline] = useState('');
+const [requestEmail, setRequestEmail] = useState('');
+const [submittingRequest, setSubmittingRequest] = useState(false);
 
- const [isAddingToCart, setIsAddingToCart] = useState(false);
- const [addedToCart, setAddedToCart] = useState(false);
- const [isCheckingOut, setIsCheckingOut] = useState(false);
+const [newQuestion, setNewQuestion] = useState('');
+const [submittingQuestion, setSubmittingQuestion] = useState(false);
 
- // New review state variables
- const [unreviewedOrders, setUnreviewedOrders] = useState<any[]>([]);
- const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
- const [reviewRating, setReviewRating] = useState<number>(0);
- const [reviewComment, setReviewComment] = useState('');
- const [hoverRating, setHoverRating] = useState<number>(0);
- const [submittingReview, setSubmittingReview] = useState(false);
- const [isDemoMode, setIsDemoMode] = useState(false);
+const [isAddingToCart, setIsAddingToCart] = useState(false);
+const [addedToCart, setAddedToCart] = useState(false);
+const [isCheckingOut, setIsCheckingOut] = useState(false);
 
+// New review state variables
+const [unreviewedOrders, setUnreviewedOrders] = useState<any[]>([]);
+const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+const [reviewRating, setReviewRating] = useState<number>(0);
+const [reviewComment, setReviewComment] = useState('');
+const [hoverRating, setHoverRating] = useState<number>(0);
+const [submittingReview, setSubmittingReview] = useState(false);
  // Load product data
  useEffect(() => {
  const fetchData = async () => {
@@ -228,7 +190,7 @@ export default function ProductDetailPage() {
  // Scan for off-platform contact/payment patterns
  const flagged = await scanOffPlatformAttempt(requirements, 'project_requirements');
  if (flagged) {
- alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+ alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
  return;
  }
 
@@ -720,16 +682,16 @@ export default function ProductDetailPage() {
  {isCustom ? (
  <div>
  <p className="text-[var(--text2)] text-[11px] font-bold uppercase tracking-widest mb-1">Custom Project Starts From</p>
- <span className="text-4xl font-black text-[var(--text)] ">â‚¹{product.price?.toLocaleString()}</span>
+ <span className="text-4xl font-black text-[var(--text)] ">₹{product.price?.toLocaleString('en-IN')}</span>
  </div>
  ) : (
  <div className="flex items-end gap-3">
  <span className="text-4xl font-black text-[var(--text)] ">
- â‚¹{(product.discount_price || product.price)?.toLocaleString()}
+ ₹{(product.discount_price || product.price)?.toLocaleString('en-IN')}
  </span>
  {isDeal && (
  <span className="text-lg text-[var(--text2)] line-through font-medium mb-1">
- â‚¹{product.price?.toLocaleString()}
+ ₹{product.price?.toLocaleString('en-IN')}
  </span>
  )}
  </div>
@@ -752,13 +714,14 @@ export default function ProductDetailPage() {
  </>
  ) : (
  <div className="flex gap-3">
- <button 
- onClick={handleAddToCart}
- disabled={isAddingToCart || addedToCart}
- className="flex-1 border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors disabled:opacity-50"
+ <a 
+ href={product.stripe_price_id || '#'}
+ target="_blank"
+ rel="noopener noreferrer"
+ className="flex-1 flex items-center justify-center border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors"
  >
- {addedToCart ? 'Added âœ“' : isAddingToCart ? 'Adding...' : 'Add to Cart'}
- </button>
+ Buy Now
+ </a>
  <button 
  onClick={handleContactSeller}
  disabled={isCheckingOut || currentUser?.id === product.user_id}
@@ -810,28 +773,7 @@ export default function ProductDetailPage() {
  {/* Reviews Tab */}
  {activeTab === 'reviews' && (
  <div className="space-y-8">
- {/* Developer Sandbox Control Banner */}
- <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
- <div className="space-y-1">
- <p className="text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-tight flex items-center gap-1.5">
- ðŸ”§ Review System Demo Sandbox
- </p>
- <p className="text-xs text-amber-700 dark:text-amber-500 font-medium">
- Simulate a mock purchaser account and seeded verified reviews to test the interface without database setups.
- </p>
- </div>
- <button
- onClick={() => toggleDemoMode()}
- className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-colors flex-shrink-0 ${
- isDemoMode 
- ? 'bg-amber-600 text-[var(--text)] hover:bg-amber-700' 
- : 'bg-[var(--card-bg)] dark:bg-[var(--bg3)] border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40'
- }`}
- >
- {isDemoMode ? 'Deactivate Demo' : 'Activate Demo'}
- </button>
- </div>
-
+ 
  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b-[0.5px] border-[var(--border)] items-center">
  {/* Big Rating Summary */}
  <div className="text-center md:border-r-[0.5px] border-[var(--border)] py-2">
@@ -854,7 +796,7 @@ export default function ProductDetailPage() {
  const pct = getPercentage(stars as any);
  return (
  <div key={stars} className="flex items-center gap-3 text-xs">
- <span className="w-8 text-right font-bold text-[var(--text3)] ">{stars}â˜…</span>
+ <span className="w-8 text-right font-bold text-[var(--text3)] ">{stars}★</span>
  <div className="flex-grow h-2 bg-[var(--bg)] rounded-full overflow-hidden">
  <div 
  className="h-full bg-amber-400 rounded-full transition-all duration-500" 
@@ -1024,7 +966,7 @@ export default function ProductDetailPage() {
  <h3 className="font-bold text-[var(--text)] text-sm mb-1 line-clamp-1">{rel.name}</h3>
  <p className="text-xs text-[var(--text2)] mb-3 line-clamp-1">By {rel.seller?.full_name}</p>
  <div className="mt-auto flex items-baseline gap-2">
- <span className="font-black text-[var(--text)] ">â‚¹{(rel.discount_price || rel.price).toLocaleString()}</span>
+ <span className="font-black text-[var(--text)] ">₹{(rel.discount_price || rel.price).toLocaleString('en-IN')}</span>
  </div>
  </div>
  </Link>
@@ -1054,7 +996,7 @@ export default function ProductDetailPage() {
  placeholder="Project description"
  className="w-full px-4 py-3 bg-[var(--bg)] border-[0.5px] border-[var(--border)] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white text-[var(--text)] mb-3 resize-none"
  ></textarea>
- <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (â‚¹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none " />
+ <input value={requestBudget} onChange={(e) => setRequestBudget(e.target.value)} placeholder="Budget range (₹ / $)" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none " />
  <input value={requestTimeline} onChange={(e) => setRequestTimeline(e.target.value)} placeholder="Timeline needed" className="mb-3 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none " />
  <input value={requestEmail} onChange={(e) => setRequestEmail(e.target.value)} placeholder="Contact email" type="email" className="mb-6 w-full rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] px-4 py-3 text-sm text-[var(--text)] outline-none " />
  

@@ -58,27 +58,28 @@ function timeAgo(dateStr: string): string {
 
 // Helper
 function formatCurrency(amount: number) {
- if (!amount) return 'N/A';
- if (amount >= 10000000) return `â‚¹${(amount / 10000000).toFixed(1)}Cr`;
- if (amount >= 100000) return `â‚¹${(amount / 100000).toFixed(1)}L`;
- return `â‚¹${amount.toLocaleString()}`;
+if (!amount) return 'N/A';
+if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)}Cr`;
+if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)}L`;
+return `₹${amount.toLocaleString('en-IN')}`;
 }
 
 function formatAmount(amount: number) {
- if (!amount) return 'N/A';
- return amount.toLocaleString('en-IN');
+if (!amount) return 'N/A';
+return `₹${amount.toLocaleString('en-IN')}`;
 }
 
 export default function PitchDetail() {
- const params = useParams();
- const id = params?.id as string;
- const router = useRouter();
- const [pitch, setPitch] = useState<any>(null);
- const [products, setProducts] = useState<any[]>([]);
- const [loading, setLoading] = useState(true);
- 
- // Subscription state
- const [investorPremium, setInvestorPremium] = useState(false);
+const params = useParams();
+const id = params?.id as string;
+const router = useRouter();
+const [pitch, setPitch] = useState<any>(null);
+const [products, setProducts] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+
+// Subscription state
+const [investorPremium, setInvestorPremium] = useState(true);
+
  const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
  const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
  
@@ -268,10 +269,10 @@ export default function PitchDetail() {
 
  const handleWhatsAppShare = () => {
  if (!pitch || typeof window === 'undefined') return;
- const text = `ðŸš€ *${pitch.title}* â€” ${pitch.tagline || pitch.short_description || ''}
-ðŸ’° Seeking â‚¹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
-ðŸ“ ${pitch.industry || 'Startup'} Â· ${pitch.company_stage || ''} Â· ${pitch.country || ''}
-ðŸ‘€ ${window.location.href}
+ const text = `🚀 *${pitch.title}* — ${pitch.tagline || pitch.short_description || ''}
+💰 Seeking ₹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
+📍 ${pitch.industry || 'Startup'} · ${pitch.company_stage || ''} · ${pitch.country || ''}
+👀 ${window.location.href}
 via Ventex`;
  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
  };
@@ -708,17 +709,24 @@ via Ventex`;
  
  {/* HERO CARD */}
  <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-8 relative">
- {pitch.status === 'live' && pitch.is_raising === false && (
- <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--bg)] px-3 py-1 rounded-full">
- <CheckCircle2 className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
- <span className="text-[10px] font-bold text-[var(--text)] uppercase tracking-wider">Verified</span>
+ <div className="absolute top-8 right-8 flex flex-col items-end gap-2">
+ {pitch.verified && (
+ <div className="flex items-center gap-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full border border-emerald-100 dark:border-emerald-500/20">
+ <Shield className="w-3 h-3" />
+ <span className="text-[10px] font-bold uppercase tracking-wider">Verified</span>
  </div>
  )}
  {pitch.is_raising && (
- <div className="absolute top-8 right-8 flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
- <span className="text-[10px] font-bold text-[var(--text)] uppercase tracking-wider">Raising</span>
+ <div className="flex items-center gap-1 bg-[var(--text)] dark:bg-[var(--card-bg)] px-3 py-1 rounded-full">
+ <span className="text-[10px] font-bold text-[var(--bg)] dark:text-[var(--text)] uppercase tracking-wider">Raising</span>
  </div>
  )}
+ {pitch.updated_at && (
+ <span className="text-[10px] text-[var(--text2)] font-bold uppercase tracking-widest mt-1">
+ Updated {new Date(pitch.updated_at).toLocaleDateString()}
+ </span>
+ )}
+ </div>
 
  <div className="flex flex-col gap-5 mb-8 sm:flex-row sm:items-start sm:gap-6">
  <div className="w-20 h-20 bg-[var(--bg)] rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden">
@@ -827,21 +835,21 @@ via Ventex`;
  onClick={handleWhatsAppShare}
  className="flex-1 bg-[#25D366] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#1fb855] transition-colors text-center"
  >
- Share on WhatsApp ðŸ’¬
+ Share on WhatsApp 💬
  </button>
  <button
  type="button"
  onClick={handleCopyLink}
  className="flex-1 bg-[#e5e5e5] text-[var(--text)] px-6 py-3 rounded-full text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors text-center"
  >
- {linkCopied ? 'Copied! âœ“' : 'Copy link ðŸ”—'}
+ {linkCopied ? 'Copied! ✓' : 'Copy link 🔗'}
  </button>
  </aside>
 
  {/* AI SUMMARY BAR */}
  {videoEmbedUrl ? (
  <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-5 sm:p-6 md:col-span-2">
- <div className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-3">60-second founder pitch ðŸŽ¬</div>
+ <div className="text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-3">60-second founder pitch 🎬</div>
  {videoEmbedUrl.match(/\.(mp4|webm|ogg)$/i) ? (
  <video src={videoEmbedUrl} controls className="w-full aspect-video rounded-xl bg-black" />
  ) : (
@@ -858,7 +866,7 @@ via Ventex`;
  <div className="bg-[var(--card-bg)] rounded-[16px] border-2 border-dashed border-[#d4d4d4] p-6 text-center md:col-span-2">
  <div className="text-sm font-bold text-[var(--text)] mb-2">Add your 60-second founder pitch</div>
  <Link href={`/founder/create-pitch?id=${pitch.id}`} className="text-sm font-black text-[var(--text)] underline underline-offset-4">
- Edit pitch â†’
+ Edit pitch →
  </Link>
  </div>
  ) : null}
@@ -969,38 +977,38 @@ via Ventex`;
  </div>
  </div>
 
- {/* Team (Mocked) */}
+ {/* Team */}
  <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Team</h2>
+ {pitch.team_data && pitch.team_data.length > 0 ? (
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
- <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
- <div className="w-12 h-12 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0">
+ {pitch.team_data.map((member: any, idx: number) => (
+ <div key={idx} className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
+ <div className="w-12 h-12 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+ {member.photo_url ? (
+ <img src={member.photo_url} alt={member.name} className="w-full h-full object-cover" />
+ ) : (
  <User className="w-5 h-5 text-[var(--text2)]" />
+ )}
  </div>
  <div>
- <h4 className="font-bold text-[var(--text)] text-sm">Jane Doe</h4>
- <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">Founder & CEO</p>
- <p className="text-[var(--text2)] text-xs">Ex-Google PM. 2x founder with 1 exit in the logistics space.</p>
+ <h4 className="font-bold text-[var(--text)] text-sm">{member.name}</h4>
+ <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">{member.role}</p>
+ <p className="text-[var(--text2)] text-xs">{member.bio || ''}</p>
  </div>
  </div>
- <div className="border-[0.5px] border-[var(--border)] rounded-xl p-4 flex gap-4">
- <div className="w-12 h-12 rounded-full bg-[var(--bg)] flex items-center justify-center flex-shrink-0">
- <User className="w-5 h-5 text-[var(--text2)]" />
+ ))}
  </div>
- <div>
- <h4 className="font-bold text-[var(--text)] text-sm">John Smith</h4>
- <p className="text-[var(--text2)] text-[11px] uppercase tracking-wider mb-2">CTO</p>
- <p className="text-[var(--text2)] text-xs">10 years engineering leadership at Stripe. Built highly scalable architectures.</p>
- </div>
- </div>
- </div>
+ ) : (
+ <p className="text-[var(--text2)] text-sm italic">Not provided</p>
+ )}
  </div>
 
- {/* Traction & Financials (Premium Gated) */}
+ {/* Traction & Financials */}
  <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Traction & Financials</h2>
  
- <div className={`space-y-6 ${!investorPremium ? 'blur-sm select-none opacity-50' : ''}`}>
+ <div className="space-y-6">
  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
  <div className="bg-[var(--bg)] rounded-xl p-4">
  <div className="text-xs text-[var(--text2)] mb-1">MRR</div>
@@ -1021,7 +1029,7 @@ via Ventex`;
  </div>
  <div>
  <h3 className="font-bold text-[var(--text)] text-sm mb-2">Key Milestones</h3>
- <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not specified'}</p>
+ <p className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">{pitch.milestones || 'Not provided'}</p>
  </div>
 
  {/* Public Roadmap */}
@@ -1036,21 +1044,6 @@ via Ventex`;
  </div>
  )}
  </div>
-
- {!investorPremium && (
- <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
- <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
- <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center mb-4">
- <Lock className="w-5 h-5 text-[var(--text)] " />
- </div>
- <h3 className="text-lg font-bold text-[var(--text)] mb-2">Investor Account required</h3>
- <p className="text-sm text-[var(--text2)] mb-6">Financial data and traction details are reserved for verified investors. Ventex Premium is marketplace-only.</p>
- <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
- View Investor Accounts
- </Link>
- </div>
- </div>
- )}
  </div>
 
  {/* Product Listings (If exists) */}
@@ -1089,7 +1082,7 @@ via Ventex`;
  <div className="bg-[var(--card-bg)] rounded-[16px] border-[0.5px] border-[var(--border)] p-6 relative overflow-hidden">
  <h2 className="text-lg font-bold text-[var(--text)] mb-6">Documents</h2>
  
- <div className={`flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+ <div className="flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4">
  <div className="flex items-center gap-4">
  <div className="w-10 h-10 bg-[var(--bg)] rounded-md flex items-center justify-center">
  <FileText className="w-5 h-5 text-[var(--text2)]" />
@@ -1102,29 +1095,13 @@ via Ventex`;
  <button 
  onClick={handleOpenDeck}
  className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md text-sm font-bold hover:opacity-80 transition-colors"
- disabled={!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned}
  >
  View Pitch Deck
  </button>
  </div>
-
- {(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) && (
- <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[var(--card-bg)]/40 dark:bg-black/40 backdrop-blur-[2px]">
- <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] p-6 rounded-2xl flex flex-col items-center text-center max-w-sm shadow-xl">
- <div className="w-12 h-12 bg-[var(--bg)] dark:bg-[var(--bg3)] rounded-full flex items-center justify-center mb-4">
- <Lock className="w-5 h-5 text-[var(--text)] " />
- </div>
- <h3 className="text-lg font-bold text-[var(--text)] mb-2">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access revoked' : 'Investor Account required'}</h3>
- <p className="text-sm text-[var(--text2)] mb-6">{dealEnforcement.isLocked || dealEnforcement.isBanned ? 'Data room access is revoked when a platform fee is overdue post early access.' : 'Pitch decks and confidential files are reserved for verified investors. Ventex Premium is marketplace-only.'}</p>
- <Link href="/pricing" className="bg-[var(--text)] text-[var(--bg)] w-full py-3 rounded-full text-sm font-bold hover:opacity-80 transition-colors">
- View Investor Accounts
- </Link>
- </div>
- </div>
- )}
  
  {pitch.additional_docs && pitch.additional_docs.length > 0 && (
- <div className={`mt-4 space-y-3 ${!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned ? 'blur-sm select-none opacity-50' : ''}`}>
+ <div className="mt-4 space-y-3">
  {pitch.additional_docs.map((doc: any, idx: number) => (
  <div key={idx} className="flex items-center justify-between border-[0.5px] border-[var(--border)] rounded-xl p-4">
  <div className="flex items-center gap-4">
@@ -1137,15 +1114,10 @@ via Ventex`;
  </div>
  </div>
  <a
- href={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '#' : doc.url}
- target={(!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) ? '_self' : '_blank'}
+ href={doc.url}
+ target="_blank"
  rel="noopener noreferrer"
  className="bg-[#e5e5e5] text-[var(--text)] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#d5d5d5] dark:hover:bg-[#444444] transition-colors"
- onClick={(e) => {
- if (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned) {
- e.preventDefault();
- }
- }}
  >
  Download
  </a>
@@ -1164,16 +1136,13 @@ via Ventex`;
  const answer = pitch.qa_data?.[q.id];
  if (!answer) return null;
  
- const isGated = q.premium && (!investorPremium || dealEnforcement.isLocked || dealEnforcement.isBanned);
-
  return (
  <div key={q.id}>
  <h3 className="font-bold text-[var(--text)] text-sm mb-2 flex items-center gap-2">
  {q.text}
- {q.premium && <span className="flex items-center gap-1 text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-black uppercase tracking-wider"><Lock className="w-2.5 h-2.5" /> Premium</span>}
  </h3>
- <div className={`text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap ${isGated ? 'blur-sm select-none opacity-50 relative' : ''}`}>
- {isGated ? 'This content is hidden to non-investors. A premium account is required to view the detailed traction and analytics provided by the founders. Upgrade your account today.' : answer}
+ <div className="text-[var(--text2)] text-sm leading-relaxed whitespace-pre-wrap">
+ {answer}
  </div>
  </div>
  );
