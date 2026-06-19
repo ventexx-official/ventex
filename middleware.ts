@@ -95,7 +95,7 @@ export async function middleware(request: NextRequest) {
        if (pathname.startsWith('/investor') && role !== 'investor' && role !== 'admin') {
          return NextResponse.redirect(new URL('/discover', request.url));
        }
-       if (pathname.startsWith('/buyer') && role !== 'buyer' && role !== 'admin') {
+       if (pathname.startsWith('/buyer')) {
          return NextResponse.redirect(new URL('/discover', request.url));
        }
      }

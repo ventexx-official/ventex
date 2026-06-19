@@ -2,41 +2,52 @@ import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const supabase = createSupabaseAdmin();
-  const { data: article } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  try {
+    const supabase = createSupabaseAdmin();
+    const { data: article } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('slug', params.slug)
+      .single();
 
-  if (!article) return { title: 'Article Not Found | Ventex Intelligence' };
+    if (!article) return { title: 'Article Not Found | Ventex Intelligence' };
 
-  return {
-    title: `${article.title} | Ventex Intelligence`,
-    description: article.summary,
-    openGraph: {
-      title: article.title,
+    return {
+      title: `${article.title} | Ventex Intelligence`,
       description: article.summary,
-      type: 'article',
-      publishedTime: article.published_at,
-      authors: [article.source_name || 'Ventex'],
-    }
-  };
+      openGraph: {
+        title: article.title,
+        description: article.summary,
+        type: 'article',
+        publishedTime: article.published_at,
+        authors: [article.source_name || 'Ventex'],
+      }
+    };
+  } catch {
+    return { title: 'Ventex Intelligence' };
+  }
 }
 
-export const revalidate = 3600;
-
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const supabase = createSupabaseAdmin();
-  
-  const { data: article, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  let article: any = null;
 
-  if (error || !article) {
+  try {
+    const supabase = createSupabaseAdmin();
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('slug', params.slug)
+      .single();
+
+    if (error || !data) {
+      notFound();
+    }
+    article = data;
+  } catch {
     notFound();
   }
 

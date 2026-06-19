@@ -7,22 +7,30 @@ export const metadata = {
   description: 'Curated news, founder stories, funding rounds, and growth insights for the startup ecosystem.',
 };
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function IntelligencePage() {
-  const supabase = createSupabaseAdmin();
-  
-  const { data: articles, error } = await supabase
-    .from('articles')
-    .select('*')
-    .eq('is_published', true)
-    .order('published_at', { ascending: false })
-    .limit(30);
+  let articles: any[] = [];
 
-  const heroArticle = articles?.[0];
-  const trendingArticles = articles?.slice(1, 5) || [];
-  const latestFunding = articles?.filter(a => a.tags?.includes('funding')).slice(0, 4) || [];
-  const otherArticles = articles?.filter(a => a.id !== heroArticle?.id && !trendingArticles.find(t => t.id === a.id)) || [];
+  try {
+    const supabase = createSupabaseAdmin();
+    const { data } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+      .limit(30);
+    articles = data || [];
+  } catch (e) {
+    // Admin client unavailable (placeholder key) — render empty state gracefully
+    console.warn('[intelligence] Admin client unavailable, rendering empty state');
+  }
+
+  const heroArticle = articles[0];
+  const trendingArticles = articles.slice(1, 5);
+  const latestFunding = articles.filter(a => a.tags?.includes('funding')).slice(0, 4);
+  const otherArticles = articles.filter(a => a.id !== heroArticle?.id && !trendingArticles.find((t: any) => t.id === a.id));
 
   return (
     <div className="min-h-screen bg-[var(--bg)]">
@@ -46,7 +54,7 @@ export default async function IntelligencePage() {
         </div>
       </header>
 
-      {error && (
+      {articles.length === 0 && (
         <div className="mx-auto max-w-7xl px-4 mt-8">
           <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-4 rounded-xl text-sm font-semibold">
             Unable to connect to the Intelligence Database.

@@ -36,6 +36,7 @@ export default function PitchesQueue() {
  const [loading, setLoading] = useState(true);
  const [searchTerm, setSearchTerm] = useState("");
  const [activeTab, setActiveTab] = useState<"pending" | "live" | "rejected" | "draft">("pending");
+ const [fetchError, setFetchError] = useState<string | null>(null);
 
  const fetchPitches = async () => {
  try {
@@ -60,11 +61,14 @@ export default function PitchesQueue() {
 
  if (error) {
  console.error("Error loading pitches:", error);
+ setFetchError(error.message || "Failed to load pitches. Check RLS policies.");
  } else {
+ setFetchError(null);
  setPitches((data as any) || []);
  }
- } catch (err) {
+ } catch (err: any) {
  console.error("Error in fetchPitches:", err);
+ setFetchError(err?.message || "Unexpected error loading pitches.");
  } finally {
  setLoading(false);
  }
@@ -178,6 +182,14 @@ export default function PitchesQueue() {
  {loading ? (
  <div className="h-64 flex items-center justify-center">
  <Loader2 className="h-8 w-8 text-violet-500 animate-spin" />
+ </div>
+ ) : fetchError ? (
+ <div className="rounded-[20px] border border-red-500/20 bg-red-500/5 p-8 text-center">
+ <p className="font-bold text-red-400">Failed to load pitches</p>
+ <p className="mt-1 text-sm text-[var(--text3)]">{fetchError}</p>
+ <button onClick={fetchPitches} className="mt-4 rounded-xl bg-red-500/10 border border-red-500/20 px-5 py-2 text-sm font-bold text-red-400 hover:bg-red-500/20 transition-colors">
+ Retry
+ </button>
  </div>
  ) : filteredPitches.length === 0 ? (
  <div className="bg-[var(--card-bg)] border border-[0.5px] border-[var(--border)] rounded-[24px] p-12 text-center">

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Sparkles, Lock, FileText, Heart, CheckCircle2, User, Send, X } from 'lucide-react';
+import { Sparkles, Lock, FileText, Heart, CheckCircle2, User, Send, X, Shield } from 'lucide-react';
 import Link from 'next/link';
 import PitchDeckViewer from '@/components/PitchDeckViewer';
 import { awardXp } from '@/lib/award-xp';

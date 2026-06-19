@@ -3,9 +3,9 @@ import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { rateLimit } from '@/lib/rate-limit';
 import { isUuid, requireUser } from '@/lib/api-security';
 
-const supabase = createSupabaseAdmin();
 
 export async function POST(req: NextRequest) {
+  const supabase = createSupabaseAdmin();
   const { success, remaining } = rateLimit(req, 8, 60_000);
   if (!success) {
     return new NextResponse('Too many requests. Please try again later.', {

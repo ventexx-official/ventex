@@ -17,7 +17,6 @@ import { requireInternalSecret, requireUser } from '@/lib/api-security';
  *   - investor_interest → emails pitch founder
  */
 
-const supabaseAdmin = createSupabaseAdmin();
 
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   const baseUrl = BASE_URL;
@@ -32,6 +31,7 @@ async function sendEmail(type: string, recipientEmail: string, data: Record<stri
 }
 
 export async function POST(req: Request) {
+  const supabaseAdmin = createSupabaseAdmin();
   try {
     if (!requireInternalSecret(req)) {
       const auth = await requireUser(req);

@@ -4,7 +4,6 @@ import { BASE_URL } from '@/lib/site';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { isUuid, requireAdmin, requireUser } from '@/lib/api-security';
 
-const supabaseAdmin = createSupabaseAdmin();
 
 async function sendEmail(type: string, recipientEmail: string, data: Record<string, any>) {
   try {
@@ -23,6 +22,7 @@ async function sendEmail(type: string, recipientEmail: string, data: Record<stri
 }
 
 export async function POST(request: Request) {
+  const supabaseAdmin = createSupabaseAdmin();
   try {
     const body = await request.json();
     const { pitchId, title, tagline, problem, solution, unique_insight, tam, country, stage, milestones, mrr } = body;

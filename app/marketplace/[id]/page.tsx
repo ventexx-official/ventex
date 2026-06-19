@@ -50,6 +50,12 @@ const [reviewRating, setReviewRating] = useState<number>(0);
 const [reviewComment, setReviewComment] = useState('');
 const [hoverRating, setHoverRating] = useState<number>(0);
 const [submittingReview, setSubmittingReview] = useState(false);
+const [demoMode, setDemoMode] = useState(false);
+const MOCK_REVIEWS = [
+  { id: 'mock-1', rating: 5, comment: 'Great product! Highly recommended.', buyer: { full_name: 'Alice', avatar_url: null }, created_at: new Date().toISOString() },
+  { id: 'mock-2', rating: 4, comment: 'Good quality, fast delivery.', buyer: { full_name: 'Bob', avatar_url: null }, created_at: new Date(Date.now() - 86400000).toISOString() },
+  { id: 'mock-3', rating: 5, comment: 'Exceeded expectations.', buyer: { full_name: 'Charlie', avatar_url: null }, created_at: new Date(Date.now() - 172800000).toISOString() },
+];
  // Load product data
  useEffect(() => {
  const fetchData = async () => {
@@ -234,8 +240,8 @@ const [submittingReview, setSubmittingReview] = useState(false);
  };
 
  const toggleDemoMode = () => {
- if (isDemoMode) {
- setIsDemoMode(false);
+ if (demoMode) {
+ setDemoMode(false);
  
  const refreshRealData = async () => {
  setLoading(true);
@@ -282,7 +288,7 @@ const [submittingReview, setSubmittingReview] = useState(false);
  };
  refreshRealData();
  } else {
- setIsDemoMode(true);
+ setDemoMode(true);
  
  setProduct((prev: any) => ({
  ...prev,
@@ -314,7 +320,7 @@ const [submittingReview, setSubmittingReview] = useState(false);
  setSubmittingReview(true);
 
  try {
- if (isDemoMode) {
+ if (demoMode) {
  await new Promise(resolve => setTimeout(resolve, 800));
 
  const newReviewObj = {
@@ -494,6 +500,37 @@ const [submittingReview, setSubmittingReview] = useState(false);
  setIsAddingToCart(false);
  }
  };
+
+ const handleBuyNow = async () => {
+    if (!currentUser) {
+      router.push('/login');
+      return;
+    }
+    setIsCheckingOut(true);
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: product.id,
+          buyerId: currentUser.id,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+    } catch (err: any) {
+      alert("Error initiating checkout: " + err.message);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
  const handleContactSeller = async () => {
     try {
@@ -714,14 +751,13 @@ const [submittingReview, setSubmittingReview] = useState(false);
  </>
  ) : (
  <div className="flex gap-3">
- <a 
- href={product.stripe_price_id || '#'}
- target="_blank"
- rel="noopener noreferrer"
- className="flex-1 flex items-center justify-center border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors"
+ <button 
+ onClick={handleBuyNow}
+ disabled={isCheckingOut || currentUser?.id === product.seller_id}
+ className="flex-1 flex items-center justify-center border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
  >
- Buy Now
- </a>
+ {isCheckingOut ? 'Processing...' : 'Buy Now'}
+ </button>
  <button 
  onClick={handleContactSeller}
  disabled={isCheckingOut || currentUser?.id === product.user_id}

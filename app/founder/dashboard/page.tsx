@@ -15,10 +15,10 @@ export default function FounderDashboard() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        supabase.from('pitches').select('*').eq('user_id', session.user.id).then(({ data }) => {
+        supabase.from('pitches').select('*').eq('founder_id', session.user.id).then(({ data }) => {
           if (data) setPitches(data);
           if (data && data.length === 0) {
-            router.push('/pitches/new'); // Auto-shown after first login if pitch_count = 0
+            router.push('/founder/create-pitch'); // Auto-shown after first login if pitch_count = 0
           }
         });
       }
@@ -34,7 +34,7 @@ export default function FounderDashboard() {
           <nav className="space-y-2 text-sm font-bold">
             <Link href="/founder/dashboard" className="block px-3 py-2 bg-[var(--bg2)] rounded-md text-[var(--text)]">Dashboard</Link>
             <Link href="/founder/pitches" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Pitches</Link>
-            <Link href="/pitches/new" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Create Pitch</Link>
+            <Link href="/founder/create-pitch" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Create Pitch</Link>
             <Link href="/founder/store" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">My Store</Link>
             <Link href="/messages" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Messages</Link>
             <Link href="/founder/settings" className="block px-3 py-2 text-[var(--text2)] hover:text-[var(--text)]">Settings</Link>
@@ -45,7 +45,7 @@ export default function FounderDashboard() {
         <main className="flex-1 p-6 md:p-10 overflow-y-auto">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-[var(--text)]">Overview</h1>
-            <Link href="/pitches/new" className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2">
+            <Link href="/founder/create-pitch" className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2">
               <Plus className="w-4 h-4"/> New Pitch
             </Link>
           </div>
@@ -89,7 +89,7 @@ export default function FounderDashboard() {
                           {p.status !== 'draft' && <span>{p.status}</span>}
                         </div>
                       </div>
-                      <Link href={`/pitches/new?id=${p.id}`} className="text-sm font-bold px-3 py-1 bg-[var(--bg2)] rounded-md text-[var(--text)]">Edit</Link>
+                      <Link href={`/founder/create-pitch?id=${p.id}`} className="text-sm font-bold px-3 py-1 bg-[var(--bg2)] rounded-md text-[var(--text)]">Edit</Link>
                     </div>
                   ))}
                 </div>

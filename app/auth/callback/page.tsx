@@ -45,8 +45,8 @@ export default function AuthCallback() {
           
           switch (profile.role) {
             case 'founder': return router.push('/founder/dashboard');
-            case 'investor': return router.push('/investor/portal');
-            case 'buyer': return router.push('/buyer/dashboard');
+            case 'investor': return router.push('/discover');
+            case 'buyer': return router.push('/marketplace');
             case 'visitor': return router.push('/discover');
             case 'explorer': return router.push('/discover');
             default: return router.push('/onboarding/role');
