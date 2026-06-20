@@ -298,9 +298,6 @@ export default function AdminUsers() {
  </div>
  </div>
 
- </div>
- </div>
-
  {/* Role Change */}
  <div className="space-y-3">
  <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Role Assignment</h4>
