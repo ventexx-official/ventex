@@ -23,7 +23,7 @@ const QUESTIONS = [
  { id: 'q4', text: "What is the development stage and roadmap?" },
  { id: 'q5', text: "What is your go-to-market strategy?" },
  { id: 'q6', text: "What is your business and revenue model?" },
- { id: 'q7', text: "What traction have you achieved?", premium: true },
+ { id: 'q7', text: "What traction have you achieved?" },
  { id: 'q8', text: "What is your competitive advantage and moat?" },
  { id: 'q9', text: "Why is now the right time?" }
 ];
@@ -78,7 +78,7 @@ const [products, setProducts] = useState<any[]>([]);
 const [loading, setLoading] = useState(true);
 
 // Subscription state
-const [investorPremium, setInvestorPremium] = useState(true);
+ 
 
  const [isDeckModalOpen, setIsDeckModalOpen] = useState(false);
  const [isNdaModalOpen, setIsNdaModalOpen] = useState(false);
@@ -303,32 +303,31 @@ via Ventex`;
  return;
  }
 
- const res = await fetch('/api/marketplace/create-checkout', {
+ const res = await fetch('/api/purchase-intent', {
  method: 'POST',
  headers: {
  'Content-Type': 'application/json',
  Authorization: `Bearer ${session.access_token}`,
  },
  body: JSON.stringify({
- cartItems: [{ product_id: prod.id, quantity: 1 }],
- promoCodeId: null,
+ product_id: prod.id,
+ seller_id: prod.seller_id,
+ deal_code: 'DIRECT_PITCH',
  }),
  });
 
  if (!res.ok) {
- const errText = await res.text();
- throw new Error(errText || 'Failed to create checkout session');
+ const errData = await res.json().catch(() => ({}));
+ throw new Error(errData.error || 'Failed to submit interest');
  }
 
  const data = await res.json();
- if (data.url) {
- window.location.href = data.url;
- } else {
- throw new Error('No checkout URL returned from Stripe');
- }
+ alert(data.sellerPhone 
+ ? `Success! The founder's WhatsApp is: ${data.sellerPhone}` 
+ : 'Success! The founder has been notified of your interest and will reach out.');
  } catch (err: any) {
  console.error('[Buy Product] Error:', err);
- alert(err.message || 'Checkout failed. Please try again.');
+ alert(err.message || 'Request failed. Please try again.');
  } finally {
  setIsCheckingOut(false);
  }
@@ -392,16 +391,16 @@ via Ventex`;
  const loadUser = async () => {
  const { data: { session } } = await supabase.auth.getSession();
  if (session?.user) {
- setCurrentUser(session.user);
- const { data: profile } = await supabase
+ const { data: profile, error: profileError } = await supabase
  .from('users')
- .select('full_name, role, avatar_url, investor_premium, subscription_end_date')
+ .select('full_name, role, avatar_url')
  .eq('id', session.user.id)
  .single();
- if (profile) {
- setCurrentProfile(profile);
- const hasActiveSub = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
- setInvestorPremium(!!(profile.investor_premium && hasActiveSub));
+ 
+ if (!profileError && profile) {
+ setCurrentUser({ ...session.user, ...profile });
+ } else {
+ setCurrentUser(session.user);
  }
  }
  // Load liked comments from localStorage
@@ -602,8 +601,8 @@ via Ventex`;
  };
 
  const handleOpenDeck = () => {
- const enforcement = getDealEnforcementState(pitchDeal);
- if (!investorPremium || enforcement.isLocked || enforcement.isBanned) return;
+  const enforcement = getDealEnforcementState(pitchDeal);
+  if (enforcement.isLocked || enforcement.isBanned) return;
  setIsNdaModalOpen(true);
  };
 

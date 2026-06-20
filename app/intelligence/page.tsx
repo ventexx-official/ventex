@@ -34,7 +34,7 @@ export default async function IntelligencePage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)]">
-      {/* Premium Hero Header */}
+      {/* Hero Header */}
       <header className="border-b bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-center gap-3 mb-6">

@@ -26,8 +26,7 @@
     "react-dom": "^18",
     "react-simple-maps": "^3.0.0",
     "recharts": "^3.8.1",
-    "resend": "^6.12.3",
-    "stripe": "^22.2.2"
+    "resend": "^6.12.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",

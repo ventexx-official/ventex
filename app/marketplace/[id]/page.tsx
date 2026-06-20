@@ -501,36 +501,17 @@ const MOCK_REVIEWS = [
  }
  };
 
- const handleBuyNow = async () => {
-    if (!currentUser) {
-      router.push('/login');
-      return;
-    }
-    setIsCheckingOut(true);
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          productId: product.id,
-          buyerId: currentUser.id,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error(data.error || 'Failed to create checkout session');
-      }
-    } catch (err: any) {
-      alert("Error initiating checkout: " + err.message);
-    } finally {
-      setIsCheckingOut(false);
-    }
-  };
+ const handleGetProduct = async () => {
+  if (!currentUser) {
+    router.push('/login');
+    return;
+  }
+  if (product.stripe_price_id) {
+    window.open(product.stripe_price_id, '_blank');
+  } else {
+    alert('This product does not have a download link configured.');
+  }
+ };
 
  const handleContactSeller = async () => {
     try {
@@ -752,11 +733,11 @@ const MOCK_REVIEWS = [
  ) : (
  <div className="flex gap-3">
  <button 
- onClick={handleBuyNow}
- disabled={isCheckingOut || currentUser?.id === product.seller_id}
+ onClick={handleGetProduct}
+ disabled={currentUser?.id === product.seller_id}
  className="flex-1 flex items-center justify-center border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
  >
- {isCheckingOut ? 'Processing...' : 'Buy Now'}
+ {product.product_type === 'digital' ? 'Download Resource' : 'Get Access'}
  </button>
  <button 
  onClick={handleContactSeller}

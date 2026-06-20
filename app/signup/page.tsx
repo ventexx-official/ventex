@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import ThemeToggle from '@/components/ThemeToggle';
+import { useRouter } from 'next/navigation';
 
 export default function Signup() {
+ const router = useRouter();
  const [fullName, setFullName] = useState('');
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
@@ -14,6 +16,23 @@ export default function Signup() {
  const [error, setError] = useState<string | null>(null);
  const [success, setSuccess] = useState(false);
  const [loading, setLoading] = useState(false);
+
+ // Listen for the auth session being established in ANY tab (including the email confirmation tab).
+ // When the user clicks the email link, the new tab confirms the email and sets the session in
+ // localStorage. Supabase syncs this automatically across tabs, firing SIGNED_IN here in the
+ // original tab — so the user gets redirected without needing to do anything.
+ useEffect(() => {
+   if (!success) return;
+
+   const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+     if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+       // Session confirmed — redirect through the auth pathway
+       router.push('/auth/callback');
+     }
+   });
+
+   return () => subscription.unsubscribe();
+ }, [success, router]);
 
  const handleSignup = async (e: React.FormEvent) => {
  e.preventDefault();
@@ -77,9 +96,21 @@ export default function Signup() {
  </div>
 
  {success ? (
- <div className="bg-[var(--bg)] p-4 rounded-xl text-center">
- <h3 className="font-bold text-[var(--text)] mb-2">Check your email</h3>
- <p className="text-sm text-[var(--text2)]">We've sent a verification link to {email}. Please verify your account to continue.</p>
+ <div className="bg-[var(--bg)] p-6 rounded-xl text-center space-y-3">
+   <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto">
+     <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+     </svg>
+   </div>
+   <h3 className="font-bold text-[var(--text)]">Check your email</h3>
+   <p className="text-sm text-[var(--text2)]">
+     We&apos;ve sent a verification link to <strong className="text-[var(--text)]">{email}</strong>.
+     Click it to confirm your account — this page will automatically open your account once confirmed.
+   </p>
+   <div className="flex items-center justify-center gap-2 text-xs text-[var(--text2)] pt-2">
+     <div className="w-3 h-3 border-2 border-t-transparent border-[var(--text2)] rounded-full animate-spin"></div>
+     Waiting for confirmation...
+   </div>
  </div>
  ) : (
  <form onSubmit={handleSignup} className="space-y-4">

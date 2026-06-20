@@ -37,10 +37,8 @@ export default function FounderStorePage() {
 
  // Store data states
  const [products, setProducts] = useState<any[]>([]);
- const [orders, setOrders] = useState<any[]>([]);
  const [stats, setStats] = useState({
  totalSales: 0,
- totalRevenue: 0,
  activeListings: 0,
  averageRating: 0,
  });
@@ -90,28 +88,12 @@ export default function FounderStorePage() {
 
  if (productsErr) throw productsErr;
 
- // 3. Fetch orders
- const { data: ordersData, error: ordersErr } = await supabase
- .from("orders")
- .select(`
- *,
- product:product_id ( id, name, type, images_urls ),
- buyer:buyer_id ( id, full_name, email )
- `)
- .eq("seller_id", session.user.id)
- .order("created_at", { ascending: false });
-
- if (ordersErr) throw ordersErr;
-
  // Set state
  const fetchedProducts = productsData || [];
- const fetchedOrders = ordersData || [];
  setProducts(fetchedProducts);
- setOrders(fetchedOrders);
 
  // Compute Stats
  const totalSales = fetchedProducts.reduce((acc, p) => acc + (p.sales_count || 0), 0);
- const totalRevenue = fetchedOrders.reduce((acc, o) => acc + (o.amount_paid || 0), 0);
  const activeListings = fetchedProducts.filter(p => p.status === "live").length;
  
  // Average rating calculation
@@ -122,7 +104,6 @@ export default function FounderStorePage() {
 
  setStats({
  totalSales,
- totalRevenue,
  activeListings,
  averageRating,
  });
@@ -174,22 +155,6 @@ export default function FounderStorePage() {
  alert("Failed to delete product: " + err.message);
  } finally {
  setDeletingId(null);
- }
- };
-
- // Fulfil order
- const handleMarkFulfilled = async (orderId: string) => {
- try {
- const { error } = await supabase
- .from("orders")
- .update({ status: "fulfilled" })
- .eq("id", orderId);
-
- if (error) throw error;
- setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "fulfilled" } : o));
- alert("Order marked as fulfilled!");
- } catch (err: any) {
- alert("Failed to fulfil order: " + err.message);
  }
  };
 
@@ -262,15 +227,14 @@ export default function FounderStorePage() {
 
  // Quick stats card data
  const statCards = [
- { label: "Total Sales", value: stats.totalSales, icon: ShoppingBag, desc: "Units sold", color: "text-blue-500 bg-blue-50" },
- { label: "Total Revenue", value: `₹${(stats.totalRevenue / 100).toLocaleString()}`, icon: DollarSign, desc: "Total earnings", color: "text-emerald-500 bg-emerald-50" },
+ { label: "Total Downloads", value: stats.totalSales, icon: ShoppingBag, desc: "Units accessed", color: "text-blue-500 bg-blue-50" },
  { label: "Active Listings", value: stats.activeListings, icon: Package, desc: "Live in store", color: "text-indigo-500 bg-indigo-50" },
  { label: "Average Rating", value: stats.averageRating > 0 ? `${stats.averageRating} ★` : " - ", icon: Star, desc: "From reviews", color: "text-amber-500 bg-amber-50" },
  ];
 
  return (
  <div className="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
- {/* Ã¢â€â‚¬Ã¢â€â‚¬ SIDEBAR Ã¢â€â‚¬Ã¢â€â‚¬ */}
+ {/* ── SIDEBAR ── */}
  <aside className={`bg-[var(--card-bg)] border-b md:border-b-0 md:border-r-[0.5px] border-[var(--border)] flex md:flex-col md:fixed md:h-screen z-10 flex-shrink-0 transition-all duration-300 ${sidebarW}`}>
  <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
  {!sidebarCollapsed && (
@@ -357,9 +321,9 @@ export default function FounderStorePage() {
  ))}
  </div>
 
- <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
- {/* Products Table (Col-span 2) */}
- <div className="lg:col-span-2 space-y-4">
+ <div className="grid grid-cols-1 gap-8">
+ {/* Products Table */}
+ <div className="space-y-4">
  <div className="flex items-center justify-between">
  <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">My Products</h2>
  <span className="text-xs font-bold text-[var(--text2)]">{products.length} listed</span>
@@ -384,16 +348,13 @@ export default function FounderStorePage() {
  <thead>
  <tr className="border-b-[0.5px] border-[var(--border)] bg-[#F9F9F8] text-[10px] font-black text-[var(--text2)] uppercase tracking-widest">
  <th className="px-6 py-4">Product Details</th>
- <th className="px-6 py-4">Price</th>
  <th className="px-6 py-4">Status</th>
- <th className="px-6 py-4 text-center">Sales</th>
  <th className="px-6 py-4">Actions</th>
  </tr>
  </thead>
  <tbody className="divide-y-[0.5px] divide-[#e5e5e5]" ref={menuRef}>
  {products.map(product => {
  const mainImg = product.images_urls?.[0] || "/placeholder.jpg";
- const isCustom = product.type?.toLowerCase() === "custom work";
  
  return (
  <tr
@@ -421,15 +382,6 @@ export default function FounderStorePage() {
  </div>
  </td>
 
- {/* Price */}
- <td className="px-6 py-4 font-bold text-[var(--text)]">
- {isCustom ? (
- <span className="text-[var(--text2)] text-xs">Custom Work</span>
- ) : (
- `₹${(product.price / 100).toLocaleString()}`
- )}
- </td>
-
  {/* Status Badge */}
  <td className="px-6 py-4">
  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
@@ -440,14 +392,6 @@ export default function FounderStorePage() {
  }`}>
  {product.status}
  </span>
- </td>
-
- {/* Sales / Rev */}
- <td className="px-6 py-4 text-center">
- <p className="font-bold text-[var(--text)]">{product.sales_count || 0}</p>
- <p className="text-[10px] text-[var(--text2)] font-medium mt-0.5">
- ₹{((product.sales_count || 0) * (product.price || 0) / 100).toLocaleString()}
- </p>
  </td>
 
  {/* Actions Menu */}
@@ -510,116 +454,7 @@ export default function FounderStorePage() {
  )}
  </div>
  </div>
-
- {/* WhatsApp Orders section */}
- <div className="space-y-6">
- <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">WhatsApp Orders</h2>
- <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] p-6 shadow-sm space-y-4">
- <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
- <svg className="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="currentColor">
- <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
- </svg>
  </div>
- <div>
- <p className="text-[10px] font-black uppercase text-[var(--text2)] tracking-widest mb-1">Transaction Model</p>
- <p className="text-sm font-semibold text-[var(--text)]">Direct P2P via WhatsApp</p>
- </div>
- <p className="text-xs text-[var(--text2)] leading-relaxed">
- Buyers contact you directly on WhatsApp. You agree on payment, delivery, and terms together. Ventex takes 0%.
- </p>
- <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
- <p className="text-xs text-emerald-700 font-semibold">
- 💡 Make sure your WhatsApp number is set in <a href="/settings" className="underline">Settings</a> so buyers can reach you.
- </p>
- </div>
- </div>
- </div>
- </div>
-
- {/* Orders Section */}
- <div className="space-y-4">
- <h2 className="text-lg font-black text-[var(--text)] uppercase tracking-tight">Recent Orders</h2>
- 
- <div className="bg-[var(--card-bg)] rounded-3xl border-[0.5px] border-[var(--border)] overflow-hidden shadow-sm">
- {orders.length === 0 ? (
- <div className="p-16 text-center">
- <ShoppingBag className="w-12 h-12 text-[var(--text3)] mx-auto mb-4" />
- <h3 className="text-base font-bold text-[var(--text)] mb-1">No orders yet</h3>
- <p className="text-sm text-[var(--text2)]">Your sales and client contracts will populate here once active.</p>
- </div>
- ) : (
- <div className="overflow-x-auto">
- <table className="w-full text-left border-collapse">
- <thead>
- <tr className="border-b-[0.5px] border-[var(--border)] bg-[#F9F9F8] text-[10px] font-black text-[var(--text2)] uppercase tracking-widest">
- <th className="px-6 py-4">Order ID / Buyer</th>
- <th className="px-6 py-4">Product purchased</th>
- <th className="px-6 py-4">Date</th>
- <th className="px-6 py-4">Net Payout</th>
- <th className="px-6 py-4">Status</th>
- <th className="px-6 py-4 text-right">Actions</th>
- </tr>
- </thead>
- <tbody className="divide-y-[0.5px] divide-[#e5e5e5]">
- {orders.map((order, idx) => {
- const anonBuyer = `Buyer #${order.buyer_id?.slice(-4) || "Anon"}`;
- const formattedDate = new Date(order.created_at).toLocaleDateString("en-IN", {
- day: "numeric",
- month: "short",
- year: "numeric",
- });
-
- return (
- <tr key={order.id} className="hover:bg-[#F9F9F8] transition-colors text-sm">
- <td className="px-6 py-4">
- <p className="font-bold text-[var(--text)]">{anonBuyer}</p>
- <p className="text-[10px] text-[var(--text2)] font-semibold mt-0.5 truncate max-w-[120px]">
- {order.id}
- </p>
- </td>
- <td className="px-6 py-4">
- <p className="font-bold text-[var(--text)]">{order.product?.name || "Deleted Product"}</p>
- <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text2)]">
- {order.product?.type}
- </span>
- </td>
- <td className="px-6 py-4 text-[var(--text2)] font-medium">{formattedDate}</td>
- <td className="px-6 py-4 font-bold text-emerald-600">
- ₹{(order.seller_payout / 100).toLocaleString()}
- </td>
- <td className="px-6 py-4">
- <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
- order.status === "fulfilled" || order.status === "completed"
- ? "bg-emerald-50 text-emerald-700 border-[0.5px] border-emerald-200"
- : "bg-amber-50 text-amber-700 border-[0.5px] border-amber-200"
- }`}>
- {order.status}
- </span>
- </td>
- <td className="px-6 py-4 text-right">
- {order.status !== "fulfilled" && order.status !== "completed" ? (
- <button
- onClick={() => handleMarkFulfilled(order.id)}
- className="px-3 py-1.5 bg-[var(--text)] text-[var(--bg)] hover:bg-black rounded-lg text-xs font-black transition-colors"
- >
- Mark fulfilled
- </button>
- ) : (
- <div className="flex items-center justify-end gap-1 text-emerald-600 text-xs font-bold">
- <CheckCircle className="w-3.5 h-3.5" /> Fulfilled
- </div>
- )}
- </td>
- </tr>
- );
- })}
- </tbody>
- </table>
- </div>
- )}
- </div>
- </div>
-
  </div>
  </main>
  </div>

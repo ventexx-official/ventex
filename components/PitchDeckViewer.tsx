@@ -31,7 +31,7 @@ export default function PitchDeckViewer({ pitchId, investorName, investorEmail }
           }
         });
 
-        if (res.status === 403) throw new Error("Investor Premium required.");
+        if (res.status === 403) throw new Error("Authentication required.");
         if (res.status === 404) throw new Error("Pitch deck not found.");
         if (!res.ok) throw new Error("Failed to load secure document.");
 

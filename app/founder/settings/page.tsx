@@ -41,8 +41,6 @@ export default function FounderSettingsPage() {
  const [avatarUrl, setAvatarUrl] = useState("");
  const [whatsappNumber, setWhatsappNumber] = useState("");
  const [isSeller, setIsSeller] = useState(false);
- const [stripeConnectId, setStripeConnectId] = useState("");
- const [startingSellerSetup, setStartingSellerSetup] = useState(false);
 
  useEffect(() => {
  const fetchProfile = async () => {
@@ -74,7 +72,6 @@ export default function FounderSettingsPage() {
  setAvatarUrl(profile.avatar_url || "");
  setWhatsappNumber(profile.whatsapp_number || "");
  setIsSeller(profile.is_seller || false);
- setStripeConnectId(profile.stripe_connect_id || "");
  } else {
  setUserProfile({ id: session.user.id, role: "founder" });
  }
@@ -139,28 +136,6 @@ export default function FounderSettingsPage() {
  setErrorMsg(err.message || "Could not start 2FA setup.");
  } finally {
  setEnrolling2fa(false);
- }
- };
-
- const startSellerSetup = async () => {
- setStartingSellerSetup(true);
- setErrorMsg("");
- try {
- const { data: { session } } = await supabase.auth.getSession();
- const res = await fetch("/api/seller/create-connect-account", {
- method: "POST",
- headers: {
- "Content-Type": "application/json",
- ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
- },
- body: JSON.stringify({}),
- });
- const data = await res.json().catch(() => ({}));
- if (!res.ok || !data.url) throw new Error(data.error || "Could not start seller setup.");
- window.location.href = data.url;
- } catch (err: any) {
- setErrorMsg(err.message || "Could not start seller setup.");
- setStartingSellerSetup(false);
  }
  };
 
@@ -323,14 +298,11 @@ export default function FounderSettingsPage() {
  <div>
  <h4 className="text-sm font-bold text-[var(--text)]">Marketplace seller access</h4>
  <p className="text-[11px] text-[var(--text2)] font-semibold mt-0.5">
- Enable your storefront after your WhatsApp contact and managed payout setup are ready.
+ Enable your storefront to list products in the marketplace.
  </p>
  <div className="mt-3 flex flex-wrap gap-2">
  <span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ${isSeller ? "bg-emerald-500/10 text-emerald-600" : "bg-[var(--card-bg)] text-[var(--text2)]"}`}>
  {isSeller ? "Store enabled" : "Store disabled"}
- </span>
- <span className={`rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-widest ${stripeConnectId ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600"}`}>
- {stripeConnectId ? "Payouts connected" : "Payout setup pending"}
  </span>
  </div>
  </div>
@@ -342,34 +314,10 @@ export default function FounderSettingsPage() {
  {isSeller ? "Disable store" : "Enable store"}
  </button>
  </div>
-
- {isSeller && (
- <div className="space-y-4 rounded-2xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-5 animate-fadeIn">
- <div>
- <h4 className="text-sm font-black text-[var(--text)]">Managed payout setup</h4>
- <p className="mt-1 text-xs font-semibold text-[var(--text2)]">
- Do not paste a Stripe account ID. Ventex creates or resumes your connected account and sends you through Stripe onboarding securely.
- </p>
- </div>
- <button
- type="button"
- onClick={startSellerSetup}
- disabled={startingSellerSetup}
- className="inline-flex items-center justify-center rounded-2xl bg-[var(--text)] px-5 py-3 text-sm font-black text-[var(--bg)] disabled:opacity-50"
- >
- {startingSellerSetup ? "Opening setup..." : stripeConnectId ? "Resume payout setup" : "Set up seller payouts"}
- </button>
- {stripeConnectId && (
- <p className="text-[10px] font-bold text-[var(--text2)]">
- Connected account stored securely. ID ending {stripeConnectId.slice(-4)}.
- </p>
- )}
- </div>
- )}
  </div>
  </section>
 
- {/* Notification and Security Placeholder */}
+ {/* Notification and Security */}
  <section className="space-y-6 pt-2">
  <h3 className="text-xs font-black uppercase text-[var(--text2)] tracking-widest border-b-[0.5px] border-[var(--border)] pb-2 flex items-center gap-2">
  <Shield className="w-4 h-4 text-[var(--text2)]" /> 03. Notification & Account Security

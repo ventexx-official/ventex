@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 const PUBLIC_ROUTES = [
   '/', '/discover', '/marketplace', '/events', '/about', '/catalyst', '/contact',
-  '/investors', '/pricing', '/terms', '/privacy', '/seller-agreement', '/refund-policy', '/delivery-policy',
+  '/investors', '/terms', '/privacy', '/seller-agreement', '/refund-policy', '/delivery-policy',
   '/login', '/signup', '/auth/callback'
 ];
 

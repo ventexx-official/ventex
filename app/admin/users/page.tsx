@@ -12,7 +12,6 @@ import {
  BadgeCheck,
  BadgeMinus,
  RefreshCw,
- Crown,
  Ban,
  Briefcase
 } from "lucide-react";
@@ -22,7 +21,6 @@ interface UserProfile {
  full_name: string;
  role: string;
  
- investor_premium: boolean;
  is_seller: boolean;
  banned: boolean;
  verified_founder: boolean;
@@ -50,7 +48,7 @@ export default function AdminUsers() {
  // Fetch users + auth emails via admin rpc if available, otherwise fetch users table
  const [{ data: usersData }, { data: pitches }, { data: products }] =
  await Promise.all([
- supabase.from("users").select("id, full_name, role, avatar_url, banned, verified_founder, investor_premium, is_seller, created_at").order("created_at", { ascending: false }),
+ supabase.from("users").select("id, full_name, role, avatar_url, banned, verified_founder, is_seller, created_at").order("created_at", { ascending: false }),
  supabase.from("pitches").select("founder_id"),
  supabase.from("products").select("seller_id"),
  ]);
@@ -231,12 +229,6 @@ export default function AdminUsers() {
  {/* Role + chips */}
  <div className="hidden md:flex items-center gap-3">
  {roleBadge(user.role)}
- 
- {user.investor_premium && (
- <span className="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
- <Crown size={9} /> Investor
- </span>
- )}
  </div>
 
  {/* Expand toggle */}
@@ -266,15 +258,9 @@ export default function AdminUsers() {
  <span className="text-[var(--text)] font-mono">{user.productCount}</span>
  </div>
  <div className="flex justify-between">
- <span className="text-[var(--text3)]">Investor Account</span>
- <span className={user.role === "investor" ? "text-amber-400 font-bold" : "text-[var(--text3)]"}>
- {user.role === "investor" ? "Yes" : "No"}
- </span>
- </div>
- <div className="flex justify-between">
- <span className="text-[var(--text3)]">Investor Premium</span>
- <span className={user.investor_premium ? "text-amber-400 font-bold" : "text-[var(--text3)]"}>
- {user.investor_premium ? "Active" : "None"}
+ <span className="text-[var(--text3)]">Marketplace Seller</span>
+ <span className={user.is_seller ? "text-[var(--text)] font-bold" : "text-[var(--text3)]"}>
+ {user.is_seller ? "Yes" : "No"}
  </span>
  </div>
  </div>
@@ -312,30 +298,6 @@ export default function AdminUsers() {
  </div>
  </div>
 
- {/* Investor Access */}
- <div className="space-y-3">
- <h4 className="text-[10px] font-bold text-[var(--text2)] uppercase tracking-widest font-mono">Investor Access</h4>
- <div className="space-y-2">
- <button
- onClick={() => updateUser(user.id, { investor_premium: !user.investor_premium })}
- disabled={isLoading}
- className={`w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all disabled:opacity-50 ${
- user.investor_premium
- ? "bg-[var(--bg2)] border-[0.5px] border-[var(--border)] text-[var(--text2)] hover:bg-[var(--bg2)]"
- : "bg-amber-950/20 border-amber-900/40 text-amber-400 hover:bg-amber-950/40"
- }`}
- >
- {isLoading ? <Loader2 size={12} className="animate-spin" /> : <Crown size={12} />}
- {user.investor_premium ? "Revoke Investor Premium" : "Grant Investor Premium"}
- </button>
- <button
- onClick={() => updateUser(user.id, { role: "investor" })}
- disabled={isLoading || user.role === "investor"}
- className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border border-amber-900/40 bg-amber-950/20 text-amber-400 transition-all hover:bg-amber-950/40 disabled:opacity-50"
- >
- {isLoading ? <Loader2 size={12} className="animate-spin" /> : <Briefcase size={12} />}
- Make Investor
- </button>
  </div>
  </div>
 

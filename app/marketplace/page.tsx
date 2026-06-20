@@ -13,7 +13,6 @@ import {
  ShoppingBag
 } from 'lucide-react';
 import Link from 'next/link';
-import SponsoredCard from '@/components/SponsoredCard';
 
 /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Live Countdown Timer Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 function DealCountdown({ endDate }: { endDate: string }) {
@@ -99,7 +98,6 @@ function BannerCountdown({ endDate }: { endDate: string }) {
 /* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Main Page Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 export default function MarketplacePage() {
  const [products, setProducts] = useState<any[]>([]);
- const [sponsorships, setSponsorships] = useState<any[]>([]);
  const [loading, setLoading] = useState(true);
  const [searchQuery, setSearchQuery] = useState('');
  const [tick, setTick] = useState(0); // forces re-evaluation of expired deals
@@ -149,14 +147,6 @@ export default function MarketplacePage() {
  if (!error && data) {
  setProducts(data);
  }
-
- const { data: sponsorsData } = await supabase
-    .from('sponsorships')
-    .select('*')
-    .eq('is_active', true)
-    .eq('type', 'product');
-  if (sponsorsData) setSponsorships(sponsorsData);
-
  setLoading(false);
  };
 
@@ -458,18 +448,7 @@ export default function MarketplacePage() {
  </div>
 
  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-  {sponsorships.map(sponsor => (
-    <SponsoredCard 
-      key={sponsor.id} 
-      id={sponsor.id}
-      type={sponsor.type}
-      title={sponsor.title}
-      description={sponsor.description}
-      linkUrl={sponsor.link_url}
-      imageUrl={sponsor.image_url}
-    />
-  ))}
-  {filteredProducts.map(product => {
+ {filteredProducts.map(product => {
  const now = new Date();
  const isDeal = product.discount_price && product.deal_end_date && new Date(product.deal_end_date) > now;
  const listingType = product.listing_type || (product.type === 'freelance' || product.type === 'job' ? product.type : 'software');

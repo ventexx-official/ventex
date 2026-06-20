@@ -39,13 +39,11 @@ export default function AdminOverview() {
  const [
  { data: users },
  { data: pitches },
- { data: products },
- { data: orders }
+ { data: products }
  ] = await Promise.all([
  supabase.from("users").select("role, banned"),
  supabase.from("pitches").select("status"),
- supabase.from("products").select("status"),
- supabase.from("orders").select("amount_paid, ventex_fee, created_at")
+ supabase.from("products").select("status")
  ]);
 
  // Calculate aggregates
@@ -74,19 +72,12 @@ export default function AdminOverview() {
  banned: products?.filter((p) => p.status === "banned").length || 0
  };
 
- const orderCount = orders?.length || 0;
- const gmv = (orders?.reduce((acc, o) => acc + Number(o.amount_paid || 0), 0) || 0) / 100;
- const totalFees = (orders?.reduce((acc, o) => acc + Number(o.ventex_fee || 0), 0) || 0) / 100;
+ const orderCount = 0;
+ const gmv = 0;
+ const totalFees = 0;
 
  // Revenue this month (current month/year)
- const now = new Date();
- const currentYear = now.getFullYear();
- const currentMonth = now.getMonth();
- const thisMonthOrders = orders?.filter((o) => {
- const date = new Date(o.created_at);
- return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
- }) || [];
- const thisMonthRevenue = (thisMonthOrders.reduce((acc, o) => acc + Number(o.ventex_fee || 0), 0) || 0) / 100;
+ const thisMonthRevenue = 0;
 
  setStats({
  userBreakdown,

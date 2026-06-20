@@ -143,7 +143,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `🤝 An investor expressed interest in "${data.startupName}"`,
         html: buildEmail({
           heading: `An investor is interested in ${data.startupName}`,
-          body: `<p><strong>${data.investorName || 'A premium investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
+          body: `<p><strong>${data.investorName || 'An investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
                  ${data.message ? `<blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;">"${data.message}"</blockquote>` : ''}
                  <p>Review their profile and accept or decline from your founder dashboard.</p>`,
           ctaText: 'Review in Dashboard',
@@ -165,35 +165,30 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
 
     case 'product_sold':
       return {
-        subject: `🎉 You sold "${data.productName}"! Order details inside.`,
+        subject: `🎉 New lead for "${data.productName}"!`,
         html: buildEmail({
-          heading: `You sold "${data.productName}"!`,
-          body: `<p>Congratulations! A buyer just purchased your product on Ventex Marketplace.</p>
+          heading: `New lead for "${data.productName}"!`,
+          body: `<p>Congratulations! A buyer is interested in purchasing your product on Ventex Marketplace.</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Your Payout</td><td style="font-weight:700;font-size:13px;padding-top:8px;color:#22c55e;">$${((data.payout || 0) / 100).toFixed(2)}</td></tr>
                  </table>
-                 <p>Payouts are processed to your connected Stripe account within 2–5 business days.</p>`,
-          ctaText: 'View Order',
+                 <p>Contact the buyer to finalize the deal.</p>`,
+          ctaText: 'View Dashboard',
           ctaUrl: `${VENTEX_URL}/founder/dashboard`,
         }),
       };
 
     case 'order_confirmation':
       return {
-        subject: `📦 Your order for "${data.productName}" is confirmed`,
+        subject: `📦 Your interest for "${data.productName}" is confirmed`,
         html: buildEmail({
-          heading: `Your order is confirmed!`,
-          body: `<p>Thanks for your purchase on Ventex Marketplace. Here are your order details:</p>
+          heading: `Your interest is confirmed!`,
+          body: `<p>Thanks for your interest on Ventex Marketplace. The seller will be in touch shortly.</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Amount Paid</td><td style="font-weight:700;font-size:13px;padding-top:8px;">$${((data.amount || 0) / 100).toFixed(2)}</td></tr>
-                   <tr><td style="color:#888;font-size:13px;padding-top:8px;">Order ID</td><td style="font-size:12px;padding-top:8px;color:#888;">${data.orderId || ' - '}</td></tr>
-                 </table>
-                 <p>You can access your download or track your order in your account.</p>`,
-          ctaText: 'View My Order',
-          ctaUrl: `${VENTEX_URL}/marketplace/orders`,
+                 </table>`,
+          ctaText: 'View Marketplace',
+          ctaUrl: `${VENTEX_URL}/marketplace`,
         }),
       };
 

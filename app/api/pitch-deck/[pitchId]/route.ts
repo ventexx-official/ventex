@@ -20,25 +20,12 @@ export async function GET(req: Request, { params }: { params: { pitchId: string 
       const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
       
       if (!authError && user) {
-        const { data: profile } = await supabaseAdmin
-          .from('users')
-          .select('investor_premium, subscription_end_date')
-          .eq('id', user.id)
-          .single();
-
-        if (profile) {
-          const isPremium = profile.investor_premium;
-          const hasValidSubscription = profile.subscription_end_date && new Date(profile.subscription_end_date) > new Date();
-          if (isPremium && hasValidSubscription) {
-            verified = true;
-          }
-        }
+        verified = true;
       }
     }
 
-    // Strictly enforce Investor Premium verification
     if (!verified) {
-      return new NextResponse('Forbidden: Investor Premium required', { status: 403 });
+      return new NextResponse('Forbidden: Authentication required', { status: 403 });
     }
 
     // Get Pitch Deck Path

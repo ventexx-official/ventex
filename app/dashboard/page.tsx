@@ -27,7 +27,7 @@ export default function DashboardRedirectPage() {
  : profile?.role === 'investor'
  ? '/discover'
  : profile?.role === 'buyer'
- ? '/buyer/dashboard'
+ ? '/marketplace'
  : profile?.role === 'visitor'
  ? '/'
  : profile?.role === 'founder'
