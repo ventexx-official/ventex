@@ -2,9 +2,19 @@ import { NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { addXP, XP_EVENTS, type XpEvent } from '@/lib/xp';
 import { createClient } from '@supabase/supabase-js';
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 10 XP awards per minute per IP
+    const rl = rateLimit(req, 10, 60000);
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests' }, {
+        status: 429,
+        headers: { 'Retry-After': '60' },
+      });
+    }
+
     const body = await req.json();
     const { founderId, event } = body as { founderId?: string; event?: XpEvent };
 

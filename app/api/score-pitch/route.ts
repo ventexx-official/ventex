@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { generateWithFallback } from '@/services/ai-orchestrator';
+import { rateLimit } from '@/lib/rate-limit';
 
 function fallbackScore(pitch: any) {
   const traction = pitch.mrr || pitch.arr || pitch.users_count ? 72 : 48;
@@ -24,6 +25,15 @@ function fallbackScore(pitch: any) {
 
 export async function POST(req: Request) {
   try {
+    // Rate limit: 3 AI score requests per minute per IP (cost-bearing endpoint)
+    const rl = rateLimit(req, 3, 60000);
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests. Please wait before scoring again.' }, {
+        status: 429,
+        headers: { 'Retry-After': '60' },
+      });
+    }
+
     const { pitchId } = await req.json();
     if (!pitchId) {
       return NextResponse.json({ error: 'pitchId is required' }, { status: 400 });
