@@ -27,7 +27,6 @@ interface Pitch {
  created_at: string;
  users: {
  full_name: string;
- email: string;
  } | null;
 }
 
@@ -53,8 +52,7 @@ export default function PitchesQueue() {
  status,
  created_at,
  users:founder_id (
- full_name,
- email
+ full_name
  )
  `)
  .order("created_at", { ascending: false });
@@ -78,16 +76,18 @@ export default function PitchesQueue() {
  fetchPitches();
  }, []);
 
- const filteredPitches = pitches
- .filter((p) => p.status === activeTab)
- .filter(
- (p) =>
- p.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.tagline?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.users?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.users?.email?.toLowerCase().includes(searchTerm.toLowerCase())
- );
+  const filteredPitches = pitches
+    .filter((p) => p.status === activeTab)
+    .filter((p) => {
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase();
+      return (
+        (p.title || "").toLowerCase().includes(term) ||
+        (p.tagline || "").toLowerCase().includes(term) ||
+        (p.industry || "").toLowerCase().includes(term) ||
+        (p.users?.full_name || "").toLowerCase().includes(term)
+      );
+    });
 
  const getStatusBadge = (status: string) => {
  switch (status) {
@@ -242,9 +242,6 @@ export default function PitchesQueue() {
  <div>
  <p className="text-sm font-semibold text-[var(--text)]">
  {pitch.users.full_name || "Unknown Founder"}
- </p>
- <p className="text-xs text-[var(--text3)] font-mono">
- {pitch.users.email}
  </p>
  </div>
  ) : (

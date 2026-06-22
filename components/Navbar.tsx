@@ -248,7 +248,7 @@ export default function Navbar() {
  <Link href={`/profile/${user.id}`} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <User className="w-4 h-4 text-[var(--text3)]" /> My Profile
  </Link>
- <Link href={userProfile?.role === 'founder' ? '/founder/dashboard' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
+ <Link href={userProfile?.role === 'admin' ? '/admin' : userProfile?.role === 'founder' ? '/founder/dashboard' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'} onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
  <LayoutDashboard className="w-4 h-4 text-[var(--text3)]" /> Dashboard
  </Link>
  <Link href="/buyer/purchases" onClick={() => setAvatarMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-[var(--text2)] hover:bg-[var(--bg2)] hover:text-[var(--text)] transition-colors">
@@ -362,7 +362,7 @@ export default function Navbar() {
  My Profile
  </Link>
  <Link
- href="/dashboard"
+ href={userProfile?.role === 'admin' ? '/admin' : userProfile?.role === 'founder' ? '/founder/dashboard' : userProfile?.role === 'investor' ? '/investor/portal' : userProfile?.role === 'buyer' ? '/buyer/dashboard' : '/discover'}
  onClick={() => setIsOpen(false)}
  className="flex min-h-11 items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[var(--text2)] hover:text-[var(--text)] hover:bg-[var(--bg2)] transition-colors"
  >

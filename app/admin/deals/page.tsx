@@ -23,7 +23,7 @@ export default function AdminDealsPage() {
       const [{ data: dealData, error: dealError }, { data: blacklistData, error: blError }] = await Promise.all([
         supabase
           .from("deals")
-          .select("*, pitch:pitch_id(id,title), founder:founder_id(id,full_name,email), investor:investor_id(id,full_name,email)")
+          .select("*, pitch:pitch_id(id,title), founder:founder_id(id,full_name), investor:investor_id(id,full_name)")
           .order("created_at", { ascending: false }),
         supabase.from("blacklist").select("*").order("banned_at", { ascending: false }),
       ]);
@@ -146,8 +146,8 @@ export default function AdminDealsPage() {
                 return (
                   <tr key={deal.id} className="border-t border-[0.5px] border-[var(--border)]">
                     <td className="p-4 font-bold text-[var(--text)]">{deal.pitch?.title || "-"}</td>
-                    <td className="p-4 text-[var(--text2)]">{deal.founder?.full_name || deal.founder?.email || "-"}</td>
-                    <td className="p-4 text-[var(--text2)]">{deal.investor?.full_name || deal.investor?.email || "-"}</td>
+                    <td className="p-4 text-[var(--text2)]">{deal.founder?.full_name || "-"}</td>
+                    <td className="p-4 text-[var(--text2)]">{deal.investor?.full_name || "-"}</td>
                     <td className="p-4 text-[var(--text2)]">{money(Number(deal.amount || 0))}</td>
                     <td className="p-4">
                       <span className="rounded-full bg-[var(--bg2)] px-3 py-1 text-xs font-black text-[var(--text)]">{deal.status}</span>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import { addCountry, deleteCountry, addState, deleteState } from './actions';
 
 export default function AdminLocations() {
   const [countries, setCountries] = useState<any[]>([]);
@@ -35,8 +36,8 @@ export default function AdminLocations() {
   const handleAddCountry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCountryName || !newCountryCode) return;
-    const { error } = await supabase.from('countries').insert({ name: newCountryName, code: newCountryCode });
-    if (error) alert(error.message);
+    const res = await addCountry(newCountryName, newCountryCode);
+    if (res.error) alert(res.error);
     else {
       setNewCountryName('');
       setNewCountryCode('');
@@ -46,15 +47,15 @@ export default function AdminLocations() {
 
   const handleDeleteCountry = async (id: string) => {
     if (!confirm("Are you sure? This will delete all states inside it.")) return;
-    await supabase.from('countries').delete().eq('id', id);
+    await deleteCountry(id);
     fetchData();
   };
 
   const handleAddState = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStateName || !selectedCountryId) return;
-    const { error } = await supabase.from('states').insert({ name: newStateName, country_id: selectedCountryId });
-    if (error) alert(error.message);
+    const res = await addState(newStateName, selectedCountryId);
+    if (res.error) alert(res.error);
     else {
       setNewStateName('');
       fetchData();
@@ -63,7 +64,7 @@ export default function AdminLocations() {
 
   const handleDeleteState = async (id: string) => {
     if (!confirm("Delete state?")) return;
-    await supabase.from('states').delete().eq('id', id);
+    await deleteState(id);
     fetchData();
   };
 

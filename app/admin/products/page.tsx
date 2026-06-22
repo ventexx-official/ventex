@@ -91,16 +91,19 @@ export default function AdminProducts() {
  }
  };
 
- const filtered = products
- .filter((p) => p.status === activeTab)
- .filter(
- (p) =>
- p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.sector?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.users?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
- p.users?.email?.toLowerCase().includes(searchTerm.toLowerCase())
- );
+  const filtered = products
+    .filter((p) => p.status === activeTab)
+    .filter((p) => {
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase();
+      return (
+        (p.name || "").toLowerCase().includes(term) ||
+        (p.category || "").toLowerCase().includes(term) ||
+        (p.sector || "").toLowerCase().includes(term) ||
+        (p.users?.full_name || "").toLowerCase().includes(term) ||
+        (p.users?.email || "").toLowerCase().includes(term)
+      );
+    });
 
  const counts = {
  pending: products.filter((p) => p.status === "pending").length,
