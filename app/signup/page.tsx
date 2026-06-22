@@ -25,10 +25,10 @@ export default function Signup() {
    if (!success) return;
 
    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-     if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
-       // Session confirmed — redirect through the auth pathway
-       router.push('/auth/callback');
-     }
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+        // Session confirmed — redirect through the auth pathway
+        router.push('/dashboard');
+      }
    });
 
    return () => subscription.unsubscribe();
@@ -56,7 +56,7 @@ export default function Signup() {
  data: {
  full_name: fullName,
  },
- emailRedirectTo: `${window.location.origin}/auth/callback`,
+ emailRedirectTo: `${window.location.origin}/api/auth/callback`,
  },
  });
 
@@ -72,7 +72,7 @@ export default function Signup() {
  const { error } = await supabase.auth.signInWithOAuth({
  provider: 'google',
  options: {
- redirectTo: `${window.location.origin}/auth/callback`,
+ redirectTo: `${window.location.origin}/api/auth/callback`,
  },
  });
  if (error) setError(error.message);
