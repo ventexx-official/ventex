@@ -27,8 +27,8 @@ export default function FounderOnboarding() {
     try {
       // Create an empty pitch draft to store the startup name and description
       const { data: pitch, error: pitchErr } = await supabase.from('pitches').insert({
-        user_id: userId,
-        company_name: form.startupName,
+        founder_id: userId,
+        title: form.startupName,
         short_description: form.description,
         status: 'draft'
       }).select('id').single();

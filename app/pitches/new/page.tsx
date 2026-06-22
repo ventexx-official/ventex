@@ -13,7 +13,7 @@ function PitchWizardContent() {
   const [loading, setLoading] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [pitch, setPitch] = useState({
-    id: pitchId, company_name: '', short_description: '', website: '', location: '', sectors: [], business_type: '', product_type: '', stage: '',
+    id: pitchId, title: '', short_description: '', website: '', location: '', sectors: [], business_type: '', product_type: '', stage: '',
     actively_raising: false, round_type: '', amount: '', committed: '', equity: '', security_type: '', use_of_funds: '', close_date: '',
     revenue: '', mrr: '', employees: '', founding_year: '', highlights: '',
     video_url: '', deck_url: '',
@@ -32,7 +32,7 @@ function PitchWizardContent() {
     if (!pitch.id) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
-      const { data } = await supabase.from('pitches').insert({ user_id: session.user.id, ...pitch, status: 'draft' }).select('id').single();
+      const { data } = await supabase.from('pitches').insert({ founder_id: session.user.id, ...pitch, status: 'draft' }).select('id').single();
       if (data) setPitch(p => ({...p, id: data.id}));
     } else {
       await supabase.from('pitches').update({ ...pitch, status: 'draft' }).eq('id', pitch.id);
@@ -92,7 +92,7 @@ function PitchWizardContent() {
           {step === 1 && (
             <div className="space-y-4">
               <h2 className="text-2xl font-bold mb-6 text-[var(--text)]">Step 1: Company Profile</h2>
-              <input placeholder="Company Name" value={pitch.company_name} onChange={e=>setPitch({...pitch, company_name:e.target.value})} className="w-full border rounded-md px-3 py-2 text-sm bg-[var(--bg)]" />
+              <input placeholder="Company Name" value={pitch.title} onChange={e=>setPitch({...pitch, title:e.target.value})} className="w-full border rounded-md px-3 py-2 text-sm bg-[var(--bg)]" />
               <textarea placeholder="Short Description" value={pitch.short_description} onChange={e=>setPitch({...pitch, short_description:e.target.value})} className="w-full border rounded-md px-3 py-2 text-sm bg-[var(--bg)]" />
               <input placeholder="Website" value={pitch.website} onChange={e=>setPitch({...pitch, website:e.target.value})} className="w-full border rounded-md px-3 py-2 text-sm bg-[var(--bg)]" />
             </div>

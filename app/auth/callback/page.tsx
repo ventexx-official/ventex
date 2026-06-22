@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { getDashboardRoute, getOnboardingRoute } from '@/lib/role-routing';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -48,22 +49,12 @@ export default function AuthCallback() {
 
           if (profile?.is_admin) return router.push('/admin');
 
-          if (!profile || !profile.role || profile.role === 'visitor') {
-            return router.push('/onboarding/role');
+          const onboardingRoute = getOnboardingRoute(profile?.role, false);
+          if (onboardingRoute && (!profile || !profile.role || profile.role === 'visitor' || !profile?.onboarding_completed)) {
+            return router.push(onboardingRoute);
           }
 
-          if (!profile?.onboarding_completed) {
-            return router.push(`/onboarding/${profile.role}`);
-          }
-
-          switch (profile.role) {
-            case 'founder': return router.push('/founder/dashboard');
-            case 'investor': return router.push('/discover');
-            case 'buyer': return router.push('/marketplace');
-            case 'visitor': return router.push('/discover');
-            case 'explorer': return router.push('/discover');
-            default: return router.push('/onboarding/role');
-          }
+          return router.push(getDashboardRoute(profile?.role));
         } else {
           setTimeout(async () => {
             const { data: delayedData } = await supabase.auth.getSession();

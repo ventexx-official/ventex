@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { getDashboardRoute, getOnboardingRoute } from '@/lib/role-routing';
 
 export default function DashboardRedirectPage() {
  const router = useRouter();
@@ -17,23 +18,17 @@ export default function DashboardRedirectPage() {
 
  const { data: profile } = await supabase
  .from('users')
- .select('role')
+ .select('role, onboarding_completed')
  .eq('id', session.user.id)
  .single();
 
- const next =
- profile?.role === 'admin'
- ? '/admin/users'
- : profile?.role === 'investor'
- ? '/discover'
- : profile?.role === 'buyer'
- ? '/marketplace'
- : profile?.role === 'visitor'
- ? '/'
- : profile?.role === 'founder'
- ? '/founder/dashboard'
- : '/onboarding';
+ const onboardingRoute = getOnboardingRoute(profile?.role, false);
+ if (onboardingRoute && (!profile || !profile.role || profile.role === 'visitor' || !profile?.onboarding_completed)) {
+   router.replace(onboardingRoute);
+   return;
+ }
 
+ const next = getDashboardRoute(profile?.role);
  router.replace(next);
  };
  run();
