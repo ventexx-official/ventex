@@ -175,51 +175,79 @@ body > div {
   .btn-primary {
     background: var(--text);
     color: var(--bg) !important;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid transparent;
+    border-radius: 8px;
     min-height: 44px;
-    padding: 10px 18px;
+    padding: 10px 20px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     display: inline-flex;
-    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+  }
+
+  [data-theme="dark"] .btn-primary {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
 
   .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
   }
   
   [data-theme="dark"] .btn-primary:hover {
-    box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 
   .btn-secondary {
-    background: transparent;
-    color: var(--text2);
+    background: var(--bg);
+    color: var(--text);
     border: 1px solid var(--border2);
-    border-radius: 6px;
+    border-radius: 8px;
     min-height: 44px;
-    padding: 10px 18px;
+    padding: 10px 20px;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     display: inline-flex;
-    transition: border-color 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+    transition: all 0.2s ease;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg2);
+    border-color: var(--text3);
+    color: var(--text);
+  }
+  
+  [data-theme="light"] .btn-secondary:hover {
+    background: var(--bg2);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    transition: all 0.2s ease;
     align-items: center;
     justify-content: center;
   }
 
-  .btn-secondary:hover {
-    transform: translateY(-2px);
-    background: rgba(255,255,255,0.05);
-    border-color: var(--border-hover);
-  }
-  
-  [data-theme="light"] .btn-secondary:hover {
-    background: rgba(0,0,0,0.03);
+  .btn-ghost:hover {
+    background: var(--bg2);
+    color: var(--text);
   }
 
   .glass-ledger-card {

@@ -78,7 +78,7 @@ export default function Navbar() {
 
  useEffect(() => {
  const handleScroll = () => setScrolled(window.scrollY > 10);
- window.addEventListener('scroll', handleScroll);
+ window.addEventListener('scroll', handleScroll, { passive: true });
  return () => window.removeEventListener('scroll', handleScroll);
  }, []);
 
@@ -133,11 +133,14 @@ export default function Navbar() {
  };
 
   const navLinks = [
+    { href: '/', label: 'Home' },
     { href: '/discover', label: 'Discover' },
-    { href: '/marketplace', label: 'Marketplace' },
-    { href: '/catalyst', label: 'Catalyst' },
-    { href: '/intelligence', label: 'Intelligence' },
-    { href: '/events', label: 'Events' },
+    { href: '/founder/create-pitch', label: 'For Founders' },
+    { href: '/investors', label: 'For Investors' },
+    { href: '/faq', label: 'FAQ' },
+    { href: '/resources/schemes', label: 'Resources' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
   ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

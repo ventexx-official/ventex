@@ -388,6 +388,10 @@ export default function CreatePitch() {
  alert("Founder cannot create new pitches while a platform fee settlement is overdue post early access.");
  return;
  }
+ if (completion < 100) {
+ alert("Please complete 100% of the profile fields before submitting your pitch.");
+ return;
+ }
  
  setSubmitting(true);
  
@@ -410,7 +414,7 @@ export default function CreatePitch() {
  console.error("AI summary failed", e);
  }
  
- alert("Your pitch has been submitted for review!");
+ alert("Your pitch has been submitted successfully. Our team will review it within 1–3 business days. Once approved, it will become visible to investors and the public.");
  router.push('/founder/dashboard');
  } else {
  console.error("Submit error:", error);

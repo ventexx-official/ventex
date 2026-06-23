@@ -1,98 +1,76 @@
-import Link from "next/link";
+import React from 'react';
+import type { Metadata } from 'next';
+import JsonLd from '@/components/JsonLd';
 
-const roadmap = [
- "The Arena - monthly live pitch events with founder applications and investor judges.",
- "Deeper marketplace workflows for freelance services, jobs, and custom builds.",
- "Founder growth tools including referrals, badges, weekly digests, and public proof assets.",
-];
+export const metadata: Metadata = {
+  title: 'About Ventex | The Ultimate Startup Pitch Platform',
+  description: 'Learn about the mission, founder story, and vision behind Ventex. We are building the most transparent and efficient startup marketplace in the world.',
+};
 
 export default function AboutPage() {
- return (
- <main className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
- <section className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
- <div className="space-y-12">
- <div className="space-y-5">
- <h1 className="text-4xl font-black tracking-[-.04em] sm:text-5xl">
- About Ventex
- </h1>
- <p className="max-w-3xl text-base leading-7 text-[var(--text2)] sm:text-lg">
- Ventex is a global platform where startups can pitch investors, sell software products,
- offer freelance services, and create job opportunities in one focused workspace.
- </p>
- </div>
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Ventex",
+      "description": "Ventex is a startup marketplace dedicated to democratizing access to capital and deal flow by connecting founders directly with verified investors."
+    }
+  };
 
- <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
- <h2 className="text-2xl font-black tracking-[-.03em]">Our Mission</h2>
- <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text2)]">
- To build the most trusted startup infrastructure globally - where any founder, from any city, can pitch with confidence, raise with transparency, and sell with credibility.
- </p>
- </section>
+  return (
+    <>
+      <JsonLd data={aboutSchema} />
+      <main className="min-h-screen bg-[var(--bg)] py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-20">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--text)] tracking-tight mb-6">
+              Democratizing Startup Discovery
+            </h1>
+            <p className="text-xl text-[var(--text2)] max-w-2xl mx-auto leading-relaxed">
+              Ventex was built on a simple premise: great ideas shouldn't die because of geographic barriers or closed-door networks.
+            </p>
+          </div>
 
- <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
- <h2 className="text-2xl font-black tracking-[-.03em]">Why we built Ventex</h2>
- <div className="mt-4 space-y-4 text-sm leading-7 text-[var(--text2)]">
- <p>
- Early-stage founders are expected to pitch, sell, hire, build proof, and find the right
- supporters before they have a team large enough to manage all of it. Ventex exists to make
- that first layer of credibility easier to build.
- </p>
- <p>
- We wanted one place where a founder can present a serious pitch, attach traction signals,
- list useful products or services, and be discovered by people who can actually help.
- </p>
- <p>
- The result is a platform built for the world&apos;s builders: part pitch network, part marketplace,
- part operating layer for early momentum.
- </p>
- </div>
- </section>
+          <div className="space-y-20">
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl font-bold text-[var(--text)] mb-6">Our Mission</h2>
+                <p className="text-[var(--text2)] text-lg leading-relaxed mb-4">
+                  We exist to eliminate the friction in early-stage fundraising and startup discovery. By building a transparent, highly-efficient marketplace, we give founders the platform they need to tell their story, and investors the tools they need to discover the next generation of category-defining companies.
+                </p>
+                <p className="text-[var(--text2)] text-lg leading-relaxed">
+                  We believe that capital should flow to the best execution, not just the warmest introductions.
+                </p>
+              </div>
+              <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--border)] shadow-sm">
+                <div className="text-4xl font-bold text-blue-600 mb-2">0%</div>
+                <div className="text-[var(--text)] font-medium mb-6">Syndicate or carry fees charged by Ventex on direct investments.</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
+                <div className="text-[var(--text)] font-medium">Founder control over their pitch narrative and data room access.</div>
+              </div>
+            </section>
 
- <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
- <h2 className="text-2xl font-black tracking-[-.03em]">Our Team</h2>
- <div className="mt-5 grid gap-4 sm:grid-cols-2">
- <article className="flex gap-4 border bg-[var(--bg2)] p-5" style={{ borderColor: "var(--border)" }}>
- <div className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[var(--text)] text-sm font-black text-[var(--bg)]">V</div>
- <div>
- <h3 className="font-black">Founder & CEO, Ventex</h3>
- <p className="mt-2 text-sm text-[var(--text2)]">Building the global startup graph from day one.</p>
- <p className="mt-4 text-xs font-bold uppercase tracking-[.12em] text-[var(--text3)]">More team members coming soon as we grow.</p>
- </div>
- </article>
- </div>
- </section>
-
- <section className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
- <h2 className="text-2xl font-black tracking-[-.03em]">What&apos;s coming</h2>
- <ul className="mt-5 grid gap-3 text-sm leading-6 text-[var(--text2)]">
- {roadmap.map((item) => (
- <li key={item} className="flex gap-3">
- <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--text)]" />
- <span>{item}</span>
- </li>
- ))}
- </ul>
- </section>
-
- <Link href="/signup" className="btn-primary inline-flex">
- Join the platform →
- </Link>
- </div>
- </section>
-
-  {/* Support section */}
-  <section className="py-16 border-t border-[var(--border)] text-center">
-    <p className="text-[var(--text2)] text-sm mb-2">Support the mission</p>
-    <p className="text-[var(--text)] font-semibold mb-1">Ventex is free and always will be during early access.</p>
-    <p className="text-[var(--text2)] text-sm mb-6">If you believe in what we&apos;re building, consider supporting us on Ko-fi.</p>
-    <a
-      href="https://ko-fi.com/ventexxhqgmailcom"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 bg-[#FF5E5B] text-white px-6 py-3 rounded-2xl font-bold text-sm hover:opacity-90 transition-opacity"
-    >
-      ☕ Support us on Ko-fi →
-    </a>
-  </section>
-  </main>
- );
+            <section>
+              <h2 className="text-3xl font-bold text-[var(--text)] mb-8 text-center">The Platform Purpose</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-[var(--bg2)] p-8 rounded-2xl border border-[var(--border2)]">
+                  <h3 className="text-xl font-bold text-[var(--text)] mb-3">For Founders</h3>
+                  <p className="text-[var(--text2)]">A unified digital pitch room. Host your deck, track your traction, secure your data room, and pitch to hundreds of investors simultaneously without sending a single cold email.</p>
+                </div>
+                <div className="bg-[var(--bg2)] p-8 rounded-2xl border border-[var(--border2)]">
+                  <h3 className="text-xl font-bold text-[var(--text)] mb-3">For Investors</h3>
+                  <p className="text-[var(--text2)]">High-signal deal flow. Use our AI-powered summaries and granular filters to find startups that match your exact investment thesis in seconds, not hours.</p>
+                </div>
+                <div className="bg-[var(--bg2)] p-8 rounded-2xl border border-[var(--border2)]">
+                  <h3 className="text-xl font-bold text-[var(--text)] mb-3">For the Ecosystem</h3>
+                  <p className="text-[var(--text2)]">A rising tide lifts all boats. By fostering direct connections, we accelerate the velocity of innovation and capital deployment globally.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }

@@ -4,7 +4,9 @@ const columns = [
   {
     title: 'Product',
     links: [
+      ['Home', '/'],
       ['Discover', '/discover'],
+      ['For Founders', '/founder/create-pitch'],
       ['Marketplace', '/marketplace'],
       ['Intelligence', '/intelligence'],
       ['Catalyst', '/catalyst'],
@@ -22,6 +24,9 @@ const columns = [
     title: 'Company',
     links: [
       ['About', '/about'],
+      ['Knowledge Base', '/learn'],
+      ['FAQs', '/faq'],
+      ['Comparisons', '/compare/ventex-vs-angellist'],
       ['Investors', '/investors'],
       ['Contact', '/contact'],
       ['Resources', '/resources/schemes'],

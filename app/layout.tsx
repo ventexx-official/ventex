@@ -26,10 +26,11 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
  metadataBase: new URL('https://www.ventexx.com'),
  title: {
-  default: "Ventex — Startup Discovery, Investor Connections & Growth Platform",
+  default: "Ventex | Startup Marketplace for Founders and Investors",
   template: "%s | Ventex",
  },
- description: "A startup ecosystem connecting founders, investors, buyers, and opportunities. Discover startups, network with investors, promote your products, and accelerate founder growth.",
+ description: "Ventex is a startup marketplace where founders pitch startups, connect with investors, raise funding, discover opportunities, and grow their ventures.",
+ keywords: ["Startup Marketplace", "Startup Pitch Platform", "Founder Discovery Platform", "Investor Discovery Platform", "Startup Funding Platform", "Ventex"],
  robots: {
   index: true,
   follow: true,
@@ -39,8 +40,8 @@ export const metadata: Metadata = {
   canonical: "https://www.ventexx.com",
  },
  openGraph: {
-  title: "Ventex — Startup Discovery, Investor Connections & Growth Platform",
-  description: "A startup ecosystem connecting founders, investors, buyers, and opportunities. Discover startups, network with investors, promote your products, and accelerate founder growth.",
+  title: "Ventex | Startup Marketplace for Founders and Investors",
+  description: "Ventex is a startup marketplace where founders pitch startups, connect with investors, raise funding, discover opportunities, and grow their ventures.",
   url: "https://www.ventexx.com",
   siteName: "Ventex",
   type: "website",
@@ -55,8 +56,8 @@ export const metadata: Metadata = {
  },
  twitter: {
   card: "summary_large_image",
-  title: "Ventex — Startup Discovery, Investor Connections & Growth Platform",
-  description: "A startup ecosystem connecting founders, investors, buyers, and opportunities. Discover startups, network with investors, promote your products, and accelerate founder growth.",
+  title: "Ventex | Startup Marketplace for Founders and Investors",
+  description: "Ventex is a startup marketplace where founders pitch startups, connect with investors, raise funding, discover opportunities, and grow their ventures.",
   images: ["https://www.ventexx.com/logo-512.png"],
  },
  icons: {
@@ -100,9 +101,11 @@ export default function RootLayout({
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "Ventex",
+          "alternateName": ["Ventex Startup Marketplace", "Ventex Pitch Platform"],
           "url": "https://www.ventexx.com",
           "logo": "https://www.ventexx.com/logo.png",
-          "description": "A startup ecosystem connecting founders, investors, buyers, and opportunities.",
+          "description": "Ventex is a global startup marketplace and pitch platform connecting ambitious founders with verified investors.",
+          "knowsAbout": ["Startup Funding", "Venture Capital", "Startup Marketplace", "Angel Investing", "Pitch Decks"],
           "sameAs": [
             "https://x.com/ventex_hq",
             "https://www.linkedin.com/in/ventex",

@@ -86,19 +86,44 @@ export default async function Home() {
  return (
  <>
  <JsonLd data={{
- "@context": "https://schema.org",
- "@type": "Organization",
- "name": "Ventex",
- "url": "https://www.ventexx.com",
- "description": "Where startups pitch, fund and sell.",
- "logo": "https://www.ventexx.com/logo.png",
- "sameAs": [
- "https://twitter.com/ventex",
- "https://linkedin.com/company/ventex",
- "https://instagram.com/ventex",
- "https://youtube.com/@ventex"
- ]
- }} />
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Ventex",
+        "url": "https://www.ventexx.com",
+        "description": "Where startups pitch, fund and sell.",
+        "logo": "https://www.ventexx.com/logo.png",
+        "sameAs": [
+          "https://twitter.com/ventex",
+          "https://linkedin.com/company/ventex",
+          "https://instagram.com/ventex",
+          "https://youtube.com/@ventex"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Ventex?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ventex is a global marketplace connecting ambitious startup founders with verified investors to streamline the fundraising process."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do founders pitch on Ventex?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Founders create a comprehensive pitch profile including traction, team data, video pitches, and secure data rooms for investors to review."
+            }
+          }
+        ]
+      }
+    ]
+  }} />
 
  <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
  <div className="absolute inset-0 bg-[var(--bg)]/60" />
@@ -106,22 +131,33 @@ export default async function Home() {
  <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl items-center px-4 py-20">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-[64px] items-center w-full">
  <div className="text-left stagger-2">
- <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8" style={{ borderColor: 'var(--border2)' }}>
+ <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8 rounded-full bg-[var(--bg2)]" style={{ borderColor: 'var(--border2)' }}>
  <span className="h-1.5 w-1.5 animate-[pulseDot_2s_infinite] rounded-full bg-emerald-500" />
  v1.0 · Early Access Now Open
  </div>
 
- <h1 className="max-w-2xl text-balance text-[clamp(32px,6vw,64px)] font-extrabold leading-none tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
- Where startups<br />pitch, fund and sell.
+ <h1 className="max-w-2xl text-balance text-[clamp(40px,7vw,72px)] font-extrabold leading-[1.05] tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
+ Where startups pitch,<br />fund and sell.
  </h1>
 
- <p className="max-w-[520px] text-[19px] leading-[1.55] text-[var(--text2)] mb-10 transition-colors duration-400">
- The platform for founders, investors and startup-builders - Anywhere.
+ <p className="max-w-[520px] text-[18px] leading-[1.6] text-[var(--text2)] mb-8 transition-colors duration-400">
+ Ventex is a startup marketplace connecting founders, investors, and startup builders worldwide.
  </p>
 
- <div className="flex flex-wrap items-center gap-5">
- <Link href="/founder/create-pitch" className="btn-primary inline-flex items-center gap-2 transition-transform shadow-sm hover:shadow-lg">Create your pitch <span aria-hidden="true">→</span></Link>
- <Link href="/discover" className="btn-secondary transition-colors">Explore pitches</Link>
+ <div className="mb-10 max-w-[520px]">
+    <p className="font-semibold text-[var(--text)] mb-3">Ventex helps founders:</p>
+    <ul className="grid grid-cols-2 gap-2 text-sm text-[var(--text2)]">
+      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Pitch startups</li>
+      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Gain visibility</li>
+      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Connect with investors</li>
+      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Discover opportunities</li>
+      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Raise funding</li>
+    </ul>
+  </div>
+
+ <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+ <Link href="/founder/create-pitch" className="btn-primary w-full sm:w-auto inline-flex items-center gap-2">I am a Founder <span aria-hidden="true">→</span></Link>
+ <Link href="/discover" className="btn-secondary w-full sm:w-auto">I am an Investor</Link>
  </div>
 
  <div className="mono mt-10 text-[11px] text-[var(--text3)] hidden sm:block">
