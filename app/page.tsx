@@ -125,8 +125,8 @@ export default async function Home() {
     ]
   }} />
 
- <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden bg-[var(--bg)]">
- <div className="absolute inset-0 bg-[var(--bg)]/60" />
+ <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden">
+ <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/40 via-[var(--bg)]/80 to-[var(--bg)] pointer-events-none" />
  
  <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl items-center px-4 py-20">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-[64px] items-center w-full">
@@ -189,7 +189,7 @@ export default async function Home() {
 
 
  {featuredFlag?.enabled && (featuredPitches || []).length > 0 ? (
- <section className="border-y bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
+ <section className="py-20">
  <div className="mx-auto max-w-6xl px-4">
  <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} featured this week</div>
  <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -204,7 +204,7 @@ export default async function Home() {
  </section>
  ) : null}
 
- <section id="discover" className="border-y bg-[var(--bg2)] py-16" style={{ borderColor: 'var(--border)' }}>
+ <section id="discover" className="py-20">
  <div className="mx-auto max-w-6xl px-4">
  <div className="mb-8 flex items-end justify-between gap-6">
  <div>
@@ -252,7 +252,7 @@ export default async function Home() {
  </div>
  </section>
 
- <section id="features" className="bg-[var(--bg)] py-20">
+ <section id="features" className="py-20">
  <div className="mx-auto max-w-6xl px-4">
  <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} features</div>
  <h2 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">
@@ -279,7 +279,7 @@ export default async function Home() {
  <Testimonials />
 
  {stats.length > 0 && (
- <section className="border-y bg-[var(--bg2)] py-12" style={{ borderColor: 'var(--border)' }}>
+ <section className="py-16">
  <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
  {stats.map(({ label, value }) => (
  <div key={label} className="reveal py-8 text-center">
@@ -292,7 +292,7 @@ export default async function Home() {
  </section>
  )}
 
- <section id="how-it-works" className="bg-[var(--bg)] py-20">
+ <section id="how-it-works" className="py-20">
  <div className="mx-auto max-w-6xl px-4">
  <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} how it works</div>
  <div className="relative mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -308,7 +308,7 @@ export default async function Home() {
  </div>
  </section>
 
- <section id="join" className="overflow-hidden border-y bg-[var(--bg2)] py-14 text-center" style={{ borderColor: 'var(--border)' }}>
+ <section id="join" className="overflow-hidden py-24 text-center">
  <div className="mx-auto max-w-4xl px-4">
  <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
  <div className="mt-5 h-5 overflow-hidden">

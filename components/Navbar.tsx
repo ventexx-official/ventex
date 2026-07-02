@@ -133,14 +133,9 @@ export default function Navbar() {
  };
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/discover', label: 'Discover' },
-    { href: '/founder/create-pitch', label: 'For Founders' },
-    { href: '/investors', label: 'For Investors' },
-    { href: '/faq', label: 'FAQ' },
-    { href: '/resources/schemes', label: 'Resources' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/marketplace', label: 'Marketplace' },
+    { href: '/battle', label: 'Pitch Battle' },
+    { href: '/compare/ventex-vs-angellist', label: 'Compare' },
   ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

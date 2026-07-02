@@ -25,7 +25,7 @@ export default async function Testimonials() {
   const hasStories = stories && stories.length > 0;
 
   return (
-    <section id="testimonials" className="bg-[var(--bg)] py-20">
+    <section id="testimonials" className="py-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'// '} founder stories</div>
         <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">

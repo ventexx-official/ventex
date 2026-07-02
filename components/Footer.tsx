@@ -10,11 +10,6 @@ const columns = [
       ['Marketplace', '/marketplace'],
       ['Intelligence', '/intelligence'],
       ['Catalyst', '/catalyst'],
-    ],
-  },
-  {
-    title: 'Events',
-    links: [
       ['The Arena', '/arena'],
       ['Pitch Battle', '/battle'],
       ['Events', '/events'],
@@ -41,6 +36,15 @@ const columns = [
       ['Seller Agreement', '/seller-agreement'],
       ['Refunds', '/refund-policy'],
       ['Delivery', '/delivery-policy'],
+    ],
+  },
+  {
+    title: 'Social',
+    links: [
+      ['Instagram', 'https://www.instagram.com/ventexhq/'],
+      ['X (Twitter)', 'https://x.com/ventex_hq'],
+      ['LinkedIn', 'https://www.linkedin.com/in/ventex'],
+      ['YouTube', 'https://youtube.com/@ventexhq?si=9BZ8Rg7W5tpkWkBv'],
     ],
   },
 ];
@@ -99,22 +103,7 @@ export default function Footer() {
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[var(--text3)] md:mx-0">
               Where startups pitch, fund and sell.
             </p>
-            {/* Social Icons */}
-            <div className="mt-5 flex items-center justify-center gap-3 md:justify-start">
-              {socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border text-[var(--text3)] transition-colors hover:border-[var(--text2)] hover:text-[var(--text)]"
-                  style={{ borderColor: 'var(--border2)' }}
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
+            {/* Social Icons mapped as text links in columns instead */}
           </div>
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
