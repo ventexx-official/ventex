@@ -160,10 +160,10 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: profile.full_name || "Ventex User",
-          image: profile.avatar_url || "https://www.ventexx.com/logo.png",
-          description: profile.bio || "Ventex User Profile",
-          url: `https://www.ventexx.com/profile/${profile.id}`
+          name: profile.full_name || "Folenzo User",
+          image: profile.avatar_url || "https://www.folenzo.com/logo.png",
+          description: profile.bio || "Folenzo User Profile",
+          url: `https://www.folenzo.com/profile/${profile.id}`
         })
       }}
     />
@@ -183,7 +183,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
   <div className="flex flex-col sm:flex-row sm:items-center gap-3">
    <h1 className="text-3xl font-black text-[var(--text)] tracking-tighter truncate">{displayName}</h1>
    {profile.verified && (
-     <span title="Identity and role confirmed by Ventex" className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 cursor-help">
+     <span title="Identity and role confirmed by Folenzo" className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 cursor-help">
        <CheckCircle className="w-3.5 h-3.5" /> Verified
      </span>
    )}
@@ -211,7 +211,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  <div className="h-full bg-emerald-500" style={{ width: `${Math.min(100, xp % 100)}%` }} />
  </div>
  <div className="mt-3 flex flex-wrap gap-2">
- {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventex Live Participant'].map((badge) => (
+ {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Folenzo Live Participant'].map((badge) => (
  <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[var(--text)] text-[var(--bg)]' : 'bg-[var(--card-bg)] text-[var(--text2)]'}`}>
  {badge}
  </span>

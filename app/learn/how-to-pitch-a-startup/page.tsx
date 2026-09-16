@@ -15,14 +15,14 @@ export default function HowToPitchArticle() {
     "description": "Learn how to craft a compelling startup pitch, structure your pitch deck, and secure investor meetings.",
     "author": {
       "@type": "Organization",
-      "name": "Ventex"
+      "name": "Folenzo"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Ventex",
+      "name": "Folenzo",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.ventexx.com/logo.png"
+        "url": "https://www.folenzo.com/logo.png"
       }
     }
   };
@@ -66,12 +66,12 @@ export default function HowToPitchArticle() {
 
             <h2 className="text-2xl font-bold mt-12 mb-4">3. Delivering the Narrative</h2>
             <p>
-              When pitching verbally, whether on a Zoom call or via a video upload on a platform like Ventex, your delivery matters as much as your metrics. Avoid speaking in jargon. Use analogies to explain complex technologies. Most importantly, practice until your delivery feels conversational, not rehearsed.
+              When pitching verbally, whether on a Zoom call or via a video upload on a platform like Folenzo, your delivery matters as much as your metrics. Avoid speaking in jargon. Use analogies to explain complex technologies. Most importantly, practice until your delivery feels conversational, not rehearsed.
             </p>
 
             <h3 className="text-xl font-bold mt-8 mb-3">Leveraging Startup Marketplaces</h3>
             <p>
-              In the modern fundraising ecosystem, platforms like Ventex serve as your digital pitch room. Having a centralized, highly-polished pitch profile allows you to asynchronously pitch to hundreds of verified investors. Ensure your digital profile perfectly mirrors the narrative of your live pitch.
+              In the modern fundraising ecosystem, platforms like Folenzo serve as your digital pitch room. Having a centralized, highly-polished pitch profile allows you to asynchronously pitch to hundreds of verified investors. Ensure your digital profile perfectly mirrors the narrative of your live pitch.
             </p>
 
             <h2 className="text-2xl font-bold mt-12 mb-4">4. Handling Investor Q&A</h2>
@@ -83,7 +83,7 @@ export default function HowToPitchArticle() {
             
             <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--border)]">
               <h4 className="text-xl font-bold text-[var(--text)] mb-2">Ready to pitch to real investors?</h4>
-              <p className="text-[var(--text2)] mb-6">Create your comprehensive startup profile on Ventex and get discovered by top-tier angels and VCs.</p>
+              <p className="text-[var(--text2)] mb-6">Create your comprehensive startup profile on Folenzo and get discovered by top-tier angels and VCs.</p>
               <a href="/founder/create-pitch" className="btn-primary">Create your pitch profile</a>
             </div>
           </div>

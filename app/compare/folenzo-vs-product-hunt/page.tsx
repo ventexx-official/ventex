@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Ventex vs AngelList - Startup Platform Comparison',
-  description: 'See how Ventex compares to AngelList for startup fundraising, investor discovery, and pitch management.',
+  title: 'Folenzo vs Product Hunt - Startup Platform Comparison',
+  description: 'See how Folenzo compares to Product Hunt for startup fundraising, investor discovery, and pitch management.',
 };
 
 export default function ComparePage() {
@@ -14,10 +14,10 @@ export default function ComparePage() {
         <div className="text-center mb-16">
           <span className="text-sm font-bold tracking-widest text-[var(--text3)] uppercase">Platform Comparison</span>
           <h1 className="mt-4 text-4xl md:text-5xl font-extrabold text-[var(--text)] tracking-tight">
-            Ventex vs AngelList
+            Folenzo vs Product Hunt
           </h1>
           <p className="mt-4 text-lg text-[var(--text2)]">
-            Why founders and investors are choosing Ventex over traditional investment syndicates platforms.
+            Why founders and investors are choosing Folenzo over traditional product discovery platforms.
           </p>
         </div>
 
@@ -26,15 +26,15 @@ export default function ComparePage() {
             <thead>
               <tr className="bg-[var(--bg2)] border-b border-[var(--border)]">
                 <th className="p-6 font-bold text-[var(--text)]">Feature</th>
-                <th className="p-6 font-bold text-blue-600 bg-blue-50/10">Ventex</th>
-                <th className="p-6 font-bold text-[var(--text2)]">AngelList</th>
+                <th className="p-6 font-bold text-blue-600 bg-blue-50/10">Folenzo</th>
+                <th className="p-6 font-bold text-[var(--text2)]">Product Hunt</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)] text-[var(--text)]">
               <tr>
                 <td className="p-6 font-medium">Core Focus</td>
                 <td className="p-6 bg-blue-50/10">Startup pitching & direct investor networking</td>
-                <td className="p-6 text-[var(--text2)]">Investment Syndicates</td>
+                <td className="p-6 text-[var(--text2)]">Product Discovery</td>
               </tr>
               <tr>
                 <td className="p-6 font-medium">Secure Deal Rooms</td>
@@ -59,13 +59,13 @@ export default function ComparePage() {
           <div className="bg-[var(--bg2)] p-8 rounded-2xl">
             <h3 className="text-xl font-bold text-[var(--text)] mb-4">For Founders</h3>
             <p className="text-[var(--text2)] leading-relaxed">
-              Unlike AngelList, Ventex gives founders a unified pitch profile complete with video, documents, and integrated data rooms. You control exactly who sees your sensitive traction metrics, allowing you to pitch globally without compromising confidentiality.
+              Unlike Product Hunt, Folenzo gives founders a unified pitch profile complete with video, documents, and integrated data rooms. You control exactly who sees your sensitive traction metrics, allowing you to pitch globally without compromising confidentiality.
             </p>
           </div>
           <div className="bg-[var(--bg2)] p-8 rounded-2xl">
             <h3 className="text-xl font-bold text-[var(--text)] mb-4">For Investors</h3>
             <p className="text-[var(--text2)] leading-relaxed">
-              While AngelList focuses on investment syndicates, Ventex focuses on high-signal discovery. Use granular filtering to find startups matching your exact thesis, review AI-generated summaries, and request data room access in one click.
+              While Product Hunt focuses on product discovery, Folenzo focuses on high-signal discovery. Use granular filtering to find startups matching your exact thesis, review AI-generated summaries, and request data room access in one click.
             </p>
           </div>
         </div>

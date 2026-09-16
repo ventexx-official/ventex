@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 const comparisons = [
-  { slug: 'ventex-vs-angellist', competitor: 'AngelList', type: 'Investment Syndicates' },
-  { slug: 'ventex-vs-product-hunt', competitor: 'Product Hunt', type: 'Product Discovery' },
-  { slug: 'ventex-vs-gust', competitor: 'Gust', type: 'SaaS for Founders' },
-  { slug: 'ventex-vs-seedinvest', competitor: 'SeedInvest', type: 'Equity Crowdfunding' }
+  { slug: 'folenzo-vs-angellist', competitor: 'AngelList', type: 'Investment Syndicates' },
+  { slug: 'folenzo-vs-product-hunt', competitor: 'Product Hunt', type: 'Product Discovery' },
+  { slug: 'folenzo-vs-gust', competitor: 'Gust', type: 'SaaS for Founders' },
+  { slug: 'folenzo-vs-seedinvest', competitor: 'SeedInvest', type: 'Equity Crowdfunding' }
 ];
 
 const template = (c) => `import React from 'react';
@@ -13,8 +13,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Ventex vs ${c.competitor} - Startup Platform Comparison',
-  description: 'See how Ventex compares to ${c.competitor} for startup fundraising, investor discovery, and pitch management.',
+  title: 'Folenzo vs ${c.competitor} - Startup Platform Comparison',
+  description: 'See how Folenzo compares to ${c.competitor} for startup fundraising, investor discovery, and pitch management.',
 };
 
 export default function ComparePage() {
@@ -24,10 +24,10 @@ export default function ComparePage() {
         <div className="text-center mb-16">
           <span className="text-sm font-bold tracking-widest text-[var(--text3)] uppercase">Platform Comparison</span>
           <h1 className="mt-4 text-4xl md:text-5xl font-extrabold text-[var(--text)] tracking-tight">
-            Ventex vs ${c.competitor}
+            Folenzo vs ${c.competitor}
           </h1>
           <p className="mt-4 text-lg text-[var(--text2)]">
-            Why founders and investors are choosing Ventex over traditional ${c.type.toLowerCase()} platforms.
+            Why founders and investors are choosing Folenzo over traditional ${c.type.toLowerCase()} platforms.
           </p>
         </div>
 
@@ -36,7 +36,7 @@ export default function ComparePage() {
             <thead>
               <tr className="bg-[var(--bg2)] border-b border-[var(--border)]">
                 <th className="p-6 font-bold text-[var(--text)]">Feature</th>
-                <th className="p-6 font-bold text-blue-600 bg-blue-50/10">Ventex</th>
+                <th className="p-6 font-bold text-blue-600 bg-blue-50/10">Folenzo</th>
                 <th className="p-6 font-bold text-[var(--text2)]">${c.competitor}</th>
               </tr>
             </thead>
@@ -69,13 +69,13 @@ export default function ComparePage() {
           <div className="bg-[var(--bg2)] p-8 rounded-2xl">
             <h3 className="text-xl font-bold text-[var(--text)] mb-4">For Founders</h3>
             <p className="text-[var(--text2)] leading-relaxed">
-              Unlike ${c.competitor}, Ventex gives founders a unified pitch profile complete with video, documents, and integrated data rooms. You control exactly who sees your sensitive traction metrics, allowing you to pitch globally without compromising confidentiality.
+              Unlike ${c.competitor}, Folenzo gives founders a unified pitch profile complete with video, documents, and integrated data rooms. You control exactly who sees your sensitive traction metrics, allowing you to pitch globally without compromising confidentiality.
             </p>
           </div>
           <div className="bg-[var(--bg2)] p-8 rounded-2xl">
             <h3 className="text-xl font-bold text-[var(--text)] mb-4">For Investors</h3>
             <p className="text-[var(--text2)] leading-relaxed">
-              While ${c.competitor} focuses on ${c.type.toLowerCase()}, Ventex focuses on high-signal discovery. Use granular filtering to find startups matching your exact thesis, review AI-generated summaries, and request data room access in one click.
+              While ${c.competitor} focuses on ${c.type.toLowerCase()}, Folenzo focuses on high-signal discovery. Use granular filtering to find startups matching your exact thesis, review AI-generated summaries, and request data room access in one click.
             </p>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function ComparePage() {
 }`;
 
 comparisons.forEach(c => {
-  const dir = path.join('C:\\Users\\HP\\Ventex\\app\\compare', c.slug);
+  const dir = path.join('C:\\Users\\HP\\Folenzo\\app\\compare', c.slug);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'page.tsx'), template(c));
 });

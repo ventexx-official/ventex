@@ -1,4 +1,4 @@
--- Ventex feature batches A-E schema updates
+-- Folenzo feature batches A-E schema updates
 
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS bio text;
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS response_rate integer DEFAULT 100;

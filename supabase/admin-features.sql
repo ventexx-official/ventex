@@ -1,5 +1,5 @@
 -- ====================================================================
--- Ventex Database Migrations: Admin Features (Days 39–43)
+-- Folenzo Database Migrations: Admin Features (Days 39–43)
 -- Execute this script in your Supabase SQL Editor.
 -- ====================================================================
 

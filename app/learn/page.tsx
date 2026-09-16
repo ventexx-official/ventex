@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Ventex Learn | Startup & Investor Guides',
+  title: 'Folenzo Learn | Startup & Investor Guides',
   description: 'Comprehensive guides and resources for startup founders and investors. Learn how to pitch, raise funds, and conduct due diligence.',
 };
 
@@ -36,7 +36,7 @@ const guides = [
   {
     title: 'Startup marketplace guide',
     slug: 'startup-marketplace-guide',
-    description: 'How to leverage startup marketplaces like Ventex to accelerate your fundraising and discovery.'
+    description: 'How to leverage startup marketplaces like Folenzo to accelerate your fundraising and discovery.'
   },
   {
     title: 'Startup founder handbook',
@@ -59,7 +59,7 @@ export default function LearnHub() {
             Knowledge Base
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-[var(--text)] tracking-tight mb-6">
-            Ventex Guides & Resources
+            Folenzo Guides & Resources
           </h1>
           <p className="text-lg text-[var(--text2)] max-w-2xl mx-auto">
             Deep-dive articles, strategic playbooks, and tactical advice designed to help founders raise capital and investors discover breakout companies.

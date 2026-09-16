@@ -1,5 +1,5 @@
 -- ============================================================
--- Ventex – Idempotent Migration v2
+-- Folenzo – Idempotent Migration v2
 -- Run safely multiple times; no errors on repeat execution.
 -- ============================================================
 

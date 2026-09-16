@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://www.ventexx.com',
+  siteUrl: 'https://www.folenzo.com',
   generateRobotsTxt: false, // We created a custom robots.txt
   exclude: [
     '/admin*',

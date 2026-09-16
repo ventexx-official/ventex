@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { resend, FROM_EMAIL, VENTEX_URL } from '@/lib/resend';
+import { resend, FROM_EMAIL, FOLENZO_URL } from '@/lib/resend';
 import { rateLimit } from '@/lib/rate-limit';
 import { requireInternalSecret, requireUser } from '@/lib/api-security';
 
@@ -35,7 +35,7 @@ function buildEmail({
         <!-- Logo Bar -->
         <tr>
           <td style="padding:28px 36px 20px;border-bottom:1px solid #f0f0f0;">
-            <span style="font-size:20px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase;color:#111111;font-style:italic;">VENTEX</span>
+            <span style="font-size:20px;font-weight:900;letter-spacing:-0.05em;text-transform:uppercase;color:#111111;font-style:italic;">FOLENZO</span>
           </td>
         </tr>
 
@@ -53,9 +53,9 @@ function buildEmail({
           <td style="padding:20px 36px 28px;border-top:1px solid #f0f0f0;">
             <p style="margin:0;font-size:12px;color:#999999;">
               You're receiving this because you have an account on 
-              <a href="${VENTEX_URL}" style="color:#666666;">ventex.co</a>.
+              <a href="${FOLENZO_URL}" style="color:#666666;">folenzo.co</a>.
               &nbsp;·&nbsp;
-              <a href="${VENTEX_URL}/unsubscribe" style="color:#666666;text-decoration:underline;">Unsubscribe</a>
+              <a href="${FOLENZO_URL}/unsubscribe" style="color:#666666;text-decoration:underline;">Unsubscribe</a>
             </p>
           </td>
         </tr>
@@ -115,13 +115,13 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
   switch (type) {
     case 'welcome':
       return {
-        subject: `Welcome to Ventex, ${data.name || 'there'}! 🚀`,
+        subject: `Welcome to Folenzo, ${data.name || 'there'}! 🚀`,
         html: buildEmail({
-          heading: `Welcome to Ventex, ${data.name || 'there'}!`,
-          body: `<p>You're in. Ventex is where serious startups meet serious investors  -  and you've just become part of it.</p>
+          heading: `Welcome to Folenzo, ${data.name || 'there'}!`,
+          body: `<p>You're in. Folenzo is where serious startups meet serious investors  -  and you've just become part of it.</p>
                  <p>Start by exploring the pitch hub, browsing the marketplace, or submitting your first pitch.</p>`,
-          ctaText: 'Explore Ventex',
-          ctaUrl: `${VENTEX_URL}/discover`,
+          ctaText: 'Explore Folenzo',
+          ctaUrl: `${FOLENZO_URL}/discover`,
         }),
       };
 
@@ -134,7 +134,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;">"${data.commentText || ''}"</blockquote>
                  <p>Reply to keep the conversation going and build investor confidence.</p>`,
           ctaText: 'View Comment',
-          ctaUrl: `${VENTEX_URL}/pitch/${data.pitchId}#comments`,
+          ctaUrl: `${FOLENZO_URL}/pitch/${data.pitchId}#comments`,
         }),
       };
 
@@ -143,11 +143,11 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `🤝 An investor expressed interest in "${data.startupName}"`,
         html: buildEmail({
           heading: `An investor is interested in ${data.startupName}`,
-          body: `<p><strong>${data.investorName || 'An investor'}</strong> has expressed interest in your startup on Ventex and wants to connect.</p>
+          body: `<p><strong>${data.investorName || 'An investor'}</strong> has expressed interest in your startup on Folenzo and wants to connect.</p>
                  ${data.message ? `<blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;">"${data.message}"</blockquote>` : ''}
                  <p>Review their profile and accept or decline from your founder dashboard.</p>`,
           ctaText: 'Review in Dashboard',
-          ctaUrl: `${VENTEX_URL}/founder/dashboard`,
+          ctaUrl: `${FOLENZO_URL}/founder/dashboard`,
         }),
       };
 
@@ -157,9 +157,9 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
           body: `<p>Great news  -  the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
-                 <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Ventex.</p>`,
+                 <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Folenzo.</p>`,
           ctaText: 'Enter Deal Room',
-          ctaUrl: `${VENTEX_URL}/deal-room/${data.interestId}`,
+          ctaUrl: `${FOLENZO_URL}/deal-room/${data.interestId}`,
         }),
       };
 
@@ -168,13 +168,13 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `🎉 New lead for "${data.productName}"!`,
         html: buildEmail({
           heading: `New lead for "${data.productName}"!`,
-          body: `<p>Congratulations! A buyer is interested in purchasing your product on Ventex Marketplace.</p>
+          body: `<p>Congratulations! A buyer is interested in purchasing your product on Folenzo Marketplace.</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                  </table>
                  <p>Contact the buyer to finalize the deal.</p>`,
           ctaText: 'View Dashboard',
-          ctaUrl: `${VENTEX_URL}/founder/dashboard`,
+          ctaUrl: `${FOLENZO_URL}/founder/dashboard`,
         }),
       };
 
@@ -183,12 +183,12 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         subject: `📦 Your interest for "${data.productName}" is confirmed`,
         html: buildEmail({
           heading: `Your interest is confirmed!`,
-          body: `<p>Thanks for your interest on Ventex Marketplace. The seller will be in touch shortly.</p>
+          body: `<p>Thanks for your interest on Folenzo Marketplace. The seller will be in touch shortly.</p>
                  <table style="width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;">
                    <tr><td style="color:#888;font-size:13px;">Product</td><td style="font-weight:700;font-size:13px;">${data.productName}</td></tr>
                  </table>`,
           ctaText: 'View Marketplace',
-          ctaUrl: `${VENTEX_URL}/marketplace`,
+          ctaUrl: `${FOLENZO_URL}/marketplace`,
         }),
       };
 
@@ -196,11 +196,11 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
       return {
         subject: `🤖 Your pitch "${data.pitchName}" is live with an AI briefing`,
         html: buildEmail({
-          heading: `Your pitch is live on Ventex!`,
+          heading: `Your pitch is live on Folenzo!`,
           body: `<p>Your pitch <strong>"${data.pitchName}"</strong> has been published and an AI-generated briefing is now attached to it.</p>
-                 <p>Investors browsing Ventex can see your pitch with the AI summary, increasing your discoverability. Make sure your details are complete to get the best quality briefing.</p>`,
+                 <p>Investors browsing Folenzo can see your pitch with the AI summary, increasing your discoverability. Make sure your details are complete to get the best quality briefing.</p>`,
           ctaText: 'View Your Pitch',
-          ctaUrl: `${VENTEX_URL}/pitch/${data.pitchId}`,
+          ctaUrl: `${FOLENZO_URL}/pitch/${data.pitchId}`,
         }),
       };
 
@@ -214,13 +214,13 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <blockquote style="border-left:3px solid #ef4444;margin:16px 0;padding:12px 16px;color:#555;font-style:italic;background:#fef2f2;border-radius:4px;">"${data.reason || 'No specific reason provided.'}"</blockquote>
                  <p>Please update your pitch details according to the feedback and resubmit for review.</p>`,
           ctaText: 'Edit Pitch',
-          ctaUrl: `${VENTEX_URL}/founder/dashboard`,
+          ctaUrl: `${FOLENZO_URL}/founder/dashboard`,
         }),
       };
 
     case 'contact_submission':
       return {
-        subject: `New Ventex contact submission: ${data.subject || 'General'}`,
+        subject: `New Folenzo contact submission: ${data.subject || 'General'}`,
         html: buildEmail({
           heading: 'New contact submission',
           body: `<p><strong>Name:</strong> ${data.name || 'Unknown'}</p>
@@ -229,13 +229,13 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <p><strong>Message:</strong></p>
                  <blockquote style="border-left:3px solid #e5e5e5;margin:16px 0;padding:12px 16px;color:#555;">${data.message || ''}</blockquote>`,
           ctaText: 'Open Admin',
-          ctaUrl: `${VENTEX_URL}/admin`,
+          ctaUrl: `${FOLENZO_URL}/admin`,
         }),
       };
 
     case 'catalyst_application':
       return {
-        subject: `Ventex Catalyst application: ${data.fullName || data.name || 'Applicant'}`,
+        subject: `Folenzo Catalyst application: ${data.fullName || data.name || 'Applicant'}`,
         html: buildEmail({
           heading: 'Catalyst application received',
           body: `<p><strong>Name:</strong> ${data.fullName || data.name || 'Unknown'}</p>
@@ -245,7 +245,7 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
                  <p><strong>Bio:</strong> ${data.bio || ''}</p>
                  <p><strong>Offer:</strong> ${data.offer || data.expertise || ''}</p>`,
           ctaText: 'Review in Admin',
-          ctaUrl: `${VENTEX_URL}/admin`,
+          ctaUrl: `${FOLENZO_URL}/admin`,
         }),
       };
 
@@ -254,10 +254,10 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
     case 'build_request':
     case 'weekly_digest':
       return {
-        subject: data.subject || 'Ventex notification',
+        subject: data.subject || 'Folenzo notification',
         html: buildEmail({
-          heading: data.heading || 'Ventex notification',
-          body: data.body || '<p>A Ventex workflow was triggered.</p>',
+          heading: data.heading || 'Folenzo notification',
+          body: data.body || '<p>A Folenzo workflow was triggered.</p>',
           ctaText: data.ctaText,
           ctaUrl: data.ctaUrl,
         }),

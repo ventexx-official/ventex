@@ -1,5 +1,5 @@
 -- ====================================================================
--- Ventex Production Audit Fix Migration
+-- Folenzo Production Audit Fix Migration
 -- 
 -- Fixes:
 -- 1. Missing admin RLS policies for pitches (ROOT CAUSE of dashboard/queue inconsistency)

@@ -15,14 +15,14 @@ export default function DueDiligenceArticle() {
     "description": "A comprehensive framework for startup investors to conduct thorough due diligence, assess founding teams, and analyze traction.",
     "author": {
       "@type": "Organization",
-      "name": "Ventex"
+      "name": "Folenzo"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Ventex",
+      "name": "Folenzo",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.ventexx.com/logo.png"
+        "url": "https://www.folenzo.com/logo.png"
       }
     }
   };
@@ -72,7 +72,7 @@ export default function DueDiligenceArticle() {
               Traction isn't always revenue. In pre-seed companies, traction might look like highly engaged beta users, a fast-growing waitlist, or letters of intent (LOIs) from enterprise clients. 
             </p>
             <p className="mt-4">
-              When analyzing a data room on a platform like Ventex, look closely at:
+              When analyzing a data room on a platform like Folenzo, look closely at:
             </p>
             <ul className="list-disc pl-6 space-y-2 mt-4 text-[var(--text2)]">
               <li><strong>Unit Economics:</strong> Are they acquiring customers profitably, or buying growth unsustainably?</li>
@@ -82,14 +82,14 @@ export default function DueDiligenceArticle() {
 
             <h2 className="text-2xl font-bold mt-12 mb-4">5. Utilizing Digital Deal Rooms</h2>
             <p>
-              Historically, due diligence required endless email chains and scattered PDFs. Today, modern investors use integrated platforms to access secure data rooms instantly. When reviewing a startup on Ventex, you can securely view cap tables, historical metrics, and legal documents in one unified interface, dramatically accelerating your decision-making process.
+              Historically, due diligence required endless email chains and scattered PDFs. Today, modern investors use integrated platforms to access secure data rooms instantly. When reviewing a startup on Folenzo, you can securely view cap tables, historical metrics, and legal documents in one unified interface, dramatically accelerating your decision-making process.
             </p>
 
             <hr className="my-12 border-[var(--border)]" />
             
             <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--border)]">
               <h4 className="text-xl font-bold text-[var(--text)] mb-2">Ready to discover your next investment?</h4>
-              <p className="text-[var(--text2)] mb-6">Join Ventex to access verified startup pitches and secure data rooms.</p>
+              <p className="text-[var(--text2)] mb-6">Join Folenzo to access verified startup pitches and secure data rooms.</p>
               <a href="/discover" className="btn-primary">Explore Live Startups</a>
             </div>
           </div>

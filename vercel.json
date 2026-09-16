@@ -2,14 +2,14 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "ventex-eight.vercel.app" }],
-      "destination": "https://ventexx.com/$1",
+      "has": [{ "type": "host", "value": "folenzo-eight.vercel.app" }],
+      "destination": "https://folenzo.com/$1",
       "permanent": true
     },
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "ventex-ventex-s-projects.vercel.app" }],
-      "destination": "https://ventexx.com/$1",
+      "has": [{ "type": "host", "value": "folenzo-folenzo-s-projects.vercel.app" }],
+      "destination": "https://folenzo.com/$1",
       "permanent": true
     }
   ]

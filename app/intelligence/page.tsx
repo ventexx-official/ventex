@@ -3,7 +3,7 @@ import { createSupabaseAdmin } from '@/lib/supabase-admin';
 import { TrendingUp, Sparkles, Newspaper, Rocket, Target, Zap } from 'lucide-react';
 
 export const metadata = {
-  title: 'Ventex Intelligence | Startup News, Funding & Insights',
+  title: 'Folenzo Intelligence | Startup News, Funding & Insights',
   description: 'Curated news, founder stories, funding rounds, and growth insights for the startup ecosystem.',
 };
 
@@ -42,11 +42,11 @@ export default async function IntelligencePage() {
               <Sparkles className="h-5 w-5" />
             </span>
             <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">
-              Ventex Hub
+              Folenzo Hub
             </div>
           </div>
           <h1 className="text-[clamp(40px,5vw,72px)] font-black tracking-tighter text-[var(--text)] mb-6">
-            Ventex <span className="text-[var(--text2)]">Intelligence</span>
+            Folenzo <span className="text-[var(--text2)]">Intelligence</span>
           </h1>
           <p className="max-w-2xl text-xl text-[var(--text2)] leading-relaxed">
             The single source of truth for global startup funding, operator insights, product launches, and founder stories.
@@ -115,7 +115,7 @@ export default async function IntelligencePage() {
                       {article.title}
                     </h3>
                     <div className="text-xs font-semibold text-[var(--text3)]">
-                      {new Date(article.published_at).toLocaleDateString()} · {article.source_name || 'Ventex'}
+                      {new Date(article.published_at).toLocaleDateString()} · {article.source_name || 'Folenzo'}
                     </div>
                   </div>
                 </Link>
@@ -171,7 +171,7 @@ export default async function IntelligencePage() {
                 </div>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text2)] bg-[var(--bg2)] px-2 py-1 rounded">
-                    {article.source_name || 'Ventex'}
+                    {article.source_name || 'Folenzo'}
                   </span>
                   <span className="text-[11px] font-semibold text-[var(--text3)]">
                     {new Date(article.published_at).toLocaleDateString()}

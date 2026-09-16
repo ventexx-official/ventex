@@ -27,7 +27,7 @@ export default function DPIITSchemeHelper() {
 
   // Load saved from local storage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('ventex_saved_schemes');
+    const saved = localStorage.getItem('folenzo_saved_schemes');
     if (saved) setSavedSchemes(JSON.parse(saved));
   }, []);
 
@@ -36,7 +36,7 @@ export default function DPIITSchemeHelper() {
       ? savedSchemes.filter(s => s !== id)
       : [...savedSchemes, id];
     setSavedSchemes(newSaved);
-    localStorage.setItem('ventex_saved_schemes', JSON.stringify(newSaved));
+    localStorage.setItem('folenzo_saved_schemes', JSON.stringify(newSaved));
   };
 
   const toggleCompare = (id: string) => {

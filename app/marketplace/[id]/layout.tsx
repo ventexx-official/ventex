@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
  .eq('id', params.id)
  .maybeSingle();
 
- const title = product?.name ? `${product.name} â€” Ventex Marketplace` : 'Product on Ventex Marketplace';
+ const title = product?.name ? `${product.name} â€” Folenzo Marketplace` : 'Product on Folenzo Marketplace';
  const description = product?.description || `Explore ${product?.category || 'premium'} startup assets, tools, and services.`;
 
  return {
@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
  openGraph: {
  title,
  description,
- images: ['https://ventex.com/og-image.png'],
- url: `https://ventex.com/marketplace/${params.id}`,
+ images: ['https://folenzo.com/og-image.png'],
+ url: `https://folenzo.com/marketplace/${params.id}`,
  },
  twitter: {
  card: 'summary_large_image',
  title,
  description,
- images: ['https://ventex.com/og-image.png'],
+ images: ['https://folenzo.com/og-image.png'],
  }
  };
 }

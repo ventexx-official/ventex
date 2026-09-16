@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       console.error('Error logging Ko-fi donation:', insertError);
     }
 
-    // Award XP if email matches a Ventex user
+    // Award XP if email matches a Folenzo user
     if (kofiData.email) {
       const { data: user } = await admin
         .from('users')

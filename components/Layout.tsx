@@ -22,10 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
         if (session) {
           // Set cookie for middleware
-          document.cookie = `sb-ventex-auth-token=${session.access_token}; path=/; max-age=${session.expires_in}; SameSite=Lax; Secure`;
+          document.cookie = `sb-folenzo-auth-token=${session.access_token}; path=/; max-age=${session.expires_in}; SameSite=Lax; Secure`;
         }
       } else if (event === 'SIGNED_OUT') {
-        document.cookie = 'sb-ventex-auth-token=; path=/; max-age=0; SameSite=Lax; Secure';
+        document.cookie = 'sb-folenzo-auth-token=; path=/; max-age=0; SameSite=Lax; Secure';
       }
     });
 

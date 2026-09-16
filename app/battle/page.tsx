@@ -73,7 +73,7 @@ export default function BattlePage() {
  const init = async () => {
  const { data: { session } } = await supabase.auth.getSession();
  const userId = session?.user?.id || null;
- setVotedId(localStorage.getItem(`ventex_battle_vote_${week}_${userId || 'guest'}`));
+ setVotedId(localStorage.getItem(`folenzo_battle_vote_${week}_${userId || 'guest'}`));
  };
  init();
  load();
@@ -97,7 +97,7 @@ export default function BattlePage() {
  return;
  }
 
- const voteKey = `ventex_battle_vote_${week}_${session.user.id}`;
+ const voteKey = `folenzo_battle_vote_${week}_${session.user.id}`;
  if (localStorage.getItem(voteKey)) {
  setVotedId(localStorage.getItem(voteKey));
  return;

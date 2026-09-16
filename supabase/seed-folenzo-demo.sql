@@ -14,7 +14,7 @@ INSERT INTO public.pitches (
   ai_summary
 )
 SELECT
-  'VentexDemo',
+  'FolenzoDemo',
   'India startup platform',
   'SaaS',
   'Seed',
@@ -24,7 +24,7 @@ SELECT
   5000000,
   10,
   true,
-  'Demo pitch for Ventex early access.'
+  'Demo pitch for Folenzo early access.'
 WHERE NOT EXISTS (
   SELECT 1 FROM public.pitches WHERE status = 'live' LIMIT 1
 );

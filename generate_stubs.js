@@ -28,7 +28,7 @@ export default function ArticleStub() {
 }`;
 
 stubs.forEach(slug => {
-  const dir = path.join('C:\\Users\\HP\\Ventex\\app\\learn', slug);
+  const dir = path.join('C:\\Users\\HP\\Folenzo\\app\\learn', slug);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'page.tsx'), template(slug));
 });

@@ -40,7 +40,7 @@ export async function GET(req: Request) {
       
       if (existing) continue;
 
-      // 2. Use AI to generate a Ventex-focused summary and tags
+      // 2. Use AI to generate a Folenzo-focused summary and tags
       let summary = "A popular new story in the tech ecosystem.";
       let tags = ['startup'];
       

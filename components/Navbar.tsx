@@ -135,7 +135,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/marketplace', label: 'Marketplace' },
     { href: '/battle', label: 'Pitch Battle' },
-    { href: '/compare/ventex-vs-angellist', label: 'Compare' },
+    { href: '/compare/folenzo-vs-angellist', label: 'Compare' },
   ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
@@ -170,7 +170,7 @@ export default function Navbar() {
  <div className="flex justify-start">
  <div className="pointer-events-auto flex items-center h-14 px-6 rounded-full border transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,.1)] shadow-[0_5px_20px_rgba(0,0,0,.05)] backdrop-blur-[24px]" style={{ background: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
  <Link href="/" className="text-[20px] font-extrabold tracking-[-.5px] text-[var(--text)] hover:opacity-70 transition-opacity flex-shrink-0">
- Ventex
+ Folenzo
  </Link>
  </div>
  </div>

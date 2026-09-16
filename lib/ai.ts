@@ -1,5 +1,5 @@
 /**
- * Ventex AI Provider System
+ * Folenzo AI Provider System
  * Implements fallback logic: Gemini -> OpenAI -> DeepSeek
  */
 

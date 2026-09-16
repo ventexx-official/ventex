@@ -8,8 +8,8 @@ export default function KofiSupport() {
 
   useEffect(() => {
     // Check if user dismissed it permanently or temporarily
-    const dismissedUntil = localStorage.getItem('ventex_kofi_dismissed_until');
-    const dismissedForever = localStorage.getItem('ventex_kofi_dismissed_forever');
+    const dismissedUntil = localStorage.getItem('folenzo_kofi_dismissed_until');
+    const dismissedForever = localStorage.getItem('folenzo_kofi_dismissed_forever');
 
     if (dismissedForever === 'true') {
       return;
@@ -35,12 +35,12 @@ export default function KofiSupport() {
     // Remind again in 3 days
     const nextTime = new Date();
     nextTime.setDate(nextTime.getDate() + 3);
-    localStorage.setItem('ventex_kofi_dismissed_until', nextTime.toISOString());
+    localStorage.setItem('folenzo_kofi_dismissed_until', nextTime.toISOString());
   };
 
   const handleHidePermanently = () => {
     setIsVisible(false);
-    localStorage.setItem('ventex_kofi_dismissed_forever', 'true');
+    localStorage.setItem('folenzo_kofi_dismissed_forever', 'true');
   };
 
   if (!isVisible) return null;
@@ -61,14 +61,14 @@ export default function KofiSupport() {
             <Heart className="w-6 h-6 fill-pink-500" />
           </div>
           <div>
-            <h4 className="font-bold text-neutral-100 mb-1">Support Ventex</h4>
+            <h4 className="font-bold text-neutral-100 mb-1">Support Folenzo</h4>
             <p className="text-xs text-neutral-400 mb-4 leading-relaxed">
               If you find our startup ecosystem valuable, consider buying us a coffee. It helps keep the platform running!
             </p>
             
             <div className="flex items-center gap-2">
               <a 
-                href="https://ko-fi.com/ventexhq" 
+                href="https://ko-fi.com/folenzohq" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 onClick={handleHidePermanently}

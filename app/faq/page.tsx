@@ -5,16 +5,16 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions',
-  description: 'Learn how Ventex connects founders and investors, how startup approval works, and how to successfully fundraise or discover startups on our marketplace.',
+  description: 'Learn how Folenzo connects founders and investors, how startup approval works, and how to successfully fundraise or discover startups on our marketplace.',
 };
 
 const faqs = [
   {
-    question: "What is Ventex?",
-    answer: "Ventex is a premier startup marketplace and discovery platform. We connect ambitious startup founders with verified investors, facilitating startup funding, product sales, and network growth in a single, transparent ecosystem."
+    question: "What is Folenzo?",
+    answer: "Folenzo is a premier startup marketplace and discovery platform. We connect ambitious startup founders with verified investors, facilitating startup funding, product sales, and network growth in a single, transparent ecosystem."
   },
   {
-    question: "How does Ventex work?",
+    question: "How does Folenzo work?",
     answer: "Founders create comprehensive pitch profiles featuring their traction, team, and a secure data room. Investors can browse the marketplace using advanced filters (industry, stage, thesis) to discover startups. When a match is found, investors can request access to the data room or reach out directly to the founders."
   },
   {
@@ -23,11 +23,11 @@ const faqs = [
   },
   {
     question: "How do investors discover startups?",
-    answer: "Investors use the Ventex discovery engine to scan live, verified startups. They can filter by sector, funding stage, revenue, and location. Our algorithm also highlights 'featured' startups and uses AI summaries to make pitch scanning highly efficient."
+    answer: "Investors use the Folenzo discovery engine to scan live, verified startups. They can filter by sector, funding stage, revenue, and location. Our algorithm also highlights 'featured' startups and uses AI summaries to make pitch scanning highly efficient."
   },
   {
     question: "How does startup approval work?",
-    answer: "To maintain a high-quality marketplace, every submitted pitch undergoes a manual review process by the Ventex team. We check for completeness, accuracy, and adherence to our community standards before a pitch goes 'live'."
+    answer: "To maintain a high-quality marketplace, every submitted pitch undergoes a manual review process by the Folenzo team. We check for completeness, accuracy, and adherence to our community standards before a pitch goes 'live'."
   },
   {
     question: "How long does review take?",
@@ -39,7 +39,7 @@ const faqs = [
   },
   {
     question: "How does fundraising work?",
-    answer: "Ventex acts as the discovery and connection layer. Founders list their 'amount seeking' and 'equity offered'. Interested investors connect through the platform, review the secure data room, and then negotiate terms and execute the actual funding transaction externally."
+    answer: "Folenzo acts as the discovery and connection layer. Founders list their 'amount seeking' and 'equity offered'. Interested investors connect through the platform, review the secure data room, and then negotiate terms and execute the actual funding transaction externally."
   }
 ];
 
@@ -68,7 +68,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-lg text-[var(--text2)] max-w-2xl mx-auto">
-              Everything you need to know about navigating the Ventex startup marketplace, from pitching to funding.
+              Everything you need to know about navigating the Folenzo startup marketplace, from pitching to funding.
             </p>
           </div>
 

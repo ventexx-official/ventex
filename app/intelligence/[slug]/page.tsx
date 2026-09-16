@@ -14,21 +14,21 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       .eq('slug', params.slug)
       .single();
 
-    if (!article) return { title: 'Article Not Found | Ventex Intelligence' };
+    if (!article) return { title: 'Article Not Found | Folenzo Intelligence' };
 
     return {
-      title: `${article.title} | Ventex Intelligence`,
+      title: `${article.title} | Folenzo Intelligence`,
       description: article.summary,
       openGraph: {
         title: article.title,
         description: article.summary,
         type: 'article',
         publishedTime: article.published_at,
-        authors: [article.source_name || 'Ventex'],
+        authors: [article.source_name || 'Folenzo'],
       }
     };
   } catch {
-    return { title: 'Ventex Intelligence' };
+    return { title: 'Folenzo Intelligence' };
   }
 }
 
@@ -61,20 +61,20 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             "@type": "NewsArticle",
             headline: article.title,
             image: [
-              article.image_url || "https://www.ventexx.com/logo.png"
+              article.image_url || "https://www.folenzo.com/logo.png"
             ],
             datePublished: article.published_at,
             author: [{
                 "@type": "Organization",
-                name: article.source_name || "Ventex",
-                url: article.source_url || "https://www.ventexx.com"
+                name: article.source_name || "Folenzo",
+                url: article.source_url || "https://www.folenzo.com"
             }],
             publisher: {
               "@type": "Organization",
-              name: "Ventex Intelligence",
+              name: "Folenzo Intelligence",
               logo: {
                 "@type": "ImageObject",
-                url: "https://www.ventexx.com/logo.png"
+                url: "https://www.folenzo.com/logo.png"
               }
             }
           })
@@ -88,7 +88,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         <h1 className="text-3xl md:text-5xl font-bold mb-6 font-space leading-tight">{article.title}</h1>
         
         <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-400 border-b border-neutral-800 pb-6">
-          <span className="font-medium text-neutral-200">{article.source_name || 'Ventex Curated'}</span>
+          <span className="font-medium text-neutral-200">{article.source_name || 'Folenzo Curated'}</span>
           <span>&bull;</span>
           <time dateTime={article.published_at}>
             {new Date(article.published_at).toLocaleDateString('en-US', {

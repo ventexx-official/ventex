@@ -1,8 +1,8 @@
-# Ventex Production Audit Report
+# Folenzo Production Audit Report
 
 **Audit Date:** 2026-06-16  
 **Auditor:** Principal Software Architect / Staff Engineer  
-**Target:** Ventex platform (ventex-eight.vercel.app)
+**Target:** Folenzo platform (folenzo-eight.vercel.app)
 
 ---
 
@@ -10,7 +10,7 @@
 
 **Verdict: NOT PRODUCTION READY. Core business flow is broken at multiple points.**
 
-Ventex is a startup pitch + marketplace platform built on Next.js 14 + Supabase. The front-end UI is polished, but nearly every backend system has critical flaws:
+Folenzo is a startup pitch + marketplace platform built on Next.js 14 + Supabase. The front-end UI is polished, but nearly every backend system has critical flaws:
 
 - **Stripe is NOT integrated.** There are `STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in `.env.local` (test keys), but zero server-side Stripe code exists — no checkout creation, no webhook handler, no charge processing. The entire payment system is UI only.
 - **Every Supabase admin API call fails.** `SUPABASE_SERVICE_ROLE_KEY` is set to `service_role_placeholder`. All server-side routes using `createSupabaseAdmin()` will fail.
@@ -387,14 +387,14 @@ Every admin page imports `supabase` from `@/lib/supabase` (browser client with a
 - `RESEND_API_KEY=re_placeholder` — **email silently logs instead of sending**
 - `STRIPE_WEBHOOK_SECRET=whsec_placeholder` — **webhook verification broken**
 - No `GEMINI_API_KEY`, `OPENAI_API_KEY`, `DEEPSEEK_API_KEY` — **AI features dead**
-- `NEXT_PUBLIC_BASE_URL=https://ventex-eight.vercel.app` — **deployment URL, may change**
+- `NEXT_PUBLIC_BASE_URL=https://folenzo-eight.vercel.app` — **deployment URL, may change**
 
 ## Mock/Demo Data
 - `app/marketplace/[id]/page.tsx:54`: `MOCK_REVIEWS` constant (used in demo mode)
 - `app/founder/create-pitch/page.tsx`: Hardcoded `SECTORS` array (duplicated from DB sectors table)
 - `app/discover/page.tsx:10`: Hardcoded `INDUSTRIES` and `STAGES` arrays (should come from DB)
 - `app/pricing/page.tsx`: Static pricing page content
-- `supabase/seed-ventex-demo.sql`: Demo seed data (would load fake pitches)
+- `supabase/seed-folenzo-demo.sql`: Demo seed data (would load fake pitches)
 
 ## Hardcoded Values
 - `app/discover/page.tsx:98`: Filter country options hardcoded as `['United States', 'United Kingdom', 'Germany', 'India']`
@@ -505,7 +505,7 @@ Every admin page imports `supabase` from `@/lib/supabase` (browser client with a
 
 # FINAL VERDICT
 
-**Ventex is NOT production ready. The core business flow is broken at every critical juncture.**
+**Folenzo is NOT production ready. The core business flow is broken at every critical juncture.**
 
 The platform has a polished front-end with significant architectural flaws underneath:
 - The admin system cannot moderate content (RLS)

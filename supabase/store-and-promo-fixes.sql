@@ -1,5 +1,5 @@
 -- ====================================================================
--- Ventex Database Migrations: Store Products & Promo Codes (Day 46)
+-- Folenzo Database Migrations: Store Products & Promo Codes (Day 46)
 -- Execute this script in your Supabase SQL Editor to enable product listing
 -- and promo code generation.
 -- ====================================================================
