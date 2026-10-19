@@ -10,13 +10,12 @@ const nextConfig = {
       "frame-ancestors 'none'",
       "form-action 'self'",
       // Note: Next.js app router often requires 'unsafe-inline' for styles in prod, and 'unsafe-eval' for dev. We tighten as much as possible.
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://checkout.stripe.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "img-src 'self' data: blob: https:",
       "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://*.stripe.com",
-      "frame-src https://js.stripe.com https://hooks.stripe.com https://checkout.stripe.com",
-      "upgrade-insecure-requests",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+            "upgrade-insecure-requests",
     ].join("; ");
 
     return [

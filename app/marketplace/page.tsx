@@ -534,8 +534,9 @@ export default function MarketplacePage() {
  </Link>
  ) : (
  <Link href={`/marketplace/${product.id}`} className="bg-[var(--text)] text-[var(--bg)] px-4 py-2 rounded-full text-xs font-bold hover:opacity-80 transition-all shadow-md">
- Buy Now
- </Link>
+                    {/* TODO: wire to inquiry flow */}
+                    I'm interested
+                  </Link>
  )}
  </div>
  </div>

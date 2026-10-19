@@ -1028,7 +1028,8 @@ via Folenzo`;
  disabled={isCheckingOut}
  className="bg-[var(--text)] text-[var(--bg)] px-3 py-1.5 rounded-md text-xs font-bold hover:opacity-80 disabled:opacity-50"
  >
- {isCheckingOut ? '...' : 'Buy now'}
+ {/* TODO: wire to inquiry flow */}
+                        "I'm interested"
  </button>
  </div>
  </div>

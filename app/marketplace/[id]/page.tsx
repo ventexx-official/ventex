@@ -38,9 +38,6 @@ const [submittingRequest, setSubmittingRequest] = useState(false);
 
 const [newQuestion, setNewQuestion] = useState('');
 const [submittingQuestion, setSubmittingQuestion] = useState(false);
-
-const [isAddingToCart, setIsAddingToCart] = useState(false);
-const [addedToCart, setAddedToCart] = useState(false);
 const [isCheckingOut, setIsCheckingOut] = useState(false);
 
 // New review state variables
@@ -472,35 +469,6 @@ const MOCK_REVIEWS = [
  }
  };
 
- const handleAddToCart = async () => {
- if (!currentUser) {
- router.push('/login');
- return;
- }
- 
- setIsAddingToCart(true);
- 
- try {
- const { error } = await supabase.from('cart_items').insert({
- user_id: currentUser.id,
- product_id: product.id,
- quantity: 1
- });
-
- if (error) throw error;
- 
- setAddedToCart(true);
- window.dispatchEvent(new Event('cart_updated'));
- 
- // Reset the success state after 3 seconds
- setTimeout(() => setAddedToCart(false), 3000);
- } catch (err: any) {
- alert("Error adding to cart: " + err.message);
- } finally {
- setIsAddingToCart(false);
- }
- };
-
  const handleGetProduct = async () => {
   if (!currentUser) {
     router.push('/login');
@@ -723,36 +691,19 @@ const MOCK_REVIEWS = [
  </div>
 
  {/* Buttons */}
- <div className="mt-auto space-y-3">
- {isCustom ? (
- <>
- <button onClick={handleRequestWork} className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10">
- Request Work
- </button>
- </>
- ) : (
- <div className="flex gap-3">
- <button 
- onClick={handleGetProduct}
- disabled={currentUser?.id === product.seller_id}
- className="flex-1 flex items-center justify-center border-[1.5px] border-[#222222] dark:border-white text-[var(--text)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:bg-[var(--bg)] dark:hover:bg-[var(--text)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
- >
- {product.product_type === 'digital' ? 'Download Resource' : 'Get Access'}
- </button>
- <button 
- onClick={handleContactSeller}
- disabled={isCheckingOut || currentUser?.id === product.user_id}
- className="flex-1 bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10 disabled:opacity-50 disabled:cursor-not-allowed"
- >
- {isCheckingOut ? 'Opening...' : (product.product_type === 'job' ? 'Apply Now' : 'Contact Seller')}
- </button>
- </div>
- )}
- </div>
- </div>
- </div>
+        <div className="mt-auto space-y-3">
+          {/* TODO: wire to inquiry flow */}
+          <button 
+            type="button"
+            className="w-full bg-[var(--text)] text-[var(--bg)] py-4 rounded-2xl font-black text-sm uppercase tracking-wide hover:opacity-80 transition-colors shadow-lg shadow-black/10"
+          >
+            I'm interested
+          </button>
+        </div>
+      </div>
+    </div>
 
- {/* TABS */}
+    {/* TABS */}
  <div className="bg-[var(--card-bg)] rounded-[24px] border-[0.5px] border-[var(--border)] overflow-hidden">
  <div className="flex border-b-[0.5px] border-[var(--border)] overflow-x-auto hide-scrollbar">
  {['description', 'reviews', 'qa'].map((tab) => (
