@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import JsonLd from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'About Folenzo | The Ultimate Startup Pitch Platform',
-  description: 'Learn about the mission, founder story, and vision behind Folenzo. We are building the most transparent and efficient startup marketplace in the world.',
+  title: 'About Ventex | The Ultimate Startup Pitch Platform',
+  description: 'Learn about the mission, founder story, and vision behind Ventex. We are building the most transparent and efficient startup marketplace in the world.',
 };
 
 export default function AboutPage() {
@@ -13,8 +13,8 @@ export default function AboutPage() {
     "@type": "AboutPage",
     "mainEntity": {
       "@type": "Organization",
-      "name": "Folenzo",
-      "description": "Folenzo is a startup marketplace dedicated to democratizing access to capital and deal flow by connecting founders directly with verified investors."
+      "name": "Ventex",
+      "description": "Ventex is a startup marketplace dedicated to democratizing access to capital and deal flow by connecting founders directly with verified investors."
     }
   };
 
@@ -28,7 +28,7 @@ export default function AboutPage() {
               Democratizing Startup Discovery
             </h1>
             <p className="text-xl text-[var(--text2)] max-w-2xl mx-auto leading-relaxed">
-              Folenzo was built on a simple premise: great ideas shouldn't die because of geographic barriers or closed-door networks.
+              Ventex was built on a simple premise: great ideas shouldn't die because of geographic barriers or closed-door networks.
             </p>
           </div>
 
@@ -45,7 +45,7 @@ export default function AboutPage() {
               </div>
               <div className="bg-[var(--card-bg)] p-8 rounded-2xl border border-[var(--border)] shadow-sm">
                 <div className="text-4xl font-bold text-blue-600 mb-2">0%</div>
-                <div className="text-[var(--text)] font-medium mb-6">Syndicate or carry fees charged by Folenzo on direct investments.</div>
+                <div className="text-[var(--text)] font-medium mb-6">Syndicate or carry fees charged by Ventex on direct investments.</div>
                 <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
                 <div className="text-[var(--text)] font-medium">Founder control over their pitch narrative and data room access.</div>
               </div>

@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 const FEATURE_FLAGS = [
- ["folenzo_live_enabled", "Folenzo Live page"],
- ["live_founder_applications", "Folenzo Live founder applications"],
- ["live_investor_applications", "Folenzo Live investor applications"],
+ ["ventex_live_enabled", "Ventex Live page"],
+ ["live_founder_applications", "Ventex Live founder applications"],
+ ["live_investor_applications", "Ventex Live investor applications"],
  ["homepage_featured_this_week", "Homepage Featured This Week"],
  ["investor_leaderboard", "Investor Leaderboard"],
  ["xp_system", "XP System"],

@@ -395,7 +395,7 @@ const ECOSYSTEM_STEPS = [
     number: "04",
     title: "Market",
     copy: "Sell software, equity opportunities, custom work, or physical products directly to buyers through the platform.",
-    tag: "Sell directly on Folenzo"
+    tag: "Sell directly on Ventex"
   }
 ];
 
@@ -447,9 +447,9 @@ const SECTION_TRACKER_ITEMS = [
   { id: "marketplace", label: "Useful side", index: "05" }
 ];
 
-/* --- MAIN FOLENZO PAGE COMPONENT --- */
+/* --- MAIN VENTEX PAGE COMPONENT --- */
 
-export default function FolenzoHome() {
+export default function VentexHome() {
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
@@ -512,11 +512,11 @@ export default function FolenzoHome() {
 
       {/* SITE NAVIGATION HEADER */}
       <header className={`site-nav ${navScrolled ? "site-nav--scrolled" : ""}`}>
-        <a href="#top" className="brand-lockup" aria-label="Folenzo home">
+        <a href="#top" className="brand-lockup" aria-label="Ventex home">
           <span className="brand-mark">
             <span>F</span>
           </span>
-          <span>Folenzo</span>
+          <span>Ventex</span>
         </a>
 
         <nav className={`desktop-nav ${mobileNavOpen ? "desktop-nav--open" : ""}`} aria-label="Primary pages">
@@ -555,7 +555,7 @@ export default function FolenzoHome() {
         <section className="hero-section">
           <div className="hero-scanline" aria-hidden="true" />
           <div className="hero-assembly" aria-hidden="true">
-            <span>FOLENZO / 01</span>
+            <span>VENTEX / 01</span>
             <span>BUILDING IN PUBLIC</span>
           </div>
 
@@ -593,7 +593,7 @@ export default function FolenzoHome() {
 
             <div className="hero-bottom">
               <ParagraphReveal>
-                Folenzo is the living layer between a good idea and the people who can make it matter.
+                Ventex is the living layer between a good idea and the people who can make it matter.
               </ParagraphReveal>
               <div className="hero-actions">
                 <MagneticButton href="#discover" variant="light">
@@ -613,7 +613,7 @@ export default function FolenzoHome() {
               <span className="hero-side-note__line" />
             </div>
 
-            <div className="hero-coordinate">FOLENZO / REMOTE-FIRST NETWORK</div>
+            <div className="hero-coordinate">VENTEX / REMOTE-FIRST NETWORK</div>
 
             <div className="hero-orbit" aria-hidden="true">
               <span>F</span>
@@ -622,8 +622,8 @@ export default function FolenzoHome() {
         </section>
 
         {/* TICKER MARQUEE */}
-        <section className="ticker-section" aria-label="Folenzo ecosystem categories">
-          <MarqueeTicker items={["FOLENZO", "FOUNDERS", "STARTUPS", "INVESTORS", "MENTORS", "MARKETPLACE"]} />
+        <section className="ticker-section" aria-label="Ventex ecosystem categories">
+          <MarqueeTicker items={["VENTEX", "FOUNDERS", "STARTUPS", "INVESTORS", "MENTORS", "MARKETPLACE"]} />
         </section>
 
         {/* MANIFESTO SECTION */}
@@ -644,7 +644,7 @@ export default function FolenzoHome() {
                 Startups do not grow in isolation. They grow through the right collision — a founder with a sharper question, an investor with a longer view, a product with a first believer.
               </ParagraphReveal>
               <ParagraphReveal>
-                Folenzo makes those collisions easier to find, easier to trust, and much harder to forget.
+                Ventex makes those collisions easier to find, easier to trust, and much harder to forget.
               </ParagraphReveal>
               <a href="#discover" className="text-link">
                 Meet the ecosystem <ArrowUpRight size={16} />
@@ -652,7 +652,7 @@ export default function FolenzoHome() {
             </div>
 
             <div className="manifesto-stamp" aria-hidden="true">
-              <span>FOLENZO</span>
+              <span>VENTEX</span>
               <span>EST. 2026</span>
             </div>
           </div>
@@ -767,13 +767,13 @@ export default function FolenzoHome() {
           </div>
         </section>
 
-        {/* FOLENZO AI / PITCH MENTOR SECTION */}
+        {/* VENTEX AI / PITCH MENTOR SECTION */}
         <section className="assistant-section page-padding" id="intelligence">
           <div className="assistant-beam" aria-hidden="true" />
           <div className="assistant-header">
             <SectionLabel index="05">Your unfair advantage</SectionLabel>
             <span className="assistant-status">
-              <span className="status-dot status-dot--dark" /> FOLENZO AI / ONLINE
+              <span className="status-dot status-dot--dark" /> VENTEX AI / ONLINE
             </span>
           </div>
 
@@ -816,7 +816,7 @@ export default function FolenzoHome() {
                 <div className="assistant-message assistant-message--ai">
                   <span className="ai-avatar">F</span>
                   <div>
-                    <span className="tiny-label">FOLENZO AI / PITCH MENTOR</span>
+                    <span className="tiny-label">VENTEX AI / PITCH MENTOR</span>
                     <p>{aiResponse}</p>
                   </div>
                 </div>
@@ -827,7 +827,7 @@ export default function FolenzoHome() {
                   value={userPrompt}
                   onChange={e => setUserPrompt(e.target.value)}
                   placeholder="Ask a sharper question..."
-                  aria-label="Ask Folenzo AI"
+                  aria-label="Ask Ventex AI"
                 />
                 <button type="submit" aria-label="Send question">
                   <ArrowUpRight size={18} />
@@ -847,7 +847,7 @@ export default function FolenzoHome() {
         {/* PROCESS LOOP SECTION */}
         <section className="process-section page-padding" id="process">
           <div className="section-heading-row">
-            <SectionLabel index="06">The Folenzo loop</SectionLabel>
+            <SectionLabel index="06">The Ventex loop</SectionLabel>
             <span className="section-caption">Good things compound.</span>
           </div>
 
@@ -908,7 +908,7 @@ export default function FolenzoHome() {
       <footer className="site-footer page-padding" id="footer">
         <div className="footer-top">
           <span className="footer-kicker">THE NEXT CHAPTER IS OPEN</span>
-          <span className="footer-coordinate">FOLENZO / REMOTE-FIRST NETWORK</span>
+          <span className="footer-coordinate">VENTEX / REMOTE-FIRST NETWORK</span>
         </div>
 
         <h2 className="footer-title">
@@ -931,7 +931,7 @@ export default function FolenzoHome() {
             <span className="brand-mark">
               <span>F</span>
             </span>
-            <span>Folenzo</span>
+            <span>Ventex</span>
           </a>
 
           <div className="footer-links">
@@ -956,7 +956,7 @@ export default function FolenzoHome() {
         </div>
 
         <div className="footer-legal">
-          <span>© 2026 Folenzo. For people building what’s next.</span>
+          <span>© 2026 Ventex. For people building what’s next.</span>
           <span>
             Privacy <i>·</i> Terms <i>·</i> Made with intent
           </span>

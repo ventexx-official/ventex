@@ -4,6 +4,8 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import { Analytics } from '@vercel/analytics/react';
 
+import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/brand";
+
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -23,32 +25,32 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://folenzomkt-2lswoktz.manus.space/'),
+  metadataBase: new URL('https://ventexmkt-2lswoktz.manus.space/'),
   title: {
-    default: "Folenzo — Build what’s next",
-    template: "%s | Folenzo",
+    default: `${SITE_NAME} — Build what’s next`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "Folenzo is the living layer between a good idea and the people who can make it matter.",
-  keywords: ["Startup Platform", "Folenzo", "Build Whats Next", "Founder Network", "Pitch Deck", "Marketplace"],
+  description: `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
+  keywords: ["Startup Platform", SITE_NAME, "Build Whats Next", "Founder Network", "Pitch Deck", "Marketplace"],
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true },
   },
   alternates: {
-    canonical: "https://folenzomkt-2lswoktz.manus.space/",
+    canonical: "https://ventexmkt-2lswoktz.manus.space/",
   },
   openGraph: {
-    title: "Folenzo — Build what’s next",
-    description: "Folenzo is the living layer between a good idea and the people who can make it matter.",
-    url: "https://folenzomkt-2lswoktz.manus.space/",
-    siteName: "Folenzo",
+    title: `${SITE_NAME} — Build what’s next`,
+    description: `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
+    url: "https://ventexmkt-2lswoktz.manus.space/",
+    siteName: SITE_NAME,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Folenzo — Build what’s next",
-    description: "Folenzo is the living layer between a good idea and the people who can make it matter.",
+    title: `${SITE_NAME} — Build what’s next`,
+    description: `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
   },
 };
 
@@ -59,11 +61,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
-      </head>
       <body className={`${dmSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased bg-[#10100f] text-[#f1efe8]`}>
         {/* JSON-LD Schema */}
         <script
@@ -73,20 +70,20 @@ export default function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
-                "name": "Folenzo",
-                "alternateName": ["Folenzo Platform", "Folenzo Build Whats Next"],
-                "url": "https://folenzomkt-2lswoktz.manus.space/",
-                "description": "Folenzo is the living layer between a good idea and the people who can make it matter.",
+                "name": SITE_NAME,
+                "alternateName": [`${SITE_NAME} Platform`, `${SITE_NAME} Build Whats Next`],
+                "url": "https://ventexmkt-2lswoktz.manus.space/",
+                "description": `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
                 "knowsAbout": ["Startups", "Founder Network", "Pitch Decks", "Venture Capital"],
               },
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                "name": "Folenzo",
-                "url": "https://folenzomkt-2lswoktz.manus.space/",
+                "name": SITE_NAME,
+                "url": "https://ventexmkt-2lswoktz.manus.space/",
                 "potentialAction": {
                   "@type": "SearchAction",
-                  "target": "https://folenzomkt-2lswoktz.manus.space/discover?q={search_term_string}",
+                  "target": `https://ventexmkt-2lswoktz.manus.space/discover?q={search_term_string}`,
                   "query-input": "required name=search_term_string"
                 }
               }

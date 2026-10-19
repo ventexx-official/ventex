@@ -258,7 +258,7 @@ const [loading, setLoading] = useState(true);
 💰 Seeking ₹${formatAmount(pitch.amount_seeking)} for ${pitch.equity_pct}% equity
 📍 ${pitch.industry || 'Startup'} · ${pitch.company_stage || ''} · ${pitch.country || ''}
 👀 ${window.location.href}
-via Folenzo`;
+via Ventex`;
  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
  };
 
@@ -390,7 +390,7 @@ via Folenzo`;
  }
  // Load liked comments from localStorage
  try {
- const stored = localStorage.getItem(`folenzo_liked_${id}`);
+ const stored = localStorage.getItem(`ventex_liked_${id}`);
  if (stored) setLikedComments(new Set(JSON.parse(stored)));
  } catch {}
  };
@@ -577,7 +577,7 @@ via Folenzo`;
  newLiked.add(commentId);
  }
  setLikedComments(newLiked);
- localStorage.setItem(`folenzo_liked_${id}`, JSON.stringify(Array.from(newLiked)));
+ localStorage.setItem(`ventex_liked_${id}`, JSON.stringify(Array.from(newLiked)));
  // Optimistic UI
  setComments(prev => prev.map(c =>
  c.id === commentId ? { ...c, likes: alreadyLiked ? c.likes - 1 : c.likes + 1 } : c
@@ -645,9 +645,9 @@ via Folenzo`;
  "@context": "https://schema.org",
  "@type": "Organization",
  name: pitch.title,
- url: `https://www.folenzo.com/pitch/${pitch.id}`,
+ url: `https://www.ventex.com/pitch/${pitch.id}`,
  description: pitch.tagline || pitch.short_description,
- logo: pitch.logo_url || "https://www.folenzo.com/logo.png"
+ logo: pitch.logo_url || "https://www.ventex.com/logo.png"
  },
  {
  "@context": "https://schema.org",

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     try {
-      const systemPrompt = `You are summarising a startup pitch for the Folenzo platform discovery feed. Be factual and specific. No hype words. Write exactly 2-3 sentences.`;
+      const systemPrompt = `You are summarising a startup pitch for the Ventex platform discovery feed. Be factual and specific. No hype words. Write exactly 2-3 sentences.`;
       const userPrompt = `Startup Data:
 Title: ${title || pitch.title || 'N/A'}
 Tagline: ${tagline || pitch.tagline || 'N/A'}

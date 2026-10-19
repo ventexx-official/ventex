@@ -239,7 +239,7 @@ export default function FounderStorePage() {
  <div className="flex items-center justify-between px-4 py-4 md:py-5 border-b-[0.5px] border-[var(--border)] md:border-b-0">
  {!sidebarCollapsed && (
  <Link href="/" className="text-xl font-black italic tracking-tighter text-[var(--text)] uppercase">
- Folenzo
+ Ventex
  </Link>
  )}
  <button

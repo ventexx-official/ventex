@@ -193,7 +193,7 @@ const MOCK_REVIEWS = [
  // Scan for off-platform contact/payment patterns
  const flagged = await scanOffPlatformAttempt(requirements, 'project_requirements');
  if (flagged) {
- alert("⚠️ Access Blocked: All transactions must go through Folenzo. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+ alert("⚠️ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
  return;
  }
 
@@ -434,7 +434,7 @@ const MOCK_REVIEWS = [
  // Scan for off-platform contact/payment patterns
  const flagged = await scanOffPlatformAttempt(newQuestion, 'qa_question');
  if (flagged) {
- alert("âš ï¸ Access Blocked: All transactions must go through Folenzo. Sharing contact details, UPI handles, or external links is strictly prohibited.");
+ alert("âš ï¸ Access Blocked: All transactions must go through Ventex. Sharing contact details, UPI handles, or external links is strictly prohibited.");
  return;
  }
 
