@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { awardXp } from '@/lib/award-xp';
 import { isPitchProfileComplete } from '@/lib/pitch-completion';
 import { getDealEnforcementState } from '@/lib/deal-enforcement';
 import { 
@@ -224,14 +223,6 @@ export default function CreatePitch() {
  const total = fields.length + 1;
  setCompletion(Math.round(((filled + sectorFilled) / total) * 100));
  }, [formData]);
-
- useEffect(() => {
- if (!founderId || profileXpAwardedRef.current) return;
- if (isPitchProfileComplete(formData)) {
- profileXpAwardedRef.current = true;
- awardXp('profile_complete', founderId);
- }
- }, [formData, founderId]);
 
  const buildPitchPayload = useCallback((data: typeof formData, extras: Record<string, any> = {}) => ({
  title: data.title,
@@ -906,10 +897,6 @@ export default function CreatePitch() {
  if (!error) {
  const { data: { publicUrl } } = supabase.storage.from('folenzo-assets').getPublicUrl(path);
  handleChange('pitch_deck_url', publicUrl);
- if (founderId && !deckXpAwardedRef.current) {
- deckXpAwardedRef.current = true;
- awardXp('deck_upload', founderId);
- }
  }
  });
  }

@@ -133,9 +133,8 @@ export default function Navbar() {
  };
 
   const navLinks = [
+    { href: '/discover', label: 'Discover' },
     { href: '/marketplace', label: 'Marketplace' },
-    { href: '/battle', label: 'Pitch Battle' },
-    { href: '/compare/folenzo-vs-angellist', label: 'Compare' },
   ];
 
  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');

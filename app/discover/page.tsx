@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Filter, Search, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { getRunwayDays, shouldShowRunway } from '@/lib/runway';
 import SponsoredCard from '@/components/SponsoredCard';
 
 const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'AgriTech', 'Cybersecurity'];
@@ -231,20 +230,16 @@ function FilterGroup({ title, values, selected, onToggle }: { title: string; val
 }
 
 function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
- const runwayDays = getRunwayDays(pitch.round_closes_at);
- const showRunway = shouldShowRunway(pitch.is_raising, pitch.round_closes_at);
-
- return (
- <Link href={`/pitch/${pitch.id}`} className="card reveal flex min-h-[320px] flex-col p-5" data-delay={String(Math.min(delay, 300))}>
- <div className="flex items-start justify-between gap-4">
- <h2 className="min-w-0 truncate text-lg font-bold text-[var(--text)]">{pitch.title || 'Untitled startup'}</h2>
- <span className="tag">{pitch.is_raising ? 'Raising' : 'Verified'}</span>
- </div>
- <div className="mt-3 flex flex-wrap gap-2">
- {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
- {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
- {showRunway && runwayDays !== null ? <span className="tag border border-red-200 bg-red-50 text-red-600">Closes in {runwayDays} days</span> : null}
- </div>
+  return (
+  <Link href={`/pitch/${pitch.id}`} className="card reveal flex min-h-[320px] flex-col p-5" data-delay={String(Math.min(delay, 300))}>
+  <div className="flex items-start justify-between gap-4">
+  <h2 className="min-w-0 truncate text-lg font-bold text-[var(--text)]">{pitch.title || 'Untitled startup'}</h2>
+  <span className="tag">{pitch.is_raising ? 'Raising' : 'Verified'}</span>
+  </div>
+  <div className="mt-3 flex flex-wrap gap-2">
+  {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
+  {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
+  </div>
  <p className="mt-4 line-clamp-3 flex-1 text-[13px] leading-6 text-[var(--text2)]">{pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}</p>
  <div className="my-5 h-px bg-[var(--border)]" />
  <div className="grid grid-cols-3 gap-3">

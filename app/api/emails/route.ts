@@ -157,9 +157,9 @@ function buildEmailPayload(type: EmailType, data: Record<string, any>) {
         html: buildEmail({
           heading: `${data.startupName} accepted your interest!`,
           body: `<p>Great news  -  the founder of <strong>${data.startupName}</strong> has reviewed your expression of interest and accepted it.</p>
-                 <p>Your secure Deal Room is now unlocked. You can start a private conversation with the founder directly on Folenzo.</p>`,
-          ctaText: 'Enter Deal Room',
-          ctaUrl: `${FOLENZO_URL}/deal-room/${data.interestId}`,
+                 <p>You can start a private conversation with the founder directly on Folenzo.</p>`,
+          ctaText: 'View Messages',
+          ctaUrl: `${FOLENZO_URL}/messages`,
         }),
       };
 

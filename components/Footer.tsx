@@ -8,11 +8,6 @@ const columns = [
       ['Discover', '/discover'],
       ['For Founders', '/founder/create-pitch'],
       ['Marketplace', '/marketplace'],
-      ['Intelligence', '/intelligence'],
-      ['Catalyst', '/catalyst'],
-      ['The Arena', '/arena'],
-      ['Pitch Battle', '/battle'],
-      ['Events', '/events'],
     ],
   },
   {
@@ -21,11 +16,9 @@ const columns = [
       ['About', '/about'],
       ['Knowledge Base', '/learn'],
       ['FAQs', '/faq'],
-      ['Comparisons', '/compare/folenzo-vs-angellist'],
       ['Investors', '/investors'],
       ['Contact', '/contact'],
       ['Resources', '/resources/schemes'],
-      ['Support Folenzo', 'https://ko-fi.com/folenzohqgmailcom'],
     ],
   },
   {

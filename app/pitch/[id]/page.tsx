@@ -6,14 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Sparkles, Lock, FileText, Heart, CheckCircle2, User, Send, X, Shield } from 'lucide-react';
 import Link from 'next/link';
 import PitchDeckViewer from '@/components/PitchDeckViewer';
-import { awardXp } from '@/lib/award-xp';
-import { levelEmoji } from '@/lib/xp';
 import { getVideoEmbedUrl } from '@/lib/video';
-import {
- getRunwayCountdown,
- getRunwayProgress,
- shouldShowRunway,
-} from '@/lib/runway';
 import { getDealEnforcementState } from '@/lib/deal-enforcement';
 
 const QUESTIONS = [
@@ -130,10 +123,6 @@ const [loading, setLoading] = useState(true);
  
  if (error) throw error;
 
- if (isFirstInterest && pitch.founder_id) {
- await awardXp('first_interest', pitch.founder_id);
- }
-
  let conversationId: string | null = null;
  if (pitch.founder_id) {
  const { data: existingConversation } = await supabase
@@ -244,10 +233,6 @@ const [loading, setLoading] = useState(true);
 
  if (error && !error.message.toLowerCase().includes('duplicate')) {
  throw error;
- }
-
- if (isFirstSave && pitch.founder_id) {
- await awardXp('first_save', pitch.founder_id);
  }
  } else {
  const { error } = await supabase
@@ -634,11 +619,6 @@ via Folenzo`;
  );
  }
 
- const showRunway = pitch ? shouldShowRunway(pitch.is_raising, pitch.round_closes_at) : false;
- const runwayCountdown = pitch ? getRunwayCountdown(pitch.round_closes_at) : null;
- const runwayProgress = pitch
- ? getRunwayProgress(pitch.created_at, pitch.round_closes_at)
- : 0;
  const videoEmbedUrl = getVideoEmbedUrl(pitch?.video_url);
  const isPitchOwner = currentUser?.id === pitch?.founder_id;
  const canSeeFinancialDetails = Boolean(currentUser);
@@ -739,11 +719,6 @@ via Folenzo`;
  <span className="font-medium text-[var(--text)] ">
  {founderProfile.full_name || 'Founder'}
  </span>
- {founderProfile.level && (
- <span className="bg-[var(--bg)] text-[var(--text)] text-[11px] px-2.5 py-1 rounded-full font-bold">
- {founderProfile.level} {levelEmoji(founderProfile.level)}
- </span>
- )}
  </p>
  )}
  <div className="flex gap-2 flex-wrap">
@@ -775,20 +750,6 @@ via Folenzo`;
  {!canSeeFinancialDetails && (
  <div className="mb-8 rounded-xl border-[0.5px] border-[var(--border)] bg-[var(--bg)] p-4 text-sm font-semibold text-[var(--text2)] dark:bg-[var(--bg3)] ">
  Sign in to view financial details.
- </div>
- )}
-
- {showRunway && runwayCountdown && (
- <div className="mb-8">
- <p className="text-sm font-bold text-red-600 dark:text-red-400 mb-3">
- â ° Round closes in {runwayCountdown.days}d {runwayCountdown.hours}h
- </p>
- <div className="w-full h-2 bg-[var(--bg)] rounded-full overflow-hidden">
- <div
- className="h-full bg-red-500 rounded-full transition-all"
- style={{ width: `${runwayProgress}%` }}
- />
- </div>
  </div>
  )}
 

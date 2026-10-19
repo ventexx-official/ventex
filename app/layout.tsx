@@ -3,7 +3,6 @@ import { DM_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { Analytics } from '@vercel/analytics/react';
-import KofiSupport from "@/components/KofiSupport";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -98,7 +97,6 @@ export default function RootLayout({
           {children}
         </Layout>
         <Analytics />
-        <KofiSupport />
       </body>
     </html>
   );

@@ -435,8 +435,7 @@ const MARKETPLACE_ITEMS = [
 const NAV_PAGES = [
   { id: "top", label: "Home", index: "00", href: "/" },
   { id: "discover", label: "Discover", index: "01", href: "/discover" },
-  { id: "marketplace", label: "Marketplace", index: "02", href: "/marketplace" },
-  { id: "intelligence", label: "Intelligence", index: "03", href: "/intelligence" }
+  { id: "marketplace", label: "Marketplace", index: "02", href: "/marketplace" }
 ];
 
 const SECTION_TRACKER_ITEMS = [
@@ -940,7 +939,6 @@ export default function FolenzoHome() {
               <span>Explore</span>
               <Link href="/discover">Discover</Link>
               <Link href="/marketplace">Marketplace</Link>
-              <Link href="/intelligence">Intelligence</Link>
             </div>
             <div>
               <span>Company</span>
