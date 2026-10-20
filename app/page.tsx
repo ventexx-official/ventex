@@ -1,341 +1,48 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
+  ArrowDownRight,
   ArrowUpRight,
-  Play,
+  Sparkles,
+  GitBranch,
+  Shield,
+  Bot,
+  Star,
+  Users,
+  MessageSquare,
+  Newspaper,
   Plus,
   Minus,
-  Menu,
-  X,
-  Send,
-  Sparkles,
-  Search,
-  ChevronRight,
-  Shield,
-  Zap,
-  Globe
-} from 'lucide-react';
+} from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { SITE_NAME } from "@/lib/brand";
+import {
+  MaskText,
+  ParagraphReveal,
+  InteractiveLetters,
+} from "@/components/ScrollReveal";
+import MagneticButton from "@/components/MagneticButton";
 
-/* --- MICRO-ANIMATION & UI UTILITY COMPONENTS --- */
-
-interface UseIntersectionOptions {
-  once?: boolean;
-  threshold?: number;
-}
-
-function useIntersection(options: UseIntersectionOptions = {}) {
-  const ref = useRef<HTMLSpanElement | HTMLParagraphElement | HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setVisible(true);
-        if (options.once !== false) observer.disconnect();
-      } else if (options.once === false) {
-        setVisible(false);
-      }
-    }, { threshold: 0.16, ...options });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [options, options.once, options.threshold]);
-
-  return { ref, visible };
-}
-
-function MaskText({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  const { ref, visible } = useIntersection();
+function MarqueeTicker({
+  items,
+  reverse = false,
+}: {
+  items: string[];
+  reverse?: boolean;
+}) {
+  const content = [...items, ...items];
   return (
-    <span ref={ref as any} className={`mask-text ${className}`}>
-      <span className={`mask-text__inner ${visible ? "is-visible" : ""}`} style={{ ["--delay" as any]: `${delay}ms` }}>
-        {children}
-      </span>
-    </span>
-  );
-}
-
-function InteractiveLetters({ text }: { text: string }) {
-  const containerRef = useRef<HTMLSpanElement | null>(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
-
-    const letters = Array.from(el.querySelectorAll(".interactive-letter")) as HTMLElement[];
-    const pointer = { x: 0, y: 0 };
-    let rafId = 0;
-    let pending = false;
-
-    const update = () => {
-      pending = false;
-      letters.forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        const dist = Math.hypot(pointer.x - (rect.left + rect.width / 2), pointer.y - (rect.top + rect.height / 2));
-        const progress = Math.max(0, Math.min(1, 1 - dist / 145));
-        letter.style.setProperty("--letter-progress", progress.toFixed(3));
-      });
-    };
-
-    const handlePointerMove = (e: PointerEvent) => {
-      pointer.x = e.clientX;
-      pointer.y = e.clientY;
-      if (!pending) {
-        pending = true;
-        rafId = requestAnimationFrame(update);
-      }
-    };
-
-    const handlePointerLeave = () => {
-      letters.forEach(letter => letter.style.setProperty("--letter-progress", "0"));
-    };
-
-    el.addEventListener("pointermove", handlePointerMove, { passive: true });
-    el.addEventListener("pointerleave", handlePointerLeave, { passive: true });
-
-    return () => {
-      el.removeEventListener("pointermove", handlePointerMove);
-      el.removeEventListener("pointerleave", handlePointerLeave);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return (
-    <span ref={containerRef} className="interactive-letters" aria-label={text}>
-      {Array.from(text).map((char, i) => (
-        <span key={`${char}-${i}`} className="interactive-letter" aria-hidden="true">
-          {char === " " ? "\u00A0" : char}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-function ParagraphReveal({ children }: { children: React.ReactNode }) {
-  const { ref, visible } = useIntersection();
-  return (
-    <p ref={ref as any} className={`paragraph-reveal ${visible ? "is-visible" : ""}`}>
-      {children}
-    </p>
-  );
-}
-
-function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const { ref, visible } = useIntersection();
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!visible) return;
-    const startTime = performance.now();
-    const duration = 1500;
-    let rafId = 0;
-
-    const animate = (now: number) => {
-      const elapsed = Math.min((now - startTime) / duration, 1);
-      const ease = 1 - Math.pow(1 - elapsed, 3);
-      setCount(Math.round(value * ease));
-      if (elapsed < 1) {
-        rafId = requestAnimationFrame(animate);
-      }
-    };
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [value, visible]);
-
-  return (
-    <span ref={ref as any} className="count-up">
-      {count.toLocaleString()}{suffix}
-    </span>
-  );
-}
-
-function MagneticButton({ children, variant = "light", className = "", onClick, href }: { children: React.ReactNode; variant?: "light" | "crimson" | "dark"; className?: string; onClick?: () => void; href?: string }) {
-  const btnRef = useRef<any>(null);
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    const el = btnRef.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.08;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.08;
-    el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-  };
-
-  const handlePointerLeave = () => {
-    if (btnRef.current) {
-      btnRef.current.style.transform = "translate3d(0, 0, 0)";
-    }
-  };
-
-  const props = {
-    ref: btnRef,
-    className: `magnetic-button magnetic-button--${variant} ${className}`,
-    onPointerMove: handlePointerMove,
-    onPointerLeave: handlePointerLeave,
-    onClick
-  };
-
-  if (href) {
-    return <a {...props} href={href}>{children}</a>;
-  }
-  return <button {...props}>{children}</button>;
-}
-
-function CursorAtmosphere() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const target = useRef({ x: 0.5, y: 0.25 });
-  const current = useRef({ x: 0.5, y: 0.25 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(pointer: coarse)").matches) return;
-
-    let rafId = 0;
-    const handlePointerMove = (e: PointerEvent) => {
-      target.current.x = e.clientX / window.innerWidth;
-      target.current.y = e.clientY / window.innerHeight;
-    };
-
-    const update = () => {
-      current.current.x += (target.current.x - current.current.x) * 0.035;
-      current.current.y += (target.current.y - current.current.y) * 0.035;
-      el.style.setProperty("--pointer-x", `${current.current.x * 100}%`);
-      el.style.setProperty("--pointer-y", `${current.current.y * 100}%`);
-      rafId = requestAnimationFrame(update);
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    rafId = requestAnimationFrame(update);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return <div ref={ref} className="cursor-atmosphere" aria-hidden="true" />;
-}
-
-function CursorFollower() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const target = useRef({ x: -80, y: -80 });
-  const current = useRef({ x: -80, y: -80 });
-  const labelRef = useRef<HTMLSpanElement | null>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(pointer: coarse)").matches) return;
-
-    let rafId = 0;
-    let initialized = false;
-
-    const handlePointerMove = (e: PointerEvent) => {
-      target.current.x = e.clientX;
-      target.current.y = e.clientY;
-      if (!initialized) {
-        current.current.x = e.clientX;
-        current.current.y = e.clientY;
-        initialized = true;
-        el.classList.add("is-visible");
-      }
-      const hoverable = (e.target as HTMLElement).closest("a, button, input");
-      el.classList.toggle("is-hovering", !!hoverable);
-      if (labelRef.current) {
-        labelRef.current.textContent = hoverable ? "OPEN" : "EXPLORE";
-      }
-    };
-
-    const handleMouseLeave = () => {
-      initialized = false;
-      el.classList.remove("is-visible");
-    };
-
-    const update = () => {
-      current.current.x += (target.current.x - current.current.x) * 0.12;
-      current.current.y += (target.current.y - current.current.y) * 0.12;
-      el.style.transform = `translate3d(${current.current.x}px, ${current.current.y}px, 0)`;
-      rafId = requestAnimationFrame(update);
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
-    rafId = requestAnimationFrame(update);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return (
-    <div ref={ref} className="cursor-follower" aria-hidden="true">
-      <span className="cursor-follower__ring" />
-      <span className="cursor-follower__dot" />
-      <span ref={labelRef} className="cursor-follower__label">EXPLORE</span>
-    </div>
-  );
-}
-
-function ScrollProgress() {
-  useEffect(() => {
-    let rafId = 0;
-    let scheduled = false;
-
-    const update = () => {
-      const scrollHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-      const progress = Math.min(window.scrollY / scrollHeight, 1);
-      document.documentElement.style.setProperty("--scroll-progress", `${progress}`);
-
-      const hero = document.querySelector(".hero-section") as HTMLElement;
-      if (hero) {
-        const heroProgress = Math.min(window.scrollY / Math.max(hero.offsetHeight, 1), 1);
-        hero.style.setProperty("--hero-scroll", `${heroProgress}`);
-      }
-      scheduled = false;
-    };
-
-    const onScroll = () => {
-      if (!scheduled) {
-        scheduled = true;
-        rafId = requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return (
-    <div className="scroll-progress" aria-hidden="true">
-      <span />
-    </div>
-  );
-}
-
-function MarqueeTicker({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
-  const doubled = [...items, ...items];
-  return (
-    <div className={`marquee ${reverse ? "marquee--reverse" : ""}`} aria-label={items.join(", ")}>
+    <div
+      className={`marquee ${reverse ? "marquee--reverse" : ""}`}
+      aria-label={items.join(", ")}
+    >
       <div className="marquee__track">
-        {doubled.map((item, idx) => (
-          <span key={`${item}-${idx}`} className="marquee__item">
-            {item} <i aria-hidden="true">✳</i>
+        {content.map((item, index) => (
+          <span className="marquee__item" key={`${item}-${index}`}>
+            {item}
+            <i aria-hidden="true">✳</i>
           </span>
         ))}
       </div>
@@ -343,7 +50,13 @@ function MarqueeTicker({ items, reverse = false }: { items: string[]; reverse?: 
   );
 }
 
-function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
+function SectionLabel({
+  index,
+  children,
+}: {
+  index: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="section-label">
       <span className="section-label__index">{index}</span>
@@ -357,617 +70,655 @@ function LiveClock() {
 
   useEffect(() => {
     setTime(new Date());
-    const interval = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(interval);
+    const interval = window.setInterval(() => setTime(new Date()), 1000);
+    return () => window.clearInterval(interval);
   }, []);
 
   if (!time) return <span>00:00:00 IST</span>;
 
   return (
     <span>
-      {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })} IST
+      {time.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })}{" "}
+      IST
     </span>
   );
 }
 
-/* --- MAIN LANDING DATA --- */
-
-const ECOSYSTEM_STEPS = [
-  {
-    number: "01",
-    title: "Discover",
-    copy: "Browse published, versioned pitches from founders and teams, then open the ones worth understanding in more depth.",
-    tag: "Browse published pitches"
-  },
-  {
-    number: "02",
-    title: "Pitch",
-    copy: "Draft a pitch, revise it through versions, and optionally ask an AI mentor to review the story before you publish it.",
-    tag: "Draft, revise, review"
-  },
-  {
-    number: "03",
-    title: "Connect",
-    copy: "Investors can message founders directly in-platform to discuss the opportunity, terms, and whether there is a fit.",
-    tag: "Direct founder messages"
-  },
-  {
-    number: "04",
-    title: "Market",
-    copy: "Sell software, equity opportunities, custom work, or physical products directly to buyers through the platform.",
-    tag: "Sell directly on Ventex"
-  }
-];
-
-const STARTUP_CARDS = [
-  {
-    name: "Pitch listings opening soon",
-    category: "FOUNDER EARLY ACCESS",
-    description: "Real founder pitches will appear here as the first publishing cohort comes online.",
-    className: "startup-card--blue",
-    mark: "P",
-    founder: "Join the first cohort"
-  },
-  {
-    name: "Founder profiles opening soon",
-    category: "PEOPLE / EARLY ACCESS",
-    description: "Founders will be able to share their context, progress, and latest pitch version here.",
-    className: "startup-card--sand",
-    mark: "F",
-    founder: "Early access available"
-  },
-  {
-    name: "Be one of the first",
-    category: "PLATFORM PREVIEW",
-    description: "The network is still forming. Apply early to help shape what gets published and discovered.",
-    className: "startup-card--plum",
-    mark: "→",
-    founder: "Apply for early access"
-  }
-];
-
-const MARKETPLACE_ITEMS = [
-  { type: "SOFTWARE", title: "Marketplace opening soon", price: "join waitlist", color: "market-item--lime" },
-  { type: "EQUITY", title: "Opportunities opening soon", price: "join waitlist", color: "market-item--red" },
-  { type: "CUSTOM WORK", title: "List your offering", price: "apply early", color: "market-item--cream" }
-];
-
-const NAV_PAGES = [
-  { id: "top", label: "Home", index: "00", href: "/" },
-  { id: "discover", label: "Discover", index: "01", href: "/discover" },
-  { id: "marketplace", label: "Marketplace", index: "02", href: "/marketplace" }
-];
+interface PitchCardData {
+  id: string;
+  title: string;
+  tagline?: string | null;
+  short_description?: string | null;
+  industry?: string | null;
+  company_stage?: string | null;
+  ai_score?: number | null;
+  stars_count?: number | null;
+}
 
 const SECTION_TRACKER_ITEMS = [
-  { id: "top", label: "Hero", index: "00" },
-  { id: "story", label: "Manifesto", index: "01" },
-  { id: "pitch", label: "How it moves", index: "02" },
-  { id: "startups", label: "Startups", index: "03" },
-  { id: "intelligence", label: "Unfair advantage", index: "04" },
-  { id: "marketplace", label: "Useful side", index: "05" }
+  { id: "hero", label: "Start", index: "01" },
+  { id: "how-it-works", label: "Workflow", index: "02" },
+  { id: "workspace", label: "Workspace", index: "03" },
+  { id: "discover", label: "Discover", index: "04" },
+  { id: "marketplace", label: "Marketplace", index: "05" },
+  { id: "coming-soon", label: "Roadmap", index: "06" },
 ];
 
-/* --- MAIN VENTEX PAGE COMPONENT --- */
+export default function HomePage() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [activeSection, setActiveSection] = useState("hero");
 
-export default function VentexHome() {
-  const [navScrolled, setNavScrolled] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("top");
-  const [expandedEcosystem, setExpandedEcosystem] = useState(0);
-
-  // Pitch Mentor AI State
-  const [userPrompt, setUserPrompt] = useState("");
-  const [selectedChip, setSelectedChip] = useState("Find my wedge");
+  // Pitch Mentor interactive preview state
+  const [activeSuggestion, setActiveSuggestion] = useState("Find my wedge");
+  const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState(
-    "Lead with the customer problem, then make the ask specific: what are you raising, why now, and what milestone will that capital unlock?"
+    "Name the narrow customer problem your pitch solves, then prove why your approach is 10x better than the current workaround."
   );
 
+  // Top real pitches state
+  const [topPitches, setTopPitches] = useState<PitchCardData[]>([]);
+  const [pitchesLoading, setPitchesLoading] = useState(true);
+
   useEffect(() => {
-    const handleScroll = () => setNavScrolled(window.scrollY > 28);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    async function fetchTopPitches() {
+      try {
+        setPitchesLoading(true);
+        const { data, error } = await supabase
+          .from("pitches")
+          .select(
+            "id, title, tagline, short_description, industry, company_stage, ai_score, stars_count"
+          )
+          .eq("status", "live")
+          .order("ai_score", { ascending: false, nullsFirst: false })
+          .limit(3);
+
+        if (!error && data && data.length > 0) {
+          setTopPitches(data);
+        } else {
+          setTopPitches([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch top pitches:", err);
+        setTopPitches([]);
+      } finally {
+        setPitchesLoading(false);
+      }
+    }
+
+    fetchTopPitches();
   }, []);
 
   useEffect(() => {
-    const elements = SECTION_TRACKER_ITEMS.map(item => document.getElementById(item.id)).filter(Boolean) as HTMLElement[];
+    const elements = SECTION_TRACKER_ITEMS.map((item) =>
+      document.getElementById(item.id)
+    ).filter(Boolean) as HTMLElement[];
+
     if (!elements.length || typeof IntersectionObserver === "undefined") return;
 
-    const observer = new IntersectionObserver((entries) => {
-      const intersecting = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (intersecting) {
-        setActiveSection(intersecting.target.id);
-      }
-    }, { rootMargin: "-28% 0px -48% 0px", threshold: [0.12, 0.3, 0.6] });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (intersecting) {
+          setActiveSection(intersecting.target.id);
+        }
+      },
+      { rootMargin: "-20% 0px -40% 0px", threshold: [0.1, 0.3, 0.6] }
+    );
 
-    elements.forEach(el => observer.observe(el));
+    elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
-  const handleChipSelect = (chip: string) => {
-    setSelectedChip(chip);
-    const answers: Record<string, string> = {
-      "Find my wedge": "Name the narrow customer problem your pitch solves, then show why your approach is meaningfully different from the alternatives.",
-      "Name my audience": "Start with the people who feel this problem most urgently. A specific buyer profile will make the pitch easier to test and improve.",
-      "Sharpen my pitch": "Clarify the ask, the milestone it funds, and the evidence you will bring back. Investors should know exactly what happens next."
+  const runAssistant = (promptText = aiPrompt || activeSuggestion) => {
+    const responses: Record<string, string> = {
+      "Find my wedge":
+        "Name the narrow customer problem your pitch solves, then prove why your approach is 10x better than the current workaround.",
+      "Name my audience":
+        "Start with the exact people who feel this problem every single week. A precise buyer persona makes customer interviews much sharper.",
+      "Sharpen my ask":
+        "Clarify what you are raising, exactly what key milestone that capital buys, and what proof you will bring back to the table.",
     };
-    setAiResponse(answers[chip] || `Here's a sharper starting point for "${chip}": make the insight tangible in one small, undeniable proof.`);
+
+    setAiResponse(
+      responses[promptText] ||
+        `For "${promptText}": separate vanity metrics from hard retention. What is the one truth only you and your users know?`
+    );
+    setAiPrompt("");
   };
 
-  const handlePromptSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userPrompt.trim()) return;
-    setAiResponse(`Regarding "${userPrompt}": separate activity from evidence. Show the customer behavior, the change over time, and the milestone this next pitch version is built to prove.`);
-    setUserPrompt("");
-  };
+  const steps = [
+    {
+      number: "01",
+      title: "Seed an idea",
+      copy: "Start in private. Brainstorm your problem, solution, and wedge without the noise of public social feeds.",
+      tag: "Private incubation",
+    },
+    {
+      number: "02",
+      title: "Build & refine with AI mentor",
+      copy: "Test your logic against our AI mentor. Clarify market sizing, refine your story, and eliminate hand-waving.",
+      tag: "On-demand critique",
+    },
+    {
+      number: "03",
+      title: "Every save is a version",
+      copy: "Git-style commit history for your startup. Track milestones, customer feedback, and how your narrative evolved.",
+      tag: "Immutable change log",
+    },
+    {
+      number: "04",
+      title: "Go public when ready for funding",
+      copy: "Flip the switch from private draft to published pitch. Get ranked, verified, and discovered by real investors.",
+      tag: "Verified launch",
+    },
+  ];
 
   return (
-    <div className="site-shell">
-      <CursorAtmosphere />
-      <CursorFollower />
-      <ScrollProgress />
-
-      <div className="grain" aria-hidden="true" />
-
-      {/* SITE NAVIGATION HEADER */}
-      <header className={`site-nav ${navScrolled ? "site-nav--scrolled" : ""}`}>
-        <a href="#top" className="brand-lockup" aria-label="Ventex home">
-          <span className="brand-mark">
-            <span>F</span>
-          </span>
-          <span>Ventex</span>
-        </a>
-
-        <nav className={`desktop-nav ${mobileNavOpen ? "desktop-nav--open" : ""}`} aria-label="Primary pages">
-          {NAV_PAGES.map(page => (
-            <Link
-              key={page.id}
-              href={page.href}
-              className={activeSection === page.id ? "nav-page--active" : ""}
-              aria-current={activeSection === page.id ? "page" : undefined}
-              onClick={() => setMobileNavOpen(false)}
-            >
-              <span className="nav-page__index">{page.index}</span>
-              <span className="nav-page__label">{page.label}</span>
-            </Link>
-          ))}
-        </nav>
-
-        <div className="nav-actions">
-          <Link href="/login" className="nav-login">Sign in</Link>
-          <MagneticButton href="/founder/create-pitch" variant="crimson" className="nav-cta">
-            Create pitch <ArrowUpRight size={15} strokeWidth={1.8} />
-          </MagneticButton>
-          <button
-            className="mobile-menu md:hidden text-[#f1efe8] p-2"
-            aria-label="Toggle menu"
-            onClick={() => setMobileNavOpen(!mobileNavOpen)}
-          >
-            {mobileNavOpen ? <X size={21} /> : <Menu size={21} />}
-          </button>
+    <>
+      {/* 1. HERO SECTION */}
+      <section className="hero-section" id="hero">
+        <div className="hero-scanline" aria-hidden="true" />
+        <div className="hero-assembly" aria-hidden="true">
+          <span>{SITE_NAME} / V3</span>
+          <i />
+          <span>GITHUB FOR FOUNDERS</span>
         </div>
-      </header>
+        <div className="hero-glow hero-glow--one" />
+        <div className="hero-glow hero-glow--two" />
+        <div className="hero-grid" aria-hidden="true" />
 
-      {/* MAIN CONTENT */}
-      <main id="top">
-        {/* HERO SECTION */}
-        <section className="hero-section">
-          <div className="hero-scanline" aria-hidden="true" />
-          <div className="hero-assembly" aria-hidden="true">
-            <span>VENTEX / 01</span>
-            <span>BUILDING IN PUBLIC</span>
+        <div className="hero-content page-padding">
+          <div className="hero-eyebrow">
+            <span className="status-dot" />
+            <span>BUILD PRIVATELY. LAUNCH WITH CONVICTION.</span>
+            <span className="hero-eyebrow__year">/ 2026</span>
+            <span className="hero-clock">
+              / <LiveClock />
+            </span>
           </div>
 
-          <div className="hero-glow hero-glow--one" />
-          <div className="hero-glow hero-glow--two" />
-          <div className="hero-grid" aria-hidden="true" />
-
-          <div className="hero-content page-padding">
-            <div className="hero-eyebrow">
-              <span className="status-dot" /> THE STARTUP ECOSYSTEM, IN MOTION{" "}
-              <span className="hero-eyebrow__year">/ 2026</span>
-              <span className="hero-clock">
-                / <LiveClock />
+          <h1 className="hero-title">
+            <span className="hero-title__line">
+              <MaskText delay={100}>
+                <InteractiveLetters text="Build in private." />
+              </MaskText>
+            </span>
+            <span className="hero-title__line hero-title__line--indent">
+              <MaskText delay={180}>
+                <InteractiveLetters text="Ship with versions." />
+              </MaskText>
+              <span className="hero-outline" aria-hidden="true">
+                Pitch.
               </span>
+            </span>
+            <span className="hero-title__line">
+              <MaskText delay={260}>
+                <InteractiveLetters text="Fund in public." />
+              </MaskText>
+            </span>
+          </h1>
+
+          <div className="hero-bottom">
+            <ParagraphReveal>
+              {SITE_NAME} is the version-controlled workspace for ambitious
+              builders. Incubate your idea quietly, refine it with an AI mentor,
+              and open it to investors when you are ready.
+            </ParagraphReveal>
+            <div className="hero-actions">
+              <MagneticButton href="/signup" variant="light">
+                Start Building <ArrowDownRight size={17} />
+              </MagneticButton>
+              <Link href="/discover" className="play-link">
+                <span className="play-icon">
+                  <ArrowUpRight size={14} />
+                </span>
+                Explore pitches
+              </Link>
             </div>
+          </div>
+        </div>
 
-            <h1 className="hero-title">
-              <span className="hero-title__line">
-                <MaskText delay={100}>
-                  <InteractiveLetters text="Build." />
-                </MaskText>
-              </span>
-              <span className="hero-title__line hero-title__line--indent">
-                <MaskText delay={180}>
-                  <InteractiveLetters text="Pitch." />
-                </MaskText>
-                <span className="hero-outline" aria-hidden="true">Shape.</span>
-              </span>
-              <span className="hero-title__line">
-                <MaskText delay={260}>
-                  <InteractiveLetters text="Get discovered." />
-                </MaskText>
-              </span>
-            </h1>
+        <div className="hero-side-note">
+          <span>SCROLL TO EXPLORE</span>
+          <span className="hero-side-note__line" />
+        </div>
+        <div className="hero-coordinate">{SITE_NAME} / FOUNDER OPERATING SYSTEM</div>
+        <div className="hero-orbit" aria-hidden="true">
+          <span>{SITE_NAME.charAt(0)}</span>
+        </div>
+      </section>
 
-            <div className="hero-bottom">
-              <ParagraphReveal>
-                Ventex is the living layer between a good idea and the people who can make it matter.
-              </ParagraphReveal>
-              <div className="hero-actions">
-                <MagneticButton href="#discover" variant="light">
-                  Explore the ecosystem <ArrowUpRight size={16} />
-                </MagneticButton>
-                <a href="#story" className="play-link">
-                  <span className="play-icon">
-                    <Play size={12} fill="currentColor" />
-                  </span>
-                  See how it works
-                </a>
+      {/* TICKER MARQUEE */}
+      <section
+        className="ticker-section"
+        aria-label={`${SITE_NAME} core primitives`}
+      >
+        <MarqueeTicker
+          items={[
+            "GITHUB FOR FOUNDERS",
+            "VERSION-CONTROLLED PITCHES",
+            "AI PITCH MENTOR",
+            "DIRECT INVESTOR INQUIRIES",
+            "FOUNDER MARKETPLACE",
+            "PRIVATE INCUBATION",
+          ]}
+        />
+      </section>
+
+      {/* 2. HOW IT WORKS (4 STEPS) */}
+      <section className="ecosystem-section page-padding" id="how-it-works">
+        <div className="section-heading-row">
+          <SectionLabel index="01">The Workflow</SectionLabel>
+          <span className="section-caption">
+            From raw notebook sketch
+            <br />
+            to closed round.
+          </span>
+        </div>
+
+        <div className="ecosystem-list">
+          {steps.map((step, index) => {
+            const active = activeStep === index;
+            return (
+              <button
+                key={step.number}
+                className={`ecosystem-row ${active ? "is-active" : ""}`}
+                onClick={() => setActiveStep(active ? -1 : index)}
+                aria-expanded={active}
+              >
+                <span className="ecosystem-row__number">{step.number}</span>
+                <span className="ecosystem-row__title">{step.title}</span>
+                <span className="ecosystem-row__copy">{step.copy}</span>
+                <span className="ecosystem-row__tag">{step.tag}</span>
+                <span className="ecosystem-row__icon">
+                  {active ? <Minus size={19} /> : <Plus size={19} />}
+                </span>
+                <span className="ecosystem-row__mobile-copy">{step.copy}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 3. FOUNDER WORKSPACE */}
+      <section className="assistant-section page-padding" id="workspace">
+        <div className="assistant-beam" aria-hidden="true" />
+        <div className="assistant-header">
+          <SectionLabel index="02">Founder Workspace</SectionLabel>
+          <span className="assistant-status">
+            <span className="status-dot status-dot--dark" /> {SITE_NAME} AI /
+            ONLINE
+          </span>
+        </div>
+
+        <div className="assistant-layout">
+          <div className="assistant-intro">
+            <h2 className="display-heading display-heading--large">
+              <MaskText>
+                Private by default.
+                <br />
+                <em>Built to iterate.</em>
+              </MaskText>
+            </h2>
+            <ParagraphReveal>
+              Everything you build starts completely confidential. No spam, no
+              premature exposure. Treat each pitch like an evolving codebase with
+              real commit logs and an on-demand AI thinking partner.
+            </ParagraphReveal>
+
+            {/* Workspace Feature Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
+              <div className="p-4 bg-[var(--paper)]/80 rounded-2xl border border-[var(--ink)]/10 text-[var(--ink)]">
+                <Shield className="w-5 h-5 text-[var(--red)] mb-2" />
+                <h4 className="font-bold text-xs uppercase tracking-wider mb-1">
+                  Private Incubation
+                </h4>
+                <p className="text-[11px] text-[var(--ink)]/70 leading-normal">
+                  Nobody sees your draft until you explicitly hit Publish.
+                </p>
+              </div>
+
+              <div className="p-4 bg-[var(--paper)]/80 rounded-2xl border border-[var(--ink)]/10 text-[var(--ink)]">
+                <GitBranch className="w-5 h-5 text-[var(--red)] mb-2" />
+                <h4 className="font-bold text-xs uppercase tracking-wider mb-1">
+                  Version History
+                </h4>
+                <p className="text-[11px] text-[var(--ink)]/70 leading-normal">
+                  Every edit creates a commit. Compare previous iterations with 1 click.
+                </p>
+              </div>
+
+              <div className="p-4 bg-[var(--paper)]/80 rounded-2xl border border-[var(--ink)]/10 text-[var(--ink)]">
+                <Bot className="w-5 h-5 text-[var(--red)] mb-2" />
+                <h4 className="font-bold text-xs uppercase tracking-wider mb-1">
+                  AI Pitch Mentor
+                </h4>
+                <p className="text-[11px] text-[var(--ink)]/70 leading-normal">
+                  Instant honest pushback on pricing, TAM, and defensibility.
+                </p>
               </div>
             </div>
 
-            <div className="hero-side-note">
-              <span>SCROLL TO EXPLORE</span>
-              <span className="hero-side-note__line" />
-            </div>
-
-            <div className="hero-coordinate">VENTEX / REMOTE-FIRST NETWORK</div>
-
-            <div className="hero-orbit" aria-hidden="true">
-              <span>F</span>
+            <div className="assistant-chips">
+              {["Find my wedge", "Name my audience", "Sharpen my ask"].map(
+                (suggestion) => (
+                  <button
+                    key={suggestion}
+                    className={activeSuggestion === suggestion ? "is-selected" : ""}
+                    onClick={() => {
+                      setActiveSuggestion(suggestion);
+                      runAssistant(suggestion);
+                    }}
+                  >
+                    {suggestion}
+                    <ArrowUpRight size={14} />
+                  </button>
+                )
+              )}
             </div>
           </div>
-        </section>
 
-        {/* TICKER MARQUEE */}
-        <section className="ticker-section" aria-label="Ventex ecosystem categories">
-          <MarqueeTicker items={["VENTEX", "FOUNDERS", "STARTUPS", "INVESTORS", "MENTORS", "MARKETPLACE"]} />
-        </section>
+          {/* Interactive AI Mentor Mockup */}
+          <div className="assistant-panel">
+            <div className="assistant-panel__top">
+              <div>
+                <span className="tiny-label">WORKSPACE / 01</span>
+                <span className="assistant-context">
+                  Pitch Review / Commit v0.4
+                </span>
+              </div>
+              <Sparkles size={18} />
+            </div>
 
-        {/* MANIFESTO SECTION */}
-        <section className="manifesto-section page-padding" id="story">
-          <div className="manifesto-meta">
-            <SectionLabel index="01">A different kind of platform</SectionLabel>
-            <span className="meta-aside">NOT ANOTHER FEED</span>
+            <div className="assistant-panel__conversation">
+              <div className="assistant-message assistant-message--user">
+                How should I structure the traction slide if we are pre-revenue but have 800 waitlist signups?
+              </div>
+              <div className="assistant-message assistant-message--ai">
+                <span className="ai-avatar">{SITE_NAME.charAt(0)}</span>
+                <div>
+                  <span className="tiny-label">{SITE_NAME} AI / MENTOR</span>
+                  <p>{aiResponse}</p>
+                </div>
+              </div>
+            </div>
+
+            <form
+              className="assistant-input"
+              onSubmit={(e) => {
+                e.preventDefault();
+                runAssistant();
+              }}
+            >
+              <input
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                placeholder="Ask your mentor a question..."
+                aria-label={`Ask ${SITE_NAME} AI`}
+              />
+              <button type="submit" aria-label="Send query">
+                <ArrowUpRight size={18} />
+              </button>
+            </form>
+
+            <div className="assistant-panel__footer">
+              <span>
+                <span className="pulse-dot" /> Live founder workspace
+              </span>
+              <span>Confidential & encrypted</span>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="manifesto-grid">
-            <h2 className="display-heading display-heading--xl">
-              <MaskText>Where ambition</MaskText>
-              <MaskText delay={80}>finds its people.</MaskText>
+      {/* 4. DISCOVER (PITCHES RANKED BY AI SCORE + COMMUNITY STARS) */}
+      <section className="startups-section page-padding" id="discover">
+        <div className="section-heading-row startups-heading">
+          <div>
+            <SectionLabel index="03">Discover</SectionLabel>
+            <h2 className="display-heading">
+              <MaskText>
+                Pitches ranked by <em>signal.</em>
+              </MaskText>
             </h2>
-
-            <div className="manifesto-copy">
-              <ParagraphReveal>
-                Startups do not grow in isolation. They grow through the right collision — a founder with a sharper question, an investor with a longer view, a product with a first believer.
-              </ParagraphReveal>
-              <ParagraphReveal>
-                Ventex makes those collisions easier to find, easier to trust, and much harder to forget.
-              </ParagraphReveal>
-              <a href="#discover" className="text-link">
-                Meet the ecosystem <ArrowUpRight size={16} />
-              </a>
-            </div>
-
-            <div className="manifesto-stamp" aria-hidden="true">
-              <span>VENTEX</span>
-              <span>EST. 2026</span>
-            </div>
           </div>
-        </section>
+          <Link
+            href="/discover"
+            className="circle-link"
+            aria-label="View all pitches"
+          >
+            <ArrowUpRight size={22} />
+          </Link>
+        </div>
 
-        {/* STATS SECTION */}
-        <section className="stats-section page-padding" id="discover">
-          <div className="stats-intro">
-            <SectionLabel index="02">A platform with pull</SectionLabel>
-            <span>Small signals, real momentum.</span>
-          </div>
-
-          <div className="stats-grid">
-            <div className="stat-item">
-              <CountUp value={120} suffix="+" />
-              <span>published pitches</span>
-            </div>
-            <div className="stat-item">
-              <CountUp value={45} suffix="+" />
-              <span>marketplace listings</span>
-            </div>
-            <div className="stat-item">
-              <CountUp value={28} />
-              <span>cities connected</span>
-            </div>
-            <div className="stat-item stat-item--accent">
-              <span className="stat-arrow">↗</span>
-              <span>Built for momentum</span>
-            </div>
-          </div>
-        </section>
-
-        {/* ECOSYSTEM / HOW IT MOVES SECTION */}
-        <section className="ecosystem-section page-padding" id="pitch">
-          <div className="section-heading-row">
-            <SectionLabel index="03">How it moves</SectionLabel>
-            <span className="section-caption">From first thought to momentum.</span>
-          </div>
-
-          <div className="ecosystem-list">
-            {ECOSYSTEM_STEPS.map((step, idx) => {
-              const isExpanded = expandedEcosystem === idx;
-              return (
-                <button
-                  key={step.number}
-                  className={`ecosystem-row ${isExpanded ? "is-active" : ""}`}
-                  onClick={() => setExpandedEcosystem(isExpanded ? -1 : idx)}
-                  aria-expanded={isExpanded}
-                >
-                  <span className="ecosystem-row__number">{step.number}</span>
-                  <span className="ecosystem-row__title">{step.title}</span>
-                  <span className="ecosystem-row__copy">{step.copy}</span>
-                  <span className="ecosystem-row__tag">{step.tag}</span>
-                  <span className="ecosystem-row__icon">
-                    {isExpanded ? <Minus size={19} /> : <Plus size={19} />}
-                  </span>
-                  <span className="ecosystem-row__mobile-copy">{step.copy}</span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* STARTUPS SECTION */}
-        <section className="startups-section page-padding" id="startups">
-          <div className="section-heading-row startups-heading">
-            <div>
-              <SectionLabel index="04">A closer look</SectionLabel>
-              <h2 className="display-heading">
-                <MaskText>
-                  Startups with <em>something to say.</em>
-                </MaskText>
-              </h2>
-            </div>
-            <Link href="/discover" className="circle-link" aria-label="Explore all startups">
-              <ArrowUpRight size={22} />
-            </Link>
-          </div>
-
+        {/* Real Pitches or Clean Empty State */}
+        {pitchesLoading ? (
           <div className="startup-grid">
-            {STARTUP_CARDS.map((card, idx) => (
-              <article
-                key={card.name}
-                className={`startup-card ${card.className}`}
-                style={{ ["--card-delay" as any]: `${idx * 100}ms` }}
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="startup-card min-h-[380px] bg-card animate-pulse rounded-2xl border border-line"
+              />
+            ))}
+          </div>
+        ) : topPitches.length > 0 ? (
+          <div className="startup-grid">
+            {topPitches.map((pitch, idx) => (
+              <Link
+                key={pitch.id}
+                href={`/pitch/${pitch.id}`}
+                className="startup-card startup-card--blue block transition-transform hover:-translate-y-2"
               >
                 <div className="startup-card__visual">
-                  <span className="startup-card__mark">{card.mark}</span>
+                  <span className="startup-card__mark">
+                    {pitch.title.charAt(0).toUpperCase()}
+                  </span>
                   <span className="startup-card__year">N° 0{idx + 1}</span>
                   <span className="startup-card__orbit" />
                 </div>
                 <div className="startup-card__info">
                   <div>
-                    <span className="startup-card__category">{card.category}</span>
-                    <h3>{card.name}</h3>
+                    <span className="startup-card__category">
+                      {pitch.industry || "STARTUP"}
+                    </span>
+                    <h3>{pitch.title}</h3>
                   </div>
                   <ArrowUpRight size={20} className="startup-card__arrow" />
                 </div>
                 <div className="startup-card__details">
-                  <p>{card.description}</p>
-                  <span>Founder / {card.founder}</span>
+                  <p className="line-clamp-2">
+                    {pitch.tagline || pitch.short_description || "Verified pitch."}
+                  </p>
+                  <span>
+                    Score: {pitch.ai_score ? `${pitch.ai_score}/100` : "Ranked"}
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
+        ) : (
+          <div className="mt-16 p-12 text-center rounded-3xl border border-line bg-card/60 backdrop-blur-sm max-w-xl mx-auto">
+            <span className="brand-mark mx-auto mb-4">
+              <span>{SITE_NAME.charAt(0)}</span>
+            </span>
+            <h3 className="text-xl font-bold font-display uppercase tracking-tight text-paper mb-2">
+              First pitches arrive soon
+            </h3>
+            <p className="text-sm text-paper-dim leading-relaxed mb-6">
+              Founders are currently incubating pitches in private drafts. As
+              cohort launches are verified, the highest-signal pitches will rank
+              here.
+            </p>
+            <MagneticButton href="/founder/create-pitch" variant="crimson">
+              Submit your pitch <ArrowUpRight size={15} />
+            </MagneticButton>
+          </div>
+        )}
 
-          <div className="startups-footer">
-            <span>THE PEOPLE BEHIND THE PROGRESS</span>
-            <Link href="/discover" className="text-link">
-              View all profiles <ArrowUpRight size={16} />
+        <div className="startups-footer">
+          <span>RANKED BY AI SCORE + COMMUNITY STARS</span>
+          <Link href="/discover" className="text-link">
+            Explore discover feed <ArrowUpRight size={15} />
+          </Link>
+        </div>
+      </section>
+
+      {/* 5. MARKETPLACE (FOUNDERS SELL PRODUCTS, BUYERS INQUIRE) */}
+      <section className="marketplace-section" id="marketplace">
+        <div className="page-padding marketplace-inner">
+          <div className="marketplace-heading">
+            <SectionLabel index="04">Marketplace</SectionLabel>
+            <h2 className="display-heading display-heading--large">
+              <MaskText>
+                Sell what you build.
+                <br />
+                <em>Validate day one.</em>
+              </MaskText>
+            </h2>
+            <ParagraphReveal>
+              Founders sell software tools, boilerplates, hardware prototypes,
+              and design kits. Interested buyers send a direct inquiry without
+              bloated escrow barriers.
+            </ParagraphReveal>
+            <Link href="/marketplace" className="text-link text-link--light">
+              Browse marketplace products <ArrowUpRight size={15} />
             </Link>
           </div>
-        </section>
 
-        {/* VENTEX AI / PITCH MENTOR SECTION */}
-        <section className="assistant-section page-padding" id="intelligence">
-          <div className="assistant-beam" aria-hidden="true" />
-          <div className="assistant-header">
-            <SectionLabel index="05">Your unfair advantage</SectionLabel>
-            <span className="assistant-status">
-              <span className="status-dot status-dot--dark" /> VENTEX AI / ONLINE
-            </span>
-          </div>
-
-          <div className="assistant-layout">
-            <div className="assistant-intro">
-              <h2 className="display-heading display-heading--large">
-                <MaskText>
-                  Make the <span className="red-text">next move.</span>
-                </MaskText>
-              </h2>
-              <ParagraphReveal>
-                A thinking partner for the messy middle — when your idea is real, but the words, wedge, and way forward are not clear yet.
-              </ParagraphReveal>
-
-              <div className="assistant-chips">
-                {["Find my wedge", "Name my audience", "Sharpen my pitch"].map(chip => (
-                  <button
-                    key={chip}
-                    className={selectedChip === chip ? "is-selected" : ""}
-                    onClick={() => handleChipSelect(chip)}
-                  >
-                    {chip}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="assistant-panel">
-              <div className="assistant-panel__top">
-                <div>
-                  <span className="tiny-label">WORKSPACE / 01</span>
-                  <span className="assistant-context">Pitch review / version 03</span>
-                </div>
-              </div>
-
-              <div className="assistant-panel__conversation">
-                <div className="assistant-message assistant-message--user">
-                  Can you help me clarify the ask in my seed pitch and show what this round unlocks?
-                </div>
-                <div className="assistant-message assistant-message--ai">
-                  <span className="ai-avatar">F</span>
-                  <div>
-                    <span className="tiny-label">VENTEX AI / PITCH MENTOR</span>
-                    <p>{aiResponse}</p>
-                  </div>
-                </div>
-              </div>
-
-              <form className="assistant-input" onSubmit={handlePromptSubmit}>
-                <input
-                  value={userPrompt}
-                  onChange={e => setUserPrompt(e.target.value)}
-                  placeholder="Ask a sharper question..."
-                  aria-label="Ask Ventex AI"
-                />
-                <button type="submit" aria-label="Send question">
-                  <ArrowUpRight size={18} />
-                </button>
-              </form>
-
-              <div className="assistant-panel__footer">
-                <span>
-                  <span className="pulse-dot" /> Reviewing your pitch
+          <div className="marketplace-list">
+            {[
+              {
+                type: "SOFTWARE",
+                title: "Production SaaS Starter & Auth",
+                note: "Send inquiry",
+              },
+              {
+                type: "HARDWARE",
+                title: "IoT Sensor Prototype CAD & Code",
+                note: "Send inquiry",
+              },
+              {
+                type: "BOILERPLATE",
+                title: "Next.js + AI Agent Engine",
+                note: "Send inquiry",
+              },
+            ].map((item, index) => (
+              <Link
+                href="/marketplace"
+                className="market-item"
+                key={item.title}
+              >
+                <span className="market-item__index">0{index + 1}</span>
+                <span className="market-item__type">{item.type}</span>
+                <strong>{item.title}</strong>
+                <span className="market-item__price font-mono text-xs">
+                  I&apos;m interested →
                 </span>
-                <span>Private workspace</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PROCESS LOOP SECTION */}
-        <section className="process-section page-padding" id="process">
-          <div className="section-heading-row">
-            <SectionLabel index="06">The Ventex loop</SectionLabel>
-            <span className="section-caption">Good things compound.</span>
-          </div>
-
-          <div className="process-grid">
-            {["Create", "Pitch", "Connect", "Grow"].map((stepTitle, idx) => (
-              <div key={stepTitle} className={`process-item ${idx === 0 ? "process-item--active" : ""}`}>
-                <span className="process-item__number">0{idx + 1}</span>
-                <div className="process-item__line">
-                  <span />
-                </div>
-                <h3>{stepTitle}</h3>
-                <p>
-                  {[
-                    "Make the idea tangible.",
-                    "Give it a point of view.",
-                    "Find the right people.",
-                    "Keep the momentum alive."
-                  ][idx]}
-                </p>
-              </div>
+                <ArrowUpRight size={19} />
+              </Link>
             ))}
           </div>
-        </section>
-
-        {/* MARKETPLACE SECTION */}
-        <section className="marketplace-section" id="marketplace">
-          <div className="page-padding marketplace-inner">
-            <div className="marketplace-heading">
-              <SectionLabel index="07">The useful side of ambition</SectionLabel>
-              <h2 className="display-heading display-heading--large">
-                <MaskText>
-                  Things worth <em>putting to work.</em>
-                </MaskText>
-              </h2>
-              <ParagraphReveal>
-                Founder-built tools, considered software, and small digital products with a big point of view.
-              </ParagraphReveal>
-              <Link href="/marketplace" className="text-link text-link--light">
-                Enter the marketplace <ArrowUpRight size={16} />
-              </Link>
-            </div>
-
-            <div className="marketplace-list">
-              {MARKETPLACE_ITEMS.map((item, idx) => (
-                <Link key={item.title} href="/marketplace" className={`market-item ${item.color}`}>
-                  <span className="market-item__index">0{idx + 1}</span>
-                  <span className="market-item__type">{item.type}</span>
-                  <strong>{item.title}</strong>
-                  <span className="market-item__price">{item.price}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* SITE FOOTER */}
-      <footer className="site-footer page-padding" id="footer">
-        <div className="footer-top">
-          <span className="footer-kicker">THE NEXT CHAPTER IS OPEN</span>
-          <span className="footer-coordinate">VENTEX / REMOTE-FIRST NETWORK</span>
         </div>
+        <MarqueeTicker
+          items={[
+            "VALIDATE BEFORE FUNDING",
+            "DIRECT BUYER INQUIRIES",
+            "SOFTWARE & HARDWARE",
+            "FOUNDER FIRST ECONOMY",
+          ]}
+          reverse
+        />
+      </section>
 
-        <h2 className="footer-title">
-          <MaskText>
-            Build something <em>worth discovering.</em>
-          </MaskText>
-        </h2>
-
-        <div className="footer-cta">
-          <ParagraphReveal>
-            Bring the rough idea. Leave with a clearer next move.
-          </ParagraphReveal>
-          <MagneticButton href="/founder/create-pitch" variant="crimson">
-            Start your pitch <ArrowUpRight size={16} />
-          </MagneticButton>
-        </div>
-
-        <div className="footer-bottom">
-          <a href="#top" className="brand-lockup">
-            <span className="brand-mark">
-              <span>F</span>
-            </span>
-            <span>Ventex</span>
-          </a>
-
-          <div className="footer-links">
-            <div>
-              <span>Explore</span>
-              <Link href="/discover">Discover</Link>
-              <Link href="/marketplace">Marketplace</Link>
-            </div>
-            <div>
-              <span>Company</span>
-              <a href="#story">About</a>
-              <a href="#process">Process</a>
-              <a href="#top">Contact</a>
-            </div>
-            <div>
-              <span>Follow</span>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer">X / Twitter</a>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-legal">
-          <span>© 2026 Ventex. For people building what’s next.</span>
-          <span>
-            Privacy <i>·</i> Terms <i>·</i> Made with intent
+      {/* 6. COMING SOON ROW */}
+      <section className="process-section page-padding" id="coming-soon">
+        <div className="section-heading-row">
+          <SectionLabel index="05">Roadmap</SectionLabel>
+          <span className="section-caption">
+            What we are assembling
+            <br />
+            next for builders.
           </span>
         </div>
-      </footer>
 
-      {/* FLOATING SECTION TRACKER */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+          <div className="p-8 rounded-3xl border border-line bg-card/60 backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-[10px] font-bold font-mono tracking-widest uppercase text-red bg-red/10 px-2.5 py-1 rounded-full">
+                  COMING SOON
+                </span>
+                <Users className="w-5 h-5 text-paper-dim" />
+              </div>
+              <h3 className="text-2xl font-bold font-display uppercase tracking-tight text-paper mb-3">
+                Operator Mentors
+              </h3>
+              <p className="text-sm text-paper-dim leading-relaxed">
+                Connect directly with founders who scaled past \$1M ARR for
+                unvarnished slide-by-slide feedback on your draft.
+              </p>
+            </div>
+            <div className="pt-6 border-t border-line/60 mt-6 text-xs text-smoke font-mono">
+              Q3 2026 ROLLOUT
+            </div>
+          </div>
+
+          <div className="p-8 rounded-3xl border border-line bg-card/60 backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-[10px] font-bold font-mono tracking-widest uppercase text-red bg-red/10 px-2.5 py-1 rounded-full">
+                  COMING SOON
+                </span>
+                <MessageSquare className="w-5 h-5 text-paper-dim" />
+              </div>
+              <h3 className="text-2xl font-bold font-display uppercase tracking-tight text-paper mb-3">
+                Investor-Founder Chat
+              </h3>
+              <p className="text-sm text-paper-dim leading-relaxed">
+                Direct, async messaging between verified investors and founders
+                with end-to-end audit trails and mutual NDAs.
+              </p>
+            </div>
+            <div className="pt-6 border-t border-line/60 mt-6 text-xs text-smoke font-mono">
+              PRIVATE BETA
+            </div>
+          </div>
+
+          <div className="p-8 rounded-3xl border border-line bg-card/60 backdrop-blur-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-[10px] font-bold font-mono tracking-widest uppercase text-red bg-red/10 px-2.5 py-1 rounded-full">
+                  COMING SOON
+                </span>
+                <Newspaper className="w-5 h-5 text-paper-dim" />
+              </div>
+              <h3 className="text-2xl font-bold font-display uppercase tracking-tight text-paper mb-3">
+                News & Showcase
+              </h3>
+              <p className="text-sm text-paper-dim leading-relaxed">
+                Editorial deep dives, weekly demo-days, and product spotlights
+                amplified across our global builder network.
+              </p>
+            </div>
+            <div className="pt-6 border-t border-line/60 mt-6 text-xs text-smoke font-mono">
+              CURATED FEED
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. FLOATING SECTION TRACKER */}
       <div className="section-tracker" aria-label="Page section tracker">
         <span className="section-tracker__caption">CURRENTLY</span>
         <div className="section-tracker__items">
-          {SECTION_TRACKER_ITEMS.map(item => (
+          {SECTION_TRACKER_ITEMS.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
@@ -980,10 +731,11 @@ export default function VentexHome() {
           ))}
         </div>
         <span className="section-tracker__counter">
-          {SECTION_TRACKER_ITEMS.findIndex(item => item.id === activeSection) + 1} /{" "}
-          {String(SECTION_TRACKER_ITEMS.length).padStart(2, "0")}
+          {SECTION_TRACKER_ITEMS.findIndex((item) => item.id === activeSection) +
+            1}{" "}
+          / {String(SECTION_TRACKER_ITEMS.length).padStart(2, "0")}
         </span>
       </div>
-    </div>
+    </>
   );
 }
