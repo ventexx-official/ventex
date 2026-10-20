@@ -249,13 +249,6 @@ export default function Navbar() {
                       Dashboard
                     </Link>
                     <Link
-                      href="/buyer/purchases"
-                      onClick={() => setAvatarMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-muted text-paper transition-colors"
-                    >
-                      <Package className="w-3.5 h-3.5 text-paper-dim" /> My Purchases
-                    </Link>
-                    <Link
                       href="/settings"
                       onClick={() => setAvatarMenuOpen(false)}
                       className="flex items-center gap-3 px-4 py-2 hover:bg-muted text-paper transition-colors"

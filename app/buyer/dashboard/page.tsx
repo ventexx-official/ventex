@@ -64,11 +64,11 @@ export default function BuyerDashboard() {
             <p className="text-[var(--text2)] text-sm">Discover and acquire digital products</p>
           </Link>
 
-          <Link href="/buyer/purchases" className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-6 hover:bg-[var(--bg2)] transition-colors group">
+          <Link href="/marketplace" className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[24px] p-6 hover:bg-[var(--bg2)] transition-colors group">
             <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mb-4 group-hover:scale-110 transition-transform">
               <Package className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-[var(--text)] text-lg mb-1">My Purchases</h3>
+            <h3 className="font-bold text-[var(--text)] text-lg mb-1">Browse Marketplace</h3>
             <p className="text-[var(--text2)] text-sm">Access your acquired products</p>
           </Link>
 

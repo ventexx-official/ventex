@@ -370,7 +370,6 @@ export default function CreatePitch() {
  };
 
  const handleSubmit = async () => {
- console.log("handleSubmit called. pitchId:", pitchId);
  if (!pitchId) {
  alert("Error: No pitch ID found. Please try refreshing the page.");
  return;
@@ -389,7 +388,6 @@ export default function CreatePitch() {
  const { error } = await updatePitch(buildPitchPayload(formData, { status: 'pending' }));
 
  if (!error) {
- console.log("Pitch submitted successfully");
  // Call AI summary API
  try {
  const { data: { session } } = await supabase.auth.getSession();

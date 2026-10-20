@@ -3,13 +3,13 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "folenzo-eight.vercel.app" }],
-      "destination": "https://folenzo.com/$1",
+      "destination": "https://www.ventexx.com/$1",
       "permanent": true
     },
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "folenzo-folenzo-s-projects.vercel.app" }],
-      "destination": "https://folenzo.com/$1",
+      "destination": "https://www.ventexx.com/$1",
       "permanent": true
     }
   ]

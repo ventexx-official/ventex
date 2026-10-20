@@ -82,9 +82,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  { name: "User Management", icon: Users, path: "/admin/users" },
  { name: "Industry Sectors", icon: Tag, path: "/admin/industries" },
  { name: "Locations", icon: MapPin, path: "/admin/locations" },
- { name: "Disputes Resolution", icon: AlertTriangle, path: "/admin/disputes" },
- { name: "Flagged Activities", icon: Flag, path: "/admin/flagged" },
- { name: "Deals", icon: Handshake, path: "/admin/deals" }
  ];
 
  const isActive = (path: string) => {
