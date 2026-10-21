@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { CursorAtmosphere, CursorFollower } from "./CursorFollower";
+import { CursorAtmosphere } from "./CursorFollower";
 import ScrollMotion from "./ScrollMotion";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -58,7 +58,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="site-shell flex flex-col min-h-screen">
       <div className="grain" aria-hidden="true" />
       <CursorAtmosphere />
-      <CursorFollower />
       <ScrollMotion />
       {!hideNav && <Navbar />}
       <main className="flex-grow z-10 relative">{children}</main>
