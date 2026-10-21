@@ -25,7 +25,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ventexmkt-2lswoktz.manus.space/'),
+  metadataBase: new URL('https://www.ventexx.com'),
   title: {
     default: `${SITE_NAME} — Build what’s next`,
     template: `%s | ${SITE_NAME}`,
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   alternates: {
-    canonical: "https://ventexmkt-2lswoktz.manus.space/",
+    canonical: "https://www.ventexx.com",
   },
   openGraph: {
     title: `${SITE_NAME} — Build what’s next`,
     description: `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
-    url: "https://ventexmkt-2lswoktz.manus.space/",
+    url: "https://www.ventexx.com",
     siteName: SITE_NAME,
     type: "website",
   },
@@ -54,42 +54,24 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#10100f",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${dmSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} antialiased bg-[#10100f] text-[#f1efe8]`}>
-        {/* JSON-LD Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": SITE_NAME,
-                "alternateName": [`${SITE_NAME} Platform`, `${SITE_NAME} Build Whats Next`],
-                "url": "https://ventexmkt-2lswoktz.manus.space/",
-                "description": `${SITE_NAME} is ${SITE_DESCRIPTION.charAt(0).toLowerCase() + SITE_DESCRIPTION.slice(1)}`,
-                "knowsAbout": ["Startups", "Founder Network", "Pitch Decks", "Venture Capital"],
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": SITE_NAME,
-                "url": "https://ventexmkt-2lswoktz.manus.space/",
-                "potentialAction": {
-                  "@type": "SearchAction",
-                  "target": `https://ventexmkt-2lswoktz.manus.space/discover?q={search_term_string}`,
-                  "query-input": "required name=search_term_string"
-                }
-              }
-            ])
-          }}
-        />
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable}`}
+    >
+      <body className="bg-[var(--ink)] text-[var(--paper)] font-sans antialiased overflow-x-hidden selection:bg-[var(--red)] selection:text-[var(--paper)]">
         <Layout>
           {children}
         </Layout>

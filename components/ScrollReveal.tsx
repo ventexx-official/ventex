@@ -151,3 +151,31 @@ export function InteractiveLetters({ text }: { text: string }) {
     </span>
   );
 }
+
+
+export function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const { ref, visible } = useInView<HTMLSpanElement>();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!visible) return;
+    const start = performance.now();
+    const duration = 1500;
+    let raf = 0;
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(value * eased));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [value, visible]);
+
+  return (
+    <span ref={ref} className="count-up">
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
