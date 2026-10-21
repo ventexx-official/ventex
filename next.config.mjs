@@ -1,5 +1,3 @@
-import withPWA from 'next-pwa';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
@@ -15,7 +13,7 @@ const nextConfig = {
       "img-src 'self' data: blob: https:",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
-            "upgrade-insecure-requests",
+      "upgrade-insecure-requests",
     ].join("; ");
 
     return [
@@ -60,7 +58,4 @@ const nextConfig = {
   },
 };
 
-export default withPWA({
-  dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-})(nextConfig);
+export default nextConfig;
