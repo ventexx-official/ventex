@@ -1,266 +1,303 @@
 "use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { Filter, Search, X } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import SponsoredCard from '@/components/SponsoredCard';
+import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Search, ArrowUpRight, ArrowDownRight, Tag } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { SITE_NAME } from "@/lib/brand";
 
-const INDUSTRIES = ['Fintech', 'Edtech', 'Healthtech', 'SaaS', 'E-commerce', 'AI/ML', 'Cleantech', 'Logistics', 'AgriTech', 'Cybersecurity'];
-const STAGES = ['Idea', 'Pre-seed', 'Seed', 'Early Growth', 'Growth'];
+const STAGES = [
+  { value: "All", label: "All Stages" },
+  { value: "idea", label: "Idea" },
+  { value: "prototype", label: "Prototype" },
+  { value: "mvp", label: "MVP" },
+  { value: "early_revenue", label: "Early Revenue" },
+  { value: "growth", label: "Growth" },
+];
 
-function formatCurrency(amount: number) {
- if (!amount) return 'Members only';
- if (amount >= 10000000) return `Rs ${(amount / 10000000).toFixed(1)}Cr`;
- if (amount >= 100000) return `Rs ${(amount / 100000).toFixed(1)}L`;
- return `Rs ${amount.toLocaleString('en-IN')}`;
+const INDUSTRIES = [
+  "All",
+  "Fintech",
+  "AI/ML",
+  "SaaS",
+  "Healthtech",
+  "E-commerce",
+  "Cleantech",
+  "Logistics",
+  "Cybersecurity",
+];
+
+function formatCurrency(amount?: number | null) {
+  if (!amount) return "Undisclosed";
+  if (amount >= 10000000) return `₹${(amount / 10000000).toFixed(1)} Cr`;
+  if (amount >= 100000) return `₹${(amount / 100000).toFixed(1)} L`;
+  return `₹${amount.toLocaleString("en-IN")}`;
 }
 
- export default function Discover() {
- const [pitches, setPitches] = useState<any[]>([]);
- const [sponsorships, setSponsorships] = useState<any[]>([]);
- const [loading, setLoading] = useState(true);
- const [query, setQuery] = useState('');
- const [industries, setIndustries] = useState<string[]>([]);
- const [stages, setStages] = useState<string[]>([]);
- const [countries, setCountries] = useState<string[]>([]);
- const [raisingOnly, setRaisingOnly] = useState(false);
- const [sortBy, setSortBy] = useState('recent');
- const [error, setError] = useState<string | null>(null);
- const [drawerOpen, setDrawerOpen] = useState(false);
+export default function DiscoverPage() {
+  const brandName = SITE_NAME.toUpperCase();
+  const [pitches, setPitches] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState<string>("All");
+  const [selectedStage, setSelectedStage] = useState<string>("All");
+  const [raisingOnly, setRaisingOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("recent");
+  const [error, setError] = useState<string | null>(null);
 
- useEffect(() => {
- const load = async () => {
- setLoading(true);
- setError(null);
- let request = supabase
- .from('pitches')
- .select('id, title, is_raising, industry, company_stage, round_closes_at, tagline, ai_summary, short_description, amount_seeking, state, country, created_at')
- .eq('status', 'live');
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setError(null);
 
- if (sortBy === 'trending') {
- request = request.order('created_at', { ascending: false });
- } else {
- request = request.order('created_at', { ascending: false });
- }
+      // Clean query using valid schema columns:
+      // In Supabase schema v3: 'stage' (not 'company_stage'), no 'round_closes_at', no 'short_description'
+      const { data, error: fetchError } = await supabase
+        .from("pitches")
+        .select(`
+          id,
+          title,
+          tagline,
+          industry,
+          stage,
+          problem,
+          solution,
+          is_raising,
+          amount_seeking,
+          currency,
+          city,
+          country,
+          current_version,
+          published_at,
+          created_at,
+          founder:founder_id (
+            id,
+            display_name,
+            avatar_url
+          )
+        `)
+        .eq("status", "live")
+        .order("published_at", { ascending: false });
 
- const { data, error: fetchError } = await request;
-  if (fetchError) {
-  console.error('[Discover] pitch fetch failed:', fetchError);
-  setError('Failed to load startups. Please try again later.');
-  }
-  setPitches(data || []);
+      if (fetchError) {
+        console.error("[Discover] pitch fetch failed:", fetchError);
+        setError("Unable to load the startup index right now. Please try again.");
+      } else {
+        setPitches(data || []);
+      }
 
-  const { data: sponsorsData } = await supabase
-    .from('sponsorships')
-    .select('*')
-    .eq('is_active', true)
-    .eq('type', 'startup');
-  if (sponsorsData) setSponsorships(sponsorsData);
+      setLoading(false);
+    };
 
-  setLoading(false);
- };
- load();
- }, [sortBy]);
+    load();
+  }, [sortBy]);
 
- const filtered = useMemo(() => {
- const q = query.trim().toLowerCase();
- return pitches.filter((pitch) => {
- const queryMatch = !q || [pitch.title, pitch.tagline, pitch.short_description, pitch.industry, pitch.company_stage, pitch.state, pitch.country]
- .join(' ')
- .toLowerCase()
- .includes(q);
- const industryMatch = industries.length === 0 || industries.includes(pitch.industry);
- const stageMatch = stages.length === 0 || stages.includes(pitch.company_stage);
- const countryMatch = countries.length === 0 || countries.includes(pitch.country);
- const raisingMatch = !raisingOnly || pitch.is_raising;
- return queryMatch && industryMatch && stageMatch && countryMatch && raisingMatch;
- });
- }, [pitches, query, industries, stages, countries, raisingOnly]);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return pitches.filter((pitch) => {
+      const queryMatch =
+        !q ||
+        [pitch.title, pitch.tagline, pitch.problem, pitch.solution, pitch.industry, pitch.city, pitch.country]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(q);
 
- const toggle = (value: string, list: string[], setList: (items: string[]) => void) => {
- setList(list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
- };
+      const industryMatch = selectedIndustry === "All" || pitch.industry === selectedIndustry;
+      const stageMatch = selectedStage === "All" || pitch.stage === selectedStage;
+      const raisingMatch = !raisingOnly || pitch.is_raising;
 
- const resetFilters = () => {
- setIndustries([]);
- setStages([]);
- setCountries([]);
- setRaisingOnly(false);
- setQuery('');
- };
+      return queryMatch && industryMatch && stageMatch && raisingMatch;
+    });
+  }, [pitches, query, selectedIndustry, selectedStage, raisingOnly]);
 
- const filters = (
- <div className="space-y-8">
- <FilterGroup title="Industry" values={INDUSTRIES} selected={industries} onToggle={(v) => toggle(v, industries, setIndustries)} />
- <FilterGroup title="Stage" values={STAGES} selected={stages} onToggle={(v) => toggle(v, stages, setStages)} />
- <FilterGroup title="Country" values={['United States', 'United Kingdom', 'Germany', 'India']} selected={countries} onToggle={(v) => toggle(v, countries, setCountries)} />
- <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-[var(--text)]">
- <input type="checkbox" checked={raisingOnly} onChange={(e) => setRaisingOnly(e.target.checked)} />
- Actively raising only
- </label>
- <button type="button" onClick={resetFilters} className="btn-secondary w-full">Reset filters</button>
- </div>
- );
-
- const showFilters = loading || pitches.length > 0;
-
- return (
- <div className="min-h-screen bg-[var(--bg)]">
- <header className="grid-bg border-b bg-[var(--bg2)]/70 px-4 py-16" style={{ borderColor: 'var(--border)' }}>
- <div className="mx-auto max-w-7xl">
- <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} discover startups</div>
- <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
- <div>
- <h1 className="max-w-2xl text-4xl font-extrabold tracking-[-.04em] text-[var(--text)] md:text-6xl">Browse investor-ready startups.</h1>
- <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--text2)]">Filter by sector, stage, traction signals, and fundraising status across the Ventex startup graph.</p>
- </div>
- <div className="relative w-full max-w-md">
- <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text3)]" />
- <input
- value={query}
- onChange={(e) => setQuery(e.target.value)}
- placeholder="Search startups, sectors, countries..."
- className="w-full border bg-[var(--bg)] py-3 pl-11 pr-4 text-sm font-medium text-[var(--text)] outline-none"
- style={{ borderColor: 'var(--border)' }}
- />
- </div>
- </div>
- </div>
- </header>
-
- <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row">
- {showFilters ? (
- <aside className="hidden w-[200px] shrink-0 border-r pr-6 md:block lg:w-[260px]" style={{ borderColor: 'var(--border)' }}>
- {filters}
- </aside>
- ) : null}
-
- {showFilters ? (
- <div className="md:hidden">
- <button type="button" onClick={() => setDrawerOpen(true)} className="btn-secondary inline-flex items-center gap-2">
- <Filter className="h-4 w-4" /> Filters
- </button>
- {drawerOpen ? (
- <div className="fixed inset-0 z-50 bg-black/40">
- <div className="ml-auto h-full w-[86vw] max-w-sm overflow-y-auto bg-[var(--bg)] p-5 shadow-2xl">
- <div className="mb-6 flex items-center justify-between">
- <h2 className="text-lg font-black text-[var(--text)]">Filters</h2>
- <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Close filters">
- <X className="h-5 w-5" />
- </button>
- </div>
- {filters}
- </div>
- </div>
- ) : null}
- </div>
- ) : null}
-
- <main className="min-w-0 flex-1">
- {showFilters ? (
- <div className="mb-6 flex items-center justify-between gap-4">
- <p className="mono text-xs text-[var(--text3)]">{filtered.length} startups</p>
- <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border bg-[var(--bg)] px-3 py-2 text-sm text-[var(--text)] outline-none" style={{ borderColor: 'var(--border)' }}>
- <option value="recent">Recent</option>
- <option value="trending">Trending</option>
- </select>
- </div>
- ) : null}
-
- {loading ? (
- <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
- {Array.from({ length: 6 }).map((_, index) => (
- <div key={index} className="h-[300px] animate-pulse bg-[var(--bg3)] border rounded-[16px]" style={{ borderColor: 'var(--border)' }} />
- ))}
- </div>
- ) : error ? (
- <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>
- <div className="max-w-md px-6">
- <div className="mono text-xs uppercase tracking-[.12em] text-red-500">{'//'} error</div>
- <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{error}</p>
- <button type="button" onClick={() => window.location.reload()} className="btn-secondary mt-6 inline-flex">Retry</button>
- </div>
- </div>
- ) : filtered.length === 0 ? (
- <div className="grid-bg flex min-h-[360px] items-center justify-center border text-center" style={{ borderColor: 'var(--border)' }}>
- <div className="max-w-md px-6">
- <div className="mono text-xs uppercase tracking-[.12em] text-[var(--text3)]">{'//'} early access</div>
- <p className="mt-3 text-sm leading-6 text-[var(--text2)]">
- {pitches.length === 0 ? 'No startups yet. Be the first to pitch.' : 'No startups match your filters yet. Try loosening the filters or search query.'}
- </p>
- <Link href="/founder/create-pitch" className="btn-primary mt-6 inline-flex">Submit your pitch →</Link>
- </div>
- </div>
- ) : (
-  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-  {sponsorships.map(sponsor => (
-    <SponsoredCard 
-      key={sponsor.id} 
-      id={sponsor.id}
-      type={sponsor.type}
-      title={sponsor.title}
-      description={sponsor.description}
-      linkUrl={sponsor.link_url}
-      imageUrl={sponsor.image_url}
-    />
-  ))}
-  {filtered.map((pitch, index) => <PitchCard key={pitch.id} pitch={pitch} delay={index * 50} />)}
-  </div>
- )}
- </main>
- </div>
- </div>
- );
-}
-
-function FilterGroup({ title, values, selected, onToggle }: { title: string; values: string[]; selected: string[]; onToggle: (value: string) => void }) {
- return (
- <section>
- <h3 className="mono mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{title}</h3>
- <div className="flex flex-col gap-2">
- {values.map((value) => (
- <button key={value} onClick={() => onToggle(value)} className={`tag w-fit border transition-transform hover:translate-x-0.5 ${selected.includes(value) ? 'border-[var(--text)] text-[var(--text)]' : 'border-transparent'}`}>
- {value}
- </button>
- ))}
- </div>
- </section>
- );
-}
-
-function PitchCard({ pitch, delay }: { pitch: any; delay: number }) {
   return (
-  <Link href={`/pitch/${pitch.id}`} className="card reveal flex min-h-[320px] flex-col p-5" data-delay={String(Math.min(delay, 300))}>
-  <div className="flex items-start justify-between gap-4">
-  <h2 className="min-w-0 truncate text-lg font-bold text-[var(--text)]">{pitch.title || 'Untitled startup'}</h2>
-  <span className="tag">{pitch.is_raising ? 'Raising' : 'Verified'}</span>
-  </div>
-  <div className="mt-3 flex flex-wrap gap-2">
-  {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
-  {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
-  </div>
- <p className="mt-4 line-clamp-3 flex-1 text-[13px] leading-6 text-[var(--text2)]">{pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}</p>
- <div className="my-5 h-px bg-[var(--border)]" />
- <div className="grid grid-cols-3 gap-3">
- <Metric label="Ask" value={formatCurrency(pitch.amount_seeking)} />
- <Metric label="Equity" value="Members only" />
- <Metric label="Valuation" value="Members only" />
- </div>
- <p className="mt-4 text-[11px] font-semibold text-[var(--text3)]">Financial details visible to registered members only.</p>
- <div className="mt-6 flex items-center justify-between text-sm">
- <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
- <span className="text-[var(--text2)]">View pitch</span>
- </div>
- </Link>
- );
-}
+    <div className="inner-page min-h-screen">
+      {/* INNER HERO SECTION (FAITHFUL TO REFERENCE DESIGN) */}
+      <section className="inner-hero page-padding">
+        <div className="inner-hero__meta">
+          <span className="status-dot" /> THE DISCOVERY INDEX{" "}
+          <span>/ {brandName} / 2026</span>
+        </div>
+        <h1>
+          Find the
+          <br />
+          <em>signal.</em>
+        </h1>
+        <p>
+          A live index of published pitches, where each version stays visible so founders can show how the idea and the ask have developed.
+        </p>
+        <div className="inner-hero__line" aria-hidden="true">
+          <span>SCROLL TO EXPLORE</span>
+          <span />
+        </div>
+      </section>
 
-function Metric({ label, value }: { label: string; value: string }) {
- return (
- <div>
- <div className="mono text-[10px] uppercase text-[var(--text3)]">{label}</div>
- <div className="mono mt-1 truncate text-base font-bold text-[var(--text)]">{value}</div>
- </div>
- );
+      {/* DISCOVER NETWORK SECTION */}
+      <section className="inner-section page-padding">
+        <div className="inner-section__head">
+          <span>01 / THE NETWORK</span>
+          <p>
+            Discover shows published, versioned pitches so you can compare how a company has developed instead of reading a single frozen profile.
+          </p>
+        </div>
+
+        {/* SEARCH & FILTERS BAR */}
+        <div className="mt-12 space-y-6">
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+            {/* SEARCH */}
+            <div className="relative w-full md:w-96">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--smoke)]" />
+              <input
+                type="text"
+                placeholder="Search pitches, problem, sector..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full pl-11 pr-4 py-2.5 bg-[var(--card)] border border-[var(--line)] rounded-full text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-all"
+              />
+            </div>
+
+            {/* QUICK STATS & SORT */}
+            <div className="flex items-center justify-between md:justify-end gap-4">
+              <span className="text-xs font-mono text-[var(--paper-dim)]">
+                {filtered.length} {filtered.length === 1 ? "pitch" : "pitches"} found
+              </span>
+              <div className="flex items-center gap-2 text-xs font-mono text-[var(--paper-dim)]">
+                <span className="text-[10px] uppercase tracking-widest text-[var(--smoke)]">Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-[var(--card)] border border-[var(--line)] rounded-full px-3 py-1 text-xs font-mono text-[var(--paper)] focus:outline-none cursor-pointer"
+                >
+                  <option value="recent">Recent</option>
+                  <option value="trending">Trending</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* FILTER PILLS */}
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[var(--line)]">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)] mr-2">Sector:</span>
+            {INDUSTRIES.map((ind) => (
+              <button
+                key={ind}
+                onClick={() => setSelectedIndustry(ind)}
+                className={`px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all cursor-pointer ${
+                  selectedIndustry === ind
+                    ? "bg-[var(--paper)] text-[var(--ink)] font-bold shadow-sm"
+                    : "text-[var(--paper-dim)] hover:text-[var(--paper)] border border-[var(--line)] hover:border-[var(--border2)]"
+                }`}
+              >
+                {ind}
+              </button>
+            ))}
+
+            <div className="h-4 w-px bg-[var(--line)] mx-1 hidden md:block" />
+
+            <button
+              onClick={() => setRaisingOnly(!raisingOnly)}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
+                raisingOnly
+                  ? "bg-[var(--red)] text-[var(--paper)] font-bold"
+                  : "text-[var(--paper-dim)] hover:text-[var(--paper)] border border-[var(--line)] hover:border-[var(--border2)]"
+              }`}
+            >
+              <Tag className="w-3 h-3" />
+              Raising only
+            </button>
+          </div>
+        </div>
+
+        {/* LIST / CARDS */}
+        <div className="mt-10">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-24 gap-4 text-[var(--paper-dim)]">
+              <div className="w-8 h-8 border-2 border-[var(--line)] border-t-[var(--red)] rounded-full animate-spin" />
+              <span className="text-xs font-mono uppercase tracking-widest">Loading verified pitches...</span>
+            </div>
+          ) : error ? (
+            <div className="border border-[var(--line)] rounded-3xl p-12 text-center bg-[var(--card)] mt-8">
+              <div className="text-xs font-mono uppercase tracking-widest text-[var(--red)] mb-2">{'//'} INDEX TEMPORARILY UNAVAILABLE</div>
+              <p className="text-sm font-mono text-[var(--paper-dim)] max-w-md mx-auto mb-6">{error}</p>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--paper)] text-[var(--ink)] font-bold text-xs uppercase tracking-wider hover:bg-[#fffaf0] transition-all cursor-pointer"
+              >
+                Retry
+              </button>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="border border-[var(--line)] rounded-3xl p-12 md:p-16 text-center bg-[var(--card)] mt-8">
+              <span className="text-xs font-mono uppercase tracking-widest text-[var(--smoke)] mb-2 block">{'//'} INDEX PREVIEW</span>
+              <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-[var(--paper)] mb-2 font-medium">
+                {pitches.length === 0 ? "First cohort pitches opening soon" : "No matching startups found"}
+              </h3>
+              <p className="text-xs md:text-sm font-mono text-[var(--paper-dim)] max-w-md mx-auto mb-8">
+                {pitches.length === 0
+                  ? "Verified founder pitches will appear here as the inaugural publishing cohort goes live. Claim your presence early."
+                  : "Try clearing your filters or searching for another term."}
+              </p>
+              <Link
+                href="/founder/create-pitch"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--red)] text-[var(--paper)] font-bold text-xs uppercase tracking-wider hover:bg-[#ed594d] transition-all cursor-pointer"
+              >
+                Submit your pitch <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
+          ) : (
+            <div className="discover-list">
+              {filtered.map((pitch, index) => (
+                <Link
+                  href={`/pitch/${pitch.id}`}
+                  className="discover-row block group text-inherit cursor-pointer"
+                  key={pitch.id}
+                >
+                  <span>0{index + 1}</span>
+                  <h2>{pitch.title}</h2>
+                  <div className="max-w-md">
+                    <p className="text-xs font-mono text-[var(--paper-dim)] line-clamp-2">
+                      {pitch.tagline || pitch.problem || "No description provided."}
+                    </p>
+                    <div className="flex items-center gap-3 mt-2 text-[10px] font-mono text-[var(--smoke)] uppercase">
+                      {pitch.industry && <span>{pitch.industry}</span>}
+                      {pitch.stage && <span>• {pitch.stage}</span>}
+                      {pitch.is_raising && (
+                        <span className="text-[var(--red)] font-bold">
+                          • Seeking {formatCurrency(pitch.amount_seeking)}
+                        </span>
+                      )}
+                      <span>• v{pitch.current_version || 1}</span>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="w-5 h-5 text-[var(--red)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* INNER FEATURE SECTION MATCHING REFERENCE */}
+      <section className="inner-feature page-padding">
+        <div>
+          <span className="inner-kicker">THE PITCH INDEX / LIVE</span>
+          <h2>
+            Browse what
+            <br />
+            <em>is published.</em>
+          </h2>
+        </div>
+        <div className="feature-note">
+          <p>
+            Filter published, versioned pitches by the context you need, then open a pitch to review its history.
+          </p>
+          <Link href="/founder/create-pitch" className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-[var(--red)] font-bold mt-4">
+            Publish your pitch <ArrowDownRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
 }
