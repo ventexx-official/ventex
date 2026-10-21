@@ -3,82 +3,167 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import { SITE_NAME } from '@/lib/brand';
+import { AlertCircle, ArrowUpRight, CheckCircle2, Mail } from 'lucide-react';
 
 export default function ForgotPassword() {
- const [email, setEmail] = useState('');
- const [error, setError] = useState<string | null>(null);
- const [success, setSuccess] = useState(false);
- const [loading, setLoading] = useState(false);
+  const brandName = SITE_NAME.toUpperCase();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
- const handleReset = async (e: React.FormEvent) => {
- e.preventDefault();
- setError(null);
- setLoading(true);
+  const handleReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
 
- const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
- redirectTo: `${window.location.origin}/reset-password`,
- });
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) return setError('Email is required.');
+    if (!emailPattern.test(email.trim())) return setError('Please enter a valid email address.');
 
- if (resetError) {
- setError(resetError.message);
- } else {
- setSuccess(true);
- }
- setLoading(false);
- };
+    setLoading(true);
 
- return (
- <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
- <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[400px] shadow-sm">
- <div className="text-center mb-8">
- <Link href="/" className="text-2xl font-black italic tracking-tighter text-[var(--text)] uppercase">
- Ventex
- </Link>
- <h1 className="text-xl font-bold mt-4 text-[var(--text)] ">Reset password</h1>
- <p className="text-sm text-[var(--text2)] mt-2">Enter your email and we'll send you a reset link.</p>
- </div>
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+      email.trim(),
+      { redirectTo: `${window.location.origin}/reset-password` }
+    );
 
- {success ? (
- <div className="bg-[var(--bg)] p-4 rounded-xl text-center">
- <h3 className="font-bold text-[var(--text)] mb-2">Check your email</h3>
- <p className="text-sm text-[var(--text2)]">We've sent a password reset link to {email}.</p>
- <Link href="/login" className="mt-4 inline-block text-sm font-bold text-[var(--text)] underline decoration-[0.5px] underline-offset-4">Return to login</Link>
- </div>
- ) : (
- <form onSubmit={handleReset} className="space-y-4">
- {error && (
- <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-md text-sm border-[0.5px] border-red-200 dark:border-red-800">
- {error}
- </div>
- )}
- 
- <div>
- <label className="block text-sm font-bold text-[var(--text)] mb-1.5">Email address</label>
- <input
- type="email"
- className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--card-bg)] text-[var(--text)] focus:outline-none focus:ring-1 focus:ring-[#222222] dark:focus:ring-white"
- value={email}
- onChange={(e) => setEmail(e.target.value)}
- required
- />
- </div>
+    if (resetError) {
+      console.error('Password reset error:', resetError);
+      setError('Something went wrong. Please try again.');
+    } else {
+      setSuccess(true);
+    }
+    setLoading(false);
+  };
 
- <button
- type="submit"
- disabled={loading}
- className="w-full bg-[var(--text)] text-[var(--bg)] py-2.5 rounded-md text-sm font-bold hover:opacity-80 transition-colors disabled:opacity-50 mt-2"
- >
- {loading ? 'Sending...' : 'Send reset link'}
- </button>
- 
- <div className="text-center mt-6">
- <Link href="/login" className="text-sm text-[var(--text2)] hover:text-[var(--text)] dark:hover:text-[var(--text)] transition-colors">
- Remember your password? <span className="font-bold underline decoration-[0.5px] underline-offset-4">Login &rarr;</span>
- </Link>
- </div>
- </form>
- )}
- </div>
- </div>
- );
+  return (
+    <div className="inner-page min-h-screen flex flex-col justify-between">
+      {/* HEADER */}
+      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+        <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
+          <span className="brand-mark"><span>{brandName.charAt(0)}</span></span>
+          <span>{brandName}</span>
+        </Link>
+        <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
+          ACCOUNT RECOVERY / 2026
+        </span>
+      </header>
+
+      <main className="flex-1 flex items-center justify-center p-6 my-10">
+        <div className="w-full max-w-[400px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
+
+          {success ? (
+            /* Success state */
+            <div className="text-center space-y-5">
+              <div className="w-14 h-14 rounded-2xl bg-[var(--red)]/15 flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-7 h-7 text-[var(--red)]" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-2">
+                  {'// '} CHECK YOUR INBOX
+                </span>
+                <h1 className="font-display text-2xl font-medium tracking-tight text-[var(--paper)] uppercase">
+                  Reset link sent
+                </h1>
+              </div>
+              <p className="text-xs font-mono text-[var(--paper-dim)] leading-relaxed">
+                We sent a password reset link to{' '}
+                <span className="text-[var(--paper)] font-bold">{email}</span>.
+                Click the link in your email to choose a new password.
+              </p>
+              <p className="text-[10px] font-mono text-[var(--smoke)]">
+                Didn't receive it? Check your spam folder, or{' '}
+                <button
+                  onClick={() => setSuccess(false)}
+                  className="underline hover:text-[var(--paper-dim)] cursor-pointer"
+                >
+                  try again
+                </button>.
+              </p>
+              <div className="pt-4 border-t border-[var(--line)]">
+                <Link
+                  href="/login"
+                  className="text-xs font-mono text-[var(--red)] font-bold uppercase tracking-wider hover:underline"
+                >
+                  Return to sign in →
+                </Link>
+              </div>
+            </div>
+          ) : (
+            /* Form state */
+            <>
+              <div className="mb-8">
+                <div className="w-10 h-10 rounded-xl bg-[var(--red)]/15 flex items-center justify-center mb-4">
+                  <Mail className="w-5 h-5 text-[var(--red)]" />
+                </div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-2">
+                  {'// '} ACCOUNT RECOVERY
+                </span>
+                <h1 className="font-display text-3xl font-medium tracking-tight text-[var(--paper)] uppercase">
+                  Reset password
+                </h1>
+                <p className="text-xs font-mono text-[var(--paper-dim)] mt-2">
+                  Enter your email and we'll send you a reset link.
+                </p>
+              </div>
+
+              <form onSubmit={handleReset} className="space-y-5" noValidate>
+                {error && (
+                  <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5">
+                    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="reset-email" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-2">
+                    Email address
+                  </label>
+                  <input
+                    id="reset-email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    disabled={loading}
+                    placeholder="founder@example.com"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (error) setError(null);
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                >
+                  {loading ? 'Sending…' : 'Send reset link'}
+                  {!loading && <ArrowUpRight className="w-4 h-4" />}
+                </button>
+              </form>
+
+              <div className="text-center mt-6 pt-6 border-t border-[var(--line)]">
+                <Link href="/login" className="text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors">
+                  Remember your password?{' '}
+                  <span className="text-[var(--red)] font-bold">Sign in →</span>
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </main>
+
+      <footer className="page-padding py-6 flex items-center justify-between text-xs font-mono text-[var(--smoke)] border-t border-[var(--line)]">
+        <span>© 2026 {brandName}</span>
+        <div className="flex gap-4">
+          <Link href="/privacy" className="hover:text-[var(--paper)]">Privacy</Link>
+          <Link href="/terms" className="hover:text-[var(--paper)]">Terms</Link>
+        </div>
+      </footer>
+    </div>
+  );
 }

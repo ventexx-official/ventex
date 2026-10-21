@@ -3,176 +3,229 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { SITE_NAME } from '@/lib/brand';
+import { AlertCircle, ArrowUpRight, ShoppingBag } from 'lucide-react';
 
 export default function BuyerOnboarding() {
+  const brandName = SITE_NAME.toUpperCase();
   const router = useRouter();
-  const [step, setStep] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
-  const [form, setForm] = useState({ 
-    fullName: '', phoneCountryCode: '', phone: '', whatsapp: '',
-    address1: '', address2: '', city: '', state: '', postal: '', country: '',
-    interests: [] as string[], budget: ''
-  });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [countries, setCountries] = useState<any[]>([]);
-  const [states, setStates] = useState<any[]>([]);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    displayName: '',
+    company: '',
+    headline: '',
+    city: '',
+    country: '',
+    bio: '',
+  });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return router.push('/login');
       setUserId(session.user.id);
-    });
-
-    supabase.from('countries').select('*').eq('is_active', true).order('name').then(({data}) => {
-      if(data) setCountries(data);
+      const meta = session.user.user_metadata;
+      if (meta?.display_name || meta?.full_name) {
+        setForm(f => ({ ...f, displayName: meta.display_name || meta.full_name || '' }));
+      }
     });
   }, [router]);
 
-  useEffect(() => {
-    if (form.country) {
-       const selectedCountry = countries.find(c => c.name === form.country);
-       if (selectedCountry) {
-          supabase.from('states').select('*').eq('country_id', selectedCountry.id).eq('is_active', true).order('name').then(({data}) => {
-            if (data) setStates(data);
-          });
-       } else {
-          setStates([]);
-       }
-    }
-  }, [form.country, countries]);
-
-  const handleSendOTP = () => {
-    if (!form.phoneCountryCode || !form.phone) return alert("Select country code and enter phone");
-    setOtpSent(true);
-    alert("Mock OTP Sent to " + form.phoneCountryCode + " " + form.phone + " (Enter any 6 digits to verify)");
-  };
-
-  const handleVerifyOTP = () => {
-    if (otpCode.length < 4) return alert("Invalid OTP. Enter at least 4 digits.");
-    setStep(2);
-  };
-
-  const handleComplete = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!userId) return;
-    setLoading(true);
+    setError(null);
+
+    if (!form.displayName.trim()) return setError('Your name is required.');
+
+    setSubmitting(true);
+
     try {
-      const fullPhone = `${form.phoneCountryCode}${form.phone}`;
-      await supabase.from('profiles').update({ 
+      const { error: profileErr } = await supabase.from('profiles').update({
+        display_name: form.displayName.trim(),
+        company: form.company.trim() || null,
+        headline: form.headline.trim() || null,
+        bio: form.bio.trim() || null,
+        city: form.city.trim() || null,
+        country: form.country.trim() || null,
         onboarding_complete: true,
-        country: form.country,
-        city: form.city,
       }).eq('id', userId);
 
-      await supabase.from('buyer_addresses').insert({
-        user_id: userId,
-        full_name: form.fullName,
-        line1: form.address1,
-        line2: form.address2 || null,
-        city: form.city,
-        state: form.state,
-        postal_code: form.postal,
-        country: form.country,
-        phone: fullPhone,
-        is_default: true,
-      });
+      if (profileErr) throw profileErr;
 
       router.push('/buyer/dashboard');
     } catch (err: any) {
-      alert(err.message);
+      console.error('Buyer onboarding error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+      setSubmitting(false);
     }
-    setLoading(false);
+  };
+
+  const set = (key: string) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm(f => ({ ...f, [key]: e.target.value }));
+    if (error) setError(null);
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
-      <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[500px]">
-        {step === 1 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 1: Verification</h1>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-bold text-[var(--text)]">Full Name</label>
-                <input required className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.fullName} onChange={e=>setForm({...form, fullName:e.target.value})} disabled={otpSent} />
-              </div>
-              
-              <div>
-                <label className="text-sm font-bold text-[var(--text)]">Phone Number</label>
-                <div className="flex gap-2 mt-1">
-                  <select 
-                    className="w-1/3 border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" 
-                    value={form.phoneCountryCode} 
-                    onChange={e=>setForm({...form, phoneCountryCode:e.target.value})}
-                    disabled={otpSent}
-                  >
-                    <option value="">Country</option>
-                    {countries.map(c => <option key={c.id} value={c.code}>{c.code}</option>)}
-                  </select>
-                  <input required type="tel" className="w-2/3 border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" placeholder="Phone Number" value={form.phone} onChange={e=>setForm({...form, phone:e.target.value})} disabled={otpSent} />
-                </div>
-              </div>
+    <div className="inner-page min-h-screen flex flex-col justify-between">
+      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+        <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
+          <span className="brand-mark"><span>{brandName.charAt(0)}</span></span>
+          <span>{brandName}</span>
+        </Link>
+        <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
+          ONBOARDING / STEP 2 OF 3
+        </span>
+      </header>
 
-              {!otpSent ? (
-                <button onClick={handleSendOTP} disabled={!form.fullName || !form.phone || !form.phoneCountryCode} className="w-full bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold mt-4 disabled:opacity-50">Send OTP</button>
-              ) : (
-                <div className="mt-4 p-4 border border-[var(--border)] rounded-md bg-[var(--bg2)]">
-                  <label className="text-sm font-bold text-[var(--text)] block mb-2">Enter OTP</label>
-                  <input type="text" placeholder="123456" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] tracking-widest text-center" value={otpCode} onChange={e=>setOtpCode(e.target.value)} />
-                  <button onClick={handleVerifyOTP} className="w-full bg-green-600 text-white py-2 rounded-md font-bold mt-4">Verify & Continue</button>
-                  <button onClick={() => setOtpSent(false)} className="w-full mt-2 text-sm text-[var(--text2)] underline">Resend / Change Number</button>
-                </div>
-              )}
+      <main className="flex-1 flex items-center justify-center p-6 my-10">
+        <div className="w-full max-w-[520px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
+
+          <div className="mb-8 flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-[var(--red)]/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <ShoppingBag className="w-5 h-5 text-[var(--red)]" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-1">
+                {'// '} BUYER PROFILE
+              </span>
+              <h1 className="font-display text-2xl font-medium tracking-tight text-[var(--paper)] uppercase leading-tight">
+                Set up your profile
+              </h1>
+              <p className="text-xs font-mono text-[var(--paper-dim)] mt-1.5">
+                Browse and acquire startup assets, tools, and resources.
+              </p>
             </div>
           </div>
-        )}
-        {step === 2 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 2: Shipping Address</h1>
-            <div className="space-y-4">
+
+          {error && (
+            <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5">
+              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+
+            <div>
+              <label htmlFor="buyer-name" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                Your Name *
+              </label>
+              <input
+                id="buyer-name"
+                type="text"
+                autoComplete="name"
+                placeholder="Alex Rivera"
+                required
+                disabled={submitting}
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                value={form.displayName}
+                onChange={set('displayName')}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="buyer-company" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                Company (optional)
+              </label>
+              <input
+                id="buyer-company"
+                type="text"
+                placeholder="Your organisation"
+                disabled={submitting}
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                value={form.company}
+                onChange={set('company')}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="buyer-headline" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                Headline
+              </label>
+              <input
+                id="buyer-headline"
+                type="text"
+                maxLength={100}
+                placeholder="Head of Procurement · Acme Corp"
+                disabled={submitting}
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                value={form.headline}
+                onChange={set('headline')}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-sm font-bold text-[var(--text)]">Country</label>
-                <select className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.country} onChange={e=>setForm({...form, country:e.target.value})}>
-                  <option value="">Select Country</option>
-                  {countries.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                </select>
+                <label htmlFor="buyer-city" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                  City
+                </label>
+                <input
+                  id="buyer-city"
+                  type="text"
+                  placeholder="London"
+                  disabled={submitting}
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                  value={form.city}
+                  onChange={set('city')}
+                />
               </div>
-
-              {form.country && (
-                <div>
-                  <label className="text-sm font-bold text-[var(--text)]">State / Province</label>
-                  <select className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.state} onChange={e=>setForm({...form, state:e.target.value})}>
-                    <option value="">Select State</option>
-                    {states.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
-                  </select>
-                </div>
-              )}
-
-              <input placeholder="Address Line 1" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.address1} onChange={e=>setForm({...form, address1:e.target.value})} />
-              <input placeholder="City" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.city} onChange={e=>setForm({...form, city:e.target.value})} />
-              <input placeholder="Postal Code" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.postal} onChange={e=>setForm({...form, postal:e.target.value})} />
-              
-              <div className="flex gap-2 mt-4">
-                <button onClick={()=>setStep(1)} className="w-1/3 bg-transparent border border-[var(--border)] text-[var(--text)] py-2 rounded-md font-bold">&larr; Back</button>
-                <button onClick={()=>setStep(3)} disabled={!form.address1 || !form.city || !form.country || !form.state} className="w-2/3 bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold disabled:opacity-50">Next &rarr;</button>
-              </div>
-            </div>
-          </div>
-        )}
-        {step === 3 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 3: Interests</h1>
-            <div className="space-y-4">
-              <input placeholder="Budget Range (e.g. $1k - $5k)" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.budget} onChange={e=>setForm({...form, budget:e.target.value})} />
-              <div className="flex gap-2 mt-4">
-                <button onClick={()=>setStep(2)} className="w-1/3 bg-transparent border border-[var(--border)] text-[var(--text)] py-2 rounded-md font-bold">&larr; Back</button>
-                <button onClick={handleComplete} disabled={loading} className="w-2/3 bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold disabled:opacity-50">{loading ? 'Saving...' : 'Complete \u2192'}</button>
+              <div>
+                <label htmlFor="buyer-country" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                  Country
+                </label>
+                <input
+                  id="buyer-country"
+                  type="text"
+                  placeholder="UK"
+                  disabled={submitting}
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px]"
+                  value={form.country}
+                  onChange={set('country')}
+                />
               </div>
             </div>
-          </div>
-        )}
-      </div>
+
+            <div>
+              <label htmlFor="buyer-bio" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
+                Short bio (optional)
+              </label>
+              <textarea
+                id="buyer-bio"
+                rows={3}
+                maxLength={300}
+                placeholder="Tell sellers a little about what you're looking for…"
+                disabled={submitting}
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors resize-none text-[16px]"
+                value={form.bio}
+                onChange={set('bio')}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 mt-2 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            >
+              {submitting ? 'Saving…' : 'Go to marketplace'}
+              {!submitting && <ArrowUpRight className="w-4 h-4" />}
+            </button>
+          </form>
+        </div>
+      </main>
+
+      <footer className="page-padding py-6 flex items-center justify-between text-xs font-mono text-[var(--smoke)] border-t border-[var(--line)]">
+        <span>© 2026 {brandName}</span>
+        <div className="flex gap-4">
+          <Link href="/privacy" className="hover:text-[var(--paper)]">Privacy</Link>
+          <Link href="/terms" className="hover:text-[var(--paper)]">Terms</Link>
+        </div>
+      </footer>
     </div>
   );
 }
