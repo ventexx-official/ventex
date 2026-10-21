@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { SITE_NAME } from '@/lib/brand';
-import { ENABLE_GOOGLE_LOGIN } from '@/lib/brand';
+import { SITE_NAME, ENABLE_GOOGLE_LOGIN } from '@/lib/brand';
 import { mapAuthError } from '@/lib/auth-errors';
-import { Eye, EyeOff, AlertCircle, ArrowUpRight } from 'lucide-react';
+import { sanitizeNextUrl, getSignedInDestination } from '@/lib/role-routing';
+import { Eye, EyeOff, AlertCircle, ArrowUpRight, Mail } from 'lucide-react';
 
-export default function Login() {
+function LoginForm() {
   const brandName = SITE_NAME.toUpperCase();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawNext = searchParams.get('next');
+  const safeNext = sanitizeNextUrl(rawNext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +23,31 @@ export default function Login() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [showResend, setShowResend] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resendNotice, setResendNotice] = useState<string | null>(null);
+
+  // If user is already signed in, redirect them immediately
+  useEffect(() => {
+    let mounted = true;
+    async function checkExistingSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user && mounted) {
+        if (safeNext) {
+          router.replace(safeNext);
+          return;
+        }
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', session.user.id)
+          .single();
+        router.replace(getSignedInDestination(profile));
+      }
+    }
+    checkExistingSession();
+    return () => { mounted = false; };
+  }, [router, safeNext]);
 
   const validate = () => {
     let isValid = true;
@@ -48,6 +77,8 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setShowResend(false);
+    setResendNotice(null);
 
     if (!validate()) {
       return;
@@ -63,7 +94,15 @@ export default function Login() {
 
       if (signInError) {
         console.error('Login error:', signInError);
-        setError(mapAuthError(signInError));
+        const mapped = mapAuthError(signInError);
+        setError(mapped);
+
+        // Check for email not confirmed
+        const msg = (signInError.message || '').toLowerCase();
+        if (msg.includes('email not confirmed') || msg.includes('email_not_confirmed')) {
+          setShowResend(true);
+        }
+
         setLoading(false);
         return;
       }
@@ -72,7 +111,19 @@ export default function Login() {
         // Sync token cookie for middleware before navigating
         document.cookie = `sb-ventex-auth-token=${data.session.access_token}; path=/; max-age=${data.session.expires_in}; SameSite=Lax; Secure`;
         router.refresh();
-        router.replace('/dashboard');
+
+        if (safeNext) {
+          router.replace(safeNext);
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', data.session.user.id)
+          .single();
+
+        router.replace(getSignedInDestination(profile));
       } else {
         setError('Something went wrong. Please try again.');
         setLoading(false);
@@ -84,12 +135,42 @@ export default function Login() {
     }
   };
 
+  const handleResendConfirmation = async () => {
+    if (!email.trim()) {
+      setEmailError('Email is required to resend confirmation.');
+      return;
+    }
+    setResending(true);
+    setResendNotice(null);
+    try {
+      const { error: resendErr } = await supabase.auth.resend({
+        type: 'signup',
+        email: email.trim(),
+        options: {
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+        },
+      });
+      if (resendErr) {
+        console.error('Resend confirmation error:', resendErr);
+        setResendNotice('Could not resend email. Please wait a minute and try again.');
+      } else {
+        setResendNotice('Confirmation email resent. Please check your inbox.');
+      }
+    } catch (err: any) {
+      console.error('Resend exception:', err);
+      setResendNotice('Could not resend email. Please try again.');
+    } finally {
+      setResending(false);
+    }
+  };
+
   const handleGoogleAuth = async () => {
     try {
+      const callbackNext = safeNext ? `?next=${encodeURIComponent(safeNext)}` : '';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: `${window.location.origin}/api/auth/callback${callbackNext}`,
         },
       });
       if (error) {
@@ -134,9 +215,26 @@ export default function Login() {
 
           <form onSubmit={handleLogin} className="space-y-5" noValidate>
             {error && (
-              <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
-                <span>{error}</span>
+              <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex flex-col gap-2">
+                <div className="flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
+                  <span>{error}</span>
+                </div>
+                {showResend && (
+                  <div className="pt-2 border-t border-red-500/30 flex flex-col gap-2">
+                    <button
+                      type="button"
+                      disabled={resending}
+                      onClick={handleResendConfirmation}
+                      className="self-start text-xs underline font-bold text-red-200 hover:text-white transition-colors cursor-pointer"
+                    >
+                      {resending ? 'Sending...' : 'Resend confirmation email →'}
+                    </button>
+                    {resendNotice && (
+                      <span className="text-[11px] text-amber-200">{resendNotice}</span>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -217,7 +315,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 mt-4 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 mt-4 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
             >
               {loading ? 'Signing in...' : 'Sign In'}
               {!loading && <ArrowUpRight className="w-4 h-4" />}
@@ -235,7 +333,7 @@ export default function Login() {
               <button
                 onClick={handleGoogleAuth}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2.5 border border-[var(--line)] bg-[var(--ink)] text-[var(--paper)] py-3 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--border2)] transition-colors disabled:opacity-50 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2.5 border border-[var(--line)] bg-[var(--ink)] text-[var(--paper)] py-3 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--border2)] transition-colors disabled:opacity-50 cursor-pointer min-h-[44px]"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -249,7 +347,10 @@ export default function Login() {
           )}
 
           <div className="text-center mt-6 pt-6 border-t border-[var(--line)]">
-            <Link href="/signup" className="text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors">
+            <Link
+              href={safeNext ? `/signup?next=${encodeURIComponent(safeNext)}` : "/signup"}
+              className="text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors"
+            >
               Don't have an account? <span className="text-[var(--red)] font-bold">Sign up &rarr;</span>
             </Link>
           </div>
@@ -265,5 +366,13 @@ export default function Login() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div className="inner-page min-h-screen" />}>
+      <LoginForm />
+    </Suspense>
   );
 }

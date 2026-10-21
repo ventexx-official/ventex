@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   
   // Block bots from non-public paths
   const userAgent = request.headers.get('user-agent') || '';
@@ -51,6 +51,9 @@ export async function middleware(request: NextRequest) {
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
+    // Forward the current path and query as next parameter for post-login return
+    const fullOriginalPath = pathname + search;
+    url.search = `?next=${encodeURIComponent(fullOriginalPath)}`;
     return NextResponse.redirect(url);
   }
 
@@ -58,7 +61,7 @@ export async function middleware(request: NextRequest) {
   if (user && isProtected) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, onboarding_complete')
       .eq('id', user.id)
       .single();
 

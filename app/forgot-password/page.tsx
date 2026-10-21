@@ -1,17 +1,38 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { SITE_NAME } from '@/lib/brand';
+import { getSignedInDestination } from '@/lib/role-routing';
 import { AlertCircle, ArrowUpRight, CheckCircle2, Mail } from 'lucide-react';
 
 export default function ForgotPassword() {
   const brandName = SITE_NAME.toUpperCase();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // If already logged in, redirect away
+  useEffect(() => {
+    let mounted = true;
+    async function checkSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user && mounted) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', session.user.id)
+          .single();
+        router.replace(getSignedInDestination(profile));
+      }
+    }
+    checkSession();
+    return () => { mounted = false; };
+  }, [router]);
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,18 +44,24 @@ export default function ForgotPassword() {
 
     setLoading(true);
 
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-      email.trim(),
-      { redirectTo: `${window.location.origin}/reset-password` }
-    );
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email.trim(),
+        { redirectTo: `${window.location.origin}/reset-password` }
+      );
 
-    if (resetError) {
-      console.error('Password reset error:', resetError);
+      if (resetError) {
+        console.error('Password reset error:', resetError);
+        setError(resetError.message || 'Something went wrong. Please try again.');
+      } else {
+        setSuccess(true);
+      }
+    } catch (err: any) {
+      console.error('Password reset exception:', err);
       setError('Something went wrong. Please try again.');
-    } else {
-      setSuccess(true);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -51,7 +78,7 @@ export default function ForgotPassword() {
       </header>
 
       <main className="flex-1 flex items-center justify-center p-6 my-10">
-        <div className="w-full max-w-[400px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
+        <div className="w-full max-w-[420px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
 
           {success ? (
             /* Success state */
@@ -72,7 +99,7 @@ export default function ForgotPassword() {
                 <span className="text-[var(--paper)] font-bold">{email}</span>.
                 Click the link in your email to choose a new password.
               </p>
-              <p className="text-[10px] font-mono text-[var(--smoke)]">
+              <p className="text-[11px] font-mono text-[var(--smoke)]">
                 Didn't receive it? Check your spam folder, or{' '}
                 <button
                   onClick={() => setSuccess(false)}
@@ -104,7 +131,7 @@ export default function ForgotPassword() {
                   Reset password
                 </h1>
                 <p className="text-xs font-mono text-[var(--paper-dim)] mt-2">
-                  Enter your email and we'll send you a reset link.
+                  Enter your email and we'll send you a secure link to reset your password.
                 </p>
               </div>
 
@@ -139,9 +166,9 @@ export default function ForgotPassword() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
                 >
-                  {loading ? 'Sending…' : 'Send reset link'}
+                  {loading ? 'Sending link...' : 'Send reset link'}
                   {!loading && <ArrowUpRight className="w-4 h-4" />}
                 </button>
               </form>

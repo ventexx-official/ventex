@@ -1,17 +1,21 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { SITE_NAME, ENABLE_GOOGLE_LOGIN } from '@/lib/brand';
 import { mapAuthError } from '@/lib/auth-errors';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { sanitizeNextUrl, getSignedInDestination } from '@/lib/role-routing';
 import { Eye, EyeOff, AlertCircle, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
-export default function Signup() {
+function SignupForm() {
   const brandName = SITE_NAME.toUpperCase();
   const router = useRouter();
-  const [fullName, setFullName] = useState('');
+  const searchParams = useSearchParams();
+  const rawNext = searchParams.get('next');
+  const safeNext = sanitizeNextUrl(rawNext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,7 +23,6 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
-  const [nameError, setNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
@@ -27,31 +30,60 @@ export default function Signup() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // If already signed in, redirect to destination
+  useEffect(() => {
+    let mounted = true;
+    async function checkExistingSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user && mounted) {
+        if (safeNext) {
+          router.replace(safeNext);
+          return;
+        }
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', session.user.id)
+          .single();
+        router.replace(getSignedInDestination(profile));
+      }
+    }
+    checkExistingSession();
+    return () => { mounted = false; };
+  }, [router, safeNext]);
+
+  // Listener for token refreshed / signed in while success banner is shown
   useEffect(() => {
     if (!success) return;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
         document.cookie = `sb-ventex-auth-token=${session.access_token}; path=/; max-age=${session.expires_in}; SameSite=Lax; Secure`;
         router.refresh();
-        router.replace('/dashboard');
+
+        if (safeNext) {
+          router.replace(safeNext);
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', session.user.id)
+          .single();
+
+        router.replace(getSignedInDestination(profile));
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [success, router]);
+  }, [success, router, safeNext]);
 
   const validate = () => {
     let isValid = true;
-    setNameError(null);
     setEmailError(null);
     setPasswordError(null);
     setConfirmPasswordError(null);
-
-    if (!fullName.trim()) {
-      setNameError('Full name is required.');
-      isValid = false;
-    }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim()) {
@@ -92,15 +124,12 @@ export default function Signup() {
     setLoading(true);
 
     try {
+      const callbackNext = safeNext ? `?next=${encodeURIComponent(safeNext)}` : '';
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
-          data: {
-            full_name: fullName.trim(),
-            display_name: fullName.trim(),
-          },
-          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/api/auth/callback${callbackNext}`,
         },
       });
 
@@ -114,7 +143,19 @@ export default function Signup() {
       if (data?.session) {
         document.cookie = `sb-ventex-auth-token=${data.session.access_token}; path=/; max-age=${data.session.expires_in}; SameSite=Lax; Secure`;
         router.refresh();
-        router.replace('/dashboard');
+
+        if (safeNext) {
+          router.replace(safeNext);
+          return;
+        }
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, onboarding_complete')
+          .eq('id', data.session.user.id)
+          .single();
+
+        router.replace(getSignedInDestination(profile));
         return;
       }
 
@@ -135,10 +176,11 @@ export default function Signup() {
 
   const handleGoogleAuth = async () => {
     try {
+      const callbackNext = safeNext ? `?next=${encodeURIComponent(safeNext)}` : '';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback`,
+          redirectTo: `${window.location.origin}/api/auth/callback${callbackNext}`,
         },
       });
       if (error) {
@@ -207,34 +249,6 @@ export default function Signup() {
                   <span>{error}</span>
                 </div>
               )}
-
-              <div>
-                <label htmlFor="signup-name" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
-                  Full name
-                </label>
-                <input
-                  id="signup-name"
-                  type="text"
-                  autoComplete="name"
-                  disabled={loading}
-                  placeholder="Alex Rivera"
-                  className={`w-full bg-[var(--ink)] border rounded-xl px-4 py-2.5 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none transition-colors ${
-                    nameError
-                      ? 'border-red-500 focus:border-red-500'
-                      : 'border-[var(--line)] focus:border-[var(--red)]'
-                  }`}
-                  value={fullName}
-                  onChange={(e) => {
-                    setFullName(e.target.value);
-                    if (nameError) setNameError(null);
-                    if (error) setError(null);
-                  }}
-                  required
-                />
-                {nameError && (
-                  <p className="text-[11px] font-mono text-red-400 mt-1">{nameError}</p>
-                )}
-              </div>
 
               <div>
                 <label htmlFor="signup-email" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-1.5">
@@ -343,7 +357,7 @@ export default function Signup() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 mt-4 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 mt-4 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
               >
                 {loading ? 'Creating account...' : 'Create Account'}
                 {!loading && <ArrowUpRight className="w-4 h-4" />}
@@ -362,7 +376,7 @@ export default function Signup() {
               <button
                 onClick={handleGoogleAuth}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2.5 border border-[var(--line)] bg-[var(--ink)] text-[var(--paper)] py-3 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--border2)] transition-colors disabled:opacity-50 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2.5 border border-[var(--line)] bg-[var(--ink)] text-[var(--paper)] py-3 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--border2)] transition-colors disabled:opacity-50 cursor-pointer min-h-[44px]"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -377,7 +391,10 @@ export default function Signup() {
 
           {!success && (
             <div className="text-center mt-6 pt-6 border-t border-[var(--line)]">
-              <Link href="/login" className="text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors">
+              <Link
+                href={safeNext ? `/login?next=${encodeURIComponent(safeNext)}` : "/login"}
+                className="text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors"
+              >
                 Already have an account? <span className="text-[var(--red)] font-bold">Sign in &rarr;</span>
               </Link>
             </div>
@@ -394,5 +411,13 @@ export default function Signup() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function Signup() {
+  return (
+    <Suspense fallback={<div className="inner-page min-h-screen" />}>
+      <SignupForm />
+    </Suspense>
   );
 }
