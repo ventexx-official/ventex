@@ -72,12 +72,12 @@ export default function FounderStorePage() {
 
  // 1. Fetch user profile
  const { data: profile } = await supabase
- .from("users")
+ .from("profiles")
  .select("*")
  .eq("id", session.user.id)
  .single();
 
- setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
+ setUserProfile(profile || { id: session.user.id, display_name: session.user.email, role: 'founder' });
 
  // 2. Fetch products
  const { data: productsData, error: productsErr } = await supabase
@@ -261,7 +261,7 @@ export default function FounderStorePage() {
  )}
  </div>
  <div className="min-w-0">
- <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || "Founder"}</p>
+ <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.display_name || "Founder"}</p>
  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
  </div>
  </div>

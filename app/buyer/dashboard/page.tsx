@@ -20,7 +20,7 @@ export default function BuyerDashboard() {
       }
 
       const { data: profile } = await supabase
-        .from('users')
+        .from('profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
@@ -51,7 +51,7 @@ export default function BuyerDashboard() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-extrabold text-[var(--text)] tracking-tight">Buyer Dashboard</h1>
-          <p className="text-[var(--text2)] mt-2 text-lg">Welcome back, {userProfile?.full_name}</p>
+          <p className="text-[var(--text2)] mt-2 text-lg">Welcome back, {userProfile?.display_name || 'Buyer'}</p>
         </div>
 
         {/* Quick Actions */}

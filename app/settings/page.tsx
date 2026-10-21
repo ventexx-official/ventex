@@ -16,7 +16,7 @@ export default function SettingsRedirectPage() {
  }
 
  const { data: profile } = await supabase
- .from('users')
+ .from('profiles')
  .select('role')
  .eq('id', session.user.id)
  .single();

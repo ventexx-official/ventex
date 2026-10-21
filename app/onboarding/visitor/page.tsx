@@ -18,7 +18,7 @@ export default function VisitorOnboarding() {
     setSubmitting(true);
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-      await supabase.from('users').update({ onboarding_completed: true }).eq('id', session.user.id);
+      await supabase.from('profiles').update({ onboarding_complete: true }).eq('id', session.user.id);
     }
     router.push('/discover');
   };

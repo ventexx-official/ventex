@@ -17,13 +17,13 @@ export default function DashboardRedirectPage() {
  }
 
  const { data: profile } = await supabase
- .from('users')
- .select('role, onboarding_completed')
+ .from('profiles')
+ .select('role, onboarding_complete')
  .eq('id', session.user.id)
  .single();
 
  const onboardingRoute = getOnboardingRoute(profile?.role, false);
- if (onboardingRoute && (!profile || !profile.role || profile.role === 'visitor' || !profile?.onboarding_completed)) {
+ if (onboardingRoute && (!profile || !profile.role || profile.role === 'visitor' || !profile?.onboarding_complete)) {
    router.replace(onboardingRoute);
    return;
  }

@@ -24,12 +24,12 @@ export default function RoleSelection() {
       setUserId(session.user.id);
       
       const { data: profile } = await supabase
-        .from('users')
-        .select('role, onboarding_completed')
+        .from('profiles')
+        .select('role, onboarding_complete')
         .eq('id', session.user.id)
         .single();
       
-      if (profile?.onboarding_completed && profile?.role !== 'visitor') {
+      if (profile?.onboarding_complete && profile?.role !== 'visitor') {
         router.push('/');
         return;
       }
@@ -44,8 +44,9 @@ export default function RoleSelection() {
     
     try {
       const { error } = await supabase
-        .from('users')
-        .upsert({ id: userId, role: role });
+        .from('profiles')
+        .update({ role: role })
+        .eq('id', userId);
 
       if (error) throw error;
 

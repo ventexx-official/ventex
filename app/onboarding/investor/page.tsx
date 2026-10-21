@@ -19,7 +19,7 @@ export default function InvestorTypeSelection() {
 
   const handleNext = async () => {
     if (!type || !userId) return;
-    await supabase.from('users').update({ investor_type: type }).eq('id', userId);
+    // No investor_type column in profiles schema
     
     if (type === 'investor') router.push('/onboarding/investor/details');
     else if (type === 'mentor') router.push('/onboarding/investor/mentor/details');

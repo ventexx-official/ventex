@@ -18,7 +18,7 @@ export default function FounderGuard({ children }: { children: React.ReactNode }
       }
 
       const { data: profile } = await supabase
-        .from('users')
+        .from('profiles')
         .select('role')
         .eq('id', session.user.id)
         .single();

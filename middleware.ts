@@ -1,11 +1,6 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-
-const PUBLIC_ROUTES = [
-  '/', '/discover', '/marketplace', '/events', '/about', '/catalyst', '/contact',
-  '/investors', '/terms', '/privacy', '/seller-agreement', '/refund-policy', '/delivery-policy',
-  '/login', '/signup', '/auth/callback'
-];
+import { isPublicRoute, isBypassedRoute } from '@/lib/routes';
 
 const BOTS = ['GPTBot', 'ClaudeBot', 'anthropic', 'Googlebot', 'Bingbot', 'PerplexityBot'];
 
@@ -37,19 +32,21 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   
-  // Block bots from protected paths
+  // Block bots from non-public paths
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = BOTS.some(bot => userAgent.toLowerCase().includes(bot.toLowerCase()));
   if (isBot) {
-    const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
-    if (!isPublic) return new NextResponse('Forbidden', { status: 403 });
+    if (!isPublicRoute(pathname)) {
+      return new NextResponse('Forbidden', { status: 403 });
+    }
   }
 
   // Check auth
   const { data: { user } } = await supabase.auth.getUser();
 
-  const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
-  const isProtected = !isPublic && !pathname.startsWith('/api') && !pathname.startsWith('/onboarding') && !pathname.startsWith('/auth') && !pathname.startsWith('/intelligence');
+  const isPublic = isPublicRoute(pathname);
+  const isBypassed = isBypassedRoute(pathname);
+  const isProtected = !isPublic && !isBypassed;
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
@@ -57,21 +54,29 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Role routing enforcement in Middleware
+  // Role routing enforcement in Middleware for authenticated users
   if (user && isProtected) {
-     const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single();
-     if (profile?.role) {
-       const role = profile.role;
-       if (pathname.startsWith('/founder') && role !== 'founder' && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-       if (pathname.startsWith('/investor') && role !== 'investor' && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-       if (pathname.startsWith('/admin') && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-     }
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profile?.role) {
+      const role = profile.role;
+      if (pathname.startsWith('/founder') && role !== 'founder' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/investor') && role !== 'investor' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/buyer') && role !== 'buyer' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/admin') && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+    }
   }
 
   return supabaseResponse;

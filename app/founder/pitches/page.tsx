@@ -37,7 +37,7 @@ export default function MyPitchesPage() {
  const fetchData = async () => {
  const { data: { session } } = await supabase.auth.getSession();
  if (!session) { router.push('/login'); return; }
- const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+ const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
  setUserProfile(profile || { id: session.user.id, full_name: session.user.email, role: 'founder' });
  const { data: pitchesData } = await supabase
  .from('pitches').select('*')
@@ -151,7 +151,7 @@ export default function MyPitchesPage() {
  {userProfile?.avatar_url ? <img src={userProfile.avatar_url} alt="" className="w-full h-full object-cover" /> : <User className="w-4 h-4 text-[var(--text2)]" />}
  </div>
  <div className="min-w-0">
- <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.full_name || 'Founder'}</p>
+ <p className="text-sm font-bold text-[var(--text)] truncate">{userProfile?.display_name || 'Founder'}</p>
  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text2)] bg-[var(--card-bg)] px-1.5 py-0.5 rounded border-[0.5px] border-[var(--border)]">Founder</span>
  </div>
  </div>

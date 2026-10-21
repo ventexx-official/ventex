@@ -20,10 +20,10 @@ export default function MentorDetails() {
     e.preventDefault();
     if (!userId) return;
     try {
-      await supabase.from('users').update({
-        onboarding_completed: true,
-        full_name: form.name,
-        mentorship_terms: form.mentorshipTerms,
+      await supabase.from('profiles').update({
+        onboarding_complete: true,
+        display_name: form.name,
+        bio: form.bio,
       }).eq('id', userId);
       router.push('/investor/portal');
     } catch (err: any) {

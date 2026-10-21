@@ -36,9 +36,8 @@ export default function FounderOnboarding() {
       if (pitchErr) throw pitchErr;
 
       // Update user profile
-      const { error: userErr } = await supabase.from('users').update({
-        onboarding_completed: true,
-        whatsapp: form.whatsapp
+      const { error: userErr } = await supabase.from('profiles').update({
+        onboarding_complete: true,
       }).eq('id', userId);
 
       if (userErr) throw userErr;

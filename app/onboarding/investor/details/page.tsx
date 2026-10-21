@@ -23,10 +23,9 @@ export default function InvestorDetails() {
     setSubmitting(true);
     
     try {
-      const { error } = await supabase.from('users').update({
-        onboarding_completed: true,
-        investment_thesis: form.thesis,
-        // Since we didn't add all minor fields to DB to keep it simple, we can store in metadata or thesis
+      const { error } = await supabase.from('profiles').update({
+        onboarding_complete: true,
+        bio: form.thesis || null,
       }).eq('id', userId);
 
       if (error) throw error;

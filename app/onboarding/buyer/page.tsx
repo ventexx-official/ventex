@@ -60,24 +60,23 @@ export default function BuyerOnboarding() {
     setLoading(true);
     try {
       const fullPhone = `${form.phoneCountryCode}${form.phone}`;
-      await supabase.from('users').update({ 
-        onboarding_completed: true,
-        phone: fullPhone,
+      await supabase.from('profiles').update({ 
+        onboarding_complete: true,
         country: form.country,
-        state: form.state,
-        whatsapp: form.whatsapp || fullPhone,
-        buyer_interests: form.interests,
-        budget_range: form.budget
+        city: form.city,
       }).eq('id', userId);
 
       await supabase.from('buyer_addresses').insert({
         user_id: userId,
-        address_line1: form.address1,
-        address_line2: form.address2,
+        full_name: form.fullName,
+        line1: form.address1,
+        line2: form.address2 || null,
         city: form.city,
         state: form.state,
         postal_code: form.postal,
-        country: form.country
+        country: form.country,
+        phone: fullPhone,
+        is_default: true,
       });
 
       router.push('/buyer/dashboard');

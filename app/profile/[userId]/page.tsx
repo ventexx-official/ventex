@@ -9,7 +9,11 @@ import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
  type UserProfile = {
   id: string;
-  full_name?: string | null;
+  display_name?: string | null;
+  headline?: string | null;
+  company?: string | null;
+  country?: string | null;
+  city?: string | null;
   role?: string | null;
   avatar_url?: string | null;
   bio?: string | null;
@@ -60,7 +64,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
  const isOwnProfile = viewerId === userId;
- const displayName = profile?.full_name || 'User';
+ const displayName = profile?.display_name || 'User';
  const initial = (displayName.trim()?.[0] || 'U').toUpperCase();
  const role = (profile?.role || 'visitor').toLowerCase();
  const joined = useMemo(() => formatJoined(profile?.created_at), [profile?.created_at]);
@@ -72,7 +76,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
 
  const [{ data: sessionData }, { data: profileData, error: profileError }] = await Promise.all([
  supabase.auth.getSession(),
- supabase.from('users').select('*').eq('id', userId).single(),
+ supabase.from('public_profiles').select('*').eq('id', userId).single(),
  ]);
 
  setViewerId(sessionData.session?.user?.id || null);
@@ -156,7 +160,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: profile.full_name || "Ventex User",
+          name: profile.display_name || "Ventex User",
           image: profile.avatar_url || "https://www.ventex.com/logo.png",
           description: profile.bio || "Ventex User Profile",
           url: `https://www.ventex.com/profile/${profile.id}`
@@ -186,7 +190,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${roleBadgeClass(role)}`}>
    {role.toUpperCase()}
    </span>
-   {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
+   
   </div>
   <div className="text-sm text-[var(--text2)] mt-1 flex items-center gap-3">
   <span>{joined ? `Joined ${joined}` : null}</span>
@@ -350,7 +354,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  ) : null}
  </div>
  <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--text2)]">
- {profile.investment_thesis || 'No thesis added yet.'}
+ {profile.bio || 'No thesis added yet.'}
  </p>
  <div className="mt-4 flex flex-wrap gap-2">
  {[...(profile.preferred_sectors || []), ...(profile.preferred_stages || [])].map((item) => (

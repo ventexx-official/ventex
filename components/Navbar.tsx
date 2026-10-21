@@ -23,7 +23,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [userProfile, setUserProfile] = useState<{
-    full_name?: string | null;
+    display_name?: string | null;
     avatar_url?: string | null;
     role?: string | null;
   } | null>(null);
@@ -67,13 +67,13 @@ export default function Navbar() {
       setUser(session?.user || null);
       if (session?.user) {
         const { data: profile } = await supabase
-          .from("users")
-          .select("role, full_name, avatar_url")
+          .from("profiles")
+          .select("role, display_name, avatar_url")
           .eq("id", session.user.id)
           .single();
         if (profile) {
           setUserProfile({
-            full_name: profile.full_name,
+            display_name: profile.display_name,
             avatar_url: profile.avatar_url,
             role: profile.role,
           });
@@ -92,14 +92,14 @@ export default function Navbar() {
       setUser(session?.user || null);
       if (session?.user) {
         supabase
-          .from("users")
-          .select("role, full_name, avatar_url")
+          .from("profiles")
+          .select("role, display_name, avatar_url")
           .eq("id", session.user.id)
           .single()
           .then(({ data }) => {
             if (data) {
               setUserProfile({
-                full_name: data.full_name,
+                display_name: data.display_name,
                 avatar_url: data.avatar_url,
                 role: data.role,
               });
@@ -154,7 +154,7 @@ export default function Navbar() {
   }, [avatarMenuOpen]);
 
   const displayName =
-    userProfile?.full_name || user?.email?.split("@")[0] || "User";
+    userProfile?.display_name || user?.email?.split("@")[0] || "User";
   const initial = (displayName?.trim()?.[0] || "U").toUpperCase();
 
   return (

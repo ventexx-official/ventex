@@ -22,11 +22,11 @@ export default function InvestorSettingsPage() {
  const load = async () => {
  const { data: { session } } = await supabase.auth.getSession();
  if (!session) return router.push('/login');
- const { data } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+ const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
  if (data?.role === 'admin') return router.replace('/admin/users');
  if (data?.role !== 'investor') return router.replace('/founder/settings');
  setProfile(data);
- setThesis(data?.investment_thesis || '');
+ setThesis(data?.bio || '');
  setSectors(data?.preferred_sectors || []);
  setStages(data?.preferred_stages || []);
  setWhatsappNumber(data?.whatsapp_number || '');
@@ -41,8 +41,8 @@ export default function InvestorSettingsPage() {
  const save = async () => {
  if (!profile?.id) return;
  setSaving(true);
- await supabase.from('users').update({
- investment_thesis: thesis,
+ await supabase.from('profiles').update({
+ bio: thesis || null,
  preferred_sectors: sectors,
  preferred_stages: stages,
  whatsapp_number: whatsappNumber || null,
