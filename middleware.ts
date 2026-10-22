@@ -119,6 +119,10 @@ export async function middleware(request: NextRequest) {
       if (pathname.startsWith('/admin') && role !== 'admin') {
         return NextResponse.redirect(new URL('/discover', request.url));
       }
+      if (pathname.startsWith('/explorer') && role !== 'visitor' && role !== 'admin') {
+        const dest = getSignedInDestination(profile);
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
     }
   }
 

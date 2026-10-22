@@ -51,7 +51,7 @@ export function sanitizeNextUrl(next: string | null | undefined): string | null 
  *       - founder -> '/founder/dashboard'
  *       - investor -> '/investor/portal'
  *       - buyer -> '/buyer/dashboard'
- *       - visitor (explorer) -> '/discover'
+ *       - visitor (explorer) -> '/explorer'
  */
 export function getSignedInDestination(profile: ProfileRoutingData | null | undefined): string {
   if (!profile) {
@@ -73,7 +73,7 @@ export function getSignedInDestination(profile: ProfileRoutingData | null | unde
         return '/buyer/dashboard';
       case 'visitor':
       default:
-        return '/discover';
+        return '/explorer';
     }
   }
 
@@ -111,6 +111,6 @@ export function getDashboardRoute(role: string | null | undefined): string {
       return '/buyer/dashboard';
     case 'visitor':
     default:
-      return '/discover';
+      return '/explorer';
   }
 }
