@@ -1,118 +1,293 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { Rocket, LineChart, ShoppingBag, Eye } from 'lucide-react';
+import Link from 'next/link';
+import { SITE_NAME } from '@/lib/brand';
+import { getSignedInDestination } from '@/lib/role-routing';
+import { Rocket, LineChart, ShoppingBag, Compass, GraduationCap, ArrowUpRight, AlertCircle, Check } from 'lucide-react';
 
-type Role = 'founder' | 'investor' | 'buyer' | 'visitor' | null;
+interface RoleOption {
+  id: 'founder' | 'investor' | 'buyer' | 'visitor';
+  tag: string;
+  title: string;
+  description: string;
+  icon: any;
+  disabled?: boolean;
+}
 
-export default function RoleSelection() {
+const ROLES: RoleOption[] = [
+  {
+    id: 'founder',
+    tag: 'BUILD & RAISE',
+    title: 'Founder',
+    description: 'I have an idea or startup to build and pitch',
+    icon: Rocket,
+  },
+  {
+    id: 'investor',
+    tag: 'CAPITAL & SYNDICATE',
+    title: 'Investor',
+    description: 'I want to discover and fund early ideas',
+    icon: LineChart,
+  },
+  {
+    id: 'buyer',
+    tag: 'PRODUCTS & ASSETS',
+    title: 'Buyer',
+    description: 'I want to buy products from founders',
+    icon: ShoppingBag,
+  },
+  {
+    id: 'visitor',
+    tag: 'LOOKING AROUND',
+    title: 'Explorer',
+    description: 'Just looking around',
+    icon: Compass,
+  },
+];
+
+export default function RoleSelectionPage() {
+  const brandName = SITE_NAME.toUpperCase();
   const router = useRouter();
-  const [role, setRole] = useState<Role>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<'founder' | 'investor' | 'buyer' | 'visitor' | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function checkAuth() {
+    let mounted = true;
+    const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        router.push('/login');
+        if (mounted) router.replace('/login');
         return;
       }
-      setUserId(session.user.id);
-      
+
       const { data: profile } = await supabase
-        .from('users')
-        .select('role, onboarding_completed')
+        .from('profiles')
+        .select('role, onboarding_complete, display_name, country')
         .eq('id', session.user.id)
         .single();
-      
-      if (profile?.onboarding_completed && profile?.role !== 'visitor') {
-        router.push('/');
+
+      // If user has already completed onboarding, never let them see role picker again
+      if (profile?.onboarding_complete) {
+        if (mounted) router.replace(getSignedInDestination(profile));
         return;
       }
-      setLoading(false);
-    }
-    checkAuth();
+
+      // If user already transitioned away from visitor, do not let them pick again
+      if (profile?.role && profile.role !== 'visitor') {
+        if (mounted) router.replace(getSignedInDestination(profile));
+        return;
+      }
+
+      if (mounted) setChecking(false);
+    };
+
+    checkUser();
+    return () => { mounted = false; };
   }, [router]);
 
-  const handleComplete = async () => {
-    if (!userId || !role) return;
-    setSubmitting(true);
-    
+  const handleContinue = async () => {
+    if (!selectedRole) return;
+    setLoading(true);
+    setError(null);
+
     try {
-      const { error } = await supabase
-        .from('users')
-        .upsert({ id: userId, role: role });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.replace('/login');
+        return;
+      }
 
-      if (error) throw error;
+      // If Explorer was selected, role stays "visitor"
+      const targetRole = selectedRole === 'visitor' ? 'visitor' : selectedRole;
 
-      switch (role) {
-        case 'founder': return router.push('/onboarding/founder');
-        case 'investor': return router.push('/onboarding/investor');
-        case 'buyer': return router.push('/onboarding/buyer');
-        case 'visitor': return router.push('/onboarding/visitor');
+      // Update role in database
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ role: targetRole })
+        .eq('id', session.user.id);
+
+      if (updateError) {
+        console.error('Failed to update role:', updateError);
+        setError('Failed to save your selection. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      // Route to that role's first onboarding pathway
+      router.refresh();
+      switch (selectedRole) {
+        case 'founder':
+          router.replace('/onboarding/founder');
+          break;
+        case 'investor':
+          router.replace('/onboarding/investor');
+          break;
+        case 'buyer':
+          router.replace('/onboarding/buyer');
+          break;
+        case 'visitor':
+          router.replace('/onboarding/explorer');
+          break;
       }
     } catch (err: any) {
-      console.error('Error setting role:', err);
-      alert('An error occurred: ' + (err.message || 'Unknown error'));
-      setSubmitting(false);
+      console.error('Role update exception:', err);
+      setError('Something went wrong. Please try again.');
+      setLoading(false);
     }
   };
 
-  if (loading) {
+  if (checking) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] dark:border-t-white rounded-full animate-spin"></div>
+      <div className="inner-page min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--line)] border-t-[var(--red)] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <h1 className="text-3xl md:text-4xl font-bold text-center text-[var(--text)] mb-8">
-          What brings you to Ventex?
-        </h1>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <button onClick={() => setRole('founder')} className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${role === 'founder' ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'}`}>
-            <Rocket className={`w-8 h-8 mb-4 ${role === 'founder' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
-            <h3 className="font-bold text-lg text-[var(--text)] mb-1">I'm a founder</h3>
-            <p className="text-sm text-[var(--text2)]">pitch investors</p>
-          </button>
+    <div className="inner-page min-h-screen flex flex-col justify-between">
+      {/* HEADER */}
+      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+        <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
+          <span className="brand-mark">
+            <span>{brandName.charAt(0)}</span>
+          </span>
+          <span>{brandName}</span>
+        </Link>
+        <span className="text-[10px] font-mono tracking-widest text-[var(--smoke)] uppercase">
+          [ STEP 1 OF SETUP ]
+        </span>
+      </header>
 
-          <button onClick={() => setRole('investor')} className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${role === 'investor' ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'}`}>
-            <LineChart className={`w-8 h-8 mb-4 ${role === 'investor' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
-            <h3 className="font-bold text-lg text-[var(--text)] mb-1">I'm an investor</h3>
-            <p className="text-sm text-[var(--text2)]">fund startups</p>
-          </button>
-
-          <button onClick={() => setRole('buyer')} className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${role === 'buyer' ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'}`}>
-            <ShoppingBag className={`w-8 h-8 mb-4 ${role === 'buyer' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
-            <h3 className="font-bold text-lg text-[var(--text)] mb-1">I'm a buyer</h3>
-            <p className="text-sm text-[var(--text2)]">buy products</p>
-          </button>
-
-          <button onClick={() => setRole('visitor')} className={`p-6 bg-[var(--card-bg)] rounded-[16px] text-left transition-all ${role === 'visitor' ? 'border-2 border-[#222222] dark:border-white shadow-sm ring-1 ring-black dark:ring-white ring-opacity-5' : 'border-[0.5px] border-[var(--border)] hover:border-gray-400 dark:hover:border-gray-500'}`}>
-            <Eye className={`w-8 h-8 mb-4 ${role === 'visitor' ? 'text-[var(--text)] ' : 'text-[var(--text2)]'}`} />
-            <h3 className="font-bold text-lg text-[var(--text)] mb-1">Just exploring</h3>
-            <p className="text-sm text-[var(--text2)]">just exploring</p>
-          </button>
+      {/* MAIN CONTENT */}
+      <main className="page-padding py-12 md:py-16 flex-1 flex flex-col justify-center max-w-5xl mx-auto w-full">
+        <div className="mb-8 md:mb-10 text-center max-w-xl mx-auto">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-3">
+            {'//'} ACCOUNT PERSONALIZATION
+          </span>
+          <h1 className="font-display text-3xl md:text-5xl font-medium tracking-tight text-[var(--paper)] uppercase mb-3">
+            Choose your path
+          </h1>
+          <p className="text-sm font-mono text-[var(--paper-dim)]">
+            Select the role that fits you best. Your choice sets up your workspace and can be refined later in settings.
+          </p>
         </div>
 
-        <div className="flex justify-end">
-          <button 
-            onClick={handleComplete}
-            disabled={!role || submitting}
-            className="bg-[var(--text)] text-[var(--bg)] px-8 py-3 rounded-md font-bold hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        {error && (
+          <div className="max-w-xl mx-auto mb-6 p-4 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 text-xs font-mono text-[var(--paper)] flex items-center gap-3">
+            <AlertCircle className="w-4 h-4 text-[var(--red)] shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* 4 PLAIN CARDS + MENTOR COMING SOON */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto w-full">
+          {ROLES.map((role) => {
+            const Icon = role.icon;
+            const isSelected = selectedRole === role.id;
+
+            return (
+              <button
+                key={role.id}
+                type="button"
+                onClick={() => setSelectedRole(role.id)}
+                className={`p-6 rounded-2xl border text-left transition-all duration-200 cursor-pointer relative flex flex-col justify-between min-h-[160px] ${
+                  isSelected
+                    ? 'bg-[var(--card)] border-[var(--red)] shadow-[0_0_20px_rgba(214,69,59,0.25)] ring-1 ring-[var(--red)]'
+                    : 'bg-[var(--card)]/60 border-[var(--line)] hover:border-[var(--line-strong)] hover:bg-[var(--card)]'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)]">
+                      {role.tag}
+                    </span>
+                    <div
+                      className={`w-6 h-6 rounded-full border flex items-center justify-center transition-colors ${
+                        isSelected
+                          ? 'border-[var(--red)] bg-[var(--red)] text-white'
+                          : 'border-[var(--line)] bg-[var(--ink)]'
+                      }`}
+                    >
+                      {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                    </div>
+                  </div>
+
+                  <h3 className="font-display text-xl font-medium text-[var(--paper)] uppercase mb-1 flex items-center gap-2">
+                    <Icon className="w-5 h-5 text-[var(--paper-dim)]" />
+                    {role.title}
+                  </h3>
+                  <p className="text-xs font-mono text-[var(--paper-dim)] leading-relaxed">
+                    {role.description}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+
+          {/* 5TH CARD: MENTOR - DISABLED */}
+          <div
+            className="p-6 rounded-2xl border border-[var(--line)]/40 bg-[var(--card)]/20 text-left relative flex flex-col justify-between min-h-[160px] opacity-40 cursor-not-allowed md:col-span-2"
+            aria-disabled="true"
           >
-            {submitting ? 'Saving...' : 'Continue →'}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
+                  ADVISORY & GUIDANCE
+                </span>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded border border-[var(--line)] text-[var(--smoke)] uppercase">
+                  Coming Soon
+                </span>
+              </div>
+              <h3 className="font-display text-xl font-medium text-[var(--smoke)] uppercase mb-1 flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-[var(--smoke)]" />
+                Mentor
+              </h3>
+              <p className="text-xs font-mono text-[var(--smoke)] leading-relaxed">
+                Offer strategic advice, office hours, and review early pitches.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* BOTTOM ACTION */}
+        <div className="mt-8 text-center max-w-sm mx-auto w-full">
+          <button
+            type="button"
+            disabled={!selectedRole || loading}
+            onClick={handleContinue}
+            className={`w-full py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+              selectedRole && !loading
+                ? 'bg-[var(--red)] text-[var(--paper)] hover:bg-[#ed594d] cursor-pointer shadow-lg'
+                : 'bg-[var(--line)] text-[var(--smoke)] cursor-not-allowed opacity-50'
+            }`}
+          >
+            {loading ? (
+              <>
+                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Saving selection...</span>
+              </>
+            ) : (
+              <>
+                <span>Continue</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </>
+            )}
           </button>
         </div>
-      </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="page-padding py-6 border-t border-[var(--line)] text-center">
+        <p className="text-[11px] font-mono text-[var(--smoke)]">
+          Need assistance choosing? Contact support at hello@ventexx.com
+        </p>
+      </footer>
     </div>
   );
 }

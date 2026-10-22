@@ -3,177 +3,266 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { SITE_NAME } from '@/lib/brand';
+import { getSignedInDestination } from '@/lib/role-routing';
+import { AvatarUpload } from '@/components/AvatarUpload';
+import { Stepper } from '@/components/Stepper';
+import { AlertCircle, ArrowUpRight, ArrowLeft } from 'lucide-react';
 
-export default function BuyerOnboarding() {
+const BUYER_STEPS = [
+  { id: 1, label: "You" },
+  { id: 2, label: "Delivery" },
+  { id: 3, label: "Shop" },
+];
+
+export default function BuyerBasicInfoOnboarding() {
+  const brandName = SITE_NAME.toUpperCase();
   const router = useRouter();
-  const [step, setStep] = useState(1);
+
   const [userId, setUserId] = useState<string | null>(null);
-  const [form, setForm] = useState({ 
-    fullName: '', phoneCountryCode: '', phone: '', whatsapp: '',
-    address1: '', address2: '', city: '', state: '', postal: '', country: '',
-    interests: [] as string[], budget: ''
+  const [checking, setChecking] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Step 1: Basic Info
+  const [form, setForm] = useState({
+    displayName: '',
+    country: '',
+    city: '',
+    avatarUrl: '',
   });
 
-  const [countries, setCountries] = useState<any[]>([]);
-  const [states, setStates] = useState<any[]>([]);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [loading, setLoading] = useState(false);
-
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) return router.push('/login');
-      setUserId(session.user.id);
-    });
+    let mounted = true;
+    async function loadUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        if (mounted) router.replace('/login');
+        return;
+      }
 
-    supabase.from('countries').select('*').eq('is_active', true).order('name').then(({data}) => {
-      if(data) setCountries(data);
-    });
+      setUserId(session.user.id);
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.onboarding_complete) {
+        if (mounted) router.replace(getSignedInDestination(profile));
+        return;
+      }
+
+      if (profile?.role && profile.role !== 'buyer') {
+        if (mounted) router.replace(getSignedInDestination(profile));
+        return;
+      }
+
+      if (profile) {
+        setForm({
+          displayName: profile.display_name || session.user.user_metadata?.display_name || session.user.user_metadata?.full_name || '',
+          country: profile.country || '',
+          city: profile.city || '',
+          avatarUrl: profile.avatar_url || '',
+        });
+      }
+
+      if (mounted) setChecking(false);
+    }
+
+    loadUser();
+    return () => { mounted = false; };
   }, [router]);
 
-  useEffect(() => {
-    if (form.country) {
-       const selectedCountry = countries.find(c => c.name === form.country);
-       if (selectedCountry) {
-          supabase.from('states').select('*').eq('country_id', selectedCountry.id).eq('is_active', true).order('name').then(({data}) => {
-            if (data) setStates(data);
-          });
-       } else {
-          setStates([]);
-       }
-    }
-  }, [form.country, countries]);
-
-  const handleSendOTP = () => {
-    if (!form.phoneCountryCode || !form.phone) return alert("Select country code and enter phone");
-    setOtpSent(true);
-    alert("Mock OTP Sent to " + form.phoneCountryCode + " " + form.phone + " (Enter any 6 digits to verify)");
-  };
-
-  const handleVerifyOTP = () => {
-    if (otpCode.length < 4) return alert("Invalid OTP. Enter at least 4 digits.");
-    setStep(2);
-  };
-
-  const handleComplete = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!userId) return;
-    setLoading(true);
+    setError(null);
+
+    const trimmedName = form.displayName.trim();
+    const trimmedCountry = form.country.trim();
+
+    if (!trimmedName) {
+      setError('Display name is required.');
+      return;
+    }
+
+    if (!trimmedCountry) {
+      setError('Country is required.');
+      return;
+    }
+
+    setSubmitting(true);
+
     try {
-      const fullPhone = `${form.phoneCountryCode}${form.phone}`;
-      await supabase.from('users').update({ 
-        onboarding_completed: true,
-        phone: fullPhone,
-        country: form.country,
-        state: form.state,
-        whatsapp: form.whatsapp || fullPhone,
-        buyer_interests: form.interests,
-        budget_range: form.budget
+      // Step 1 saves basic info (does NOT mark onboarding_complete yet; step 2 will)
+      const { error: profileErr } = await supabase.from('profiles').update({
+        display_name: trimmedName,
+        country: trimmedCountry,
+        city: form.city.trim() || null,
+        avatar_url: form.avatarUrl.trim() || null,
       }).eq('id', userId);
 
-      await supabase.from('buyer_addresses').insert({
-        user_id: userId,
-        address_line1: form.address1,
-        address_line2: form.address2,
-        city: form.city,
-        state: form.state,
-        postal_code: form.postal,
-        country: form.country
-      });
+      if (profileErr) throw profileErr;
 
-      router.push('/buyer/dashboard');
+      router.refresh();
+      router.replace('/onboarding/buyer/address');
     } catch (err: any) {
-      alert(err.message);
+      console.error('Buyer onboarding error:', err);
+      setError(err.message || 'Something went wrong saving your profile.');
+      setSubmitting(false);
     }
-    setLoading(false);
   };
 
-  return (
-    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center p-4">
-      <div className="bg-[var(--card-bg)] border-[0.5px] border-[var(--border)] rounded-[16px] p-8 w-full max-w-[500px]">
-        {step === 1 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 1: Verification</h1>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-bold text-[var(--text)]">Full Name</label>
-                <input required className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.fullName} onChange={e=>setForm({...form, fullName:e.target.value})} disabled={otpSent} />
-              </div>
-              
-              <div>
-                <label className="text-sm font-bold text-[var(--text)]">Phone Number</label>
-                <div className="flex gap-2 mt-1">
-                  <select 
-                    className="w-1/3 border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" 
-                    value={form.phoneCountryCode} 
-                    onChange={e=>setForm({...form, phoneCountryCode:e.target.value})}
-                    disabled={otpSent}
-                  >
-                    <option value="">Country</option>
-                    {countries.map(c => <option key={c.id} value={c.code}>{c.code}</option>)}
-                  </select>
-                  <input required type="tel" className="w-2/3 border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" placeholder="Phone Number" value={form.phone} onChange={e=>setForm({...form, phone:e.target.value})} disabled={otpSent} />
-                </div>
-              </div>
-
-              {!otpSent ? (
-                <button onClick={handleSendOTP} disabled={!form.fullName || !form.phone || !form.phoneCountryCode} className="w-full bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold mt-4 disabled:opacity-50">Send OTP</button>
-              ) : (
-                <div className="mt-4 p-4 border border-[var(--border)] rounded-md bg-[var(--bg2)]">
-                  <label className="text-sm font-bold text-[var(--text)] block mb-2">Enter OTP</label>
-                  <input type="text" placeholder="123456" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] tracking-widest text-center" value={otpCode} onChange={e=>setOtpCode(e.target.value)} />
-                  <button onClick={handleVerifyOTP} className="w-full bg-green-600 text-white py-2 rounded-md font-bold mt-4">Verify & Continue</button>
-                  <button onClick={() => setOtpSent(false)} className="w-full mt-2 text-sm text-[var(--text2)] underline">Resend / Change Number</button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-        {step === 2 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 2: Shipping Address</h1>
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-bold text-[var(--text)]">Country</label>
-                <select className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.country} onChange={e=>setForm({...form, country:e.target.value})}>
-                  <option value="">Select Country</option>
-                  {countries.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                </select>
-              </div>
-
-              {form.country && (
-                <div>
-                  <label className="text-sm font-bold text-[var(--text)]">State / Province</label>
-                  <select className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)] mt-1" value={form.state} onChange={e=>setForm({...form, state:e.target.value})}>
-                    <option value="">Select State</option>
-                    {states.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
-                  </select>
-                </div>
-              )}
-
-              <input placeholder="Address Line 1" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.address1} onChange={e=>setForm({...form, address1:e.target.value})} />
-              <input placeholder="City" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.city} onChange={e=>setForm({...form, city:e.target.value})} />
-              <input placeholder="Postal Code" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.postal} onChange={e=>setForm({...form, postal:e.target.value})} />
-              
-              <div className="flex gap-2 mt-4">
-                <button onClick={()=>setStep(1)} className="w-1/3 bg-transparent border border-[var(--border)] text-[var(--text)] py-2 rounded-md font-bold">&larr; Back</button>
-                <button onClick={()=>setStep(3)} disabled={!form.address1 || !form.city || !form.country || !form.state} className="w-2/3 bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold disabled:opacity-50">Next &rarr;</button>
-              </div>
-            </div>
-          </div>
-        )}
-        {step === 3 && (
-          <div>
-            <h1 className="text-2xl font-bold mb-4 text-[var(--text)]">Step 3: Interests</h1>
-            <div className="space-y-4">
-              <input placeholder="Budget Range (e.g. $1k - $5k)" className="w-full border-[0.5px] border-[var(--border)] rounded-md px-3 py-2 text-sm bg-[var(--bg)] text-[var(--text)]" value={form.budget} onChange={e=>setForm({...form, budget:e.target.value})} />
-              <div className="flex gap-2 mt-4">
-                <button onClick={()=>setStep(2)} className="w-1/3 bg-transparent border border-[var(--border)] text-[var(--text)] py-2 rounded-md font-bold">&larr; Back</button>
-                <button onClick={handleComplete} disabled={loading} className="w-2/3 bg-[var(--text)] text-[var(--bg)] py-2 rounded-md font-bold disabled:opacity-50">{loading ? 'Saving...' : 'Complete \u2192'}</button>
-              </div>
-            </div>
-          </div>
-        )}
+  if (checking) {
+    return (
+      <div className="inner-page min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--line)] border-t-[var(--red)] rounded-full animate-spin" />
       </div>
+    );
+  }
+
+  return (
+    <div className="inner-page min-h-screen flex flex-col justify-between">
+      {/* HEADER */}
+      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+        <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
+          <span className="brand-mark">
+            <span>{brandName.charAt(0)}</span>
+          </span>
+          <span>{brandName}</span>
+        </Link>
+        <span className="text-[10px] font-mono tracking-widest text-[var(--smoke)] uppercase">
+          [ STEP 1 OF 3 ]
+        </span>
+      </header>
+
+      {/* STEPPER */}
+      <div className="pt-6 pb-2">
+        <Stepper currentStep={1} steps={BUYER_STEPS} />
+      </div>
+
+      {/* FORM CARD */}
+      <main className="page-padding py-8 md:py-12 flex-1 flex flex-col justify-center max-w-xl mx-auto w-full">
+        <div className="mb-6">
+          <Link
+            href="/onboarding/role"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to role selection
+          </Link>
+        </div>
+
+        <div className="bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
+          <div className="mb-8">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-2">
+              {'//'} STEP 1 OF 3 — BUYER PROFILE
+            </span>
+            <h1 className="font-display text-3xl font-medium tracking-tight text-[var(--paper)] uppercase mb-2">
+              Buyer profile
+            </h1>
+            <p className="text-xs font-mono text-[var(--paper-dim)] leading-relaxed">
+              Tell founders and sellers who they are fulfilling orders for.
+            </p>
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 text-xs font-mono text-[var(--paper)] flex items-center gap-3">
+              <AlertCircle className="w-4 h-4 text-[var(--red)] shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {userId && (
+              <div className="pt-2 pb-4 border-b border-[var(--line)]">
+                <AvatarUpload
+                  userId={userId}
+                  currentUrl={form.avatarUrl}
+                  onUploaded={(url: string) => setForm(f => ({ ...f, avatarUrl: url }))}
+                />
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="displayName" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-2">
+                Display name / Full name <span className="text-[var(--red)]">*</span>
+              </label>
+              <input
+                id="displayName"
+                type="text"
+                required
+                autoFocus
+                autoComplete="name"
+                value={form.displayName}
+                onChange={(e) => setForm({ ...form, displayName: e.target.value })}
+                placeholder="e.g. Jordan Lee"
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-sm font-mono text-[var(--paper)] focus:outline-none focus:border-[var(--red)] focus:ring-1 focus:ring-[var(--red)] transition-all"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="country" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-2">
+                  Country <span className="text-[var(--red)]">*</span>
+                </label>
+                <input
+                  id="country"
+                  type="text"
+                  required
+                  autoComplete="country-name"
+                  value={form.country}
+                  onChange={(e) => setForm({ ...form, country: e.target.value })}
+                  placeholder="e.g. Canada"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-sm font-mono text-[var(--paper)] focus:outline-none focus:border-[var(--red)] focus:ring-1 focus:ring-[var(--red)] transition-all"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="city" className="block text-xs font-mono uppercase tracking-wider text-[var(--paper-dim)] mb-2">
+                  City
+                </label>
+                <input
+                  id="city"
+                  type="text"
+                  autoComplete="address-level2"
+                  value={form.city}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  placeholder="e.g. Toronto"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-sm font-mono text-[var(--paper)] focus:outline-none focus:border-[var(--red)] focus:ring-1 focus:ring-[var(--red)] transition-all"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50 min-h-[44px]"
+            >
+              {submitting ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Saving profile...</span>
+                </>
+              ) : (
+                <>
+                  <span>Continue to Delivery Address</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="page-padding py-6 border-t border-[var(--line)] text-center">
+        <p className="text-[11px] font-mono text-[var(--smoke)]">
+          You can update your personal information anytime in Settings.
+        </p>
+      </footer>
     </div>
   );
 }

@@ -20,11 +20,11 @@ module.exports = {
     let priority = config.priority;
     if (path === '/') {
       priority = 1.0;
-    } else if (path === '/discover' || path === '/marketplace' || path === '/intelligence') {
+    } else if (path === '/discover' || path === '/marketplace') {
       priority = 0.9;
-    } else if (path === '/events' || path === '/investors') {
+    } else if (path === '/investors') {
       priority = 0.8;
-    } else if (path === '/about' || path === '/catalyst' || path === '/pricing' || path === '/contact') {
+    } else if (path === '/about' || path === '/contact') {
       priority = 0.7;
     } else {
       priority = 0.6;

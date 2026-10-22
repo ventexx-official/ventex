@@ -9,7 +9,11 @@ import InvestorResponseBadge from '@/components/InvestorResponseBadge';
 
  type UserProfile = {
   id: string;
-  full_name?: string | null;
+  display_name?: string | null;
+  headline?: string | null;
+  company?: string | null;
+  country?: string | null;
+  city?: string | null;
   role?: string | null;
   avatar_url?: string | null;
   bio?: string | null;
@@ -18,8 +22,6 @@ import InvestorResponseBadge from '@/components/InvestorResponseBadge';
   investment_thesis?: string | null;
   preferred_sectors?: string[] | null;
   preferred_stages?: string[] | null;
-  xp?: number | null;
-  badges?: string[] | null;
   verified?: boolean;
 };
 
@@ -62,12 +64,10 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
  const isOwnProfile = viewerId === userId;
- const displayName = profile?.full_name || 'User';
+ const displayName = profile?.display_name || 'User';
  const initial = (displayName.trim()?.[0] || 'U').toUpperCase();
  const role = (profile?.role || 'visitor').toLowerCase();
  const joined = useMemo(() => formatJoined(profile?.created_at), [profile?.created_at]);
- const xp = Number(profile?.xp || 0);
- const badges = profile?.badges || ['Pitch Submitted', 'Marketplace Seller'];
 
  useEffect(() => {
  const load = async () => {
@@ -76,7 +76,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
 
  const [{ data: sessionData }, { data: profileData, error: profileError }] = await Promise.all([
  supabase.auth.getSession(),
- supabase.from('users').select('*').eq('id', userId).single(),
+ supabase.from('public_profiles').select('*').eq('id', userId).single(),
  ]);
 
  setViewerId(sessionData.session?.user?.id || null);
@@ -160,10 +160,10 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: profile.full_name || "Ventex User",
-          image: profile.avatar_url || "https://www.ventexx.com/logo.png",
+          name: profile.display_name || "Ventex User",
+          image: profile.avatar_url || "https://www.ventex.com/logo.png",
           description: profile.bio || "Ventex User Profile",
-          url: `https://www.ventexx.com/profile/${profile.id}`
+          url: `https://www.ventex.com/profile/${profile.id}`
         })
       }}
     />
@@ -190,7 +190,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${roleBadgeClass(role)}`}>
    {role.toUpperCase()}
    </span>
-   {role === 'investor' ? <InvestorResponseBadge response_rate={profile.response_rate} /> : null}
+   
   </div>
   <div className="text-sm text-[var(--text2)] mt-1 flex items-center gap-3">
   <span>{joined ? `Joined ${joined}` : null}</span>
@@ -201,24 +201,6 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  <div className="text-sm text-[var(--text2)] mt-4 whitespace-pre-wrap">
  {profile.bio?.trim() ? profile.bio : 'No bio added yet.'}
  </div>
- {role === 'founder' && (
- <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4">
- <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-[var(--text2)]">
- <span>Founder XP</span>
- <span>{xp} XP</span>
- </div>
- <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e5e5e5]">
- <div className="h-full bg-emerald-500" style={{ width: `${Math.min(100, xp % 100)}%` }} />
- </div>
- <div className="mt-3 flex flex-wrap gap-2">
- {['Pitch Submitted', 'First Investor Interest', 'Featured in Battle', 'Marketplace Seller', 'Ventex Live Participant'].map((badge) => (
- <span key={badge} className={`rounded-full px-2 py-1 text-[10px] font-black ${badges.includes(badge) ? 'bg-[var(--text)] text-[var(--bg)]' : 'bg-[var(--card-bg)] text-[var(--text2)]'}`}>
- {badge}
- </span>
- ))}
- </div>
- </div>
- )}
  </div>
 
  {isOwnProfile && (
@@ -372,7 +354,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
  ) : null}
  </div>
  <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--text2)]">
- {profile.investment_thesis || 'No thesis added yet.'}
+ {profile.bio || 'No thesis added yet.'}
  </p>
  <div className="mt-4 flex flex-wrap gap-2">
  {[...(profile.preferred_sectors || []), ...(profile.preferred_stages || [])].map((item) => (

@@ -1,5 +1,7 @@
+import { SITE_NAME } from './brand';
+
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Ventex";
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || SITE_NAME;
 export const OG_IMAGE_URL = `${BASE_URL}/og-image.png`;
 
 export function emailFor(localPart: string) {

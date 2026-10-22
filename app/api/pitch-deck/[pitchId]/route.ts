@@ -1,63 +1,76 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+// Server-only admin client with service role key
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // Need service role to bypass RLS for fetching pitch_deck_url if protected
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 export async function GET(req: Request, { params }: { params: { pitchId: string } }) {
   try {
     const authHeader = req.headers.get('Authorization');
-    
-    // In development/review mode, if not authenticated, we can mock user verification
-    const isDev = process.env.NODE_ENV === 'development';
-    
-    let verified = false;
-
-    if (authHeader) {
-      const token = authHeader.replace('Bearer ', '');
-      const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
-      
-      if (!authError && user) {
-        verified = true;
-      }
+    if (!authHeader) {
+      return NextResponse.json({ error: 'Unauthorized: Missing auth token' }, { status: 401 });
     }
 
-    if (!verified) {
-      return new NextResponse('Forbidden: Authentication required', { status: 403 });
+    const token = authHeader.replace('Bearer ', '').trim();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAdmin.auth.getUser(token);
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
     }
 
-    // Get Pitch Deck Path
-    const { data: pitch, error: _pitchError } = await supabaseAdmin
+    // Fetch user profile to check role
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    const userRole = profile?.role;
+
+    // Fetch pitch info
+    const { data: pitch, error: pitchError } = await supabaseAdmin
       .from('pitches')
-      .select('pitch_deck_url')
+      .select('founder_id, status, pitch_deck_path')
       .eq('id', params.pitchId)
       .single();
 
-    // If deck url exists, generate signed URL
-    if (pitch && pitch.pitch_deck_url) {
-      const { data, error: storageError } = await supabaseAdmin
-        .storage
-        .from('pitch_decks')
-        .createSignedUrl(pitch.pitch_deck_url, 1800);
-
-      if (!storageError && data?.signedUrl) {
-        return NextResponse.json({ url: data.signedUrl });
-      }
+    if (pitchError || !pitch) {
+      return NextResponse.json({ error: 'Pitch not found' }, { status: 404 });
     }
 
-    // Fallback PDF for testing and demo purposes in development/review mode
-    if (isDev) {
-      return NextResponse.json({ 
-        url: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf' 
-      });
+    if (!pitch.pitch_deck_path) {
+      return NextResponse.json({ error: 'Pitch deck not available' }, { status: 404 });
     }
 
-    return new NextResponse('Pitch deck not found', { status: 404 });
+    // Access check: owner, admin, or investor (only when live)
+    const isOwner = pitch.founder_id === user.id;
+    const isAdmin = userRole === 'admin';
+    const isInvestorOnLive = userRole === 'investor' && pitch.status === 'live';
 
-  } catch (error: any) {
-    console.error('Error fetching pitch deck:', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    if (!isOwner && !isAdmin && !isInvestorOnLive) {
+      return NextResponse.json(
+        { error: 'Forbidden: You do not have permission to view this deck' },
+        { status: 403 }
+      );
+    }
+
+    // Create a 60-second signed URL for the private deck
+    const { data: signedData, error: storageError } = await supabaseAdmin.storage
+      .from('pitch-decks')
+      .createSignedUrl(pitch.pitch_deck_path, 60);
+
+    if (storageError || !signedData?.signedUrl) {
+      return NextResponse.json({ error: 'Failed to generate signed URL' }, { status: 500 });
+    }
+
+    return NextResponse.json({ url: signedData.signedUrl });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message || 'Internal server error' }, { status: 500 });
   }
 }

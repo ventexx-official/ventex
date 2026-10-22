@@ -1,42 +1,60 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { getDashboardRoute, getOnboardingRoute } from '@/lib/role-routing';
+import { getSignedInDestination, sanitizeNextUrl } from '@/lib/role-routing';
+
+function DashboardRedirectInner() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawNext = searchParams.get('next');
+  const safeNext = sanitizeNextUrl(rawNext);
+
+  useEffect(() => {
+    let mounted = true;
+    const run = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        if (mounted) router.replace('/login');
+        return;
+      }
+
+      if (safeNext && mounted) {
+        router.replace(safeNext);
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role, onboarding_complete')
+        .eq('id', session.user.id)
+        .single();
+
+      if (mounted) {
+        const dest = getSignedInDestination(profile);
+        router.replace(dest);
+      }
+    };
+    run();
+    return () => { mounted = false; };
+  }, [router, safeNext]);
+
+  return (
+    <div className="min-h-screen bg-[var(--ink)] flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[var(--line)] border-t-[var(--red)] rounded-full animate-spin" />
+    </div>
+  );
+}
 
 export default function DashboardRedirectPage() {
- const router = useRouter();
-
- useEffect(() => {
- const run = async () => {
- const { data: { session } } = await supabase.auth.getSession();
- if (!session?.user) {
- router.replace('/login');
- return;
- }
-
- const { data: profile } = await supabase
- .from('users')
- .select('role, onboarding_completed')
- .eq('id', session.user.id)
- .single();
-
- const onboardingRoute = getOnboardingRoute(profile?.role, false);
- if (onboardingRoute && (!profile || !profile.role || profile.role === 'visitor' || !profile?.onboarding_completed)) {
-   router.replace(onboardingRoute);
-   return;
- }
-
- const next = getDashboardRoute(profile?.role);
- router.replace(next);
- };
- run();
- }, [router]);
-
- return (
- <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center">
- <div className="w-8 h-8 border-2 border-[var(--border)] border-t-[#222222] rounded-full animate-spin" />
- </div>
- );
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[var(--ink)] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[var(--line)] border-t-[var(--red)] rounded-full animate-spin" />
+      </div>
+    }>
+      <DashboardRedirectInner />
+    </Suspense>
+  );
 }

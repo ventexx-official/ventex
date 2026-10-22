@@ -42,7 +42,7 @@ export async function requireAdmin(req: Request) {
 
   const supabaseAdmin = createSupabaseAdmin();
   const { data: profile } = await supabaseAdmin
-    .from('users')
+    .from('profiles')
     .select('role')
     .eq('id', auth.user.id)
     .single();
