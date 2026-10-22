@@ -16,6 +16,8 @@ export const PUBLIC_ROUTES = [
   '/delivery-policy',
   '/login',
   '/signup',
+  '/forgot-password',
+  '/reset-password',
 ];
 
 export const PUBLIC_PREFIXES = [
@@ -28,7 +30,6 @@ export const PUBLIC_PREFIXES = [
 
 export const BYPASS_PREFIXES = [
   '/api',
-  '/onboarding',
   '/auth',
 ];
 

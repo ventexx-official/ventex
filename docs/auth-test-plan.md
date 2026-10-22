@@ -1,6 +1,6 @@
 # Authentication & Onboarding Test Plan
 
-This document outlines the step-by-step manual test checklist covering every branch of authentication, session management, and role onboarding in Ventex v3, including all front-end polish features.
+This document outlines the step-by-step manual test checklist covering every branch of authentication, session management, and role onboarding in Ventex v3, including all front-end polish features and the v3-rebuild correction pass.
 
 ---
 
@@ -13,7 +13,26 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 1. Landing Page Navigation
+## 1. Route Architecture Overview
+
+- **Setup routes (`/onboarding/*`)**:
+  - `/onboarding/role`: Plain 4-card role selector + disabled "Mentor" card.
+  - `/onboarding/founder`: Founder basic info (requires `display_name` & `country`). Sets `onboarding_complete = true`, then redirects to `/welcome/founder?celebrate=1`.
+  - `/onboarding/investor`: Investor basic info (requires `display_name` & `country`). Sets `onboarding_complete = true`, then redirects to `/welcome/investor?celebrate=1`.
+  - `/onboarding/buyer`: Buyer step 1 basic info (requires `display_name` & `country`). Saves profile and routes to `/onboarding/buyer/address`.
+  - `/onboarding/buyer/address`: Buyer step 2 optional shipping address. "Save Address" or "Add later" sets `onboarding_complete = true`, then redirects to `/welcome/buyer?celebrate=1`.
+  - `/onboarding/explorer`: Explorer setup (requires `display_name`). Sets `onboarding_complete = true`, then redirects to `/discover`.
+  - **Setup Guard**: Once `onboarding_complete = true`, any visit to `/onboarding/*` redirects immediately to the user's dashboard.
+- **Next-Step routes (`/welcome/*`)**:
+  - `/welcome/founder`: "Plant your first seed" step with draft pitch creation or skip.
+  - `/welcome/investor`: Next-step choice: "Browse pitches" (`/discover`) or "Go to my dashboard" (`/investor/portal`).
+  - `/welcome/buyer`: Next-step choice: "Browse the marketplace" (`/marketplace`) or "Go to my dashboard" (`/buyer/dashboard`).
+  - **Role Guard**: Visiting `/welcome/*` requires authentication and the corresponding role (e.g., only founders can view `/welcome/founder`).
+  - **Celebration Flag**: Query parameter `?celebrate=1` activates the pure CSS confetti celebration modal, which strips the param from the URL upon render.
+
+---
+
+## 2. Landing Page Navigation
 - [ ] **Step**: Open `http://localhost:3000`.
 - [ ] **Action**: Check desktop and mobile navigation headers and hero section.
 - [ ] **Expected**:
@@ -23,7 +42,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 2. AuthShell & Responsive Split-Screen
+## 3. AuthShell & Responsive Split-Screen
 - [ ] **Desktop View (>= 1024px)**:
   - [ ] Open `/login`, `/signup`, `/forgot-password`, or `/reset-password`.
   - [ ] **Left Panel**:
@@ -42,7 +61,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 3. Form Helpers & Accessibility
+## 4. Form Helpers & Accessibility
 - [ ] **Auto-focus**:
   - [ ] On `/login`: email input is auto-focused immediately upon mount.
   - [ ] On `/signup`: email input is auto-focused.
@@ -62,7 +81,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 4. New User Registration (`/signup`)
+## 5. New User Registration (`/signup`)
 - [ ] **Validation Checks**:
   - [ ] Submit with empty fields -> Inline errors: "Email is required.", "Password is required.", "Please confirm your password."
   - [ ] Enter invalid email (e.g. `test@invalid`) -> Inline error: "Please enter a valid email address."
@@ -79,7 +98,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 5. Account Sign In (`/login`)
+## 6. Account Sign In (`/login`)
 - [ ] **Wrong Password**:
   - [ ] Enter valid email with an incorrect password.
   - [ ] **Expected**: Red error box displays "Email or password is incorrect."
@@ -94,7 +113,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 6. Protected Page & Open Redirect Protection
+## 7. Protected Page & Open Redirect Protection
 - [ ] **Step**: In an incognito window (logged out), navigate to `http://localhost:3000/founder/dashboard`.
 - [ ] **Expected**: Middleware intercepts and redirects to `/login?next=%2Ffounder%2Fdashboard`.
 - [ ] **Action**: Complete login.
@@ -106,7 +125,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 7. Already-Authenticated Redirection
+## 8. Already-Authenticated Redirection
 - [ ] **Step**: While logged in, open:
   - `http://localhost:3000/login`
   - `http://localhost:3000/signup`
@@ -115,7 +134,7 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 8. Password Reset Flow (`/forgot-password` & `/reset-password`)
+## 9. Password Reset Flow (`/forgot-password` & `/reset-password`)
 - [ ] **Step 1**: Go to `/forgot-password`.
 - [ ] **Action**: Enter email address and submit.
 - [ ] **Expected**: Form transitions to "Reset link sent" state with email address confirmation.
@@ -129,111 +148,108 @@ This document outlines the step-by-step manual test checklist covering every bra
 
 ---
 
-## 9. Role Selection (`/onboarding/role`)
+## 10. Role Selection (`/onboarding/role`)
 - [ ] **Step**: First-time user logs in. User is directed to `/onboarding/role`.
 - [ ] **Display Check**:
   - [ ] Plain role cards displayed: Founder, Investor, Buyer, Explorer.
   - [ ] Fifth card "Mentor" displayed as "Coming soon" and is disabled (cannot be selected).
-  - [ ] Note displayed: *"Your choice sets up your account. You can contact support to change it later."*
+  - [ ] Note displayed: *"Select the role that fits you best. Your choice sets up your workspace and can be refined later in settings."*
 - [ ] **Prevention of Re-selection**:
   - [ ] If an authenticated user who has already chosen a role attempts to revisit `/onboarding/role`, they are redirected away to their current onboarding step or dashboard.
 
 ---
 
-## 10. Stepper & Pathway A: Founder Onboarding
+## 11. Stepper & Pathway A: Founder
 - [ ] **Stepper**:
-  - [ ] Displays thin progress line with glowing red dots: `You > Your idea > Launch`.
-- [ ] **Step 1 (Basic Info)**:
-  - [ ] URL: `/onboarding/founder` (active step 1).
-  - [ ] Fill in: Display Name (required), Headline, Company, Country, City, Short Bio.
-  - [ ] Optional: Upload avatar image (JPG/PNG/WebP, max 2MB). Verify preview and upload success to Supabase `avatars` bucket.
-  - [ ] Click "Save & Continue".
-  - [ ] **Expected**: Profile updated in Supabase with `onboarding_complete: true`. Progresses to Step 2.
-- [ ] **Step 2 (Plant your first seed)**:
+  - [ ] Displays progress dots: `You > Your idea`.
+- [ ] **Step 1 (Basic Info - `/onboarding/founder`)**:
+  - [ ] Inputs: Display Name (required), Headline, Company, Country (required), City, Short Bio.
+  - [ ] Optional: Upload avatar image (JPG/PNG/WebP, max 2MB).
+  - [ ] Click "Continue".
+  - [ ] **Expected**: Profile updated with `onboarding_complete: true`. Redirects to `/welcome/founder?celebrate=1`.
+- [ ] **Next-Step Screen (`/welcome/founder`)**:
+  - [ ] Celebration popup shown if `?celebrate=1`, stripped from URL on mount.
   - [ ] Heading: "Plant your first seed."
   - [ ] Optional inputs: "Name your idea" (max 150) and "Describe it in one line" (max 200).
   - [ ] Click "Plant it":
     - [ ] Creates draft pitch in `pitches` (status `draft`, title = entered or "Untitled idea", tagline, founder_id).
     - [ ] Prevents double clicks while submitting.
-    - [ ] Redirects to `/founder/dashboard?welcome=1` (since `/founder/pitches/[id]` is built in a later slice).
+    - [ ] Redirects to `/founder/dashboard`.
   - [ ] Secondary link "Skip for now":
-    - [ ] Bypasses draft creation and routes to `/founder/dashboard?welcome=1`.
+    - [ ] Bypasses draft creation and routes to `/founder/dashboard`.
 - [ ] **Return Protection**:
   - [ ] Revisit `/onboarding/founder` or `/onboarding/role`.
   - [ ] **Expected**: Redirected immediately to `/founder/dashboard`.
 
 ---
 
-## 11. Pathway B: Investor Onboarding
+## 12. Stepper & Pathway B: Investor
 - [ ] **Stepper**:
-  - [ ] Displays thin progress line with glowing red dots: `You > Your focus > Discover`.
-- [ ] **Step 1 (Basic Info)**:
-  - [ ] URL: `/onboarding/investor` (active step 1).
-  - [ ] Fill in: Display Name (required), Firm (saved in `company`), Headline, Country, City, "What do you invest in?" (saved in `bio`), optional avatar.
-  - [ ] Click "Save & Continue".
-  - [ ] **Expected**: Profile updated with `onboarding_complete: true`. Progresses to Step 2.
-- [ ] **Step 2 (Welcome Screen)**:
-  - [ ] Shows "Ready to discover" screen with:
-    - "Browse pitches" -> links to `/discover`.
-    - "Go to my dashboard" -> links to `/investor/portal?welcome=1`.
+  - [ ] Displays progress dots: `You > Discover`.
+- [ ] **Step 1 (Basic Info - `/onboarding/investor`)**:
+  - [ ] Inputs: Display Name (required), Firm (company), Headline, Country (required), City, Bio, optional avatar.
+  - [ ] Click "Continue".
+  - [ ] **Expected**: Profile updated with `onboarding_complete: true`. Redirects to `/welcome/investor?celebrate=1`.
+- [ ] **Next-Step Screen (`/welcome/investor`)**:
+  - [ ] Celebration popup shown if `?celebrate=1`.
+  - [ ] "Browse pitches" -> links to `/discover`.
+  - [ ] "Go to my dashboard" -> links to `/investor/portal`.
 - [ ] **Return Protection**:
   - [ ] Revisit `/onboarding/investor`.
   - [ ] **Expected**: Redirected immediately to `/investor/portal`.
 
 ---
 
-## 12. Pathway C: Buyer Onboarding
+## 13. Stepper & Pathway C: Buyer
 - [ ] **Stepper**:
-  - [ ] Displays thin progress line with glowing red dots: `You > Delivery > Shop`.
-- [ ] **Step 1 (Basic Info)**:
-  - [ ] URL: `/onboarding/buyer` (active step 1).
-  - [ ] Fill in: Display Name (required), Country, City, optional avatar.
-  - [ ] Click "Save & Continue".
-  - [ ] **Expected**: Profile updated with `onboarding_complete: true`. Progresses to Step 2.
-- [ ] **Step 2 (Delivery Address)**:
+  - [ ] Displays progress dots: `You > Delivery > Shop`.
+- [ ] **Step 1 (Basic Info - `/onboarding/buyer`)**:
+  - [ ] Inputs: Display Name (required), Country (required), City, optional avatar.
+  - [ ] Click "Continue to Delivery Address".
+  - [ ] **Expected**: Profile saved. Redirects to `/onboarding/buyer/address`.
+- [ ] **Step 2 (Delivery Address - `/onboarding/buyer/address`)**:
   - [ ] Optional shipping address form.
-  - [ ] Click "Add later" -> Bypasses address insert and proceeds directly to Step 3.
-  - [ ] Alternatively, fill address and click "Save Address" -> Row inserted into `buyer_addresses` with `is_default: true`.
-- [ ] **Step 3 (Welcome Screen)**:
-  - [ ] Shows welcome screen with:
-    - "Browse the marketplace" -> links to `/marketplace`.
-    - "Go to my dashboard" -> links to `/buyer/dashboard?welcome=1`.
+  - [ ] Click "Add later" -> Sets `onboarding_complete = true` and redirects to `/welcome/buyer?celebrate=1`.
+  - [ ] Fill address and click "Save & Continue" -> Row inserted into `buyer_addresses`, sets `onboarding_complete = true`, and redirects to `/welcome/buyer?celebrate=1`.
+- [ ] **Next-Step Screen (`/welcome/buyer`)**:
+  - [ ] Celebration popup shown if `?celebrate=1`.
+  - [ ] "Browse the marketplace" -> links to `/marketplace`.
+  - [ ] "Go to my dashboard" -> links to `/buyer/dashboard`.
 
 ---
 
-## 13. Pathway D: Explorer Onboarding
+## 14. Pathway D: Explorer
 - [ ] **Step**: User selects "Explorer" on `/onboarding/role`.
-- [ ] **Action**: User is routed to `/onboarding/visitor` (no stepper shown).
-- [ ] **Input**: Pre-filled or entered Display Name / Nickname.
+- [ ] **Action**: User is routed to `/onboarding/explorer` (single step, no stepper).
+- [ ] **Input**: Display Name (required).
 - [ ] **Submit**: Click "Start Exploring".
-- [ ] **Expected**: Role confirmed as `visitor`, `onboarding_complete` set to `true`, redirects to `/discover?welcome=1`.
+- [ ] **Expected**: Role confirmed as `visitor`, `onboarding_complete` set to `true`, redirects to `/discover`.
 - [ ] **Return Protection**:
-  - [ ] Revisit `/onboarding/visitor` or `/onboarding/role`.
+  - [ ] Revisit `/onboarding/explorer` or `/onboarding/role`.
   - [ ] **Expected**: Redirected immediately to `/discover`.
 
 ---
 
-## 14. Celebration Screen ("You're in")
+## 15. Celebration Screen ("You're in")
 - [ ] **Trigger**:
-  - [ ] Finish setup or follow a redirect containing `?welcome=1`.
-  - [ ] Modal appears: "You're in." with personalized message.
+  - [ ] Rendered on `/welcome/*` when `?celebrate=1` is present.
+  - [ ] Modal appears: "You're in." with personalized first-name message.
   - [ ] Pure-CSS confetti burst (24 brand-color pieces, ~1.5s animation duration).
   - [ ] If `prefers-reduced-motion` is enabled, confetti burst is completely disabled.
-  - [ ] Parameter `?welcome=1` is stripped from browser URL immediately via `window.history.replaceState`.
-  - [ ] Clicking "Enter Dashboard" closes the celebration dialog.
-  - [ ] Re-visiting the dashboard does not show the celebration dialog again.
+  - [ ] Parameter `?celebrate=1` is stripped from browser URL immediately via `window.history.replaceState`.
+  - [ ] Re-visiting the page does not show the celebration dialog again.
 
 ---
 
-## 15. Quitting Midway & Resuming
-- [ ] User selects "Founder" on `/onboarding/role`. Role is updated to `founder` in `profiles`.
-- [ ] Before completing Step 1, user closes browser or navigates to `/`.
+## 16. Quitting Midway & Resuming
+- [ ] User selects "Buyer" on `/onboarding/role`. Role is updated to `buyer` in `profiles`.
+- [ ] Completes Step 1 (`/onboarding/buyer`), then closes tab at `/onboarding/buyer/address`.
 - [ ] User logs back in or opens `/dashboard`.
-- [ ] **Expected**: Central routing detects `role: 'founder'` and `onboarding_complete: false`, automatically resuming at `/onboarding/founder`.
+- [ ] **Expected**: Central routing detects `role: 'buyer'`, `display_name` + `country` present, and `onboarding_complete: false`, automatically resuming at Step 2 (`/onboarding/buyer/address`).
 
 ---
 
-## 16. Logout & Session Invalidation
+## 17. Logout & Session Invalidation
 - [ ] Open user avatar menu in Navbar and click "Logout".
 - [ ] **Expected**:
   - Supabase session is signed out.

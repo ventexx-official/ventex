@@ -5,6 +5,8 @@
 export interface ProfileRoutingData {
   role?: string | null;
   onboarding_complete?: boolean | null;
+  display_name?: string | null;
+  country?: string | null;
 }
 
 /**
@@ -39,11 +41,10 @@ export function sanitizeNextUrl(next: string | null | undefined): string | null 
  * 1. If no profile, or role === 'visitor' with onboarding_complete = false:
  *    -> '/onboarding/role'
  * 2. If role is set (founder, investor, buyer) but onboarding_complete = false:
- *    -> that role's first setup step:
- *       - founder -> '/onboarding/founder'
- *       - investor -> '/onboarding/investor'
- *       - buyer -> '/onboarding/buyer'
- *       - visitor -> '/onboarding/visitor' (or '/onboarding/role' if role picker not done)
+ *    - Resume that role's setup.
+ *    - "Basic info saved" = display_name and country both filled.
+ *    - Not saved: step 1 (/onboarding/founder, /onboarding/investor, /onboarding/buyer).
+ *    - Saved (buyer only): step 2 (/onboarding/buyer/address).
  * 3. If onboarding_complete = true:
  *    -> their dashboard:
  *       - admin -> '/admin'
@@ -57,7 +58,7 @@ export function getSignedInDestination(profile: ProfileRoutingData | null | unde
     return '/onboarding/role';
   }
 
-  const { role, onboarding_complete } = profile;
+  const { role, onboarding_complete, display_name, country } = profile;
 
   // Returning users with onboarding complete go directly to their dashboard
   if (onboarding_complete) {
@@ -81,13 +82,15 @@ export function getSignedInDestination(profile: ProfileRoutingData | null | unde
     return '/onboarding/role';
   }
 
+  const basicInfoSaved = Boolean(display_name && display_name.trim() && country && country.trim());
+
   switch (role) {
     case 'founder':
       return '/onboarding/founder';
     case 'investor':
       return '/onboarding/investor';
     case 'buyer':
-      return '/onboarding/buyer';
+      return basicInfoSaved ? '/onboarding/buyer/address' : '/onboarding/buyer';
     default:
       return '/onboarding/role';
   }
@@ -106,15 +109,8 @@ export function getDashboardRoute(role: string | null | undefined): string {
       return '/investor/portal';
     case 'buyer':
       return '/buyer/dashboard';
+    case 'visitor':
     default:
       return '/discover';
   }
-}
-
-export function getOnboardingRoute(role: string | null | undefined): string {
-  if (!role || role === 'visitor') return '/onboarding/role';
-  if (role === 'founder') return '/onboarding/founder';
-  if (role === 'investor') return '/onboarding/investor';
-  if (role === 'buyer') return '/onboarding/buyer';
-  return '/onboarding/role';
 }

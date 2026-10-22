@@ -67,7 +67,7 @@ export default function RoleSelectionPage() {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('role, onboarding_complete')
+        .select('role, onboarding_complete, display_name, country')
         .eq('id', session.user.id)
         .single();
 
@@ -131,7 +131,7 @@ export default function RoleSelectionPage() {
           router.replace('/onboarding/buyer');
           break;
         case 'visitor':
-          router.replace('/onboarding/visitor');
+          router.replace('/onboarding/explorer');
           break;
       }
     } catch (err: any) {
@@ -159,60 +159,67 @@ export default function RoleSelectionPage() {
           </span>
           <span>{brandName}</span>
         </Link>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
-          ONBOARDING / STEP 1 OF 2
+        <span className="text-[10px] font-mono tracking-widest text-[var(--smoke)] uppercase">
+          [ STEP 1 OF SETUP ]
         </span>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="flex-1 max-w-4xl mx-auto w-full page-padding py-12 flex flex-col justify-center">
-        <div className="mb-10 text-center max-w-xl mx-auto">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-2">
-            {'//'} CHOOSE YOUR PATHWAY
+      {/* MAIN CONTENT */}
+      <main className="page-padding py-12 md:py-16 flex-1 flex flex-col justify-center max-w-5xl mx-auto w-full">
+        <div className="mb-8 md:mb-10 text-center max-w-xl mx-auto">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)] block mb-3">
+            {'//'} ACCOUNT PERSONALIZATION
           </span>
-          <h1 className="font-display text-3xl md:text-4xl font-medium tracking-tight text-[var(--paper)] uppercase">
-            How will you participate?
+          <h1 className="font-display text-3xl md:text-5xl font-medium tracking-tight text-[var(--paper)] uppercase mb-3">
+            Choose your path
           </h1>
-          <p className="text-xs font-mono text-[var(--paper-dim)] mt-3 leading-relaxed">
-            Select the primary focus for your account. This customizes your journey and what you see.
+          <p className="text-sm font-mono text-[var(--paper-dim)]">
+            Select the role that fits you best. Your choice sets up your workspace and can be refined later in settings.
           </p>
         </div>
 
         {error && (
-          <div className="max-w-xl mx-auto w-full bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-6">
-            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
+          <div className="max-w-xl mx-auto mb-6 p-4 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 text-xs font-mono text-[var(--paper)] flex items-center gap-3">
+            <AlertCircle className="w-4 h-4 text-[var(--red)] shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* 5 CARDS GRID: 4 Selectable, 1 Disabled Coming Soon */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {/* 4 PLAIN CARDS + MENTOR COMING SOON */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto w-full">
           {ROLES.map((role) => {
             const Icon = role.icon;
             const isSelected = selectedRole === role.id;
+
             return (
               <button
                 key={role.id}
                 type="button"
                 onClick={() => setSelectedRole(role.id)}
-                className={`text-left p-6 rounded-3xl border transition-all cursor-pointer relative flex flex-col justify-between min-h-[190px] ${
+                className={`p-6 rounded-2xl border text-left transition-all duration-200 cursor-pointer relative flex flex-col justify-between min-h-[160px] ${
                   isSelected
-                    ? 'bg-[var(--card)] border-[var(--red)] ring-2 ring-[var(--red)]/40 shadow-xl'
-                    : 'bg-[var(--card)]/60 border-[var(--line)] hover:border-[var(--smoke)] hover:bg-[var(--card)]'
+                    ? 'bg-[var(--card)] border-[var(--red)] shadow-[0_0_20px_rgba(214,69,59,0.25)] ring-1 ring-[var(--red)]'
+                    : 'bg-[var(--card)]/60 border-[var(--line)] hover:border-[var(--line-strong)] hover:bg-[var(--card)]'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[9px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[var(--ink)] border border-[var(--line)] text-[var(--paper-dim)]">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--red)]">
                       {role.tag}
                     </span>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                      isSelected ? 'bg-[var(--red)] text-[var(--paper)]' : 'bg-[var(--ink)] text-[var(--smoke)]'
-                    }`}>
-                      {isSelected ? <Check className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
+                    <div
+                      className={`w-6 h-6 rounded-full border flex items-center justify-center transition-colors ${
+                        isSelected
+                          ? 'border-[var(--red)] bg-[var(--red)] text-white'
+                          : 'border-[var(--line)] bg-[var(--ink)]'
+                      }`}
+                    >
+                      {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                     </div>
                   </div>
-                  <h3 className="font-display text-xl font-medium uppercase tracking-tight text-[var(--paper)] mb-1">
+
+                  <h3 className="font-display text-xl font-medium text-[var(--paper)] uppercase mb-1 flex items-center gap-2">
+                    <Icon className="w-5 h-5 text-[var(--paper-dim)]" />
                     {role.title}
                   </h3>
                   <p className="text-xs font-mono text-[var(--paper-dim)] leading-relaxed">
@@ -223,58 +230,63 @@ export default function RoleSelectionPage() {
             );
           })}
 
-          {/* Fifth Card: Mentor, Coming Soon */}
+          {/* 5TH CARD: MENTOR - DISABLED */}
           <div
-            className="text-left p-6 rounded-3xl border border-[var(--line)]/50 bg-[var(--card)]/20 opacity-60 cursor-not-allowed flex flex-col justify-between min-h-[190px] select-none"
+            className="p-6 rounded-2xl border border-[var(--line)]/40 bg-[var(--card)]/20 text-left relative flex flex-col justify-between min-h-[160px] opacity-40 cursor-not-allowed md:col-span-2"
             aria-disabled="true"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[9px] font-mono uppercase tracking-widest px-2.5 py-1 rounded-full bg-[var(--ink)]/50 border border-[var(--line)]/50 text-[var(--smoke)]">
-                  COMING SOON
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
+                  ADVISORY & GUIDANCE
                 </span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[var(--ink)]/50 text-[var(--smoke)]">
-                  <GraduationCap className="w-4 h-4" />
-                </div>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded border border-[var(--line)] text-[var(--smoke)] uppercase">
+                  Coming Soon
+                </span>
               </div>
-              <h3 className="font-display text-xl font-medium uppercase tracking-tight text-[var(--smoke)] mb-1">
+              <h3 className="font-display text-xl font-medium text-[var(--smoke)] uppercase mb-1 flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-[var(--smoke)]" />
                 Mentor
               </h3>
               <p className="text-xs font-mono text-[var(--smoke)] leading-relaxed">
-                Advisory, feedback and portfolio guidance. Launching soon.
+                Offer strategic advice, office hours, and review early pitches.
               </p>
             </div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
-              Not currently selectable
-            </span>
           </div>
         </div>
 
-        {/* Note requirement 7 */}
-        <p className="text-center text-[11px] font-mono text-[var(--smoke)] max-w-md mx-auto mb-8">
-          Your choice sets up your account. You can contact support to change it later.
-        </p>
-
-        {/* ACTION BAR (sticky bottom on small screens) */}
-        <div className="sticky bottom-0 bg-[var(--ink)]/95 backdrop-blur-md py-4 border-t border-[var(--line)] md:border-none md:static md:bg-transparent flex justify-center">
+        {/* BOTTOM ACTION */}
+        <div className="mt-8 text-center max-w-sm mx-auto w-full">
           <button
-            onClick={handleContinue}
+            type="button"
             disabled={!selectedRole || loading}
-            className="w-full sm:w-auto min-w-[240px] bg-[var(--red)] text-[var(--paper)] py-3.5 px-8 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
+            onClick={handleContinue}
+            className={`w-full py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+              selectedRole && !loading
+                ? 'bg-[var(--red)] text-[var(--paper)] hover:bg-[#ed594d] cursor-pointer shadow-lg'
+                : 'bg-[var(--line)] text-[var(--smoke)] cursor-not-allowed opacity-50'
+            }`}
           >
-            {loading ? 'Setting up...' : 'Continue to setup'}
-            {!loading && <ArrowUpRight className="w-4 h-4" />}
+            {loading ? (
+              <>
+                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Saving selection...</span>
+              </>
+            ) : (
+              <>
+                <span>Continue</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </>
+            )}
           </button>
         </div>
       </main>
 
       {/* FOOTER */}
-      <footer className="page-padding py-6 flex items-center justify-between text-xs font-mono text-[var(--smoke)] border-t border-[var(--line)]">
-        <span>© 2026 {brandName}</span>
-        <div className="flex gap-4">
-          <Link href="/privacy" className="hover:text-[var(--paper)]">Privacy</Link>
-          <Link href="/terms" className="hover:text-[var(--paper)]">Terms</Link>
-        </div>
+      <footer className="page-padding py-6 border-t border-[var(--line)] text-center">
+        <p className="text-[11px] font-mono text-[var(--smoke)]">
+          Need assistance choosing? Contact support at hello@ventexx.com
+        </p>
       </footer>
     </div>
   );

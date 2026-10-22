@@ -29,13 +29,14 @@ export function WelcomeCelebration({
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    // Check if ?welcome=1 is present
-    const isWelcome = searchParams.get("welcome") === "1";
-    if (isWelcome) {
+    // Check if ?celebrate=1 is present (supports fallback to ?welcome=1 for backwards safety)
+    const isCelebrate = searchParams.get("celebrate") === "1" || searchParams.get("welcome") === "1";
+    if (isCelebrate) {
       setShow(true);
 
-      // Clean up URL so ?welcome=1 is removed from browser history and does not trigger again
+      // Clean up URL so ?celebrate=1 / ?welcome=1 is removed from browser history and does not trigger again
       const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.delete("celebrate");
       currentUrl.searchParams.delete("welcome");
       window.history.replaceState({}, "", currentUrl.toString());
     }
@@ -63,7 +64,7 @@ export function WelcomeCelebration({
 
   const message = roleMessages[role] || "Welcome to the ecosystem.";
 
-  // Generate 24 deterministic confetti pieces
+  // Generate exactly 24 deterministic confetti pieces
   const confettiPieces = Array.from({ length: 24 }).map((_, i) => {
     const angle = (i / 24) * 360;
     const distance = 80 + (i % 5) * 25;
@@ -84,7 +85,7 @@ export function WelcomeCelebration({
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300"
     >
       <div className="relative w-full max-w-[460px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl text-center overflow-hidden">
-        {/* CSS Confetti burst (disabled if prefers-reduced-motion) */}
+        {/* CSS Confetti burst (24 pieces, 1.5s, disabled if prefers-reduced-motion) */}
         {!reducedMotion && (
           <div className="absolute inset-0 pointer-events-none flex items-center justify-center" aria-hidden="true">
             {confettiPieces.map((p) => (
@@ -125,10 +126,15 @@ export function WelcomeCelebration({
 
           <button
             type="button"
-            onClick={() => setShow(false)}
+            onClick={() => {
+              setShow(false);
+              if (destination) {
+                router.push(destination);
+              }
+            }}
             className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
           >
-            Enter Dashboard <ArrowUpRight className="w-4 h-4" />
+            Continue <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
       </div>
