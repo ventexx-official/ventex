@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import {
@@ -8,6 +8,7 @@ import {
   TrendingUp, AlertCircle, Loader2
 } from "lucide-react";
 import InvestorGuard from "@/components/InvestorGuard";
+import { WelcomeCelebration } from "@/components/WelcomeCelebration";
 
 interface Stats {
   discovered: number;
@@ -86,6 +87,9 @@ export default function InvestorDashboard() {
 
   return (
     <InvestorGuard>
+      <Suspense fallback={null}>
+        <WelcomeCelebration role="investor" destination="/investor/portal" />
+      </Suspense>
       <div className="min-h-screen bg-[var(--bg)] flex flex-col md:flex-row">
         {/* Sidebar */}
         <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">

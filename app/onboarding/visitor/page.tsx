@@ -82,7 +82,7 @@ export default function VisitorOnboarding() {
       if (profileErr) throw profileErr;
 
       router.refresh();
-      router.replace('/discover');
+      router.replace('/discover?welcome=1');
     } catch (err: any) {
       console.error('Visitor onboarding error:', err);
       setError(err.message || 'Something went wrong. Please try again.');
@@ -101,13 +101,13 @@ export default function VisitorOnboarding() {
   return (
     <div className="inner-page min-h-screen flex flex-col justify-between">
       {/* HEADER */}
-      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+      <header className="page-padding py-6 flex items-center justify-between border-b border-[var(--line)]">
         <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
           <span className="brand-mark"><span>{brandName.charAt(0)}</span></span>
           <span>{brandName}</span>
         </Link>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
-          ONBOARDING / STEP 1 OF 1
+        <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-[var(--card)] border border-[var(--line)] text-[var(--paper)]">
+          EXPLORER SETUP
         </span>
       </header>
 
@@ -131,7 +131,11 @@ export default function VisitorOnboarding() {
           </p>
 
           {error && (
-            <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5 text-left">
+            <div
+              role="alert"
+              aria-live="polite"
+              className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5 text-left"
+            >
               <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
               <span>{error}</span>
             </div>
@@ -145,9 +149,10 @@ export default function VisitorOnboarding() {
               <input
                 id="vis-name"
                 type="text"
+                autoFocus
                 placeholder="How should we address you?"
                 disabled={submitting}
-                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                 value={displayName}
                 onChange={(e) => {
                   setDisplayName(e.target.value);
@@ -167,7 +172,7 @@ export default function VisitorOnboarding() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
+                className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
               >
                 {submitting ? 'Setting up...' : 'Start Exploring'}
                 {!submitting && <ArrowUpRight className="w-4 h-4" />}

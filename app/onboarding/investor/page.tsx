@@ -7,7 +7,14 @@ import Link from 'next/link';
 import { SITE_NAME } from '@/lib/brand';
 import { getSignedInDestination } from '@/lib/role-routing';
 import { AvatarUpload } from '@/components/AvatarUpload';
+import { Stepper } from '@/components/Stepper';
 import { AlertCircle, ArrowUpRight, ArrowLeft, LineChart, Compass } from 'lucide-react';
+
+const INVESTOR_STEPS = [
+  { id: 1, label: "You" },
+  { id: 2, label: "Your focus" },
+  { id: 3, label: "Discover" },
+];
 
 export default function InvestorOnboarding() {
   const brandName = SITE_NAME.toUpperCase();
@@ -132,23 +139,23 @@ export default function InvestorOnboarding() {
   return (
     <div className="inner-page min-h-screen flex flex-col justify-between">
       {/* HEADER */}
-      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+      <header className="page-padding py-6 flex items-center justify-between border-b border-[var(--line)]">
         <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
           <span className="brand-mark"><span>{brandName.charAt(0)}</span></span>
           <span>{brandName}</span>
         </Link>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
-            STEP {step} OF 2
-          </span>
-          <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[var(--card)] border border-[var(--line)] text-[var(--paper)]">
-            INVESTOR
-          </span>
-        </div>
+        <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-[var(--card)] border border-[var(--line)] text-[var(--paper)]">
+          INVESTOR PATHWAY
+        </span>
       </header>
 
+      {/* STEPPER BAR */}
+      <div className="pt-6 pb-2 px-6">
+        <Stepper currentStep={step} steps={INVESTOR_STEPS} />
+      </div>
+
       {/* MAIN CONTAINER */}
-      <main className="flex-1 flex items-center justify-center p-6 my-10">
+      <main className="flex-1 flex items-center justify-center p-6 my-6">
         {step === 1 ? (
           /* STEP 1: Basic Info */
           <div className="w-full max-w-[540px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
@@ -170,7 +177,11 @@ export default function InvestorOnboarding() {
             </div>
 
             {error && (
-              <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5">
+              <div
+                role="alert"
+                aria-live="polite"
+                className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5"
+              >
                 <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
@@ -194,11 +205,12 @@ export default function InvestorOnboarding() {
                 <input
                   id="inv-name"
                   type="text"
+                  autoFocus
                   autoComplete="name"
                   placeholder="Elena Rostova"
                   required
                   disabled={submitting}
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={form.displayName}
                   onChange={set('displayName')}
                 />
@@ -215,7 +227,7 @@ export default function InvestorOnboarding() {
                   maxLength={150}
                   placeholder="Apex Capital / Angel Investor"
                   disabled={submitting}
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={form.company}
                   onChange={set('company')}
                 />
@@ -232,7 +244,7 @@ export default function InvestorOnboarding() {
                   maxLength={200}
                   placeholder="Pre-seed & Seed · B2B SaaS, FinTech & AI"
                   disabled={submitting}
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={form.headline}
                   onChange={set('headline')}
                 />
@@ -249,7 +261,7 @@ export default function InvestorOnboarding() {
                     type="text"
                     placeholder="United Kingdom"
                     disabled={submitting}
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={form.country}
                     onChange={set('country')}
                   />
@@ -263,7 +275,7 @@ export default function InvestorOnboarding() {
                     type="text"
                     placeholder="London"
                     disabled={submitting}
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={form.city}
                     onChange={set('city')}
                   />
@@ -281,7 +293,7 @@ export default function InvestorOnboarding() {
                   maxLength={2000}
                   placeholder="Typical check size, sectors of interest, stages, geography, and what founders can expect when working with you..."
                   disabled={submitting}
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors resize-none text-[16px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors resize-none text-[16px]"
                   value={form.bio}
                   onChange={set('bio')}
                 />
@@ -298,7 +310,7 @@ export default function InvestorOnboarding() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
+                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
                 >
                   {submitting ? 'Saving...' : 'Save & Continue'}
                   {!submitting && <ArrowUpRight className="w-4 h-4" />}
@@ -328,14 +340,14 @@ export default function InvestorOnboarding() {
             <div className="space-y-3">
               <Link
                 href="/discover"
-                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
+                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
               >
                 Browse pitches <ArrowUpRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/investor/portal"
-                className="w-full bg-transparent border border-[var(--line)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--smoke)] hover:bg-[var(--ink)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
+                href="/investor/portal?welcome=1"
+                className="w-full bg-transparent border border-[var(--line)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--smoke)] hover:bg-[var(--ink)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
               >
                 Go to my dashboard &rarr;
               </Link>

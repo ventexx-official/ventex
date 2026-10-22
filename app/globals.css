@@ -553,3 +553,30 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .principle-grid h3 { margin-top: 25px; }
   .inner-footer { align-items: flex-start; flex-direction: column; padding-top: 28px; padding-bottom: 28px; }
 }
+
+
+/* Confetti Burst Animation */
+@keyframes confetti-burst {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--target-x, 0px), var(--target-y, 0px)) scale(0.4) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti-burst {
+  animation: confetti-burst 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-confetti-burst {
+    animation: none !important;
+    display: none !important;
+  }
+}

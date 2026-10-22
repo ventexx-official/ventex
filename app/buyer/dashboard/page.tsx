@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { ShoppingBag, Package, Star, TrendingUp, AlertCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { WelcomeCelebration } from '@/components/WelcomeCelebration';
 
 export default function BuyerDashboard() {
   const router = useRouter();
@@ -47,6 +48,9 @@ export default function BuyerDashboard() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)] py-12 px-4">
+      <Suspense fallback={null}>
+        <WelcomeCelebration role="buyer" destination="/buyer/dashboard" />
+      </Suspense>
       <div className="max-w-5xl mx-auto space-y-8">
         {/* Header */}
         <div>

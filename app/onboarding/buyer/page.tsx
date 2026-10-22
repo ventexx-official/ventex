@@ -7,7 +7,14 @@ import Link from 'next/link';
 import { SITE_NAME } from '@/lib/brand';
 import { getSignedInDestination } from '@/lib/role-routing';
 import { AvatarUpload } from '@/components/AvatarUpload';
+import { Stepper } from '@/components/Stepper';
 import { AlertCircle, ArrowUpRight, ArrowLeft, ShoppingBag, MapPin, Store } from 'lucide-react';
+
+const BUYER_STEPS = [
+  { id: 1, label: "You" },
+  { id: 2, label: "Delivery" },
+  { id: 3, label: "Shop" },
+];
 
 export default function BuyerOnboarding() {
   const brandName = SITE_NAME.toUpperCase();
@@ -127,7 +134,6 @@ export default function BuyerOnboarding() {
     if (!userId) return;
     setError(null);
 
-    // If all required fields of address provided
     if (address.fullName.trim() && address.line1.trim() && address.city.trim() && address.country.trim()) {
       setSubmitting(true);
       try {
@@ -182,23 +188,23 @@ export default function BuyerOnboarding() {
   return (
     <div className="inner-page min-h-screen flex flex-col justify-between">
       {/* HEADER */}
-      <header className="page-padding py-8 flex items-center justify-between border-b border-[var(--line)]">
+      <header className="page-padding py-6 flex items-center justify-between border-b border-[var(--line)]">
         <Link href="/" className="brand-lockup" aria-label={`${brandName} home`}>
           <span className="brand-mark"><span>{brandName.charAt(0)}</span></span>
           <span>{brandName}</span>
         </Link>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--smoke)]">
-            STEP {step} OF 3
-          </span>
-          <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[var(--card)] border border-[var(--line)] text-[var(--paper)]">
-            BUYER
-          </span>
-        </div>
+        <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-[var(--card)] border border-[var(--line)] text-[var(--paper)]">
+          BUYER PATHWAY
+        </span>
       </header>
 
+      {/* STEPPER BAR */}
+      <div className="pt-6 pb-2 px-6">
+        <Stepper currentStep={step} steps={BUYER_STEPS} />
+      </div>
+
       {/* MAIN CONTAINER */}
-      <main className="flex-1 flex items-center justify-center p-6 my-10">
+      <main className="flex-1 flex items-center justify-center p-6 my-6">
         {step === 1 && (
           /* STEP 1: Basic Info */
           <div className="w-full max-w-[540px] bg-[var(--card)] border border-[var(--line)] rounded-3xl p-8 md:p-10 shadow-2xl">
@@ -220,7 +226,11 @@ export default function BuyerOnboarding() {
             </div>
 
             {error && (
-              <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5">
+              <div
+                role="alert"
+                aria-live="polite"
+                className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5"
+              >
                 <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
@@ -243,11 +253,12 @@ export default function BuyerOnboarding() {
                 <input
                   id="by-name"
                   type="text"
+                  autoFocus
                   autoComplete="name"
                   placeholder="Jordan Vance"
                   required
                   disabled={submitting}
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={form.displayName}
                   onChange={setFormKey('displayName')}
                 />
@@ -263,7 +274,7 @@ export default function BuyerOnboarding() {
                     type="text"
                     placeholder="Canada"
                     disabled={submitting}
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={form.country}
                     onChange={setFormKey('country')}
                   />
@@ -277,7 +288,7 @@ export default function BuyerOnboarding() {
                     type="text"
                     placeholder="Toronto"
                     disabled={submitting}
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={form.city}
                     onChange={setFormKey('city')}
                   />
@@ -295,7 +306,7 @@ export default function BuyerOnboarding() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
+                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
                 >
                   {submitting ? 'Saving...' : 'Save & Continue'}
                   {!submitting && <ArrowUpRight className="w-4 h-4" />}
@@ -326,7 +337,11 @@ export default function BuyerOnboarding() {
             </div>
 
             {error && (
-              <div className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5">
+              <div
+                role="alert"
+                aria-live="polite"
+                className="bg-red-950/40 border border-red-500/50 text-red-300 p-3.5 rounded-xl text-xs font-mono flex items-start gap-2.5 mb-5"
+              >
                 <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-400" />
                 <span>{error}</span>
               </div>
@@ -340,8 +355,9 @@ export default function BuyerOnboarding() {
                 <input
                   id="ad-name"
                   type="text"
+                  autoFocus
                   placeholder="Jordan Vance"
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={address.fullName}
                   onChange={setAddressKey('fullName')}
                 />
@@ -355,7 +371,7 @@ export default function BuyerOnboarding() {
                   id="ad-line1"
                   type="text"
                   placeholder="123 King Street West"
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={address.line1}
                   onChange={setAddressKey('line1')}
                 />
@@ -369,7 +385,7 @@ export default function BuyerOnboarding() {
                   id="ad-line2"
                   type="text"
                   placeholder="Suite 400"
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={address.line2}
                   onChange={setAddressKey('line2')}
                 />
@@ -384,7 +400,7 @@ export default function BuyerOnboarding() {
                     id="ad-city"
                     type="text"
                     placeholder="Toronto"
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={address.city}
                     onChange={setAddressKey('city')}
                   />
@@ -397,7 +413,7 @@ export default function BuyerOnboarding() {
                     id="ad-state"
                     type="text"
                     placeholder="Ontario"
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={address.state}
                     onChange={setAddressKey('state')}
                   />
@@ -413,7 +429,7 @@ export default function BuyerOnboarding() {
                     id="ad-postal"
                     type="text"
                     placeholder="M5V 1J5"
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={address.postalCode}
                     onChange={setAddressKey('postalCode')}
                   />
@@ -426,7 +442,7 @@ export default function BuyerOnboarding() {
                     id="ad-country"
                     type="text"
                     placeholder="Canada"
-                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                    className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                     value={address.country}
                     onChange={setAddressKey('country')}
                   />
@@ -441,7 +457,7 @@ export default function BuyerOnboarding() {
                   id="ad-phone"
                   type="tel"
                   placeholder="+1 (416) 555-0199"
-                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:border-[var(--red)] transition-colors text-[16px] min-h-[44px]"
+                  className="w-full bg-[var(--ink)] border border-[var(--line)] rounded-xl px-4 py-3 text-xs font-mono text-[var(--paper)] placeholder-[var(--smoke)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors text-[16px] min-h-[44px]"
                   value={address.phone}
                   onChange={setAddressKey('phone')}
                 />
@@ -467,7 +483,7 @@ export default function BuyerOnboarding() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
+                  className="w-full sm:flex-1 bg-[var(--red)] text-[var(--paper)] py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-md min-h-[44px]"
                 >
                   {submitting ? 'Saving...' : 'Save Address'}
                   {!submitting && <ArrowUpRight className="w-4 h-4" />}
@@ -499,14 +515,14 @@ export default function BuyerOnboarding() {
             <div className="space-y-3">
               <Link
                 href="/marketplace"
-                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
+                className="w-full bg-[var(--red)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#ed594d] focus:outline-none focus:ring-2 focus:ring-[var(--red)] focus:ring-offset-2 focus:ring-offset-[var(--card)] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg min-h-[44px]"
               >
                 Browse the marketplace <ArrowUpRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/buyer/dashboard"
-                className="w-full bg-transparent border border-[var(--line)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--smoke)] hover:bg-[var(--ink)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
+                href="/buyer/dashboard?welcome=1"
+                className="w-full bg-transparent border border-[var(--line)] text-[var(--paper)] py-3.5 px-6 rounded-full text-xs font-mono uppercase tracking-wider hover:border-[var(--smoke)] hover:bg-[var(--ink)] focus:outline-none focus:ring-1 focus:ring-[var(--red)] transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
               >
                 Go to my dashboard &rarr;
               </Link>

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import { Search, ArrowUpRight, ArrowDownRight, Tag } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { SITE_NAME } from "@/lib/brand";
+import { WelcomeCelebration } from "@/components/WelcomeCelebration";
 
 const STAGES = [
   { value: "All", label: "All Stages" },
@@ -113,6 +114,9 @@ export default function DiscoverPage() {
 
   return (
     <div className="inner-page min-h-screen">
+      <Suspense fallback={null}>
+        <WelcomeCelebration role="visitor" destination="/discover" />
+      </Suspense>
       {/* INNER HERO SECTION (FAITHFUL TO REFERENCE DESIGN) */}
       <section className="inner-hero page-padding">
         <div className="inner-hero__meta">

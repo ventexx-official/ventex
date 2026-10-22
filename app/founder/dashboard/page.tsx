@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import {
   Plus, Loader2, AlertCircle, TrendingUp, Zap
 } from "lucide-react";
 import FounderGuard from "@/components/FounderGuard";
+import { WelcomeCelebration } from "@/components/WelcomeCelebration";
 
 interface Stats {
   views: number;
@@ -108,6 +109,9 @@ export default function FounderDashboard() {
 
   return (
     <FounderGuard>
+      <Suspense fallback={null}>
+        <WelcomeCelebration role="founder" destination="/founder/dashboard" />
+      </Suspense>
       <div className="min-h-screen bg-[var(--bg)] flex flex-col md:flex-row">
         {/* Sidebar */}
         <aside className="w-full md:w-64 border-r border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
