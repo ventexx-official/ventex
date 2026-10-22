@@ -505,3 +505,5 @@ export function ScoreBar({
     </div>
   );
 }
+
+export * from "./DashboardShell";

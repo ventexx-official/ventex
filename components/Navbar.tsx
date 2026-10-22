@@ -28,30 +28,10 @@ export default function Navbar() {
   } | null>(null);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [unreadMessages, setUnreadMessages] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const avatarMenuRef = useRef<HTMLDivElement | null>(null);
   const drawerRef = useRef<HTMLDivElement | null>(null);
-
-  const fetchUnreadMessages = async (userId: string) => {
-    const { data: conversations } = await supabase
-      .from("conversations")
-      .select("id")
-      .or(`founder_id.eq.${userId},investor_id.eq.${userId}`);
-    const ids = (conversations || []).map((item: any) => item.id);
-    if (ids.length === 0) {
-      setUnreadMessages(0);
-      return;
-    }
-    const { count } = await supabase
-      .from("messages")
-      .select("*", { count: "exact", head: true })
-      .in("conversation_id", ids)
-      .neq("sender_id", userId)
-      .eq("read", false);
-    setUnreadMessages(count || 0);
-  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -97,10 +77,8 @@ export default function Navbar() {
             role: profile.role,
           });
         }
-        fetchUnreadMessages(session.user.id);
       } else {
         setUserProfile(null);
-        setUnreadMessages(0);
       }
     };
     checkUser();
@@ -124,10 +102,8 @@ export default function Navbar() {
               });
             }
           });
-        fetchUnreadMessages(session.user.id);
       } else {
         setUserProfile(null);
-        setUnreadMessages(0);
       }
     });
 
@@ -216,13 +192,9 @@ export default function Navbar() {
                 href="/messages"
                 className="relative min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-paper-dim hover:text-paper rounded-full transition-colors"
                 aria-label="Messages"
+                title="Messages are coming soon"
               >
                 <MessageSquare className="w-4 h-4" />
-                {unreadMessages > 0 && (
-                  <span className="absolute top-1 right-1 min-w-[14px] h-[14px] rounded-full bg-red px-1 text-[9px] font-bold text-paper flex items-center justify-center">
-                    {unreadMessages}
-                  </span>
-                )}
               </Link>
 
               {/* Profile Avatar & Dropdown */}
