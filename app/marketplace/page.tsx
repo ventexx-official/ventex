@@ -1,197 +1,106 @@
-"use client";
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
-import React, { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import { SITE_NAME } from "@/lib/brand";
-import {
-  Search,
-  Filter,
-  Sparkles,
-  ShoppingBag,
-  ArrowUpRight,
-  Clock,
-  Check,
-  Tag,
-  Star,
-  ExternalLink,
-} from "lucide-react";
+// Product type badge colors
+function getTypeBadge(type: string) {
+  if (type === 'software') return { label: 'Software', cls: 'bg-blue-500/15 text-blue-400 border-blue-500/30' };
+  if (type === 'hardware') return { label: 'Hardware', cls: 'bg-amber-500/15 text-amber-400 border-amber-500/30' };
+  return { label: type, cls: 'bg-line/20 text-[var(--paper-dim)] border-line' };
+}
 
-/* ── Live Countdown Timer for Deals ── */
-function DealCountdown({ endDate }: { endDate: string }) {
-  const [timeLeft, setTimeLeft] = useState("");
-  const [expired, setExpired] = useState(false);
+function formatPrice(price: number | null, currency: string) {
+  if (price === null || price === undefined) return 'Contact seller';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(price);
+}
 
-  useEffect(() => {
-    const calc = () => {
-      const diff = new Date(endDate).getTime() - Date.now();
-      if (diff <= 0) {
-        setExpired(true);
-        setTimeLeft("");
-        return;
-      }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      if (d > 0) {
-        setTimeLeft(`${d}d ${h}h ${m}m`);
-      } else {
-        setTimeLeft(`${h}h ${m}m ${s}s`);
-      }
-    };
-    calc();
-    const interval = setInterval(calc, 1000);
-    return () => clearInterval(interval);
-  }, [endDate]);
-
-  if (expired) return null;
-
+// ─── Skeleton component (server-renderable via CSS) ───────────────────────────
+function ProductSkeleton() {
   return (
-    <div className="flex items-center gap-1.5 text-[9px] font-mono tracking-wider uppercase px-2.5 py-1 rounded-full bg-[rgba(255,248,240,0.15)] text-[var(--paper)] w-fit border border-[rgba(255,248,240,0.2)]">
-      <Clock className="w-2.5 h-2.5 flex-shrink-0 text-[var(--paper)]" />
-      Ends in {timeLeft}
+    <div className="bg-[var(--card)] border border-line rounded-2xl overflow-hidden animate-pulse">
+      <div className="h-48 bg-[var(--ink)]" />
+      <div className="p-4 space-y-3">
+        <div className="h-3 bg-[var(--ink)] rounded w-2/3" />
+        <div className="h-4 bg-[var(--ink)] rounded w-full" />
+        <div className="h-3 bg-[var(--ink)] rounded w-1/2" />
+      </div>
     </div>
   );
 }
 
-const CATEGORIES = ["All", "Software", "Templates", "Services", "Hardware", "Courses"];
+export const revalidate = 60; // ISR: rebuild page every 60 seconds
 
-export default function MarketplacePage() {
-  const brandName = SITE_NAME.toUpperCase();
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [tick, setTick] = useState(0);
+export default async function MarketplacePage({
+  searchParams,
+}: {
+  searchParams: { q?: string; type?: string; category?: string; page?: string };
+}) {
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
 
-  // Filters
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [selectedType, setSelectedType] = useState<string>("All");
-  const [priceMin, setPriceMin] = useState<string>("");
-  const [priceMax, setPriceMax] = useState<string>("");
-  const [dealsOnly, setDealsOnly] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<string>("recommended");
+  const q = searchParams.q?.trim() || '';
+  const typeFilter = searchParams.type || '';
+  const categoryFilter = searchParams.category || '';
+  const page = parseInt(searchParams.page || '1', 10);
+  const PER_PAGE = 12;
+  const from = (page - 1) * PER_PAGE;
+  const to = from + PER_PAGE - 1;
 
-  // Tabs
-  const [activeTab, setActiveTab] = useState<"Explore" | "Purchases">("Explore");
-  const [purchases, setPurchases] = useState<any[]>([]);
-  const [loadingPurchases, setLoadingPurchases] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  let query = supabase
+    .from('products')
+    .select('id, name, description, product_type, category, price, currency, image_urls, seller_id, created_at', { count: 'exact' })
+    .eq('status', 'live')
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
-  useEffect(() => {
-    const t = setInterval(() => setTick((v) => v + 1), 60000);
-    return () => clearInterval(t);
-  }, []);
+  if (q) query = query.or(`name.ilike.%${q}%,description.ilike.%${q}%`);
+  if (typeFilter && typeFilter !== 'all') query = query.eq('product_type', typeFilter);
+  if (categoryFilter && categoryFilter !== 'all') query = query.eq('category', categoryFilter);
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-  }, []);
+  const { data: products, count } = await query;
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      // Fixed: query public_profiles instead of users to comply with DB schema
-      const { data, error } = await supabase
-        .from("products")
-        .select(`
-          *,
-          seller:seller_id ( id, display_name, avatar_url ),
-          pitch:pitch_id ( id, title )
-        `)
-        .in("status", ["live", "published"]);
+  // Get distinct categories for filter pills
+  const { data: catRows } = await supabase
+    .from('products')
+    .select('category')
+    .eq('status', 'live')
+    .not('category', 'is', null);
 
-      if (!error && data) {
-        setProducts(data);
-      }
-      setLoading(false);
-    };
+  const categories: string[] = Array.from(new Set((catRows || []).map((r: any) => r.category).filter(Boolean))).sort();
 
-    fetchProducts();
-  }, []);
+  // Get seller names from public_profiles
+  const sellerIds = Array.from(new Set((products || []).map((p: any) => p.seller_id)));
+  let sellersMap: Record<string, { display_name: string | null; avatar_url: string | null }> = {};
+  if (sellerIds.length > 0) {
+    const { data: sellers } = await supabase
+      .from('public_profiles')
+      .select('id, display_name, avatar_url')
+      .in('id', sellerIds);
+    (sellers || []).forEach((s: any) => { sellersMap[s.id] = s; });
+  }
 
-  useEffect(() => {
-    if (activeTab === "Purchases" && user) {
-      const fetchPurchases = async () => {
-        setLoadingPurchases(true);
-        const { data, error } = await supabase
-          .from("orders")
-          .select(`
-            *,
-            product:product_id (
-              *,
-              seller:seller_id ( id, display_name, avatar_url )
-            )
-          `)
-          .eq("buyer_id", user.id);
-
-        if (!error && data) {
-          setPurchases(data.map((o) => o.product).filter(Boolean));
-        }
-        setLoadingPurchases(false);
-      };
-      fetchPurchases();
-    }
-  }, [activeTab, user]);
-
-  const activeDeals = useMemo(() => {
-    const now = new Date();
-    return products.filter(
-      (p) => p.discount_price && p.deal_end_date && new Date(p.deal_end_date) > now
-    );
-  }, [products, tick]);
-
-  const filteredProducts = useMemo(() => {
-    const now = new Date();
-    return products
-      .filter((p) => {
-        if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-          return false;
-        if (selectedCategory !== "All" && p.category !== selectedCategory)
-          return false;
-        if (selectedType !== "All" && p.type !== selectedType) return false;
-        if (
-          dealsOnly &&
-          (!p.discount_price || !p.deal_end_date || new Date(p.deal_end_date) <= now)
-        )
-          return false;
-
-        const priceToCompare = p.discount_price || p.price;
-        if (priceMin && priceToCompare < parseInt(priceMin)) return false;
-        if (priceMax && priceToCompare > parseInt(priceMax)) return false;
-
-        return true;
-      })
-      .sort((a, b) => {
-        if (sortBy === "price_asc") {
-          return (a.discount_price || a.price) - (b.discount_price || b.price);
-        }
-        if (sortBy === "price_desc") {
-          return (b.discount_price || b.price) - (a.discount_price || a.price);
-        }
-        if (sortBy === "newest") {
-          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
-        }
-        return 0;
-      });
-  }, [products, searchQuery, selectedCategory, selectedType, dealsOnly, priceMin, priceMax, sortBy, tick]);
+  const totalPages = count ? Math.ceil(count / PER_PAGE) : 1;
+  const productList = products || [];
 
   return (
     <div className="inner-page inner-page--red min-h-screen">
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="inner-hero page-padding">
         <div className="inner-hero__meta">
-          <span className="status-dot" /> THE FOUNDER MARKETPLACE{" "}
-          <span>/ {brandName} / 2026</span>
+          <span className="status-dot" /> THE FOUNDER MARKETPLACE
+          <span> / VENTEX / 2026</span>
         </div>
         <h1>
-          Things worth
-          <br />
+          Things worth<br />
           <em>putting to work.</em>
         </h1>
         <p>
-          Founders can list software, licenses, digital assets, or custom work; buyers and investors can purchase or inquire directly.
+          Founders list software and hardware products. Browse, discover, and contact sellers directly.
         </p>
         <div className="inner-hero__line" aria-hidden="true">
           <span>SCROLL TO EXPLORE</span>
@@ -199,255 +108,176 @@ export default function MarketplacePage() {
         </div>
       </section>
 
-      {/* CATALOGUE SECTION */}
-      <section className="inner-market-list page-padding">
-        <div className="inner-section__head">
-          <span>01 / THE CATALOGUE</span>
-          <p>Useful things, made by people close to the problem.</p>
-        </div>
-
-        {/* CONTROLS BAR: SEARCH, TABS, CATEGORY PILLS */}
-        <div className="mt-12 space-y-6">
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
-            {/* TABS */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setActiveTab("Explore")}
-                className={`px-5 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === "Explore"
-                    ? "bg-[var(--paper)] text-[var(--ink)] font-bold shadow-md"
-                    : "border border-[rgba(255,248,240,0.3)] text-[var(--paper)] hover:bg-[rgba(255,248,240,0.1)]"
-                }`}
-              >
-                Catalogue ({filteredProducts.length})
-              </button>
-              <button
-                onClick={() => setActiveTab("Purchases")}
-                className={`px-5 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
-                  activeTab === "Purchases"
-                    ? "bg-[var(--paper)] text-[var(--ink)] font-bold shadow-md"
-                    : "border border-[rgba(255,248,240,0.3)] text-[var(--paper)] hover:bg-[rgba(255,248,240,0.1)]"
-                }`}
-              >
-                My Purchases {user && purchases.length > 0 && `(${purchases.length})`}
-              </button>
-            </div>
-
-            {/* SEARCH */}
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[rgba(255,248,240,0.6)]" />
-              <input
-                type="text"
-                placeholder="Search tools, products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-2.5 bg-[rgba(16,16,15,0.25)] border border-[rgba(255,248,240,0.25)] rounded-full text-xs font-mono text-[var(--paper)] placeholder-[rgba(255,248,240,0.5)] focus:outline-none focus:border-[var(--paper)] transition-all"
-              />
-            </div>
+      {/* SEARCH + FILTERS */}
+      <section className="page-padding py-6 border-b border-line">
+        <form method="GET" action="/marketplace" className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              name="q"
+              defaultValue={q}
+              placeholder="Search products..."
+              className="w-full bg-[var(--card)] border border-line rounded-2xl pl-10 pr-4 py-3 text-base text-[var(--paper)] placeholder:text-[var(--smoke)] focus:outline-none focus:ring-1 focus:border-[var(--red)] focus:ring-[var(--red)] transition-colors min-h-[44px]"
+              aria-label="Search products"
+            />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--smoke)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
           </div>
-
-          {/* FILTER PILLS ROW */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[rgba(255,248,240,0.2)]">
-            <div className="flex flex-wrap items-center gap-2">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all cursor-pointer ${
-                    selectedCategory === cat
-                      ? "bg-[var(--paper)] text-[var(--ink)] font-bold"
-                      : "text-[rgba(255,248,240,0.7)] hover:text-[var(--paper)] border border-[rgba(255,248,240,0.2)] hover:border-[rgba(255,248,240,0.4)]"
-                  }`}
-                >
-                  {cat}
-                </button>
+          <select
+            name="type"
+            defaultValue={typeFilter}
+            className="bg-[var(--card)] border border-line rounded-2xl px-4 py-3 text-base text-[var(--paper)] focus:outline-none focus:ring-1 focus:border-[var(--red)] focus:ring-[var(--red)] min-h-[44px]"
+            aria-label="Filter by type"
+          >
+            <option value="">All types</option>
+            <option value="software">Software</option>
+            <option value="hardware">Hardware</option>
+          </select>
+          {categories.length > 0 && (
+            <select
+              name="category"
+              defaultValue={categoryFilter}
+              className="bg-[var(--card)] border border-line rounded-2xl px-4 py-3 text-base text-[var(--paper)] focus:outline-none focus:ring-1 focus:border-[var(--red)] focus:ring-[var(--red)] min-h-[44px]"
+              aria-label="Filter by category"
+            >
+              <option value="">All categories</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
               ))}
-
-              <button
-                onClick={() => setDealsOnly(!dealsOnly)}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
-                  dealsOnly
-                    ? "bg-[var(--paper)] text-[var(--ink)] font-bold"
-                    : "text-[rgba(255,248,240,0.7)] hover:text-[var(--paper)] border border-[rgba(255,248,240,0.2)]"
-                }`}
-              >
-                <Tag className="w-3 h-3" />
-                Deals Only
-              </button>
-            </div>
-
-            {/* SORT DROPDOWN */}
-            <div className="flex items-center gap-2 text-xs font-mono text-[rgba(255,248,240,0.8)]">
-              <span className="uppercase text-[10px] tracking-widest text-[rgba(255,248,240,0.6)]">Sort:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="bg-[rgba(16,16,15,0.25)] border border-[rgba(255,248,240,0.25)] rounded-full px-3 py-1 text-xs font-mono text-[var(--paper)] focus:outline-none cursor-pointer"
-              >
-                <option value="recommended" className="bg-[#22211f] text-white">Recommended</option>
-                <option value="newest" className="bg-[#22211f] text-white">Newest</option>
-                <option value="price_asc" className="bg-[#22211f] text-white">Price: Low to High</option>
-                <option value="price_desc" className="bg-[#22211f] text-white">Price: High to Low</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* CONTENT AREA */}
-        <div className="mt-8">
-          {activeTab === "Explore" ? (
-            <>
-              {loading ? (
-                <div className="flex flex-col items-center justify-center py-24 gap-4 text-[rgba(255,248,240,0.7)]">
-                  <div className="w-8 h-8 border-2 border-[rgba(255,248,240,0.3)] border-t-[var(--paper)] rounded-full animate-spin" />
-                  <span className="text-xs font-mono uppercase tracking-widest">Loading catalogue...</span>
-                </div>
-              ) : filteredProducts.length === 0 ? (
-                /* EMPTY STATE - ELEGANT TABLET CARD */
-                <div className="border border-[rgba(255,248,240,0.25)] rounded-3xl p-12 md:p-16 text-center bg-[rgba(16,16,15,0.18)] backdrop-blur-sm mt-8">
-                  <ShoppingBag className="w-12 h-12 text-[rgba(255,248,240,0.4)] mx-auto mb-4" />
-                  <h3 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-[var(--paper)] mb-2 font-medium">
-                    {products.length === 0 ? "Catalogue opening soon" : "No matching items found"}
-                  </h3>
-                  <p className="text-xs md:text-sm font-mono text-[rgba(255,248,240,0.7)] max-w-md mx-auto mb-8">
-                    {products.length === 0
-                      ? "The founder marketplace is in preview. Early founders can submit software listings, digital products, and tools."
-                      : "Try clearing your filters or searching for another term."}
-                  </p>
-                  {products.length === 0 ? (
-                    <Link
-                      href="/founder/store/new-product"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--paper)] text-[var(--ink)] font-bold text-xs uppercase tracking-wider hover:bg-[#fffaf0] transition-all cursor-pointer"
-                    >
-                      List a product <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        setSearchQuery("");
-                        setSelectedCategory("All");
-                        setSelectedType("All");
-                        setDealsOnly(false);
-                        setPriceMin("");
-                        setPriceMax("");
-                      }}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--paper)] text-[var(--ink)] font-bold text-xs uppercase tracking-wider hover:bg-[#fffaf0] transition-all cursor-pointer"
-                    >
-                      Reset filters
-                    </button>
-                  )}
-                </div>
-              ) : (
-                /* PRODUCTS LIST - EDITORIAL LIST FORMAT MATCHING REFERENCE */
-                <div className="border-t border-[rgba(255,248,240,0.38)] mt-8">
-                  {filteredProducts.map((product, index) => {
-                    const price = product.discount_price || product.price || 0;
-                    const hasDiscount = product.discount_price && product.discount_price < product.price;
-
-                    return (
-                      <Link
-                        href={`/marketplace/${product.id}`}
-                        key={product.id}
-                        className="market-row block group text-inherit cursor-pointer"
-                      >
-                        <span>0{index + 1}</span>
-                        <span>{product.category || product.type || "PRODUCT"}</span>
-                        <div>
-                          <h2>{product.name}</h2>
-                          {product.seller?.display_name && (
-                            <p className="text-[11px] font-mono text-[rgba(255,248,240,0.6)] mt-1">
-                              By {product.seller.display_name}
-                              {product.pitch?.title ? ` / ${product.pitch.title}` : ""}
-                            </p>
-                          )}
-                        </div>
-                        <span className="font-mono text-right">
-                          ₹{price.toLocaleString()}
-                          {hasDiscount && (
-                            <span className="block text-[9px] line-through text-[rgba(255,248,240,0.5)]">
-                              ₹{product.price.toLocaleString()}
-                            </span>
-                          )}
-                        </span>
-                        <ArrowUpRight className="w-5 h-5 text-[var(--paper)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </>
-          ) : (
-            /* PURCHASES TAB */
-            <div className="mt-8">
-              {!user ? (
-                <div className="border border-[rgba(255,248,240,0.25)] rounded-3xl p-12 text-center bg-[rgba(16,16,15,0.18)]">
-                  <ShoppingBag className="w-12 h-12 text-[rgba(255,248,240,0.4)] mx-auto mb-4" />
-                  <h3 className="font-display text-2xl uppercase tracking-tight text-[var(--paper)] mb-2">
-                    Sign in to view your purchases
-                  </h3>
-                  <Link
-                    href="/login"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--paper)] text-[var(--ink)] font-bold text-xs uppercase tracking-wider hover:bg-[#fffaf0] transition-all mt-4"
-                  >
-                    Sign In
-                  </Link>
-                </div>
-              ) : loadingPurchases ? (
-                <div className="flex flex-col items-center justify-center py-20 gap-3 text-[rgba(255,248,240,0.7)]">
-                  <div className="w-8 h-8 border-2 border-[rgba(255,248,240,0.3)] border-t-[var(--paper)] rounded-full animate-spin" />
-                  <span className="text-xs font-mono uppercase tracking-widest">Loading purchases...</span>
-                </div>
-              ) : purchases.length === 0 ? (
-                <div className="border border-[rgba(255,248,240,0.25)] rounded-3xl p-12 text-center bg-[rgba(16,16,15,0.18)]">
-                  <ShoppingBag className="w-12 h-12 text-[rgba(255,248,240,0.4)] mx-auto mb-4" />
-                  <h3 className="font-display text-2xl uppercase tracking-tight text-[var(--paper)] mb-2">
-                    No purchases yet
-                  </h3>
-                  <p className="text-xs font-mono text-[rgba(255,248,240,0.7)]">
-                    When you purchase products or tools on {brandName}, they will appear here.
-                  </p>
-                  <button
-                    onClick={() => setActiveTab("Explore")}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--paper)] text-[var(--ink)] font-bold text-xs uppercase tracking-wider hover:bg-[#fffaf0] transition-all mt-6 cursor-pointer"
-                  >
-                    Explore Marketplace
-                  </button>
-                </div>
-              ) : (
-                <div className="border-t border-[rgba(255,248,240,0.38)]">
-                  {purchases.map((product, index) => (
-                    <Link
-                      href={`/marketplace/${product.id}`}
-                      key={product.id}
-                      className="market-row block group text-inherit cursor-pointer"
-                    >
-                      <span>0{index + 1}</span>
-                      <span>PURCHASED</span>
-                      <div>
-                        <h2>{product.name}</h2>
-                      </div>
-                      <span className="font-mono text-xs uppercase">Access</span>
-                      <ArrowUpRight className="w-5 h-5 text-[var(--paper)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+            </select>
           )}
-        </div>
+          <button
+            type="submit"
+            className="bg-[var(--red)] text-[var(--paper)] px-6 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-[#ed594d] transition-colors min-h-[44px] whitespace-nowrap"
+          >
+            Search
+          </button>
+          {(q || typeFilter || categoryFilter) && (
+            <a
+              href="/marketplace"
+              className="px-6 py-3 rounded-2xl text-sm font-mono text-[var(--paper-dim)] hover:text-[var(--paper)] border border-line transition-colors min-h-[44px] flex items-center whitespace-nowrap"
+            >
+              Clear
+            </a>
+          )}
+        </form>
       </section>
 
-      {/* CTA SECTION MATCHING REFERENCE */}
-      <section className="market-cta page-padding">
-        <span className="inner-kicker">HAVE SOMETHING USEFUL?</span>
-        <h2>
-          Put it in
-          <br />
-          <em>motion.</em>
-        </h2>
-        <Link href="/founder/store/new-product" className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-[var(--red)] font-bold mt-6">
-          List a product <ArrowUpRight className="w-4 h-4" />
-        </Link>
+      {/* PRODUCTS GRID */}
+      <section className="page-padding py-10">
+        {productList.length === 0 ? (
+          <div className="text-center py-24 border border-dashed border-line rounded-3xl bg-[var(--card)]">
+            <svg className="w-12 h-12 mx-auto mb-4 text-[var(--smoke)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <p className="text-lg font-display uppercase text-[var(--paper)]">No products found</p>
+            <p className="text-sm font-mono text-[var(--smoke)] mt-2">
+              {q || typeFilter || categoryFilter ? 'Try different search terms or filters.' : 'Be the first to list a product.'}
+            </p>
+            {(q || typeFilter || categoryFilter) && (
+              <a href="/marketplace" className="mt-6 inline-block bg-[var(--red)] text-[var(--paper)] px-6 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider">
+                Clear filters
+              </a>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-xs font-mono text-[var(--smoke)] uppercase tracking-wider">
+                {count} product{count !== 1 ? 's' : ''} found
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {productList.map((product: any) => {
+                const seller = sellersMap[product.seller_id];
+                const badge = getTypeBadge(product.product_type);
+                const img = product.image_urls?.[0];
+
+                return (
+                  <Link
+                    key={product.id}
+                    href={`/marketplace/${product.id}`}
+                    className="group bg-[var(--card)] border border-line rounded-2xl overflow-hidden hover:border-[var(--red)]/40 hover:shadow-lg transition-all duration-200 flex flex-col"
+                  >
+                    <div className="h-48 bg-[var(--ink)] relative overflow-hidden flex-shrink-0">
+                      {img ? (
+                        <img
+                          src={img}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[var(--smoke)]">
+                          <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4 flex flex-col flex-1">
+                      {/* Badges */}
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider border ${badge.cls}`}>
+                          {badge.label}
+                        </span>
+                        {product.category && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-line/10 text-[var(--smoke)] border border-line/30">
+                            {product.category}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Name */}
+                      <h3 className="font-display uppercase text-[var(--paper)] text-sm font-medium leading-snug mb-2 line-clamp-2 group-hover:text-[var(--red)] transition-colors">
+                        {product.name}
+                      </h3>
+
+                      {/* Price */}
+                      <p className="text-sm font-bold text-[var(--paper)] mt-auto pt-2">
+                        {formatPrice(product.price, product.currency)}
+                      </p>
+
+                      {/* Seller */}
+                      {seller?.display_name && (
+                        <p className="text-[11px] font-mono text-[var(--smoke)] mt-1">
+                          by {seller.display_name}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <nav className="flex items-center justify-center gap-3 mt-10" aria-label="Pagination">
+                {page > 1 && (
+                  <a
+                    href={`/marketplace?${new URLSearchParams({ ...(q && { q }), ...(typeFilter && { type: typeFilter }), ...(categoryFilter && { category: categoryFilter }), page: String(page - 1) })}`}
+                    className="px-4 py-2 rounded-xl text-xs font-mono text-[var(--paper)] border border-line hover:border-[var(--red)] transition-colors min-h-[44px] flex items-center"
+                  >
+                    ← Previous
+                  </a>
+                )}
+                <span className="text-xs font-mono text-[var(--smoke)]">
+                  Page {page} of {totalPages}
+                </span>
+                {page < totalPages && (
+                  <a
+                    href={`/marketplace?${new URLSearchParams({ ...(q && { q }), ...(typeFilter && { type: typeFilter }), ...(categoryFilter && { category: categoryFilter }), page: String(page + 1) })}`}
+                    className="px-4 py-2 rounded-xl text-xs font-mono text-[var(--paper)] border border-line hover:border-[var(--red)] transition-colors min-h-[44px] flex items-center"
+                  >
+                    Next →
+                  </a>
+                )}
+              </nav>
+            )}
+          </>
+        )}
       </section>
     </div>
   );
