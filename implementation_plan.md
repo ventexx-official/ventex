@@ -1,5 +1,5 @@
 # Goal
-Integrate dark mode into Ventex using Next.js, `next-themes`, and Tailwind CSS, adding a toggle in the Navbar and updating all components to respect the selected theme.
+Integrate dark mode into Folenzo using Next.js, `next-themes`, and Tailwind CSS, adding a toggle in the Navbar and updating all components to respect the selected theme.
 
 ## User Review Required
 - The chosen default theme will be **Light** mode.

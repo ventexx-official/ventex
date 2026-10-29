@@ -51,7 +51,7 @@ export default function FounderSettingsPage() {
  }
 
  const { data: profile } = await supabase
- .from("users")
+ .from("profiles")
  .select("*")
  .eq("id", session.user.id)
  .single();
@@ -68,7 +68,7 @@ export default function FounderSettingsPage() {
  }
 
  setUserProfile(profile);
- setFullName(profile.full_name || "");
+ setFullName(profile.display_name || "");
  setAvatarUrl(profile.avatar_url || "");
  setWhatsappNumber(profile.whatsapp_number || "");
  setIsSeller(profile.is_seller || false);
@@ -91,12 +91,11 @@ export default function FounderSettingsPage() {
  if (!session) throw new Error("No active session");
 
  const { error } = await supabase
- .from("users")
+ .from("profiles")
  .update({
- full_name: fullName,
+ display_name: fullName,
  avatar_url: avatarUrl,
- whatsapp_number: whatsappNumber || null,
- is_seller: isSeller,
+ 
  })
  .eq("id", session.user.id);
 
@@ -104,12 +103,10 @@ export default function FounderSettingsPage() {
 
  setSuccessMsg("Settings saved successfully!");
  setUserProfile((prev: any) => ({
- ...prev,
- full_name: fullName,
- avatar_url: avatarUrl,
- whatsapp_number: whatsappNumber || null,
- is_seller: isSeller,
- }));
+      ...prev,
+      display_name: fullName,
+      avatar_url: avatarUrl,
+    }));
  } catch (err: any) {
  console.error(err);
  setErrorMsg(err.message || "Failed to save settings.");

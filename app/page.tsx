@@ -1,335 +1,683 @@
-import { Globe, Megaphone, Shield, TrendingUp, Users, Zap } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
-import Testimonials from '@/components/Testimonials';
-import JsonLd from '@/components/JsonLd';
+"use client";
 
-function formatCurrency(amount: number) {
- if (!amount) return 'N/A';
- if (amount >= 10000000) return `Rs ${(amount / 10000000).toFixed(1)}Cr`;
- if (amount >= 100000) return `Rs ${(amount / 100000).toFixed(1)}L`;
- return `Rs ${amount.toLocaleString('en-IN')}`;
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Sparkles,
+  Plus,
+  Minus,
+  Play,
+} from "lucide-react";
+import { SITE_NAME } from "@/lib/brand";
+import {
+  MaskText,
+  ParagraphReveal,
+  InteractiveLetters,
+  CountUp,
+} from "@/components/ScrollReveal";
+import MagneticButton from "@/components/MagneticButton";
+
+function MarqueeTicker({
+  items,
+  reverse = false,
+}: {
+  items: string[];
+  reverse?: boolean;
+}) {
+  const content = [...items, ...items];
+  return (
+    <div
+      className={`marquee ${reverse ? "marquee--reverse" : ""}`}
+      aria-label={items.join(", ")}
+    >
+      <div className="marquee__track">
+        {content.map((item, index) => (
+          <span className="marquee__item" key={`${item}-${index}`}>
+            {item}
+            <i aria-hidden="true">✳</i>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-const features = [
- {
- icon: Megaphone,
- title: 'Integrated pitch profilers',
- desc: 'Turn your startup idea into a structured pitch profile with traction, documents, video, Q&A, and AI summaries - ready for investors.',
- },
- {
- icon: TrendingUp,
- title: 'Funding-ready signals',
- desc: 'Funding-ready indicators, response badges, XP, pitch scores, and investor matching help strong founders stand out from the crowd.',
- },
- {
- icon: Shield,
- title: 'Premium data rooms',
- desc: 'Protect traction and confidential documents while giving verified investors enough context to move fast.',
- },
- {
- icon: Users,
- title: 'Investor and catalyst network',
- desc: 'Pitch to investors, founders and operators. Find them by sector, stage, thesis, and response behavior.',
- },
- {
- icon: Zap,
- title: 'Momentum loops',
- desc: 'Weekly battles, heat maps, founding member nudges, and XP make progress visible, and your startup moving - every week.',
- },
- {
- icon: Globe,
- title: 'Built for founders worldwide',
- desc: 'Mobile investing, global resources, and marketplace tooling built around startup realities - sell from anywhere, raise from anyone.',
- },
+function SectionLabel({
+  index,
+  children,
+}: {
+  index: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="section-label">
+      <span className="section-label__index">{index}</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function LiveClock() {
+  const [time, setTime] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setTime(new Date());
+    const interval = window.setInterval(() => setTime(new Date()), 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  if (!time) return <span>00:00:00 IST</span>;
+
+  return (
+    <span>
+      {time.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })}{" "}
+      IST
+    </span>
+  );
+}
+
+const ecosystemRows = [
+  {
+    number: "01",
+    title: "Discover",
+    copy: "Browse published pitches from founders and teams, review versions, and explore real ideas gaining early momentum.",
+    tag: "Browse published pitches",
+  },
+  {
+    number: "02",
+    title: "Pitch",
+    copy: "Draft your pitch, revise it through version snapshots, and refine your core message before opening it to the network.",
+    tag: "Draft, revise, publish",
+  },
+  {
+    number: "03",
+    title: "Connect",
+    copy: "Express interest and open direct communication between founders and verified investors as rounds come together.",
+    tag: "Direct founder interest",
+  },
+  {
+    number: "04",
+    title: "Market",
+    copy: "List software products, license digital tools, or reach qualified buyers directly through the startup marketplace.",
+    tag: "Sell directly on platform",
+  },
 ];
 
-const steps = [
- ['01', 'Submit your pitch', 'Create a sharp public profile with video, traction, fundraising details, and documents. Go live in minutes.'],
- ['02', 'Get matched', 'Investors discover you through search, thesis matching, saved pitches, and weekly ecosystem surfaces - and reach out.'],
- ['03', 'Sell and scale', 'List products, unlock deal rooms, build social proof, and convert attention into revenue or real funding.'],
+const previewStartups = [
+  {
+    name: "Founder pitches opening soon",
+    category: "FOUNDER ACCESS",
+    description: "Verified founder pitches will appear here as the inaugural publishing cohort goes live.",
+    className: "startup-card--blue",
+    mark: "P",
+    founder: "First cohort forming",
+  },
+  {
+    name: "Founder profiles opening soon",
+    category: "PEOPLE / NETWORK",
+    description: "Founders can share their team context, journey milestones, and current pitch version here.",
+    className: "startup-card--sand",
+    mark: "F",
+    founder: "Open for registration",
+  },
+  {
+    name: "Be one of the first",
+    category: "PLATFORM PREVIEW",
+    description: "The ecosystem is live for registration. Join early to build your pitch and claim your presence.",
+    className: "startup-card--plum",
+    mark: "→",
+    founder: "Sign up today",
+  },
 ];
 
-export default async function Home() {
- const [
- { data: pitches },
- { count: startupsCount },
- { count: investorsCount },
- { count: productsCount },
- ] = await Promise.all([
- supabase.from('pitches').select('id, title, industry, company_stage, is_raising, tagline, ai_summary, short_description, amount_seeking, equity_pct, state, country').eq('status', 'live').limit(3),
- supabase.from('pitches').select('*', { count: 'exact', head: true }).eq('status', 'live'),
- supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'investor'),
- supabase.from('products').select('*', { count: 'exact', head: true }).in('status', ['live', 'published']),
- ]);
+const marketplaceListings = [
+  {
+    type: "SOFTWARE",
+    title: "Software listings opening soon",
+    price: "Browse soon",
+    color: "market-item--lime",
+  },
+  {
+    type: "DIGITAL TOOLS",
+    title: "Developer toolkits opening soon",
+    price: "Early access",
+    color: "market-item--red",
+  },
+  {
+    type: "CUSTOM WORK",
+    title: "List your product or offering",
+    price: "Apply early",
+    color: "market-item--cream",
+  },
+];
 
- const { data: featuredFlag } = await supabase
- .from('feature_flags')
- .select('enabled')
- .eq('key', 'homepage_featured_this_week')
- .maybeSingle();
- const { data: featuredPitches } = featuredFlag?.enabled
- ? await supabase
- .from('pitches')
- .select('*')
- .in('status', ['live', 'published'])
- .order('pitch_score', { ascending: false })
- .limit(3)
- : { data: [] as any[] };
+const sectionItems = [
+  { id: "top", label: "Hero", index: "00" },
+  { id: "story", label: "Manifesto", index: "01" },
+  { id: "pitch", label: "How it moves", index: "02" },
+  { id: "startups", label: "Startups", index: "03" },
+  { id: "intelligence", label: "Mentor preview", index: "04" },
+  { id: "marketplace", label: "Marketplace", index: "05" },
+];
 
- const stats = [
- { label: 'Startups listed', value: startupsCount ?? 0 },
- { label: 'Registered investors', value: investorsCount ?? 0 },
- { label: 'Marketplace products', value: productsCount ?? 0 },
- ].filter(s => s.value > 0);
+export default function Home() {
+  const [activePage, setActivePage] = useState("top");
+  const [activeRow, setActiveRow] = useState(0);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiResponse, setAiResponse] = useState(
+    "Lead with the customer problem, then make the ask specific: what are you raising, why now, and what milestone will that capital unlock?"
+  );
+  const [activeSuggestion, setActiveSuggestion] = useState("Find my wedge");
 
- return (
- <>
- <JsonLd data={{
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "name": "Ventex",
-        "url": "https://www.ventexx.com",
-        "description": "Where startups pitch, fund and sell.",
-        "logo": "https://www.ventexx.com/logo.png",
-        "sameAs": [
-          "https://twitter.com/ventex",
-          "https://linkedin.com/company/ventex",
-          "https://instagram.com/ventex",
-          "https://youtube.com/@ventex"
-        ]
+  const brandName = SITE_NAME.toUpperCase();
+
+  useEffect(() => {
+    const sections = sectionItems
+      .map((page) => document.getElementById(page.id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (!sections.length || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActivePage(visible.target.id);
       },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is Ventex?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ventex is a global marketplace connecting ambitious startup founders with verified investors to streamline the fundraising process."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How do founders pitch on Ventex?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Founders create a comprehensive pitch profile including traction, team data, video pitches, and secure data rooms for investors to review."
-            }
-          }
-        ]
-      }
-    ]
-  }} />
+      { rootMargin: "-28% 0px -48% 0px", threshold: [0.12, 0.3, 0.6] }
+    );
 
- <section id="hero" className="grid-bg relative min-h-[calc(100vh-64px)] overflow-hidden">
- <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/40 via-[var(--bg)]/80 to-[var(--bg)] pointer-events-none" />
- 
- <div className="relative mx-auto flex min-h-[calc(100vh-64px)] max-w-6xl items-center px-4 py-20">
- <div className="grid grid-cols-1 md:grid-cols-2 gap-[64px] items-center w-full">
- <div className="text-left stagger-2">
- <div className="mono inline-flex items-center gap-2 border px-3 py-1.5 text-[11px] font-medium text-[var(--text2)] mb-8 rounded-full bg-[var(--bg2)]" style={{ borderColor: 'var(--border2)' }}>
- <span className="h-1.5 w-1.5 animate-[pulseDot_2s_infinite] rounded-full bg-emerald-500" />
- v1.0 · Early Access Now Open
- </div>
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
- <h1 className="max-w-2xl text-balance text-[clamp(40px,7vw,72px)] font-extrabold leading-[1.05] tracking-[-.04em] text-[var(--text)] mb-6 transition-colors duration-400">
- Where startups pitch,<br />fund and sell.
- </h1>
+  const runAssistant = (prompt = aiPrompt || activeSuggestion) => {
+    const responses: Record<string, string> = {
+      "Find my wedge":
+        "Name the narrow customer problem your pitch solves, then show why your approach is meaningfully different from the alternatives.",
+      "Name my audience":
+        "Start with the people who feel this problem most urgently. A specific buyer profile will make the pitch easier to test and improve.",
+      "Sharpen my pitch":
+        "Clarify the ask, the milestone it funds, and the evidence you will bring back. Investors should know exactly what happens next.",
+    };
+    setAiResponse(
+      responses[prompt] ||
+        `Here’s a sharper starting point for “${prompt}”: make the insight tangible in one small, undeniable proof.`
+    );
+    setAiPrompt("");
+  };
 
- <p className="max-w-[520px] text-[18px] leading-[1.6] text-[var(--text2)] mb-8 transition-colors duration-400">
- Ventex is a startup marketplace connecting founders, investors, and startup builders worldwide.
- </p>
+  return (
+    <div className="relative">
+      <main id="top">
+        {/* HERO SECTION */}
+        <section className="hero-section min-h-[100dvh]">
+          <div className="hero-scanline" aria-hidden="true" />
+          <div className="hero-assembly" aria-hidden="true">
+            <span>{brandName} / 01</span>
+            <i />
+            <span>BUILDING IN PUBLIC</span>
+          </div>
+          <div className="hero-glow hero-glow--one" />
+          <div className="hero-glow hero-glow--two" />
+          <div className="hero-grid" aria-hidden="true" />
 
- <div className="mb-10 max-w-[520px]">
-    <p className="font-semibold text-[var(--text)] mb-3">Ventex helps founders:</p>
-    <ul className="grid grid-cols-2 gap-2 text-sm text-[var(--text2)]">
-      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Pitch startups</li>
-      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Gain visibility</li>
-      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Connect with investors</li>
-      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Discover opportunities</li>
-      <li className="flex items-center gap-2"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Raise funding</li>
-    </ul>
-  </div>
+          <div className="hero-content page-padding">
+            <div className="hero-eyebrow">
+              <span className="status-dot" /> THE STARTUP ECOSYSTEM, IN MOTION{" "}
+              <span className="hero-eyebrow__year">/ 2026</span>
+              <span className="hero-clock">
+                / <LiveClock />
+              </span>
+            </div>
 
- <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
- <Link href="/founder/create-pitch" className="btn-primary w-full sm:w-auto inline-flex items-center gap-2">I am a Founder <span aria-hidden="true">→</span></Link>
- <Link href="/discover" className="btn-secondary w-full sm:w-auto">I am an Investor</Link>
- </div>
+            <h1 className="hero-title">
+              <span className="hero-title__line">
+                <MaskText delay={100}>
+                  <InteractiveLetters text="Build." />
+                </MaskText>
+              </span>
+              <span className="hero-title__line hero-title__line--indent">
+                <MaskText delay={180}>
+                  <InteractiveLetters text="Pitch." />
+                </MaskText>
+                <span className="hero-outline" aria-hidden="true">
+                  Shape.
+                </span>
+              </span>
+              <span className="hero-title__line">
+                <MaskText delay={260}>
+                  <InteractiveLetters text="Get discovered." />
+                </MaskText>
+              </span>
+            </h1>
 
- <div className="mono mt-10 text-[11px] text-[var(--text3)] hidden sm:block">
- {'//'} Trusted by founders, investors and startup-builders - worldwide.
- </div>
- </div>
+            <div className="hero-bottom">
+              <ParagraphReveal>
+                {brandName} is the living layer between a good idea and the people who can make it matter.
+              </ParagraphReveal>
+              <div className="hero-actions">
+                <MagneticButton href="/discover" variant="light">
+                  Explore the ecosystem <ArrowDownRight size={17} />
+                </MagneticButton>
+                <a href="#story" className="play-link">
+                  <span className="play-icon">
+                    <Play size={12} fill="currentColor" />
+                  </span>{" "}
+                  See how it works
+                </a>
+              </div>
+            </div>
+          </div>
 
- <div className="glass-ledger-card stagger-3 mt-10 md:mt-0 w-full">
- <span className="mono text-[11px] font-bold text-[#e0a96d] tracking-[0.1em] uppercase mb-2 block">Ventex Matrix</span>
- <h3 className="text-[20px] font-bold tracking-[-0.02em] text-[var(--text)] mb-6 transition-colors duration-400">Live startups raising now.</h3>
- <div className="ledger-inner-stack">
- <div className="flex justify-between items-center py-3 border-b border-[var(--border)] transition-colors duration-400">
- <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Target Allocation</span>
- <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[#e0a96d]">Rs. 50.0L</span>
- </div>
- <div className="flex justify-between items-center py-3 border-b border-[var(--border)] transition-colors duration-400">
- <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Equity Pool Offered</span>
- <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[var(--text)] transition-colors duration-400">10%</span>
- </div>
- <div className="flex justify-between items-center py-3">
- <span className="text-[13.5px] text-[var(--text2)] transition-colors duration-400">Calculated Base Evaluation</span>
- <span className="font-['Space_Grotesk',sans-serif] font-semibold text-[16px] text-[var(--text)] transition-colors duration-400">Rs. 5.0Cr</span>
- </div>
- </div>
- </div>
- </div>
- </div>
- </section>
+          <div className="hero-side-note">
+            <span>SCROLL TO EXPLORE</span>
+            <span className="hero-side-note__line" />
+          </div>
+          <div className="hero-coordinate">{brandName} / REMOTE-FIRST NETWORK</div>
+          <div className="hero-orbit" aria-hidden="true">
+            <span>{brandName.charAt(0)}</span>
+          </div>
+        </section>
 
+        {/* TICKER */}
+        <section
+          className="ticker-section"
+          aria-label={`${brandName} ecosystem categories`}
+        >
+          <MarqueeTicker
+            items={[
+              brandName,
+              "FOUNDERS",
+              "STARTUPS",
+              "INVESTORS",
+              "MARKETPLACE",
+              "DISCOVERY",
+            ]}
+          />
+        </section>
 
- {featuredFlag?.enabled && (featuredPitches || []).length > 0 ? (
- <section className="py-20">
- <div className="mx-auto max-w-6xl px-4">
- <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} featured this week</div>
- <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
- {(featuredPitches || []).map((pitch) => (
- <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="card p-5">
- <h2 className="text-lg font-black text-[var(--text)]">{pitch.title}</h2>
- <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--text2)]">{pitch.tagline || pitch.short_description || pitch.ai_summary}</p>
- </Link>
- ))}
- </div>
- </div>
- </section>
- ) : null}
+        {/* MANIFESTO */}
+        <section className="manifesto-section page-padding" id="story">
+          <div className="manifesto-meta">
+            <SectionLabel index="01">A different kind of platform</SectionLabel>
+            <span className="meta-aside">
+              NOT ANOTHER FEED
+              <br />
+              A BETTER SIGNAL
+            </span>
+          </div>
 
- <section id="discover" className="py-20">
- <div className="mx-auto max-w-6xl px-4">
- <div className="mb-8 flex items-end justify-between gap-6">
- <div>
- <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} discover</div>
- <h2 className="mt-3 text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">Live startups raising now.</h2>
- </div>
- <Link href="/discover" className="link-underline hidden text-sm font-semibold text-[var(--text2)] hover:text-[var(--text)] sm:block">View all</Link>
- </div>
+          <div className="manifesto-grid">
+            <h2 className="display-heading display-heading--xl">
+              <MaskText>Where ambition</MaskText>
+              <MaskText delay={80}>finds its people.</MaskText>
+            </h2>
+            <div className="manifesto-copy">
+              <ParagraphReveal>
+                Startups do not grow in isolation. They grow through the right collision — a founder with a sharper question, an investor with a longer view, a product with a first believer.
+              </ParagraphReveal>
+              <ParagraphReveal>
+                {brandName} makes those collisions easier to find, easier to trust, and much harder to forget.
+              </ParagraphReveal>
+              <Link href="/discover" className="text-link">
+                Meet the ecosystem <ArrowUpRight size={15} />
+              </Link>
+            </div>
+          </div>
 
- <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
- {(pitches || []).map((pitch, index) => {
- const valuation = pitch.amount_seeking && pitch.equity_pct ? pitch.amount_seeking / (pitch.equity_pct / 100) : 0;
- return (
- <Link key={pitch.id} href={`/pitch/${pitch.id}`} className="card reveal flex min-h-[300px] flex-col p-5" data-delay={String(index * 100)}>
- <div className="flex items-start justify-between gap-4">
- <div className="min-w-0">
- <h3 className="truncate text-lg font-bold text-[var(--text)]">{pitch.title || 'Untitled startup'}</h3>
- <div className="mt-3 flex flex-wrap gap-2">
- {pitch.industry ? <span className="tag">{pitch.industry}</span> : null}
- {pitch.company_stage ? <span className="tag">{pitch.company_stage}</span> : null}
- </div>
- </div>
- <span className="tag">{pitch.is_raising ? 'Raising' : 'Verified'}</span>
- </div>
+          <div className="manifesto-stamp" aria-hidden="true">
+            <span>{brandName}</span>
+            <span>EST. 2026</span>
+          </div>
+        </section>
 
- <p className="mt-5 line-clamp-3 flex-1 text-sm leading-6 text-[var(--text2)]">
- {pitch.tagline || pitch.ai_summary || pitch.short_description || 'No summary yet.'}
- </p>
+        {/* STATS SECTION */}
+        <section className="stats-section page-padding" id="stats">
+          <div className="stats-intro">
+            <SectionLabel index="02">A platform with pull</SectionLabel>
+            <span>
+              Small signals.
+              <br />
+              Real momentum.
+            </span>
+          </div>
 
- <div className="my-5 h-px bg-[var(--border)]" />
- <div className="grid grid-cols-3 gap-3">
- <Metric label="Seeking" value={formatCurrency(pitch.amount_seeking)} />
- <Metric label="Equity" value={pitch.equity_pct ? `${pitch.equity_pct}%` : 'N/A'} />
- <Metric label="Valuation" value={valuation ? formatCurrency(valuation) : 'N/A'} />
- </div>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <CountUp value={0} suffix="" />
+              <span>
+                published pitches
+                <br />
+                so far
+              </span>
+            </div>
+            <div className="stat-item">
+              <CountUp value={0} suffix="" />
+              <span>
+                marketplace listings
+                <br />
+                so far
+              </span>
+            </div>
+            <div className="stat-item">
+              <CountUp value={0} />
+              <span>
+                cities connected
+                <br />
+                so far
+              </span>
+            </div>
+            <div className="stat-item stat-item--accent">
+              <span className="stat-arrow">↗</span>
+              <span>
+                Built for
+                <br />
+                the in-between
+              </span>
+            </div>
+          </div>
+        </section>
 
- <div className="mt-6 flex items-center justify-between text-sm">
- <span className="tag">{[pitch.state, pitch.country].filter(Boolean).join(', ') || 'Global'}</span>
- <span className="text-[var(--text2)]">View pitch</span>
- </div>
- </Link>
- );
- })}
- </div>
- </div>
- </section>
+        {/* ECOSYSTEM / HOW IT MOVES */}
+        <section className="ecosystem-section page-padding" id="pitch">
+          <div className="section-heading-row">
+            <SectionLabel index="03">How it moves</SectionLabel>
+            <span className="section-caption">
+              From first thought
+              <br />
+              to full flight.
+            </span>
+          </div>
 
- <section id="features" className="py-20">
- <div className="mx-auto max-w-6xl px-4">
- <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} features</div>
- <h2 className="mt-3 max-w-2xl text-3xl font-extrabold tracking-[-.03em] text-[var(--text)] md:text-5xl">
- Everything you need to pitch, fund and sell.
- </h2>
+          <div className="ecosystem-list">
+            {ecosystemRows.map((row, index) => {
+              const active = activeRow === index;
+              return (
+                <button
+                  key={row.number}
+                  className={`ecosystem-row ${active ? "is-active" : ""}`}
+                  onClick={() => setActiveRow(active ? -1 : index)}
+                  aria-expanded={active}
+                >
+                  <span className="ecosystem-row__number">{row.number}</span>
+                  <span className="ecosystem-row__title">{row.title}</span>
+                  <span className="ecosystem-row__copy">{row.copy}</span>
+                  <span className="ecosystem-row__tag">{row.tag}</span>
+                  <span className="ecosystem-row__icon">
+                    {active ? <Minus size={19} /> : <Plus size={19} />}
+                  </span>
+                  <span className="ecosystem-row__mobile-copy">{row.copy}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
- <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
- {features.map((feature, index) => {
- const Icon = feature.icon;
- return (
- <div key={feature.title} className="card reveal p-6" data-delay={String((index % 3) * 100)}>
- <div className="mb-6 flex h-10 w-10 items-center justify-center border bg-[var(--bg3)]" style={{ borderColor: 'var(--border)' }}>
- <Icon className="h-5 w-5 text-[var(--text)]" />
- </div>
- <h3 className="font-bold text-[var(--text)]">{feature.title}</h3>
- <p className="mt-3 min-h-[72px] text-sm leading-6 text-[var(--text2)]">{feature.desc}</p>
- </div>
- );
- })}
- </div>
- </div>
- </section>
+        {/* STARTUPS SECTION */}
+        <section className="startups-section page-padding" id="startups">
+          <div className="section-heading-row startups-heading">
+            <div>
+              <SectionLabel index="04">A closer look</SectionLabel>
+              <h2 className="display-heading">
+                <MaskText>
+                  Startups with
+                  <br />
+                  <em>something to say.</em>
+                </MaskText>
+              </h2>
+            </div>
+            <Link
+              href="/discover"
+              className="circle-link"
+              aria-label="Explore all startups"
+            >
+              <ArrowUpRight size={22} />
+            </Link>
+          </div>
 
- <Testimonials />
+          <div className="startup-grid">
+            {previewStartups.map((startup, index) => (
+              <article
+                className={`startup-card ${startup.className}`}
+                key={startup.name}
+              >
+                <div className="startup-card__visual">
+                  <span className="startup-card__mark">{startup.mark}</span>
+                  <span className="startup-card__year">N° 0{index + 1}</span>
+                  <span className="startup-card__orbit" />
+                </div>
+                <div className="startup-card__info">
+                  <div>
+                    <span className="startup-card__category">
+                      {startup.category}
+                    </span>
+                    <h3>{startup.name}</h3>
+                  </div>
+                  <ArrowUpRight size={20} className="startup-card__arrow" />
+                </div>
+                <div className="startup-card__details">
+                  <p>{startup.description}</p>
+                  <span>Cohort / {startup.founder}</span>
+                </div>
+              </article>
+            ))}
+          </div>
 
- {stats.length > 0 && (
- <section className="py-16">
- <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-[var(--border)] px-4 md:grid-cols-3 md:divide-x md:divide-y-0">
- {stats.map(({ label, value }) => (
- <div key={label} className="reveal py-8 text-center">
- <div className="mono text-4xl font-bold text-[var(--text)]">{value.toLocaleString()}</div>
- <div className="mono mt-2 text-[10px] uppercase tracking-[.12em] text-[var(--text3)]">{label}</div>
- <div className="mt-2 text-xs font-semibold text-[var(--text2)]">and growing</div>
- </div>
- ))}
- </div>
- </section>
- )}
+          <div className="startups-footer">
+            <span>THE PEOPLE BEHIND THE PROGRESS</span>
+            <Link href="/discover" className="text-link">
+              View all pitches <ArrowUpRight size={15} />
+            </Link>
+          </div>
+        </section>
 
- <section id="how-it-works" className="py-20">
- <div className="mx-auto max-w-6xl px-4">
- <div className="mono text-[10px] font-bold uppercase tracking-[.12em] text-[var(--text3)]">{'//'} how it works</div>
- <div className="relative mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
- <div className="absolute bottom-0 left-6 top-0 border-l border-dashed md:left-0 md:right-0 md:top-10 md:border-l-0 md:border-t" style={{ borderColor: 'var(--border2)' }} />
- {steps.map(([number, title, desc], index) => (
- <div key={number} className="reveal relative bg-[var(--bg)] pl-14 pr-6 md:pl-0" data-delay={String(index * 150)}>
- <div className="mono text-5xl font-bold text-[var(--text3)]">{number}</div>
- <h3 className="mt-5 text-2xl font-bold tracking-[-.02em] text-[var(--text)]">{title}</h3>
- <p className="mt-3 text-sm leading-6 text-[var(--text2)]">{desc}</p>
- </div>
- ))}
- </div>
- </div>
- </section>
+        {/* AI MENTOR PREVIEW */}
+        <section className="assistant-section page-padding" id="intelligence">
+          <div className="assistant-beam" aria-hidden="true" />
+          <div className="assistant-header">
+            <SectionLabel index="05">Coming soon: Pitch Guidance</SectionLabel>
+            <span className="assistant-status">
+              <span className="status-dot status-dot--dark" /> {brandName} AI / PREVIEW
+            </span>
+          </div>
 
- <section id="join" className="overflow-hidden py-24 text-center">
- <div className="mx-auto max-w-4xl px-4">
- <h2 className="text-xl font-semibold text-[var(--text)]">Early Access. Be a Founding Member. Limited spots.</h2>
- <div className="mt-5 h-5 overflow-hidden">
- <div className="mono flex w-max whitespace-nowrap text-[11px] uppercase tracking-[.12em] text-[var(--text3)]" style={{ animation: 'marquee 18s linear infinite' }}>
- <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
- <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
- <span className="pr-8">Early access · Founding member · Worldwide · Pitch · Fund · Sell ·</span>
- </div>
- </div>
- <Link href="/signup" className="btn-primary mt-8 inline-flex">Join now</Link>
- </div>
- </section>
- </>
- );
-}
+          <div className="assistant-layout">
+            <div className="assistant-intro">
+              <h2 className="display-heading display-heading--large">
+                <MaskText>
+                  Make the
+                  <br />
+                  <span className="text-[var(--red)]">next move.</span>
+                </MaskText>
+              </h2>
+              <ParagraphReveal>
+                A planned thinking partner for the messy middle — designed to review pitch drafts, sharpen questions, and clarify market wedges before opening to investors.
+              </ParagraphReveal>
+              <div className="assistant-chips">
+                {["Find my wedge", "Name my audience", "Sharpen my pitch"].map(
+                  (suggestion) => (
+                    <button
+                      key={suggestion}
+                      className={
+                        activeSuggestion === suggestion ? "is-selected" : ""
+                      }
+                      onClick={() => {
+                        setActiveSuggestion(suggestion);
+                        runAssistant(suggestion);
+                      }}
+                    >
+                      {suggestion}
+                      <ArrowUpRight size={14} />
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
 
-function Metric({ label, value }: { label: string; value: string }) {
- return (
- <div>
- <div className="mono text-[10px] uppercase text-[var(--text3)]">{label}</div>
- <div className="mono mt-1 truncate text-base font-bold text-[var(--text)]">{value}</div>
- </div>
- );
+            <div className="assistant-panel">
+              <div className="assistant-panel__top">
+                <div>
+                  <span className="tiny-label">WORKSPACE / PREVIEW</span>
+                  <span className="assistant-context">
+                    Interactive sample / version review
+                  </span>
+                </div>
+                <Sparkles size={18} />
+              </div>
+
+              <div className="assistant-panel__conversation">
+                <div className="assistant-message assistant-message--user">
+                  Can you help me clarify the ask in my seed pitch and show what this round unlocks?
+                </div>
+                <div className="assistant-message assistant-message--ai">
+                  <span className="ai-avatar">{brandName.charAt(0)}</span>
+                  <div>
+                    <span className="tiny-label">{brandName} AI / PITCH MENTOR</span>
+                    <p>{aiResponse}</p>
+                  </div>
+                </div>
+              </div>
+
+              <form
+                className="assistant-input"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  runAssistant();
+                }}
+              >
+                <input
+                  value={aiPrompt}
+                  onChange={(event) => setAiPrompt(event.target.value)}
+                  placeholder="Ask a sharper question..."
+                  aria-label={`Ask ${brandName} AI`}
+                />
+                <button type="submit" aria-label="Send question">
+                  <ArrowUpRight size={18} />
+                </button>
+              </form>
+
+              <div className="assistant-panel__footer">
+                <span>
+                  <span className="pulse-dot" /> Preview mode (Full AI assistant coming soon)
+                </span>
+                <span>Private workspace</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PROCESS SECTION */}
+        <section className="process-section page-padding" id="process">
+          <div className="section-heading-row">
+            <SectionLabel index="06">The {brandName} loop</SectionLabel>
+            <span className="section-caption">
+              Good things compound
+              <br />
+              when the path is clear.
+            </span>
+          </div>
+
+          <div className="process-grid">
+            {["Create", "Pitch", "Connect", "Grow"].map((step, index) => (
+              <div
+                className={`process-item ${index === 0 ? "process-item--active" : ""}`}
+                key={step}
+              >
+                <span className="process-item__number">0{index + 1}</span>
+                <div className="process-item__line">
+                  <span />
+                </div>
+                <h3>{step}</h3>
+                <p>
+                  {[
+                    "Make the idea tangible.",
+                    "Give it a point of view.",
+                    "Find the right people.",
+                    "Keep the momentum alive.",
+                  ][index]}
+                </p>
+                <ArrowUpRight size={17} />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* MARKETPLACE SECTION */}
+        <section className="marketplace-section" id="marketplace">
+          <div className="page-padding marketplace-inner">
+            <div className="marketplace-heading">
+              <SectionLabel index="07">The useful side of ambition</SectionLabel>
+              <h2 className="display-heading display-heading--large">
+                <MaskText>
+                  Things worth
+                  <br />
+                  <em>putting to work.</em>
+                </MaskText>
+              </h2>
+              <ParagraphReveal>
+                Founder-built software, licenses, digital assets, and tools with a practical purpose.
+              </ParagraphReveal>
+              <Link
+                href="/marketplace"
+                className="text-link text-link--light"
+              >
+                Enter the marketplace <ArrowUpRight size={15} />
+              </Link>
+            </div>
+
+            <div className="marketplace-list">
+              {marketplaceListings.map((item, index) => (
+                <Link
+                  href="/marketplace"
+                  className={`market-item ${item.color}`}
+                  key={item.title}
+                >
+                  <span className="market-item__index">0{index + 1}</span>
+                  <span className="market-item__type">{item.type}</span>
+                  <strong>{item.title}</strong>
+                  <span className="market-item__price">{item.price}</span>
+                  <ArrowUpRight size={19} />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <MarqueeTicker
+            items={["MAKE USEFUL THINGS", "SHARE THE WORK", "KEEP MOVING"]}
+            reverse
+          />
+        </section>
+
+        {/* SECTION TRACKER (DESKTOP / MOBILE COMPATIBLE) */}
+        <div className="section-tracker" aria-label="Page section tracker">
+          <span className="section-tracker__caption">CURRENTLY</span>
+          <div className="section-tracker__items">
+            {sectionItems.map((page) => (
+              <a
+                key={page.id}
+                href={`#${page.id}`}
+                className={activePage === page.id ? "is-active" : ""}
+                aria-current={activePage === page.id ? "page" : undefined}
+              >
+                <span className="section-tracker__dot" />
+                <span>{page.label}</span>
+              </a>
+            ))}
+          </div>
+          <span className="section-tracker__counter">
+            {sectionItems.findIndex((page) => page.id === activePage) + 1} /{" "}
+            {String(sectionItems.length).padStart(2, "0")}
+          </span>
+        </div>
+      </main>
+    </div>
+  );
 }

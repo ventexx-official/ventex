@@ -22,7 +22,7 @@ export default function HowToPitchArticle() {
       "name": "Ventex",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.ventexx.com/logo.png"
+        "url": "https://www.ventex.com/logo.png"
       }
     }
   };

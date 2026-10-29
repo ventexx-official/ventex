@@ -66,4 +66,4 @@ Disallow: /api/
 Disallow: /founder
 Disallow: /investor
 
-Sitemap: https://ventexx.com/sitemap.xml
+Sitemap: https://ventex.com/sitemap.xml

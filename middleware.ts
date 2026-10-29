@@ -1,11 +1,7 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-
-const PUBLIC_ROUTES = [
-  '/', '/discover', '/marketplace', '/events', '/about', '/catalyst', '/contact',
-  '/investors', '/terms', '/privacy', '/seller-agreement', '/refund-policy', '/delivery-policy',
-  '/login', '/signup', '/auth/callback'
-];
+import { isPublicRoute, isBypassedRoute } from '@/lib/routes';
+import { getSignedInDestination } from '@/lib/role-routing';
 
 const BOTS = ['GPTBot', 'ClaudeBot', 'anthropic', 'Googlebot', 'Bingbot', 'PerplexityBot'];
 
@@ -23,7 +19,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -35,43 +31,99 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   
-  // Block bots from protected paths
+  // Block bots from non-public paths
   const userAgent = request.headers.get('user-agent') || '';
   const isBot = BOTS.some(bot => userAgent.toLowerCase().includes(bot.toLowerCase()));
   if (isBot) {
-    const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
-    if (!isPublic) return new NextResponse('Forbidden', { status: 403 });
+    if (!isPublicRoute(pathname)) {
+      return new NextResponse('Forbidden', { status: 403 });
+    }
   }
 
   // Check auth
   const { data: { user } } = await supabase.auth.getUser();
 
-  const isPublic = PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(`${r}/`));
-  const isProtected = !isPublic && !pathname.startsWith('/api') && !pathname.startsWith('/onboarding') && !pathname.startsWith('/auth') && !pathname.startsWith('/intelligence');
+  // If a signed-in user opens /login, /signup, or /forgot-password, redirect to their destination
+  const isAuthEntryPage = pathname === '/login' || pathname === '/signup' || pathname === '/forgot-password';
+  if (user && isAuthEntryPage) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role, onboarding_complete, display_name, country')
+      .eq('id', user.id)
+      .single();
 
+    const dest = getSignedInDestination(profile);
+    return NextResponse.redirect(new URL(dest, request.url));
+  }
+
+  const isPublic = isPublicRoute(pathname);
+  const isBypassed = isBypassedRoute(pathname);
+  const isOnboarding = pathname.startsWith('/onboarding');
+  const isWelcome = pathname.startsWith('/welcome');
+  const isProtected = (!isPublic && !isBypassed) || isOnboarding || isWelcome;
+
+  // Unauthenticated users trying to access protected paths go to /login?next=<path>
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
+    const fullOriginalPath = pathname + search;
+    url.search = `?next=${encodeURIComponent(fullOriginalPath)}`;
     return NextResponse.redirect(url);
   }
 
-  // Role routing enforcement in Middleware
-  if (user && isProtected) {
-     const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single();
-     if (profile?.role) {
-       const role = profile.role;
-       if (pathname.startsWith('/founder') && role !== 'founder' && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-       if (pathname.startsWith('/investor') && role !== 'investor' && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-       if (pathname.startsWith('/admin') && role !== 'admin') {
-         return NextResponse.redirect(new URL('/discover', request.url));
-       }
-     }
+  // Role routing & onboarding guard enforcement for authenticated users
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role, onboarding_complete, display_name, country')
+      .eq('id', user.id)
+      .single();
+
+    // 1. If onboarding is complete, /onboarding/* pages must redirect to the user's dashboard
+    if (isOnboarding && profile?.onboarding_complete) {
+      const dest = getSignedInDestination(profile);
+      return NextResponse.redirect(new URL(dest, request.url));
+    }
+
+    // 2. /welcome/* requires login and the matching role
+    if (isWelcome) {
+      const role = profile?.role;
+      if (pathname.startsWith('/welcome/founder') && role !== 'founder' && role !== 'admin') {
+        const dest = getSignedInDestination(profile);
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
+      if (pathname.startsWith('/welcome/investor') && role !== 'investor' && role !== 'admin') {
+        const dest = getSignedInDestination(profile);
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
+      if (pathname.startsWith('/welcome/buyer') && role !== 'buyer' && role !== 'admin') {
+        const dest = getSignedInDestination(profile);
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
+    }
+
+    // 3. Protected dashboard sections role checking
+    if (profile?.role) {
+      const role = profile.role;
+      if (pathname.startsWith('/founder') && role !== 'founder' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/investor') && role !== 'investor' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/buyer') && role !== 'buyer' && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/admin') && role !== 'admin') {
+        return NextResponse.redirect(new URL('/discover', request.url));
+      }
+      if (pathname.startsWith('/explorer') && role !== 'visitor' && role !== 'admin') {
+        const dest = getSignedInDestination(profile);
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
+    }
   }
 
   return supabaseResponse;
